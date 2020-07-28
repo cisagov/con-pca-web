@@ -19,8 +19,8 @@ RUN mkdir /certs
 
 RUN openssl req -x509 -nodes -days 365 -subj "/C=CA/ST=ID/O=INL/CN=localhost" -newkey rsa:2048 -keyout /certs/server.key -out /certs/server.crt
 
-COPY ./src/etc/default.conf /etc/nginx/conf.d/default.conf
-COPY ./src/etc/mime.types /etc/nginx/mime.types
+COPY ./etc/default.conf /etc/nginx/conf.d/default.conf
+COPY ./etc/mime.types /etc/nginx/mime.types
 
 COPY ./etc/entrypoint.sh /usr/share/nginx/entrypoint.sh
 RUN chmod 755 /usr/share/nginx/entrypoint.sh
