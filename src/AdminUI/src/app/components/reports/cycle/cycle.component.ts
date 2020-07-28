@@ -8,10 +8,9 @@ import { ChartsService } from 'src/app/services/charts.service';
 @Component({
   selector: 'app-cycle',
   templateUrl: './cycle.component.html',
-  styleUrls: ['./cycle.component.scss']
+  styleUrls: ['./cycle.component.scss'],
 })
 export class CycleComponent implements OnInit {
-
   private routeSub: any;
   subscriptionUuid: string;
   reportStartDate: Date;
@@ -23,11 +22,10 @@ export class CycleComponent implements OnInit {
 
   chart: any = {};
   schemeLowMedHigh = {
-    domain: ['#064875', '#fcbf10', '#007bc1']
+    domain: ['#064875', '#fcbf10', '#007bc1'],
   };
 
   chartComplexityLevel: any = {};
-
 
   /**
    *
@@ -35,14 +33,14 @@ export class CycleComponent implements OnInit {
   constructor(
     public reportsSvc: ReportsService,
     public chartsSvc: ChartsService,
-    private route: ActivatedRoute,
-  ) { }
+    private route: ActivatedRoute
+  ) {}
 
   /**
    *
    */
   ngOnInit(): void {
-    this.routeSub = this.route.params.subscribe(params => {
+    this.routeSub = this.route.params.subscribe((params) => {
       this.subscriptionUuid = params.id;
       const isDate = new Date(params.start_date);
       const isHeadless = params.isHeadless;
@@ -53,20 +51,23 @@ export class CycleComponent implements OnInit {
         console.log('Invalid Date time provided, defaulting to now');
         this.reportStartDate = new Date();
       }
-      this.reportsSvc.getCycleReport(this.subscriptionUuid, this.reportStartDate, isHeadless).subscribe(resp => {
-        this.detail = resp;
-        this.renderReport();
-      },
-      error => {
-        console.log(this.detail);
-        this.renderReport();
-      });
+      this.reportsSvc
+        .getCycleReport(this.subscriptionUuid, this.reportStartDate, isHeadless)
+        .subscribe(
+          (resp) => {
+            this.detail = resp;
+            this.renderReport();
+          },
+          (error) => {
+            console.log(this.detail);
+            this.renderReport();
+          }
+        );
     });
   }
 
   /**
    *
    */
-  renderReport() {
-  }
+  renderReport() {}
 }

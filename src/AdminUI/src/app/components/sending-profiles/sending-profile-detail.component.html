@@ -1,10 +1,14 @@
 <h1>{{ mode | titlecase }} Sending Profile</h1>
 
 <form [formGroup]="profileForm">
-  <div style="max-height: 70vh; overflow-y: auto; overflow-x: hidden">
+  <div style="max-height: 70vh; overflow-y: auto; overflow-x: hidden;">
     <mat-form-field appearance="outline" class="w-100">
       <mat-label>Name</mat-label>
-      <input formControlName="name" matInput [ngClass]="{ 'is-invalid': submitted && f.name.errors }">
+      <input
+        formControlName="name"
+        matInput
+        [ngClass]="{ 'is-invalid': submitted && f.name.errors }"
+      />
       <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
         <div *ngIf="f.name.errors.required">Profile name is required</div>
       </div>
@@ -12,21 +16,31 @@
 
     <mat-form-field appearance="outline" class="w-100">
       <mat-label>Interface Type</mat-label>
-      <input formControlName="interfaceType" matInput>
+      <input formControlName="interfaceType" matInput />
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="w-100">
       <mat-label>From</mat-label>
-      <input formControlName="from" matInput [ngClass]="{ 'is-invalid': submitted && f.from.errors }">
+      <input
+        formControlName="from"
+        matInput
+        [ngClass]="{ 'is-invalid': submitted && f.from.errors }"
+      />
       <div *ngIf="submitted && f.from.errors" class="invalid-feedback">
         <div *ngIf="f.from.errors.required">From address is required</div>
-        <div *ngIf="f.from.errors.email">From address must be a valid email address</div>
+        <div *ngIf="f.from.errors.email">
+          From address must be a valid email address
+        </div>
       </div>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="w-100">
       <mat-label>Host</mat-label>
-      <input formControlName="host" matInput [ngClass]="{ 'is-invalid': submitted && f.host.errors }" />
+      <input
+        formControlName="host"
+        matInput
+        [ngClass]="{ 'is-invalid': submitted && f.host.errors }"
+      />
       <div *ngIf="submitted && f.host.errors" class="invalid-feedback">
         <div *ngIf="f.host.errors.required">Host is required</div>
       </div>
@@ -51,13 +65,25 @@
       <h2>Email Headers</h2>
       <div class="d-flex flex-row align-items-center w-100">
         <mat-form-field appearance="outline" class="mr-2">
-          <input formControlName="newHeaderName" matInput placeholder="Custom Header" maxlength="100">
+          <input
+            formControlName="newHeaderName"
+            matInput
+            placeholder="Custom Header"
+            maxlength="100"
+          />
         </mat-form-field>
         <mat-form-field appearance="outline" class="mr-2">
-          <input formControlName="newHeaderValue" matInput placeholder="Header Value" maxlength="100">
+          <input
+            formControlName="newHeaderValue"
+            matInput
+            placeholder="Header Value"
+            maxlength="100"
+          />
         </mat-form-field>
         <div class="mb-3">
-          <button mat-raised-button color="primary" (click)="addHeader()">Add Custom Header</button>
+          <button mat-raised-button color="primary" (click)="addHeader()">
+            Add Custom Header
+          </button>
         </div>
       </div>
     </div>
@@ -70,10 +96,15 @@
           <th class="mat-header-cell"></th>
         </tr>
         <tr *ngFor="let h of headers?.keys()" class="mat-row">
-          <td class="mat-cell">{{h}}</td>
-          <td class="mat-cell">{{headers.get(h)}}</td>
+          <td class="mat-cell">{{ h }}</td>
+          <td class="mat-cell">{{ headers.get(h) }}</td>
           <td class="mat-cell">
-            <button class="table-btn-icon" mat-flat-button color="warn" (click)="deleteHeader(h)">
+            <button
+              class="table-btn-icon"
+              mat-flat-button
+              color="warn"
+              (click)="deleteHeader(h)"
+            >
               <mat-icon>delete</mat-icon>
             </button>
           </td>
@@ -90,10 +121,20 @@
   </div>
 
   <div class="text-right mt-3">
-    <button mat-flat-button class="add-button" color="basic" (click)="onCancelClick()">
+    <button
+      mat-flat-button
+      class="add-button"
+      color="basic"
+      (click)="onCancelClick()"
+    >
       Cancel
     </button>
-    <button mat-raised-button class="add-button" color="primary" (click)="onSaveClick()">
+    <button
+      mat-raised-button
+      class="add-button"
+      color="primary"
+      (click)="onSaveClick()"
+    >
       Save Profile
     </button>
   </div>

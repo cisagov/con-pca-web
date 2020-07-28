@@ -13,7 +13,7 @@ interface ICustomer {
 @Component({
   selector: 'app-add-contact-dialog',
   templateUrl: './add-contact-dialog.component.html',
-  styleUrls: ['../contacts.component.scss']
+  styleUrls: ['../contacts.component.scss'],
 })
 export class AddContactDialogComponent implements OnInit {
   form_group = new FormGroup({
@@ -24,7 +24,7 @@ export class AddContactDialogComponent implements OnInit {
     office_phone: new FormControl(),
     mobile_phone: new FormControl(),
     email: new FormControl(),
-    notes: new FormControl()
+    notes: new FormControl(),
   });
   customers: Customer[];
 
@@ -69,7 +69,7 @@ export class AddContactDialogComponent implements OnInit {
       mobile_phone: this.form_group.controls['mobile_phone'].value,
       email: this.form_group.controls['email'].value,
       notes: this.form_group.controls['notes'].value,
-      active: true
+      active: true,
     };
     return contact;
   }

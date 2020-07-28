@@ -1,10 +1,14 @@
-<button 
-  id="delete-subscription" 
-  mat-raised-button 
-  color="warn" 
-  (click)="openDialog()" 
-  [disabled]="subscription?.status != 'stopped'" 
-  [attr.title]="subscription?.status != 'stopped' ? 'Subscription must be stopped before deleting' : ''"
+<button
+  id="delete-subscription"
+  mat-raised-button
+  color="warn"
+  (click)="openDialog()"
+  [disabled]="subscription?.status != 'stopped'"
+  [attr.title]="
+    subscription?.status != 'stopped'
+      ? 'Subscription must be stopped before deleting'
+      : ''
+  "
 >
   Delete Subscription
 </button>

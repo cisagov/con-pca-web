@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-search-panel',
-  templateUrl: './search-panel.component.html'
+  templateUrl: './search-panel.component.html',
 })
 export class SearchPanelComponent implements OnInit {
   status = new FormControl();

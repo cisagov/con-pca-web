@@ -4,7 +4,7 @@ import { SettingsService } from './settings.service';
 import { Settings } from '../models/settings';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SettingsHttpService {
   constructor(
@@ -13,11 +13,11 @@ export class SettingsHttpService {
   ) {}
 
   initializeApp(): Promise<any> {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       this.http
         .get('assets/settings.json')
         .toPromise()
-        .then(response => {
+        .then((response) => {
           this.settingsService.settings = <Settings>response;
           resolve();
         });

@@ -8,18 +8,18 @@ export class XlsxToCsv {
    * @param file
    */
   public convert(file: File) {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       if (
         file.type ==
           'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ||
         file.name.endsWith('.xlsx') ||
         file.name.endsWith('.xls')
       ) {
-        this.convertXlsx(file).then(x => {
+        this.convertXlsx(file).then((x) => {
           resolve(x);
         });
       } else {
-        this.convertCsv(file).then(x => {
+        this.convertCsv(file).then((x) => {
           resolve(x);
         });
       }
@@ -34,8 +34,8 @@ export class XlsxToCsv {
     let fileReader = new FileReader();
     fileReader.readAsBinaryString(file);
 
-    return new Promise(resolve => {
-      fileReader.onload = e => {
+    return new Promise((resolve) => {
+      fileReader.onload = (e) => {
         /* read workbook */
         const bstr: any = e.target.result;
         const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary' });
@@ -58,8 +58,8 @@ export class XlsxToCsv {
     let fileReader = new FileReader();
     fileReader.readAsText(file);
 
-    return new Promise(resolve => {
-      fileReader.onload = e => {
+    return new Promise((resolve) => {
+      fileReader.onload = (e) => {
         let x = fileReader.result.toString();
         resolve(x);
       };

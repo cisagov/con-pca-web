@@ -1,17 +1,17 @@
 {
-    "projectName": "AdminUI",
-    "version": "3.0",
-    "frontend": "javascript",
-    "javascript": {
-        "framework": "angular",
-        "config": {
-            "SourceDir": "src",
-            "DistributionDir": "dist",
-            "BuildCommand": "ng build",
-            "StartCommand": "ng serve"
-        }
+  "frontend": "javascript",
+  "javascript": {
+    "config": {
+      "BuildCommand": "ng build",
+      "DistributionDir": "dist",
+      "SourceDir": "src",
+      "StartCommand": "ng serve"
     },
-    "providers": [
-        "awscloudformation"
-    ]
+    "framework": "angular"
+  },
+  "projectName": "AdminUI",
+  "providers": [
+    "awscloudformation"
+  ],
+  "version": "3.0"
 }

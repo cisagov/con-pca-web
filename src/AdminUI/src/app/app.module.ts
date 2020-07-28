@@ -1,9 +1,12 @@
 import {
   HttpClientModule,
   HTTP_INTERCEPTORS,
-  HttpClient
+  HttpClient,
 } from '@angular/common/http';
-import { BrowserModule, ɵBROWSER_SANITIZATION_PROVIDERS } from '@angular/platform-browser';
+import {
+  BrowserModule,
+  ɵBROWSER_SANITIZATION_PROVIDERS,
+} from '@angular/platform-browser';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AngularEditorModule } from '@kolkov/angular-editor';
@@ -47,7 +50,10 @@ import { CustomersComponent } from './components/customers/customers.component';
 import { AddCustomerDialogComponent } from './components/customers/add-customer-dialog/add-customer-dialog.component';
 import { AddContactDialogComponent } from './components/contacts/add-contact-dialog/add-contact-dialog.component';
 import { ViewContactDialogComponent } from './components/contacts/view-contact-dialog/view-contact-dialog.component';
-import { DeleteSubscription, DeleteSubscriptionDialog } from 'src/app/components/subscriptions/delete-subscription/delete-subscription.component';
+import {
+  DeleteSubscription,
+  DeleteSubscriptionDialog,
+} from 'src/app/components/subscriptions/delete-subscription/delete-subscription.component';
 import { StopTemplateDialogComponent } from './components/template-manager/stop-template-dialog/stop-template-dialog.component';
 import { SendingProfilesComponent } from './components/sending-profiles/sending-profiles.component';
 import { SendingProfileDetailComponent } from './components/sending-profiles/sending-profile-detail.component';
@@ -62,10 +68,10 @@ import { CustomerDialogComponent } from './components/dialogs/customer-dialog/cu
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AlertComponent } from './components/dialogs/alert/alert.component';
 import { SafePipe } from './helper/safe.pipe';
-import { UTCtoReadableTime } from './helper/utcTimeReadable.pipe'
+import { UTCtoReadableTime } from './helper/utcTimeReadable.pipe';
 import { SvgTimelineComponent } from './components/subscriptions/svg-timeline/svg-timeline.component';
-import { AuthAppendInterceptor } from './helper/AuthAppendInterceptor'
-import { UnauthorizedInterceptor } from './helper/UnauthorizedInterceptor'
+import { AuthAppendInterceptor } from './helper/AuthAppendInterceptor';
+import { UnauthorizedInterceptor } from './helper/UnauthorizedInterceptor';
 import { DhsPocComponent } from './components/user-admin/dhs-poc/dhs-poc.component';
 import { DhsPocDetailComponent } from './components/user-admin/dhs-poc/dhs-poc-detail.component';
 import { InputTrimDirective } from './helper/input-trim.directive';
@@ -80,11 +86,9 @@ import { ChartComplexityLevelComponent } from './components/charts/chart-complex
 import { ChartStatsByLevelComponent } from './components/charts/chart-stats-by-level/chart-stats-by-level.component';
 import { ChartTimeIntervalsComponent } from './components/charts/chart-time-intervals/chart-time-intervals.component';
 
-
 export function app_Init(settingsHttpService: SettingsHttpService) {
   return () => settingsHttpService.initializeApp();
 }
-
 
 @NgModule({
   declarations: [
@@ -168,13 +172,24 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     UserAuthService,
     [DatePipe],
     { provide: MAT_DIALOG_DATA, useValue: [] },
-    { provide: APP_INITIALIZER, useFactory: app_Init, deps: [SettingsHttpService], multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: AuthAppendInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: UnauthorizedInterceptor, multi: true },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: app_Init,
+      deps: [SettingsHttpService],
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthAppendInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: UnauthorizedInterceptor,
+      multi: true,
+    },
   ],
-  exports: [
-    MatSortModule
-  ],
-  bootstrap: [AppComponent]
+  exports: [MatSortModule],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

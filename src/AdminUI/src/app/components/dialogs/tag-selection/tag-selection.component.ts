@@ -4,7 +4,7 @@ import { TemplateManagerService } from 'src/app/services/template-manager.servic
 
 @Component({
   selector: 'app-tag-selection',
-  templateUrl: './tag-selection.component.html'
+  templateUrl: './tag-selection.component.html',
 })
 export class TagSelectionComponent implements OnInit {
   /**

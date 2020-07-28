@@ -1,7 +1,12 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig, MatDialog } from '@angular/material/dialog';
+import {
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+  MatDialogConfig,
+  MatDialog,
+} from '@angular/material/dialog';
 import { DhsPocDetailComponent } from './dhs-poc-detail.component';
 import { ConfirmComponent } from '../../dialogs/confirm/confirm.component';
 import { MatTableDataSource } from '@angular/material/table';
@@ -9,19 +14,12 @@ import { Contact } from 'src/app/models/customer.model';
 
 @Component({
   selector: 'app-dhs-poc',
-  templateUrl: './dhs-poc.component.html'
+  templateUrl: './dhs-poc.component.html',
 })
 export class DhsPocComponent implements OnInit {
-
   public dhsContacts = new MatTableDataSource<Contact>();
 
-  public displayedColumns = [
-    'name',
-    'title',
-    'email',
-    'active',
-    'select'
-  ];
+  public displayedColumns = ['name', 'title', 'email', 'active', 'select'];
 
   dialogRefConfirm: MatDialogRef<ConfirmComponent>;
 
@@ -58,7 +56,7 @@ export class DhsPocComponent implements OnInit {
    */
   public filterContacts = (value: string) => {
     this.dhsContacts.filter = value.trim().toLocaleLowerCase();
-  }
+  };
 
   /**
    *
@@ -67,14 +65,11 @@ export class DhsPocComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
     // dialogConfig.width = '60vw';
     dialogConfig.data = {
-      contact
+      contact,
     };
-    const dialogRef = this.dialog.open(
-      DhsPocDetailComponent,
-      dialogConfig
-    );
+    const dialogRef = this.dialog.open(DhsPocDetailComponent, dialogConfig);
 
-    dialogRef.afterClosed().subscribe(value => {
+    dialogRef.afterClosed().subscribe((value) => {
       this.refresh();
     });
   }
@@ -84,12 +79,12 @@ export class DhsPocComponent implements OnInit {
    */
   confirmDeleteContact(row: any): void {
     this.dialogRefConfirm = this.dialog.open(ConfirmComponent, {
-      disableClose: false
+      disableClose: false,
     });
     this.dialogRefConfirm.componentInstance.confirmMessage = `This will delete '${row.first_name} ${row.last_name}'.  Do you want to continue?`;
     this.dialogRefConfirm.componentInstance.title = 'Confirm Delete';
 
-    this.dialogRefConfirm.afterClosed().subscribe(result => {
+    this.dialogRefConfirm.afterClosed().subscribe((result) => {
       if (result) {
         this.deleteContact(row);
       }

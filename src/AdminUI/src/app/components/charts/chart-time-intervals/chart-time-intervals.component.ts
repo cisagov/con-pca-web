@@ -3,23 +3,22 @@ import { Component, Input, OnChanges, OnInit } from '@angular/core';
 @Component({
   selector: 'app-chart-time-intervals',
   templateUrl: './chart-time-intervals.component.html',
-  styleUrls: ['./chart-time-intervals.component.scss']
+  styleUrls: ['./chart-time-intervals.component.scss'],
 })
 export class ChartTimeIntervalsComponent implements OnInit, OnChanges {
-
   @Input()
   subscription: any;
 
   chart: any = {};
 
   schemeLowMedHigh = {
-    domain: ['#1979A7']
+    domain: ['#1979A7'],
   };
 
   /**
    *
    */
-  constructor() { }
+  constructor() {}
 
   /**
    *
@@ -50,8 +49,6 @@ export class ChartTimeIntervalsComponent implements OnInit, OnChanges {
     return percentTickFormatting(value);
   }
 
-
-
   /**
    * Pulls the clicked and reported ratios out of every campaign,
    * averaging them by deception level.
@@ -67,22 +64,21 @@ export class ChartTimeIntervalsComponent implements OnInit, OnChanges {
       { label: '2 hours', attrib: 'two_hours' },
       { label: '3 hours', attrib: 'three_hours' },
       { label: '4 hours', attrib: 'four_hours' },
-      { label: '1 day', attrib: 'one_day' }
+      { label: '1 day', attrib: 'one_day' },
     ];
 
     const obj = [];
 
-    intervals.forEach(i => {
+    intervals.forEach((i) => {
       obj.push({
         name: i.label,
-        value: reportResponse.subscription_stats[i.attrib] ?? 0
+        value: reportResponse.subscription_stats[i.attrib] ?? 0,
       });
     });
 
     return obj;
   }
 }
-
 
 function percentTickFormatting(val: any) {
   return val.toLocaleString() + '%';

@@ -4,8 +4,7 @@
   margin: 0;
 }
 
-
-html {  
+html {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -18,17 +17,27 @@ body {
   padding: 0 20px;
 }
 
-
 * {
-    font-family: Arial, sans-serif;
+  font-family: Arial, sans-serif;
 }
-
 
 .container-fluid {
   padding: 0;
 }
 
-#cover, #pageOne, #pageTwo, #pageThree, #pageFour, #pageFive, #pageSix, #pageSeven, #pageEight, #pageNine, #pageTen, #pageEleven, #pageTwelve {
+#cover,
+#pageOne,
+#pageTwo,
+#pageThree,
+#pageFour,
+#pageFive,
+#pageSix,
+#pageSeven,
+#pageEight,
+#pageNine,
+#pageTen,
+#pageEleven,
+#pageTwelve {
   page-break-after: always;
 }
 
@@ -36,7 +45,7 @@ body {
   page-break-after: always;
 }
 
-article:nth-of-type(n+2) {
+article:nth-of-type(n + 2) {
   // padding-top: 50px;
   padding: 2rem 0;
 }
@@ -44,13 +53,12 @@ article:nth-of-type(n+2) {
 /* Cover */
 
 #blueDateBox {
-  background-color: #164A91 !important;
+  background-color: #164a91 !important;
   color: #fff !important;
   margin: 0 0 0 -110px;
   padding: 160px 30px 400px 100px;
   text-align: right;
 }
-
 
 .year {
   font-size: 4.7em;
@@ -67,7 +75,7 @@ article:nth-of-type(n+2) {
   color: #fff !important;
 }
 
-#bluePhishLogo {  
+#bluePhishLogo {
   margin: -535px -100px 0 0;
   text-align: right;
 }
@@ -85,15 +93,15 @@ article:nth-of-type(n+2) {
 }
 
 #leftYellowBox {
-  border-left: 2px solid #FDC010;
-  border-top: 2px solid #FDC010;
+  border-left: 2px solid #fdc010;
+  border-top: 2px solid #fdc010;
   height: 150px;
   margin: -525px 0 0 400px;
   width: 45px;
 }
 
 #rightYellowBox {
-  border: 2px solid #FDC010;
+  border: 2px solid #fdc010;
   border-left: none;
   height: 290px;
   margin: -25px 0 0 50px;
@@ -140,7 +148,8 @@ article:nth-of-type(n+2) {
 //   margin-bottom: 20px;
 // }
 
-#subscriptionDetailsTable, #datesTable {
+#subscriptionDetailsTable,
+#datesTable {
   margin: 0 0 40px 0;
 }
 
@@ -148,7 +157,10 @@ article:nth-of-type(n+2) {
   margin-bottom: 300px;
 }
 
-#subscriptionDetailsTable td, #subscriptionDetailsTable th, #datesTable td, #datesTable th  {
+#subscriptionDetailsTable td,
+#subscriptionDetailsTable th,
+#datesTable td,
+#datesTable th {
   padding: 8px 0;
   vertical-align: bottom;
 }
@@ -216,17 +228,19 @@ ul {
   text-transform: uppercase;
 }
 
-#statFlexContainer{
+#statFlexContainer {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
   margin-top: 20px;
 }
-#companyAverageText {  
+#companyAverageText {
   text-align: center;
 }
 
-#nationalAverageText, #industryAverageText, #sectorAverageText {
+#nationalAverageText,
+#industryAverageText,
+#sectorAverageText {
   text-align: center;
 }
 
@@ -244,24 +258,31 @@ ul {
 }
 
 #companyAverageBox {
-  background-image: linear-gradient(to right, #164A91, #1979a7) !important;
+  background-image: linear-gradient(to right, #164a91, #1979a7) !important;
   color: #fff !important;
-  font-family: 'Times New Roman', Times, serif;
+  font-family: "Times New Roman", Times, serif;
   font-size: 3.5em;
   padding: 20px 35px;
   max-width: 180px;
 }
 
-#nationalAverageBox, #industryAverageBox, #sectorAverageBox {
-  background-image: linear-gradient(to right, #164A91, #1979a7) !important;
+#nationalAverageBox,
+#industryAverageBox,
+#sectorAverageBox {
+  background-image: linear-gradient(to right, #164a91, #1979a7) !important;
   color: #fff !important;
-  font-family: 'Times New Roman', Times, serif;
+  font-family: "Times New Roman", Times, serif;
   font-size: 2.5em;
   padding: 20px 30px;
 }
 
-#percentageTrendGraph, #clickedVsReportedGraph, #yearTrendGraph, #levelGraphTitle, .timeIntervalGraph, .timeComplexityGraph {
-  border: 1px solid #FDC010;
+#percentageTrendGraph,
+#clickedVsReportedGraph,
+#yearTrendGraph,
+#levelGraphTitle,
+.timeIntervalGraph,
+.timeComplexityGraph {
+  border: 1px solid #fdc010;
   border-radius: 10px;
   color: #015596;
   margin-bottom: 30px;
@@ -272,7 +293,8 @@ ul {
   padding-top: 20px;
 }
 
-#trendLineGraph, numbersByLevelGraph {
+#trendLineGraph,
+numbersByLevelGraph {
   margin-bottom: 10px;
 }
 
@@ -287,8 +309,9 @@ ul {
 /* Page Six */
 
 /* SVG Bar Chart */
-.caption, .legend-caption {
-  fill: #164A91;
+.caption,
+.legend-caption {
+  fill: #164a91;
 }
 
 .legend-caption {
@@ -296,21 +319,22 @@ ul {
 }
 
 .blue-bar {
-  fill:#1979a7;
+  fill: #1979a7;
 }
 
 .dark-blue-bar {
-  fill:#164A91;
+  fill: #164a91;
 }
 
 .yellow-bar {
-  fill:#FDC010;
+  fill: #fdc010;
 }
 
-.bar-chart, #successOverview {
-  border: 1px solid #FDC010;
+.bar-chart,
+#successOverview {
+  border: 1px solid #fdc010;
   border-radius: 10px;
-  color: #164A91;
+  color: #164a91;
   height: auto;
   margin: 20px auto 0 auto;
   text-align: center;
@@ -321,16 +345,17 @@ ul {
   margin-bottom: 100px;
 }
 
-#successOverview h4, 
-  .bar-chart h4, 
-  .timeIntervalGraph h4, 
-  .timeComplexityGraph h4 {
+#successOverview h4,
+.bar-chart h4,
+.timeIntervalGraph h4,
+.timeComplexityGraph h4 {
   margin-top: 10px;
 }
 
 /* Page Seven */
 
-#methodologyTitle, #testingSummaryTitle {
+#methodologyTitle,
+#testingSummaryTitle {
   font-size: 2.5em;
   color: #015596 !important;
   letter-spacing: 2px;
@@ -338,9 +363,10 @@ ul {
 
 /* Tables on Page Eight, Nine and Ten */
 
-table.report-table th, table.report-table td {
+table.report-table th,
+table.report-table td {
   padding: 5px;
-  padding-right: 7px; 
+  padding-right: 7px;
   vertical-align: top;
 }
 
@@ -352,7 +378,9 @@ table.report-table td {
   border-bottom: 1px solid #dddddd;
 }
 
-#templateOverviewTable, #rateComparisonTable, #timeComparisonTable {
+#templateOverviewTable,
+#rateComparisonTable,
+#timeComparisonTable {
   margin-bottom: 40px;
 }
 
@@ -372,8 +400,8 @@ table.report-table td {
   width: 100px;
 }
 
-#templateOverviewTable tr td:nth-of-type(2), 
-  #rateComparisonTable tr td:nth-of-type(2) {
+#templateOverviewTable tr td:nth-of-type(2),
+#rateComparisonTable tr td:nth-of-type(2) {
   text-align: left;
 }
 
@@ -393,13 +421,13 @@ table.report-table td {
 }
 .legend li:nth-of-type(1)::after {
   content: "\25A0";
-  color: #164A91;  
+  color: #164a91;
   margin-left: 5px;
 }
 
 .legend li:nth-of-type(2)::after {
   content: "\25A0";
-  color: #FDC010;  
+  color: #fdc010;
   margin-left: 5px;
 }
 
@@ -409,7 +437,7 @@ table.report-table td {
   margin-left: 5px;
 }
 
-/* Page Nine */ 
+/* Page Nine */
 
 .complexityLegend {
   display: flex;
@@ -424,7 +452,7 @@ table.report-table td {
   height: 20px;
   width: 20px;
   margin: 0 15px 0 5px;
-  background-color: #FDC010;
+  background-color: #fdc010;
 }
 
 .complexityLegend li:nth-of-type(2)::after {
@@ -447,7 +475,6 @@ table.report-table td {
 
 /* fix level descriptions */
 
-
 /* Page Fourteen */
 
 .template-level-header {
@@ -456,21 +483,21 @@ table.report-table td {
 }
 
 .template-container {
-  border: 2px solid #dddddd; 
-  border-radius: 1rem; 
-  // padding: 1rem; 
+  border: 2px solid #dddddd;
+  border-radius: 1rem;
+  // padding: 1rem;
   margin-bottom: 2rem;
   display: grid;
 }
 
 .template-stat-header {
   border-radius: 1rem 1rem 0 0;
-  background-color: #B8CFE0;
+  background-color: #b8cfe0;
   padding: 1rem;
 }
 
 .template-stat-header td {
-  padding: .2rem;
+  padding: 0.2rem;
   padding-right: 2rem;
 }
 
@@ -502,13 +529,9 @@ table.report-table td {
   text-align: center;
 }
 
-
 /* Page Fifteen */
 
 .md-font {
   font-size: 1.325em;
   font-weight: 600;
 }
-
-
-

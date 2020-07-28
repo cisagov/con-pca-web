@@ -3,27 +3,27 @@ import { SubscriptionService } from 'src/app/services/subscription.service';
 import * as moment from 'node_modules/moment/moment';
 import { DatePipe } from '@angular/common';
 import {
-    Subscription,
-    GoPhishCampaignModel,
-    TimelineItem
-  } from 'src/app/models/subscription.model';
-  import {
-    FormGroup,
-    FormControl,
-    FormBuilder,
-    Validators,
-    ValidatorFn,
-    ValidationErrors,
-    AbstractControl
-  } from '@angular/forms';
-  import { isSameDate } from 'src/app/helper/utilities';
+  Subscription,
+  GoPhishCampaignModel,
+  TimelineItem,
+} from 'src/app/models/subscription.model';
+import {
+  FormGroup,
+  FormControl,
+  FormBuilder,
+  Validators,
+  ValidatorFn,
+  ValidationErrors,
+  AbstractControl,
+} from '@angular/forms';
+import { isSameDate } from 'src/app/helper/utilities';
 import { ResolvedStaticSymbol } from '@angular/compiler';
 
 @Component({
   selector: 'subscription-stats-tab',
   templateUrl: './subscription-stats-tab.component.html',
   styleUrls: ['./subscription-stats-tab.component.scss'],
-  providers: [DatePipe]
+  providers: [DatePipe],
 })
 export class SubscriptionStatsTab implements OnInit {
   //   @Input()
@@ -39,66 +39,73 @@ export class SubscriptionStatsTab implements OnInit {
   activeCycleReports: any;
   hasOverrideValue = false;
   validationErrors = {
-    invalidEmailFormat : "",
-    invalidDateFormat : "",
-    emailNotATarget : "",
-    duplicateEmail : ""
+    invalidEmailFormat: '',
+    invalidDateFormat: '',
+    emailNotATarget: '',
+    duplicateEmail: '',
   };
-  reportListErrorLineNum = 0
+  reportListErrorLineNum = 0;
 
   constructor(
     public subscriptionSvc: SubscriptionService,
     public datePipe: DatePipe
   ) {
     this.subscription = new Subscription();
-    this.initValidationList()
+    this.initValidationList();
   }
 
   ngOnInit() {
-
-    this.reportedStatsForm = new FormGroup({
-        reportedItems: new FormControl(''),     
-        overRiderNumber: new FormControl('',[this.maxReports(40)])  //set to targetcount         
+    this.reportedStatsForm = new FormGroup(
+      {
+        reportedItems: new FormControl(''),
+        overRiderNumber: new FormControl('', [this.maxReports(40)]), //set to targetcount
       },
-        { updateOn: 'blur' });
-    this.invalidDateTimeObject = "" 
-    this.subscriptionSvc.getSubBehaviorSubject().subscribe(data => {
-        this.subscription = data
-        if(data.subscription_uuid && !this.subscription_uuid){
-          this.subscription_uuid = data.subscription_uuid
-          this.subscriptionSvc.getReportValuesForSubscription(this.subscription_uuid)
-            .subscribe((data) => {
-              this.reportsData = data
-              
-              this.setReportsForCycle()    
-              this.reportedStatsForm.controls["overRiderNumber"].setValidators([this.maxReports(this.subscription.target_email_list.length)]) 
-              this.reportedStatsForm.controls["reportedItems"]
-                .setValidators(
-                  [this.reportListValidator(this.targetListSimple(this.subscription.target_email_list))]
-                  )
-              this.reportedStatsForm.updateValueAndValidity()
+      { updateOn: 'blur' }
+    );
+    this.invalidDateTimeObject = '';
+    this.subscriptionSvc.getSubBehaviorSubject().subscribe((data) => {
+      this.subscription = data;
+      if (data.subscription_uuid && !this.subscription_uuid) {
+        this.subscription_uuid = data.subscription_uuid;
+        this.subscriptionSvc
+          .getReportValuesForSubscription(this.subscription_uuid)
+          .subscribe(
+            (data) => {
+              this.reportsData = data;
+
+              this.setReportsForCycle();
+              this.reportedStatsForm.controls['overRiderNumber'].setValidators([
+                this.maxReports(this.subscription.target_email_list.length),
+              ]);
+              this.reportedStatsForm.controls['reportedItems'].setValidators([
+                this.reportListValidator(
+                  this.targetListSimple(this.subscription.target_email_list)
+                ),
+              ]);
+              this.reportedStatsForm.updateValueAndValidity();
             },
             (error) => {
               //Error retreiving reports for cycle data
-              console.log(error)
-            })
-        }
-        if("gophish_campaign_list" in data){
-          this.buildSubscriptionTimeline(this.subscription);
-          this.subscription = data
-          //@ts-ignore
-          this.selectedCycle = this.subscription.cycles[0]
-          this.subscriptionSvc.getCycleBehaviorSubject().subscribe(data => {
-            this.selectedCycle = data
-          })
-        }
-      })    
+              console.log(error);
+            }
+          );
+      }
+      if ('gophish_campaign_list' in data) {
+        this.buildSubscriptionTimeline(this.subscription);
+        this.subscription = data;
+        //@ts-ignore
+        this.selectedCycle = this.subscription.cycles[0];
+        this.subscriptionSvc.getCycleBehaviorSubject().subscribe((data) => {
+          this.selectedCycle = data;
+        });
+      }
+    });
   }
   setReportsForCycle(cycle = null) {
     let cycleReports = null;
     // find the correct cycle report data to use
     if (cycle && this.subscription.cycles) {
-      this.reportsData.forEach(element => {
+      this.reportsData.forEach((element) => {
         if (this.selectedCycle.start_date == element.start_date) {
           cycleReports = element;
         }
@@ -111,25 +118,27 @@ export class SubscriptionStatsTab implements OnInit {
       return;
     }
     //
-    if(cycleReports.override_total_reported != -1){
-      this.reportedStatsForm.controls['overRiderNumber'].setValue(cycleReports.override_total_reported)
-      this.hasOverrideValue = true
+    if (cycleReports.override_total_reported != -1) {
+      this.reportedStatsForm.controls['overRiderNumber'].setValue(
+        cycleReports.override_total_reported
+      );
+      this.hasOverrideValue = true;
       this.reportedStatsForm.updateValueAndValidity();
     } else {
-      this.reportedStatsForm.controls['overRiderNumber'].setValue(null)
-      this.hasOverrideValue = false
+      this.reportedStatsForm.controls['overRiderNumber'].setValue(null);
+      this.hasOverrideValue = false;
     }
-    this.setManualReportDisabledStatus()
+    this.setManualReportDisabledStatus();
     //format the cycle report data for display
     let formatedReports = [];
     let displayString = '';
     let newDate = null;
-    cycleReports.email_list.forEach(element => {
+    cycleReports.email_list.forEach((element) => {
       newDate = new Date(element.date);
       formatedReports.push({
         email: element.email,
         date: newDate,
-        campaign_id: element.campaign_id
+        campaign_id: element.campaign_id,
       });
       displayString +=
         element.email +
@@ -147,13 +156,13 @@ export class SubscriptionStatsTab implements OnInit {
     );
     let reportVals = [];
     let newDate = null;
-    lines.forEach(element => {
+    lines.forEach((element) => {
       let reportItems = element.split(',');
       if (reportItems.length == 2) {
         newDate = new Date(reportItems[1].trim());
         reportVals.push({
           email: reportItems[0].trim(),
-          date: newDate
+          date: newDate,
         });
       }
     });
@@ -164,23 +173,21 @@ export class SubscriptionStatsTab implements OnInit {
   generateReportDiffernceList(currentVal = null) {
     if (
       this.reportedStatsForm.controls['overRiderNumber'].value ||
-      currentVal == null 
+      currentVal == null
     ) {
-      let val =  parseInt(
+      let val = parseInt(
         this.reportedStatsForm.controls['overRiderNumber'].value,
         10
-      )
-      if(Number.isNaN(val)){
-        val = -1
+      );
+      if (Number.isNaN(val)) {
+        val = -1;
       }
       return {
         override_total_reported: val,
         update_list: [],
-        delete_list: []
-
+        delete_list: [],
       };
     } else {
-
     }
     let removelist = [];
     let addList = [];
@@ -233,13 +240,13 @@ export class SubscriptionStatsTab implements OnInit {
     return {
       update_list: this.formatAddRemoveListDates(addList),
       delete_list: this.formatAddRemoveListDates(removelist),
-      override_total_reported: Number(-1)
+      override_total_reported: Number(-1),
     };
   }
 
   focusOffReportList() {
     this.reportedStatsForm.updateValueAndValidity();
-    this.getValidationMessage()
+    this.getValidationMessage();
     if (this.reportedStatsForm.valid) {
       let formatedReportInput = this.formatCSVtoReports();
       let addRemoveLists = this.generateReportDiffernceList(
@@ -248,62 +255,65 @@ export class SubscriptionStatsTab implements OnInit {
       this.saveReports(addRemoveLists);
     }
   }
-  saveReports(addRemoveList){
-    if(this.reportedStatsForm.valid){
-      addRemoveList['start_date'] = this.selectedCycle['start_date']
-      addRemoveList['end_date'] = this.selectedCycle['end_date']
-      this.subscriptionSvc.postReportValuesForSubscription(addRemoveList,this.subscription_uuid).subscribe(
-        (data) => {
-          this.reportsData = data
-          //this.setReportsForCycle() 
-          this.setReportsForCycle(this.selectedCycle)
-        },(failed) => {
-          console.log("Failure To Save Reported Emails List")
-          console.log(failed)
-        }
-      )
-    } 
+  saveReports(addRemoveList) {
+    if (this.reportedStatsForm.valid) {
+      addRemoveList['start_date'] = this.selectedCycle['start_date'];
+      addRemoveList['end_date'] = this.selectedCycle['end_date'];
+      this.subscriptionSvc
+        .postReportValuesForSubscription(addRemoveList, this.subscription_uuid)
+        .subscribe(
+          (data) => {
+            this.reportsData = data;
+            //this.setReportsForCycle()
+            this.setReportsForCycle(this.selectedCycle);
+          },
+          (failed) => {
+            console.log('Failure To Save Reported Emails List');
+            console.log(failed);
+          }
+        );
+    }
   }
 
-  focusOffOverrideVal(){
-    let val = this.reportedStatsForm.controls['overRiderNumber'].value
-    let saveVal = this.generateReportDiffernceList()
-    if(val){
-      if(val >= 0){
-        this.hasOverrideValue = true
-        this.saveReports(this.generateReportDiffernceList())
-        this.setManualReportDisabledStatus()
-        return
+  focusOffOverrideVal() {
+    let val = this.reportedStatsForm.controls['overRiderNumber'].value;
+    let saveVal = this.generateReportDiffernceList();
+    if (val) {
+      if (val >= 0) {
+        this.hasOverrideValue = true;
+        this.saveReports(this.generateReportDiffernceList());
+        this.setManualReportDisabledStatus();
+        return;
       }
     }
-    this.hasOverrideValue = false    
-    this.saveReports(this.generateReportDiffernceList())
-    this.setManualReportDisabledStatus()
+    this.hasOverrideValue = false;
+    this.saveReports(this.generateReportDiffernceList());
+    this.setManualReportDisabledStatus();
   }
 
-  setManualReportDisabledStatus(){
-    if(this.hasOverrideValue == false){
+  setManualReportDisabledStatus() {
+    if (this.hasOverrideValue == false) {
       this.reportedStatsForm.controls['reportedItems'].enable();
     } else {
-      this.reportedStatsForm.controls['reportedItems'].disable();      
+      this.reportedStatsForm.controls['reportedItems'].disable();
     }
   }
 
-  formatAddRemoveListDates(inputList){
-    let ret_val = []
+  formatAddRemoveListDates(inputList) {
+    let ret_val = [];
     //Add List
     for (let i = 0; i < inputList.length; i++) {
       if ('campaign_id' in inputList[i]) {
         ret_val.push({
           email: inputList[i].email,
           date: inputList[i].date.toISOString(),
-          campaign_id: inputList[i].campaign_id
+          campaign_id: inputList[i].campaign_id,
         });
       } else {
         ret_val.push({
           email: inputList[i].email,
           date: inputList[i].date.toISOString(),
-          campaign_id: null
+          campaign_id: null,
         });
       }
     }
@@ -311,7 +321,7 @@ export class SubscriptionStatsTab implements OnInit {
   }
 
   cycleChange(event) {
-    this.subscriptionSvc.setCycleBhaviorSubject(event.value)
+    this.subscriptionSvc.setCycleBhaviorSubject(event.value);
     this.setReportsForCycle(event.value);
   }
 
@@ -320,7 +330,7 @@ export class SubscriptionStatsTab implements OnInit {
 
     items.push({
       title: 'Subscription Started',
-      date: moment(s.start_date)
+      date: moment(s.start_date),
     });
     // now extract a simple timeline based on campaign events
     s.gophish_campaign_list.forEach((c: GoPhishCampaignModel) => {
@@ -336,7 +346,7 @@ export class SubscriptionStatsTab implements OnInit {
         // ignore extra campaign starts we have already put into the list
         if (
           t.message.toLowerCase() === 'campaign created' &&
-          items.find(x => isSameDate(x.date, t.time)) !== null
+          items.find((x) => isSameDate(x.date, t.time)) !== null
         ) {
           continue;
         }
@@ -344,7 +354,7 @@ export class SubscriptionStatsTab implements OnInit {
         if (t.message.toLowerCase() === 'campaign created') {
           items.push({
             title: 'Cycle Start',
-            date: moment(t.time)
+            date: moment(t.time),
           });
         }
       }
@@ -353,12 +363,12 @@ export class SubscriptionStatsTab implements OnInit {
     // add an item for 'today'
     items.push({
       title: 'Today',
-      date: moment()
+      date: moment(),
     });
 
     items.push({
       title: 'Cycle End',
-      date: moment(s.end_date)
+      date: moment(s.end_date),
     });
 
     this.timelineItems = items;
@@ -403,96 +413,100 @@ export class SubscriptionStatsTab implements OnInit {
 
   maxReports(max: number): ValidatorFn {
     return (control: AbstractControl): { [key: string]: boolean } | null => {
-      if (control.value !== undefined && (isNaN(control.value) ||control.value > max)) {
-            return { ExcedesTargetCount: true };
-        }
-        return null;
+      if (
+        control.value !== undefined &&
+        (isNaN(control.value) || control.value > max)
+      ) {
+        return { ExcedesTargetCount: true };
+      }
+      return null;
     };
   }
   reportListValidator(targetList: any[]): ValidatorFn {
     return (control: AbstractControl): { [key: string]: boolean } | null => {
       const exprEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-      if(control.value == ""){
-        return null
+      if (control.value == '') {
+        return null;
       }
       const lines = control.value.split('\n');
-      let emails = []
-      let matchFound = false
-      this.reportListErrorLineNum = 1
+      let emails = [];
+      let matchFound = false;
+      this.reportListErrorLineNum = 1;
       for (const line of lines) {
-        if(line){        
+        if (line) {
           const parts = line.split(',');
           if (parts.length !== 2) {
             return { invalidTargetCsv: true };
           }
-    
-          if (!!parts[0] && !exprEmail.test(String(parts[0]).toLowerCase().trim())) {
+
+          if (
+            !!parts[0] &&
+            !exprEmail.test(String(parts[0]).toLowerCase().trim())
+          ) {
             return { invalidEmailFormat: parts[0] };
           }
-          emails.push(parts[0])
-          for(let i = 0; i < targetList.length;i++){
-            if(targetList[i] == parts[0].trim()){
-              matchFound = true
+          emails.push(parts[0]);
+          for (let i = 0; i < targetList.length; i++) {
+            if (targetList[i] == parts[0].trim()) {
+              matchFound = true;
             }
           }
-          if(!matchFound){
-            return { emailNotATarget: parts[0] }
+          if (!matchFound) {
+            return { emailNotATarget: parts[0] };
           }
-          matchFound = false
-    
-          if(!!parts[1]){
-            let date = new Date(parts[1])
-            if(isNaN(date.valueOf())){
-              return { invalidDateFormat: parts[1] }     
-            }   
+          matchFound = false;
+
+          if (!!parts[1]) {
+            let date = new Date(parts[1]);
+            if (isNaN(date.valueOf())) {
+              return { invalidDateFormat: parts[1] };
+            }
           }
         }
-        this.reportListErrorLineNum++
+        this.reportListErrorLineNum++;
       }
-      for(let i = 0; i < emails.length; i++){
-        for(let h = i; h < emails.length; h++){
-          if(emails[i] == emails[h] && i != h){
-            return { duplicateEmail: true }     
+      for (let i = 0; i < emails.length; i++) {
+        for (let h = i; h < emails.length; h++) {
+          if (emails[i] == emails[h] && i != h) {
+            return { duplicateEmail: true };
           }
         }
-      } 
+      }
       // if (control.value !== undefined && (isNaN(control.value) ||control.value > max)) {
-        //     return { 'ExcedesTargetCount': true };
-        // }
-        return null;
+      //     return { 'ExcedesTargetCount': true };
+      // }
+      return null;
     };
   }
-  targetListSimple(list){
-    let retVal = []
-    list.forEach(element => {
-      retVal.push(element.email)
+  targetListSimple(list) {
+    let retVal = [];
+    list.forEach((element) => {
+      retVal.push(element.email);
     });
-    return retVal
+    return retVal;
   }
-  getValidationMessage(){
-    this.initValidationList()
+  getValidationMessage() {
+    this.initValidationList();
     // const errors = this.reportedStatsForm.controls[control].errors;
-    Object.keys(this.reportedStatsForm.controls).forEach(key => {
-      const controlErrors: ValidationErrors = this.reportedStatsForm.get(key).errors;
+    Object.keys(this.reportedStatsForm.controls).forEach((key) => {
+      const controlErrors: ValidationErrors = this.reportedStatsForm.get(key)
+        .errors;
       if (controlErrors != null) {
-        Object.keys(controlErrors).forEach(element => {
-          this.validationErrors[element] = controlErrors[element]
+        Object.keys(controlErrors).forEach((element) => {
+          this.validationErrors[element] = controlErrors[element];
         });
       }
-    })
+    });
   }
 
-  
-  
-
-  public initValidationList(){
+  public initValidationList() {
     this.validationErrors = {
-      invalidEmailFormat : "",
-      invalidDateFormat : "",
-      emailNotATarget : "",
-      duplicateEmail : ""
-    }
+      invalidEmailFormat: '',
+      invalidDateFormat: '',
+      emailNotATarget: '',
+      duplicateEmail: '',
+    };
   }
   get f() {
     return this.reportedStatsForm.controls;

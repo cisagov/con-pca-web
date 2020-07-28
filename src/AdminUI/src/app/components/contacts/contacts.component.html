@@ -10,17 +10,25 @@
     </div>
 
     <div class="d-inline-flex flex-column ml-2">
-      <button mat-raised-button color="primary" routerLink="/customers">New Contact</button>
+      <button mat-raised-button color="primary" routerLink="/customers">
+        New Contact
+      </button>
     </div>
   </div>
 
-  <div *ngIf="loading" style="text-align: center; padding-top: 2rem; padding-bottom: 2rem;">
-    <mat-spinner class="spinner" style="margin-left: auto; margin-right: auto;" diameter="50" ></mat-spinner>
+  <div
+    *ngIf="loading"
+    style="text-align: center; padding-top: 2rem; padding-bottom: 2rem;"
+  >
+    <mat-spinner
+      class="spinner"
+      style="margin-left: auto; margin-right: auto;"
+      diameter="50"
+    ></mat-spinner>
   </div>
 
   <!-- Contacts Table -->
-  <mat-table [dataSource]="dataSource" *ngIf="!loading">   
-
+  <mat-table [dataSource]="dataSource" *ngIf="!loading">
     <!-- First Name Column -->
     <ng-container matColumnDef="first_name">
       <mat-header-cell *matHeaderCellDef>First Name</mat-header-cell>
@@ -38,13 +46,13 @@
       <mat-header-cell *matHeaderCellDef>Title</mat-header-cell>
       <mat-cell *matCellDef="let row"> {{ row.title }} </mat-cell>
     </ng-container>
-    
+
     <!-- Company Name Column -->
     <ng-container matColumnDef="customer_name">
       <mat-header-cell *matHeaderCellDef>Company/Org Name</mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.customer_name}} </mat-cell>
+      <mat-cell *matCellDef="let row"> {{ row.customer_name }} </mat-cell>
     </ng-container>
-    
+
     <!-- Primary Contact Column -->
     <ng-container matColumnDef="primary_contact">
       <mat-header-cell *matHeaderCellDef>Primary Contact</mat-header-cell>
@@ -65,8 +73,12 @@
 
     <!-- Active Column -->
     <ng-container matColumnDef="active">
-      <mat-header-cell *matHeaderCellDef class="text-center">Active</mat-header-cell>
-      <mat-cell class="text-center" *matCellDef="let row"> <i *ngIf="row.active" class="fa fa-check"></i> </mat-cell>
+      <mat-header-cell *matHeaderCellDef class="text-center"
+        >Active</mat-header-cell
+      >
+      <mat-cell class="text-center" *matCellDef="let row">
+        <i *ngIf="row.active" class="fa fa-check"></i>
+      </mat-cell>
     </ng-container>
 
     <!-- Action Column -->
@@ -85,11 +97,11 @@
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row 
+    <mat-row
       *matRowDef="let row; columns: displayedColumns"
       class="table-row cursor-pointer"
       (click)="openViewDialog(row)"
-      >
+    >
     </mat-row>
   </mat-table>
 </div>

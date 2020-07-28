@@ -6,16 +6,14 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AlertComponent } from '../../dialogs/alert/alert.component';
 import { MatDialog } from '@angular/material/dialog';
 
-
 @Component({
   selector: 'app-manage-subscription',
   templateUrl: './manage-subscription.component.html',
-  styleUrls: ['./manage-subscription.component.scss']
+  styleUrls: ['./manage-subscription.component.scss'],
 })
 export class ManageSubscriptionComponent implements OnInit, OnDestroy {
-
   private routeSub: any;
-  subscription: Subscription
+  subscription: Subscription;
 
   sub_subscription: any;
 
@@ -25,17 +23,14 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     public dialog: MatDialog
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
-
-    this.routeSub = this.route.params.subscribe(params => {
+    this.routeSub = this.route.params.subscribe((params) => {
       if (!params.id) {
         //this.loadPageForCreate(params);
       } else {
         this.loadPageForEdit(params);
-
       }
     });
   }
@@ -45,7 +40,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   }
 
   loadPageForEdit(params: any) {
-    this.subscriptionSvc.subscription = new Subscription()
+    this.subscriptionSvc.subscription = new Subscription();
     const sub = this.subscriptionSvc.subscription;
     sub.subscription_uuid = params.id;
 
@@ -63,8 +58,8 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
               // Parse error here
               data: {
                 title: 'Not Found',
-                messageText: 'Subscription Not Found.'
-              }
+                messageText: 'Subscription Not Found.',
+              },
             });
           }
         }
@@ -72,12 +67,12 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   }
 
   setPageForEdit(s: Subscription) {
-    this.subscriptionSvc.setSubBhaviorSubject(s)
+    this.subscriptionSvc.setSubBhaviorSubject(s);
     this.subscription = s as Subscription;
     this.subscriptionSvc.subscription = this.subscription;
     //@ts-ignore
-    this.subscriptionSvc.setCycleBhaviorSubject(s["cycles"][0])
-    this.setPageTitle()
+    this.subscriptionSvc.setCycleBhaviorSubject(s['cycles'][0]);
+    this.setPageTitle();
   }
 
   setPageTitle() {

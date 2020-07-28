@@ -5,7 +5,7 @@ import {
   MatDialogRef,
   MatDialog,
   MatDialogConfig,
-  MAT_DIALOG_DATA
+  MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { CustomerService } from 'src/app/services/customer.service';
@@ -13,7 +13,7 @@ import { MatTab } from '@angular/material/tabs';
 import {
   Contact,
   Customer,
-  ICustomerContact
+  ICustomerContact,
 } from 'src/app/models/customer.model';
 import { AddContactDialogComponent } from './add-contact-dialog/add-contact-dialog.component';
 import { ViewContactDialogComponent } from './view-contact-dialog/view-contact-dialog.component';
@@ -21,20 +21,20 @@ import { ViewContactDialogComponent } from './view-contact-dialog/view-contact-d
 @Component({
   selector: '',
   templateUrl: './contacts.component.html',
-  styleUrls: ['./contacts.component.scss']
+  styleUrls: ['./contacts.component.scss'],
 })
 export class ContactsComponent implements OnInit {
   dataSource: MatTableDataSource<ICustomerContact>;
 
   loading = true;
 
-  displayedColumns = [    
-    "first_name",
-    "last_name",
-    "title",
-    "customer_name",
-    "active",
-    "select"
+  displayedColumns = [
+    'first_name',
+    'last_name',
+    'title',
+    'customer_name',
+    'active',
+    'select',
   ];
 
   constructor(
@@ -55,16 +55,16 @@ export class ContactsComponent implements OnInit {
     dialogConfig.data = {};
     const dialogRef = this.dialog.open(AddContactDialogComponent, dialogConfig);
 
-    dialogRef.afterClosed().subscribe(value => {
+    dialogRef.afterClosed().subscribe((value) => {
       this.refresh();
     });
   }
 
   openViewDialog(row: ICustomerContact): void {
     const dialogRef = this.dialog.open(ViewContactDialogComponent, {
-      data: row
+      data: row,
     });
-    dialogRef.afterClosed().subscribe(value => {
+    dialogRef.afterClosed().subscribe((value) => {
       this.refresh();
     });
   }

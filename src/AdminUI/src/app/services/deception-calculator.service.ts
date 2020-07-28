@@ -5,7 +5,7 @@ import { SettingsService } from './settings.service';
 
 const headers = {
   headers: new HttpHeaders().set('Content-Type', 'application/json'),
-  params: new HttpParams()
+  params: new HttpParams(),
 };
 
 @Injectable()
@@ -32,10 +32,10 @@ export class DeceptionCalculatorService {
           template
         )
         .subscribe(
-          success => {
+          (success) => {
             resolve('Template Saved');
           },
-          error => {},
+          (error) => {},
           () => {}
         );
     });

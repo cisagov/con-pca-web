@@ -1,932 +1,1257 @@
-<div style="width: 8.5in" class="p-5">
-    <article id="cover">
-        <div class="row">
-            <div id="blueDateBox">
-                <span class="year">{{ detail?.target_cycle.start_date | date: 'yyyy' }}</span><br>
-                <span class="dateRange">{{ detail?.target_cycle.start_date | date: dateFormat }} -
-                    {{ detail?.target_cycle.end_date | date: dateFormat }}</span>
-            </div>
-        </div>
-        <div class="row">
-            <div id="bluePhishLogo" class="col-12">
-                <img src="/assets/blue_phishlogo.png" alt="Continuous Phishing Campaign Assessment Logo">
-            </div>
-        </div>
-        <div class="row">
-            <div id="whiteBox" class="col-5">
-            </div>
-        </div>
-        <div class="row">
-            <div id="leftYellowBox">
-            </div>
-        </div>
-        <div class="row">
-            <div id="rightYellowBox">
-            </div>
-        </div>
-        <div class="row">
-            <div id="blueHacker" class="col-12">
-                <img src="/assets/blue_hacker.png" alt="blue hacker image with code overlay">
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <h2 id="reportTitle"><span class="smallerTitle">90 Day Cycle</span><br>Report</h2>
-            </div>
-        </div>
-        <div id="coverFooter" class="row mb-2">
-            <div id="preparationDetails">
-                Prepared for:<br>
-                {{ detail?.customer.full_name }}<br>
-                {{ detail?.customer.address_1 }} {{ detail?.customer.address_2 }}<br>
-                {{ detail?.customer.city }}, {{ detail?.customer.state }} {{ detail?.customer.zip }}
-            </div>
-            <div id="dhsContactDetails">
-                <div class="mb-2">
-                    Subscription Primary Contact<br>
-                    {{detail?.primary_contact.first_name}} {{detail?.primary_contact.last_name}}<br>
-                    {{detail?.primary_contact_email}}<br>
-                </div>
-                <div>
-                    DHS Contact<br>
-                    {{ detail?.dhs_contact_name }}<br>
-                    Phishing Assessment Team<br>
-                    vulnerability@cisa.dhs.gov
-                </div>
-            </div>
-            <div id="cisa_logo">
-                <img src="/assets/CISA_Logo.png" style="width: 8rem;"
-                    alt="Cybersecurity & Infrastructure Security Agency Logo">
-            </div>
-        </div>
-    </article>
-
-    <article id="pageOne">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12">
-                    <div id="centerCisaLogo">
-                        <img src="/assets/CISA_Logo.png" style="width: 8rem;"
-                            alt="Cybersecurity & Infrastructure Security Agency Logo">
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <h1 id="assessmentTitle">Continuous Phishing Campaign Assessment Details</h1>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <table id="subscriptionDetailsTable">
-                        <tr>
-                            <td>Customer Name:</td>
-                            <td>{{ detail?.customer.full_name }}</td>
-                        </tr>
-                        <tr>
-                            <td>Customer POC:</td>
-                            <td>{{detail?.primary_contact.first_name}} {{detail?.primary_contact.last_name}} </td>
-                        </tr>
-                        <tr>
-                            <td>Vulnerability Management<br>Team Lead:</td>
-                            <td>Federal Lead, {{ detail?.DHS_contact.first_name }} {{ detail?.DHS_contact.last_name }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Dates:</td>
-                            <td>{{ detail?.target_cycle.start_date|date:"MMM d, yyyy" }} -
-                                {{ detail?.target_cycle.end_date|date:"MMM d, yyyy" }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Test Location:</td>
-                            <td>DHS/VM Lab</td>
-                        </tr>
-                        <tr>
-                            <td>Services:</td>
-                            <td>Continuous Phishing Assessment</td>
-                        </tr>
-                        <tr>
-                            <td>Vulnerability Management ID:</td>
-                            <td>XXXXX</td>
-                        </tr>
-                        <tr>
-                            <td>Scope:</td>
-                            <td>{{detail?.metrics.total_users_targeted}} users within the following domain:
-                                {{ detail?.customer.identifier }}</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <table id="datesTable">
-                        <tr>
-                            <th>Cycle</th>
-                            <th>Start Date - End Date</th>
-                            <th>Notes</th>
-                        </tr>
-                        <tr *ngFor="let cycle of detail?.cycles">
-                            <td>{{cycle.year}} {{ cycle.quarter}}</td>
-                            <td>{{cycle.start_date|date:"MMM d, yyyy" }} - {{ cycle.end_date|date:"MMM d, yyyy" }}</td>
-                            <td>{{cycle.notes}}</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </article>
-
-    <article id="pageTwo">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12">
-                    <div id="reportInstructions">
-                        <section>
-                            <h3>Instructions for reading this report</h3>
-                            <p>The CON-PCA Phishing Assessments are organized into 90-day campaigns in which each of
-                                your
-                                users will be phished once every 90 days from the start of your subscription.</p>
-                            <p class="mb-0">Each of these individuals here after referred to as targets are tracked on 4
-                                potential
-                                actions.</p>
-                            <ol>
-                                <li>Opening the email</li>
-                                <li>Clicked a malicious link</li>
-                                <li>Submitted data on malicious site, or</li>
-                                <li>Reported the email</li>
-                            </ol>
-                            <p>To track statistics on the reported email, that information must be supplied to DHS in
-                                the required format or a reporting mailbox must be available and advertised in the
-                                consuming organization.</p>
-                            <p>Most organizations will setup a reporting mailbox that employees can forward suspicious
-                                emails to for further investigation. In order to determine some statics such as time to
-                                first
-                                report, the email content,
-                                the target email address, and time of first report will be required to determine those
-                                statics.</p>
-                        </section>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </article>
-
-    <article id="pageThree">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12">
-                    <h2 id="executiveReportTitle"><span class="smallerTitle">Executive</span><br>Report</h2>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <div class="executiveReportDetails">
-                        <p>This report provides the results for the Department of Homeland Security (DHS) National
-                            Cybersecurity
-                            Assessments and Technical Services- (Vulnerability Management) led Continuous Phishing
-                            Campaign
-                            Assessment (CON-PCA) for {{ detail?.customer.full_name }}. The CON-PCA is a practical
-                            exercise
-                            intended to support and measure the effectiveness of security awareness training for
-                            information
-                            system users. The results of this CON-PCA show the susceptibility of
-                            {{detail?.customer.identifier}}
-                            personnel to social engineering attacks—specifically email phishing attacks—in which an
-                            adversary tricks an email user into clicking a malicious link to gain unauthorized network
-                            access. In
-                            the scenario that this CON-PCA tested, the phishing attack bypassed technical controls that
-                            would
-                            normally detect and/or block malicious emails and links. The CON-PCA, therefore, measured
-                            {{detail?.customer.full_name}}’s level of vulnerability to a successful phishing attack by
-                            targeted
-                            user
-                            click rates, click times, response rates, and response times, as shown in Table 1.</p>
-
-                        <p>This report aims to enhance {{ detail?.customer.full_name }}'s understanding of their
-                            information
-                            system users’ cybersecurity behavior and to promote a more secure and resilient workforce.
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <p class="table-title">Table 1: Targeted User Measurements</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <table class="report-table w-100 mb-5">
-                        <tr>
-                            <th>User Activity Metrics</th>
-                            <th>Results</th>
-                        </tr>
-                        <tr>
-                            <td>Total users targeted for phishing</td>
-                            <td>{{detail?.metrics.total_users_targeted}}</td>
-                        </tr>
-                        <tr>
-                            <td># of emails (phishing attempts) sent overall</td>
-                            <td>{{detail?.metrics.number_of_email_sent_overall}}
-                                ({{detail?.metrics.emails_sent_over_target_count}} per user)</td>
-                        </tr>
-                        <tr>
-                            <td># of clicked emails (successful phishing attempts) overall</td>
-                            <td>{{detail?.metrics.number_of_clicked_emails}}
-                                ({{detail?.metrics.percent_of_clicked_emails}}% click rate)</td>
-                        </tr>
-                        <tr>
-                            <td># of phished users overall</td>
-                            <td>{{detail?.metrics.number_of_phished_users_overall}}
-                                ({{detail?.metrics.percent_of_submits}}% of target population)</td>
-                        </tr>
-                        <tr>
-                            <td># of user reports sent to helpdesk overall</td>
-                            <td>{{detail?.metrics.number_of_reports_to_helpdesk}}
-                                ({{detail?.metrics.percent_report_rate}}% report rate)</td>
-                        </tr>
-                        <tr>
-                            <td>Ratio of reports-to-clicks</td>
-                            <td>{{detail?.metrics.reports_to_clicks_ratio}}</td>
-                        </tr>
-                        <tr>
-                            <td>Average time to first click</td>
-                            <td>{{detail?.metrics.avg_time_to_first_click}}</td>
-                        </tr>
-                        <tr>
-                            <td>Average time to first report</td>
-                            <td>{{detail?.metrics.avg_time_to_first_report}}</td>
-                        </tr>
-                        <tr>
-                            <td>Most successful phishing template</td>
-                            <td>{{detail?.metrics.most_successful_template}}</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <p>Vulnerability Management has provided this CON-PCA to {{detail?.customer.full_name}} at no cost
-                        and
-                        coordinated
-                        all activities—including planning and testing–with {{detail?.customer.full_name}}'s point of
-                        contact.
-                        {{detail?.customer.full_name}} maintained control over the testing, including providing target
-                        email
-                        addresses,
-                        approving phishing email templates, approving testing timeframes, and adjusting mail security
-                        setting to
-                        ensure inbox access. This CON-PCA was not intended to, and did not, test technical controls or
-                        electronic
-                        protections designed to block phishing attempts. This CON-PCA spanned a six-week period and
-                        aimed to
-                        capture behavior-based metrics of {{detail?.customer.full_name}} information system users’
-                        reaction to
-                        phishing
-                        emails of multiple complexity levels. </p>
-                </div>
-            </div>
-        </div>
-    </article>
-
-    <article id="pageFour">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12">
-                    <p class="mb-0">Vulnerability Management has established this voluntary service to help
-                        organizations </p>
-                    <ul>
-                        <li>support security awareness training efforts and </li>
-                        <li>decrease information system user vulnerability to phishing attempts. </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="row mb-3">
-                <div class="col-12">
-                    <h3 id="recommendationsTitle">Recommendations</h3>
-                    <div id="recommendations">
-                        <p>Based on the assessment data, Vulnerability Managements recommends implementing the
-                            following:
-                        </p>
-                        <p *ngFor="let rec of recommendations; let i = index">
-                            <b>Recommendation {{(i + 1)}}:</b> {{rec}}
-                        </p>
-                        <p *ngIf="recommendations?.length === 0">
-                            (no recommendations)
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <div id="subNotesOne">
-                        <ul class="list-unstyled">
-                            <small>
-                                <li><sup>1</sup> Click rate is the total number of phishing emails that users clicked on
-                                    divided by the total
-                                    number of emails sent. Users had to click on the “malicious” link in the email in
-                                    order to be counted as “phished.”</li>
-                                <li><sup>2</sup> Some users may click a link multiple times however the actual click
-                                    rates only accounts for a single click per user.</li>
-                                <li><sup>3</sup> Reporting rate is total number of user reports to the helpdesk divided
-                                    by total phishing emails opened.</li>
-                                <li><sup>4</sup> Average time to first click and first report is calculated with
-                                    geometric mean to compensate
-                                    for a small sample size that is sensitive to being skewed by outliers.</li>
-                                <li><sup>5</sup> Click time is the time NCATS sent the email minus the time user clicked
-                                    the link within the email.</li>
-                                <li><sup>6</sup> Report time is the time NCATS sent the emails minus the time user
-                                    alerts security office or helpdesk.</li>
-                            </small>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </article>
-
-    <article id="pageFive">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12">
-                    <h2 id="summaryTitle">Summary</h2>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <div id="summary">
-                        <p>Percentage of targets who clicked a malicious link in phishing emails this quarter.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row" id="statFlexContainer">
-            <div id="companyAverageText">
-                <div id="companyAverageBox">{{ detail?.metrics.customer_clicked_avg }}%</div>
-                <b>{{ detail?.customer.short_name }}</b>
-            </div>
-            <table>
-                <tr>
-                    <td colspan="2">
-                        <div id="nationalAverageText" style="margin: auto;">
-                            <div id="nationalAverageBox">{{ detail?.metrics.national_clicked_avg }}%</div>
-                            <b>National Average</b>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div id="sectorAverageText">
-                            <div id="sectorAverageBox">{{ detail?.metrics.sector_clicked_avg }}%</div>
-                            <b>Sector Average</b>
-                        </div>
-                    </td>
-                    <td>
-                        <div id="industryAverageText">
-                            <div id="industryAverageBox">{{ detail?.metrics.industry_clicked_avg }}%</div>
-                            <b>Industry Average</b>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </div>
-
-        <div class="row">
-            <div class="col-12">
-                <div id="yearTrendsTitle">
-                    <h3>Year Trends</h3>
-                    <p>These trends show the effect of phishing training and email filtering investments.</p><br>
-                </div>
-                <div id="yearTrendGraph" class="needs-work">
-                    <p class="pt-20">PERCENTAGE TRENDS</p>
-                    <div id="trendLineGraph"></div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <table id="trendStatistics">
-                    <tr>
-                        <th>Time from start of Quarterly Campaign until first reported:</th>
-                        <td>{{detail?.metrics.shortest_time_to_report}}</td>
-                    </tr>
-                    <tr>
-                        <th style="padding: 0 75px 0 0;">Median Time to open email from first sent:</th>
-                        <td>{{detail?.metrics.median_time_to_report}}</td>
-                    </tr>
-                    <tr class="needs-work">
-                        <th><i>Geometric mean.</i></th>
-                    </tr>
-                    <tr>
-                        <th>Shortest Time to open email:</th>
-                        <td>{{detail?.metrics.shortest_time_to_open}}</td>
-                    </tr>
-                    <tr>
-                        <th>Longest Time to open email:</th>
-                        <td>{{detail?.metrics.longest_time_to_open}}</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-12">
-                <div id="subNotesTwo">
-                    <ul class="list-unstyled">
-                        <small>
-                            <li><sup>*</sup>Time from start shows how quickly your organization detects a phishing
-                                campaign.</li>
-                            <li><sup>*</sup>Comparing median time and first reported time is the attacker window.
-                            </li>
-                            <li><sup>*</sup>Shortest time to open compared to first report indicates the window of
-                                time the attacker has before detection.</li>
-                            <li><sup>*</sup>An indicator of how long a phishing campaign could potentially be
-                                viable.</li>
-                            <li><sup>**</sup>based on phishing assessments conducted by CISA VM.</li>
-                        </small>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </article>
-
-    <article id="pageSix">
-        <div class="row">
-            <div class="col-12">
-                <div id="successOverview" class="needs-work">
-                    <h4>PHISHING SUCCESS OVERVIEW</h4>
-                    <svg class="chart" height="210" aria-labelledby="title desc" role="img">
-                        <title id="title">STATISTICS BY LEVEL</title>
-                        <desc id="units-achieved">0; 50; 100; 150; 200; 250; 300; 350; 400;</desc>
-                        <g class="measure-line">
-                            <line x1="30" y1="15" x2="800" y2="15" style="stroke:#BAD6E4;stroke-width:2" />
-                            <line x1="30" y1="55" x2="800" y2="55" style="stroke:#BAD6E4;stroke-width:2" />
-                            <line x1="30" y1="95" x2="800" y2="95" style="stroke:#BAD6E4;stroke-width:2" />
-                            <line x1="40" y1="95" x2="790" y2="95" style="stroke:#FDC010;stroke-width:3" />
-                            <circle cx="35" cy="95" style="fill: #FDC010;" r="5" />
-                            <circle cx="795" cy="95" style="fill: #FDC010;" r="5" />
-                            <text x="0" y="15" class="caption" dy=".35em">100</text>
-                            <text x="8" y="55" class="caption" dy=".35em">50</text>
-                            <text x="15" y="95" class="caption" dy=".35em">0</text>
-                        </g>
-                        <desc id="desc">Low; Moderate; High</desc>
-                        <g class="bar-legend">
-                            <circle class="donut-ring" cx="100" cy="171" r="15" fill="transparent" stroke="#FDC010"
-                                stroke-width="1"></circle>
-                            <circle class="donut-ring" cx="250" cy="171" r="15" fill="transparent" stroke="#FDC010"
-                                stroke-width="1"></circle>
-                            <circle class="donut-ring" cx="400" cy="171" r="15" fill="transparent" stroke="#FDC010"
-                                stroke-width="1"></circle>
-                            <circle class="donut-ring" cx="550" cy="171" r="15" fill="transparent" stroke="#FDC010"
-                                stroke-width="1"></circle>
-                            <circle class="donut-ring" cx="700" cy="171" r="15" fill="transparent" stroke="#FDC010"
-                                stroke-width="1"></circle>
-                            <text x="310" y="300" class="legend-caption" dy=".35em">
-                                Low&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                Moderate&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                High</text>
-                        </g>
-                    </svg>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <h3>Details Campaigns Numbers by Deception Level</h3>
-                <p>See instructions for description of deception levels and how to read these statistics.</p>
-                <div class="bar-chart m-2">
-                    <h4>STATISTICS BY LEVEL</h4>
-                    <div style="display: grid;" class="report-chart">
-                        <app-chart-stats-by-level *ngIf="detail" [subscription]="detail"></app-chart-stats-by-level>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </article>
-
-    <article id="PageSeven">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12">
-                    <p class="mb-5">The remainder of this report provides findings and metrics of the VM phishing
-                        service for
-                        {{ detail?.customer.full_name }}.</p>
-                    <h2 id="methodologyTitle">{{ detail?.customer.full_name }} Methodology Specifics</h2>
-                    <div id="methodologyText" class="mb-5">
-                        <p>VM used the methodology documented in <u><b>Appendix A: Methodology</b></u> to perform
-                            testing
-                            {{ detail?.customer.full_name }}. Specific phishing templates can be reviewed in
-                            <u><b>Appendix C: Templates</b></u>
-                            with corresponding complexity calculations. VM divided the
-                            {{detail?.metrics.total_users_targeted}} email addresses that
-                            {{ detail?.customer.full_name }} provided
-                            into three groups.
-
-                            <span class="needs-work">
-                                Group 1 had 333 addresses and received levels 1 and 4.
-                                Group 2 had 333 addresses and received levels 2 and 5.
-                                Group 3 had 334 addresses and received levels 3 and 6.
-                            </span>
-
-                            See Table 3 for descriptions of email levels 1 – 6.</p>
-
-                        <p>The assessment’s goal was to capture the behavior-based responses of
-                            {{ detail?.customer.full_name }}
-                            to email phishing
-                            attempts; and the assessment operated under the scenario that no technical controls were
-                            able to
-                            detect, report, or stop the email phishing attempts. VM, as an external body conducting this
-                            PCA, did not have direct knowledge whether or not emails successfully arrived in targeted
-                            {{ detail?.customer.full_name }} user inboxes. To allow for a clear determination of click
-                            rates email links clicked
-                            divided by emails sent), {{ detail?.customer.full_name }} or VM performed the following:</p>
-                        <ul>
-                            <li>{{ detail?.customer.full_name }} whitelisted the VM domain and IP address during the
-                                planning
-                                stage</li>
-                            <li>{{ detail?.customer.full_name }} created specific mail receiving rules to permit the VM
-                                emails
-                                to land in user
-                                inboxes</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <h2 id="testingSummaryTitle">Summary of Testing Activities and Results</h2>
-                    <div id="testingSummaryText" class="mb-5">
-                        <p>This PCA concentrated on how phishing email complexity affected
-                            {{ detail?.customer.full_name }} user
-                            click behavior and
-                            response behavior. VM expects that a more complex and deceptive phishing email has a higher
-                            likelihood of being clicked and a lower likelihood of being reported. This assessment also
-                            gathered organizational emails through open-source intelligence techniques to determine
-                            {{ detail?.customer.full_name }}’s potentially attackable online presence. See
-                            <u><b>Appendix B: Detailed Results</b></u>
-                            for detailed phishing and customer email data and <u><b>Appendix C: Templates</b></u>
-                            for a detailed explanation on complexity levels.</p>
-                        <p>Over six weeks, {{ detail?.customer.full_name }}’s targeted users received at least two
-                            phishing emails of increasing
-                            complexity. Levels 1 – 3 were &quot;easier to detect&quot; and levels 4 – 6 were &quot;more
-                            difficult to detect,&quot; based on the number and type of indicators used. The table below
-                            summarizes
-                            the phishing templates used in this PCA.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </article>
-
-    <article id="pageEight">
-        <div class="row">
-            <div class="col-12">
-                <p class="table-title">Table 3: Email Template Overview</p>
-                <table id="templateOverviewTable" class="report-table">
-                    <tr>
-                        <th class="text-right pr-5">Level</th>
-                        <th class="text-right pr-5">Deception Score</th>
-                        <th>Description</th>
-                        <th>Displayed Link</th>
-                    </tr>
-                    <tr *ngFor="let campaign of detail?.subscription_stats.campaign_results">
-                        <td class="text-right pr-5">{{campaign.deception_level}}</td>
-                        <td class="text-right pr-5">{{campaign.template_details.deception_score}}</td>
-                        <td>{{campaign.template_details.description}}</td>
-                        <td><span class="needs-work">TEMPLATE DOMAIN NOT TRACKED</span></td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <h2 id="rateComparisonTitle">Click Rate vs. Report Rate</h2>
-                <div id="rateComparisonText">
-                    <p>One of the most common measures of an organization’s susceptibility to phishing attacks is
-                        targeted-user click rates. If an actual phishing attack is able to bypass technical controls and
-                        arrive in a user’s inbox, the human target must agree to click on the malicious link or
-                        attachment for the attack to be successful. In practical exercises such as this PCA,
-                        targeted-user click rates will fluctuate depending on the email complexity used in testing.
-                        Effective security awareness training, however, should result in a noticeable click rate
-                        decrease over time and to a level deemed acceptable based on the organization’s risk management
-                        posture.</p>
-                    <p>The counterpart to user click rates is the user-reporting rate, determined by the number of
-                        emails sent or calls to alert {{ detail?.customer.full_name }}’s helpdesk during each campaign.
-                        Based on
-                        previous
-                        testing, VM recommends that organizations aim to have two people reporting the phishing attempts
-                        for every person that clicks. This ratio ensures that there is not only reporting coverage for
-                        the person clicking, but also redundant coverage in case the person who clicks the link does not
-                        report or does not realize they have been phished. Effective security awareness training should
-                        result in a noticeable report rate increase over time and to a level deemed acceptable based on
-                        the organization’s risk management posture.</p>
-                </div>
-            </div>
-        </div>
-    </article>
-
-    <article id="pageNine">
-        <div class="row">
-            <div class="col-12">
-                <p>In this report, the percentages shown by the user click rate and user report rate represent,
-                    respectively,
-                    the percentage of targeted people (determined by a unique email address) who have clicked at
-                    least once
-                    on a “malicious” link and those who reported a suspicious email. The number of unique clicks
-                    correlates
-                    to the number of end user devices potentially compromised in each campaign. The number of user
-                    reports
-                    correlates to the number of opportunities the {{ detail?.customer.full_name }} security team had
-                    to
-                    identify a potential breach and
-                    reduce its impact. Table 4 and Figure 1 summarize click and report rates.</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
-
-                <p class="table-title">Table 4: Unique User Click Rate and Report Rate Results</p>
-                <table id="rateComparisonTable" class="report-table">
-                    <tr>
-                        <th class="text-right pr-5">Level</th>
-                        <th>Campaign</th>
-                        <th class="text-right">User<br> Click<br> Rate</th>
-                        <th class="text-right">Unique<br> Clicks</th>
-                        <th class="text-right">User<br> Report<br> Rate</th>
-                        <th class="text-right">User<br> Reports</th>
-                        <th class="text-right">Reporting<br> Ratio</th>
-                    </tr>
-                    <tr *ngFor="let campaign of detail?.subscription_stats.campaign_results">
-                        <td class="text-right pr-5">{{campaign.deception_level}}</td>
-                        <td>{{campaign.template_details.name}}</td>
-                        <td class="text-right">
-                            {{campaign.ratios.clicked_ratio | nullishCoalesce: 0 | percent: '0.2'}}</td>
-                        <td class="text-right">{{campaign.campaign_stats.clicked?.count | nullishCoalesce: 0}}</td>
-                        <td class="text-right">
-                            {{campaign.ratios.reported_ratio | nullishCoalesce: 0 | percent: '0.2'}}</td>
-                        <td class="text-right">{{campaign.campaign_stats.reported?.count | nullishCoalesce: 0}}</td>
-                        <td class="text-right">{{campaign.ratios.reported_ratio | number: '0.4'}}</td>
-                    </tr>
-                </table>
-
-                <div class="bar-chart">
-                    <h4>COMPLEXITY LEVEL</h4>
-                    <div style="display: grid;" class="report-chart">
-                        <app-chart-complexity-level [subscription]="detail"></app-chart-complexity-level>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </article>
-
-    <article id="pageTen">
-        <div class="row mb-5">
-            <div class="col-12">
-                <h2 id="timeComparisonTitle">Click Time vs. Report Time</h2>
-                <div id="timeComparisonText">
-                    <p>To contain an attack, an organization’s security team must be aware of the potential breach. In
-                        the scenario that this PCA tested, no technical controls were triggered during a phishing attack
-                        and the clock for a potential breach started once a targeted user clicked on a “malicious” link.
-                        Timely user reporting decreases the window of opportunity that an adversary has to access data
-                        or gain further network entry. Timely reporting also increases the opportunity the security team
-                        has to detect and respond to a potential breach. By educating users on how to both spot and
-                        promptly respond to phishing attempts, an organization can improve their anti-phishing defenses.
-                    </p>
-                    <p>The following table details the time to first click and first report throughout the assessment
-                        and the lead or lag times for incident response measures to be activated.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="row mb-5">
-            <div class="col-12">
-                <p class="table-title">Table 5: Click Time vs. Report Time </p>
-                <table id="timeComparisonTable" class="report-table">
-                    <tr>
-                        <th>Level</th>
-                        <th>Time to First Click</th>
-                        <th>Time to First Report</th>
-                        <th>Time Gap (Lead or Lag)</th>
-                    </tr>
-                    <tr *ngFor="let campaign of detail?.click_time_vs_report_time">
-                        <td>{{campaign.level}}</td>
-                        <td>{{campaign.time_to_first_click}}</td>
-                        <td>{{campaign.time_to_first_report}}</td>
-                        <td>{{campaign.difference}}</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-
-        <div class="row mb-5">
-            <div class="col-12">
-                <p id="intervalGraphDetails">The figures below show the percentage of users who clicked during
-                    certain time intervals in the first 24 hours of a campaign, and how quickly each complexity level
-                    was clicked.
-                    <span class="needs-work">Overall, nearly [PERCENT] of all clicks occurred within one hour
-                        of receiving a phishing email. The median time to click was [TIME] across all campaigns.</span>
-                </p>
-            </div>
-        </div>
-
-        <div class="row mb-5">
-            <div class="col-12">
-                <div class="timeIntervalGraph">
-                    <h4>TIME INTERVALS</h4>
-                    <div style="display: grid;" class="report-chart">
-                        <app-chart-time-intervals *ngIf="detail" [subscription]="detail" style="height: 30rem;">
-                        </app-chart-time-intervals>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </article>
-
-    <article id="pageEleven">
-        <div class="row">
-            <div class="col-12">
-                <div class="timeComplexityGraph needs-work">
-                    <h4>COMPLEXITY LEVEL</h4>
-                    <div id="timeComplexityGraph"></div>
-                </div>
-            </div>
-        </div>
-    </article>
-
-    <article id="pageTwelve">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12">
-                    <h3 id="levelTitle">Closing</h3>
-
-                    <div *ngFor="let conc of detail?.conclusions; index as i">
-                        <div class="row">
-                            <div class="col-12">
-                                <h5 class="closing-header"><span>Detailed Conclusion {{(i + 1)}} </span>-
-                                    {{conc.category}}</h5>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <p [innerHTML]="conc.description"></p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <p>Con-PCA is a young service with limited but meaningful data made available to
-                        {{ detail?.customer.full_name }}. VM hopes this
-                        data will be actionable and allow {{ detail?.customer.full_name }} to reduce some level of
-                        risk within their organization. As more PCAs are completed over time, statistical reporting will
-                        be enhanced
-                        and a non-attributable overview of phishing results will be collected as part of the VM annual
-                        service review.</p>
-
-                    <p>As this new service continues to mature, VM looks forward to enhancing the PCA and building
-                        new test capabilities that include technical control checks. VM appreciates any comments to
-                        improve this report or service as a whole. For questions about this report or for future
-                        engagements
-                        with VM, please send an email to VM_info@hq.dhs.gov.</p>
-                </div>
-            </div>
-        </div>
-    </article>
-
-    <article id="pageThirteen">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12">
-                    <h3 id="levelTitle">Appendix C: Templates</h3>
-                    <div id="appendixOneText">
-                        <p>The phishing templates used throughout this service include various levels of complexity.
-                            Each level is based on a calculation of the factors designed to entice users to click on a
-                            malicious link. These factors are:</p>
-                        <ol>
-                            <li><strong>Appearance and Grammar:</strong> Appearance can be professional or poor. Poorly
-                                written emails
-                                should be easier to identify as a phish or compromise attempt.</li>
-                            <li><strong>Link Domain:</strong> Is the link deceptive in its appearance, such that it
-                                appears similar to
-                                an actual or real domain but is not the real address. Is the link spoofed or does the
-                                link appear hidden to hide the intended domain.</li>
-                            <li><strong>Logo / Graphics:</strong> Does the phishing email utilize logos or graphics
-                                stolen from a
-                                legitimate organization to present itself as legitimate. </li>
-                            <li><strong>Sender External:</strong> Is the sender external to the organization. External
-                                senders are
-                                more likely to be a phish.
-                            <li><strong>Sender Internal:</strong> Does the sender appear to be internal, but actually
-                                come from an
-                                external source. </li>
-                            <li><strong>Authoritative:</strong> Does the email appeal to an authority or have an
-                                authoritative tone?
-                                Appealing to an
-                            <li><strong>Relevancy Organization:</strong> Does the email utilize information that is
-                                relevant or timely
-                                to the organization specifically. </li>
-                            <li><strong>Public News:</strong> Does the email utilize public news or current events to
-                                appear
-                                legitimate or hide links or other deceptions.</li>
-                            <li><strong>Utilizing Fear:</strong> Does the email utilize fear to appeal to immediate
-                                action.</li>
-                            <li><strong>Appealing to Duty or Obligation:</strong> Does the phishing attempt will appeal
-                                to a general
-                                sense of duty or obligation. Targeted emails may have identified a specific job
-                                responsibility of the target and appeal to that responsibility to motivate an action.
-                            </li>
-                            <li><strong>Curiosity:</strong> Does the phishing attempt setup a situation of a curious or
-                                interesting
-                                but unresolved nature that can only be determined by clicking the link? </li>
-                            <li><strong>Greed:</strong> Does the phishing attempt offer free items, deeply discounted
-                                items, job
-                                offers, or other appeals to an individual’s greed. </li>
-                        </ol>
-                        <p>
-                            Low: A low level template are those which should be easy to identify as a phishing email.
-                            The email may be poorly written. The link domain may be blatantly unrelated, come from an
-                            external sender, or have outlandish and ridiculous claims.</p>
-                        <p>
-                            Moderate: Moderate level templates are more sophisticated then low level and should be more
-                            difficult to detect. This level of email may have well written prose, be grammatically
-                            correct, and professional in display but be general in nature.</p>
-                        <p>
-                            High: High level phish templates typically target specific individuals or groups within an
-                            organization and utilize information that generally would not be know by the public at
-                            large. They use this targeted information to provide a feeling of familiarity to better
-                            deceive the target. This level is the most difficult to identify as malicious. </p>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </article>
-
-    <div *ngFor="let group of detail?.templates_by_group; index as outer">
-        <article class="template_pages" *ngFor="let campaign of group; index as inner">
-            <div class="row">
-                <div class="col-12">
-                    <div *ngIf="inner === 0">
-                        <h3 *ngIf="(outer + 1) === 1">
-                            <div class="template-level-header">
-                                Low Templates/Dumb Phish</div>
-                        </h3>
-                        <h3 *ngIf="(outer + 1) === 2">
-                            <div class="template-level-header">
-                                Medium Templates/Moderate Phish</div>
-                        </h3>
-                        <h3 *ngIf="(outer + 1) === 3">
-                            <div class="template-level-header">
-                                Difficult Templates/Spear Phish</div>
-                        </h3>
-                    </div>
-                    <div>
-                        <div class="template-stat-header">
-                            <table>
-                                <tr>
-                                    <td>Template Name:</td>
-                                    <td>{{campaign.template_details.name}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Deception Level:</td>
-                                    <td>{{campaign.deception_level}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Percent of Campaigns:</td>
-                                    <td>{{campaign.campaign_stats.percent_of_campaigns}}%</td>
-                                </tr>
-                                <tr>
-                                    <td>Total Sent:</td>
-                                    <td>{{campaign.campaign_stats.sent?.count | nullishCoalesce: 0}} </td>
-                                </tr>
-                                <tr>
-                                    <td>Clicked:</td>
-                                    <td>{{campaign.campaign_stats.clicked?.count | nullishCoalesce: 0}} </td>
-                                </tr>
-                                <tr>
-                                    <td>Submitted Data:</td>
-                                    <td>{{campaign.campaign_stats.submitted?.count | nullishCoalesce: 0}} </td>
-                                </tr>
-                                <tr>
-                                    <td>Reported:</td>
-                                    <td>{{campaign.campaign_stats.reported?.count | nullishCoalesce: 0}} </td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="template-body">
-                                    <b>Subject:</b> {{campaign.template_details.subject | nullishCoalesce: "N/A"}}<br>
-                                    <b>From:</b> {{campaign.template_details.from_address | nullishCoalesce: "N/A"}}<br>
-                                    <b style="margin-bottom: 1rem;">Email Body:</b>
-                                    <div [innerHTML]="campaign.template_details.html|safe">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </article>
+<div style="width: 8.5in;" class="p-5">
+  <article id="cover">
+    <div class="row">
+      <div id="blueDateBox">
+        <span class="year">{{
+          detail?.target_cycle.start_date | date: "yyyy"
+        }}</span
+        ><br />
+        <span class="dateRange"
+          >{{ detail?.target_cycle.start_date | date: dateFormat }} -
+          {{ detail?.target_cycle.end_date | date: dateFormat }}</span
+        >
+      </div>
     </div>
+    <div class="row">
+      <div id="bluePhishLogo" class="col-12">
+        <img
+          src="/assets/blue_phishlogo.png"
+          alt="Continuous Phishing Campaign Assessment Logo"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div id="whiteBox" class="col-5"></div>
+    </div>
+    <div class="row">
+      <div id="leftYellowBox"></div>
+    </div>
+    <div class="row">
+      <div id="rightYellowBox"></div>
+    </div>
+    <div class="row">
+      <div id="blueHacker" class="col-12">
+        <img
+          src="/assets/blue_hacker.png"
+          alt="blue hacker image with code overlay"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <h2 id="reportTitle">
+          <span class="smallerTitle">90 Day Cycle</span><br />Report
+        </h2>
+      </div>
+    </div>
+    <div id="coverFooter" class="row mb-2">
+      <div id="preparationDetails">
+        Prepared for:<br />
+        {{ detail?.customer.full_name }}<br />
+        {{ detail?.customer.address_1 }} {{ detail?.customer.address_2 }}<br />
+        {{ detail?.customer.city }}, {{ detail?.customer.state }}
+        {{ detail?.customer.zip }}
+      </div>
+      <div id="dhsContactDetails">
+        <div class="mb-2">
+          Subscription Primary Contact<br />
+          {{ detail?.primary_contact.first_name }}
+          {{ detail?.primary_contact.last_name }}<br />
+          {{ detail?.primary_contact_email }}<br />
+        </div>
+        <div>
+          DHS Contact<br />
+          {{ detail?.dhs_contact_name }}<br />
+          Phishing Assessment Team<br />
+          vulnerability@cisa.dhs.gov
+        </div>
+      </div>
+      <div id="cisa_logo">
+        <img
+          src="/assets/CISA_Logo.png"
+          style="width: 8rem;"
+          alt="Cybersecurity & Infrastructure Security Agency Logo"
+        />
+      </div>
+    </div>
+  </article>
+
+  <article id="pageOne">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div id="centerCisaLogo">
+            <img
+              src="/assets/CISA_Logo.png"
+              style="width: 8rem;"
+              alt="Cybersecurity & Infrastructure Security Agency Logo"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <h1 id="assessmentTitle">
+            Continuous Phishing Campaign Assessment Details
+          </h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <table id="subscriptionDetailsTable">
+            <tr>
+              <td>Customer Name:</td>
+              <td>{{ detail?.customer.full_name }}</td>
+            </tr>
+            <tr>
+              <td>Customer POC:</td>
+              <td>
+                {{ detail?.primary_contact.first_name }}
+                {{ detail?.primary_contact.last_name }}
+              </td>
+            </tr>
+            <tr>
+              <td>Vulnerability Management<br />Team Lead:</td>
+              <td>
+                Federal Lead, {{ detail?.DHS_contact.first_name }}
+                {{ detail?.DHS_contact.last_name }}
+              </td>
+            </tr>
+            <tr>
+              <td>Dates:</td>
+              <td>
+                {{ detail?.target_cycle.start_date | date: "MMM d, yyyy" }} -
+                {{ detail?.target_cycle.end_date | date: "MMM d, yyyy" }}
+              </td>
+            </tr>
+            <tr>
+              <td>Test Location:</td>
+              <td>DHS/VM Lab</td>
+            </tr>
+            <tr>
+              <td>Services:</td>
+              <td>Continuous Phishing Assessment</td>
+            </tr>
+            <tr>
+              <td>Vulnerability Management ID:</td>
+              <td>XXXXX</td>
+            </tr>
+            <tr>
+              <td>Scope:</td>
+              <td>
+                {{ detail?.metrics.total_users_targeted }} users within the
+                following domain: {{ detail?.customer.identifier }}
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <table id="datesTable">
+            <tr>
+              <th>Cycle</th>
+              <th>Start Date - End Date</th>
+              <th>Notes</th>
+            </tr>
+            <tr *ngFor="let cycle of detail?.cycles">
+              <td>{{ cycle.year }} {{ cycle.quarter }}</td>
+              <td>
+                {{ cycle.start_date | date: "MMM d, yyyy" }} -
+                {{ cycle.end_date | date: "MMM d, yyyy" }}
+              </td>
+              <td>{{ cycle.notes }}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <article id="pageTwo">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div id="reportInstructions">
+            <section>
+              <h3>Instructions for reading this report</h3>
+              <p>
+                The CON-PCA Phishing Assessments are organized into 90-day
+                campaigns in which each of your users will be phished once every
+                90 days from the start of your subscription.
+              </p>
+              <p class="mb-0">
+                Each of these individuals here after referred to as targets are
+                tracked on 4 potential actions.
+              </p>
+              <ol>
+                <li>Opening the email</li>
+                <li>Clicked a malicious link</li>
+                <li>Submitted data on malicious site, or</li>
+                <li>Reported the email</li>
+              </ol>
+              <p>
+                To track statistics on the reported email, that information must
+                be supplied to DHS in the required format or a reporting mailbox
+                must be available and advertised in the consuming organization.
+              </p>
+              <p>
+                Most organizations will setup a reporting mailbox that employees
+                can forward suspicious emails to for further investigation. In
+                order to determine some statics such as time to first report,
+                the email content, the target email address, and time of first
+                report will be required to determine those statics.
+              </p>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <article id="pageThree">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <h2 id="executiveReportTitle">
+            <span class="smallerTitle">Executive</span><br />Report
+          </h2>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <div class="executiveReportDetails">
+            <p>
+              This report provides the results for the Department of Homeland
+              Security (DHS) National Cybersecurity Assessments and Technical
+              Services- (Vulnerability Management) led Continuous Phishing
+              Campaign Assessment (CON-PCA) for
+              {{ detail?.customer.full_name }}. The CON-PCA is a practical
+              exercise intended to support and measure the effectiveness of
+              security awareness training for information system users. The
+              results of this CON-PCA show the susceptibility of
+              {{ detail?.customer.identifier }}
+              personnel to social engineering attacks—specifically email
+              phishing attacks—in which an adversary tricks an email user into
+              clicking a malicious link to gain unauthorized network access. In
+              the scenario that this CON-PCA tested, the phishing attack
+              bypassed technical controls that would normally detect and/or
+              block malicious emails and links. The CON-PCA, therefore, measured
+              {{ detail?.customer.full_name }}’s level of vulnerability to a
+              successful phishing attack by targeted user click rates, click
+              times, response rates, and response times, as shown in Table 1.
+            </p>
+
+            <p>
+              This report aims to enhance {{ detail?.customer.full_name }}'s
+              understanding of their information system users’ cybersecurity
+              behavior and to promote a more secure and resilient workforce.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <p class="table-title">Table 1: Targeted User Measurements</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <table class="report-table w-100 mb-5">
+            <tr>
+              <th>User Activity Metrics</th>
+              <th>Results</th>
+            </tr>
+            <tr>
+              <td>Total users targeted for phishing</td>
+              <td>{{ detail?.metrics.total_users_targeted }}</td>
+            </tr>
+            <tr>
+              <td># of emails (phishing attempts) sent overall</td>
+              <td>
+                {{ detail?.metrics.number_of_email_sent_overall }} ({{
+                  detail?.metrics.emails_sent_over_target_count
+                }}
+                per user)
+              </td>
+            </tr>
+            <tr>
+              <td>
+                # of clicked emails (successful phishing attempts) overall
+              </td>
+              <td>
+                {{ detail?.metrics.number_of_clicked_emails }} ({{
+                  detail?.metrics.percent_of_clicked_emails
+                }}% click rate)
+              </td>
+            </tr>
+            <tr>
+              <td># of phished users overall</td>
+              <td>
+                {{ detail?.metrics.number_of_phished_users_overall }} ({{
+                  detail?.metrics.percent_of_submits
+                }}% of target population)
+              </td>
+            </tr>
+            <tr>
+              <td># of user reports sent to helpdesk overall</td>
+              <td>
+                {{ detail?.metrics.number_of_reports_to_helpdesk }} ({{
+                  detail?.metrics.percent_report_rate
+                }}% report rate)
+              </td>
+            </tr>
+            <tr>
+              <td>Ratio of reports-to-clicks</td>
+              <td>{{ detail?.metrics.reports_to_clicks_ratio }}</td>
+            </tr>
+            <tr>
+              <td>Average time to first click</td>
+              <td>{{ detail?.metrics.avg_time_to_first_click }}</td>
+            </tr>
+            <tr>
+              <td>Average time to first report</td>
+              <td>{{ detail?.metrics.avg_time_to_first_report }}</td>
+            </tr>
+            <tr>
+              <td>Most successful phishing template</td>
+              <td>{{ detail?.metrics.most_successful_template }}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <p>
+            Vulnerability Management has provided this CON-PCA to
+            {{ detail?.customer.full_name }} at no cost and coordinated all
+            activities—including planning and testing–with
+            {{ detail?.customer.full_name }}'s point of contact.
+            {{ detail?.customer.full_name }} maintained control over the
+            testing, including providing target email addresses, approving
+            phishing email templates, approving testing timeframes, and
+            adjusting mail security setting to ensure inbox access. This CON-PCA
+            was not intended to, and did not, test technical controls or
+            electronic protections designed to block phishing attempts. This
+            CON-PCA spanned a six-week period and aimed to capture
+            behavior-based metrics of
+            {{ detail?.customer.full_name }} information system users’ reaction
+            to phishing emails of multiple complexity levels.
+          </p>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <article id="pageFour">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <p class="mb-0">
+            Vulnerability Management has established this voluntary service to
+            help organizations
+          </p>
+          <ul>
+            <li>support security awareness training efforts and</li>
+            <li>
+              decrease information system user vulnerability to phishing
+              attempts.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-12">
+          <h3 id="recommendationsTitle">Recommendations</h3>
+          <div id="recommendations">
+            <p>
+              Based on the assessment data, Vulnerability Managements recommends
+              implementing the following:
+            </p>
+            <p *ngFor="let rec of recommendations; let i = index">
+              <b>Recommendation {{ i + 1 }}:</b> {{ rec }}
+            </p>
+            <p *ngIf="recommendations?.length === 0">
+              (no recommendations)
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <div id="subNotesOne">
+            <ul class="list-unstyled">
+              <small>
+                <li>
+                  <sup>1</sup> Click rate is the total number of phishing emails
+                  that users clicked on divided by the total number of emails
+                  sent. Users had to click on the “malicious” link in the email
+                  in order to be counted as “phished.”
+                </li>
+                <li>
+                  <sup>2</sup> Some users may click a link multiple times
+                  however the actual click rates only accounts for a single
+                  click per user.
+                </li>
+                <li>
+                  <sup>3</sup> Reporting rate is total number of user reports to
+                  the helpdesk divided by total phishing emails opened.
+                </li>
+                <li>
+                  <sup>4</sup> Average time to first click and first report is
+                  calculated with geometric mean to compensate for a small
+                  sample size that is sensitive to being skewed by outliers.
+                </li>
+                <li>
+                  <sup>5</sup> Click time is the time NCATS sent the email minus
+                  the time user clicked the link within the email.
+                </li>
+                <li>
+                  <sup>6</sup> Report time is the time NCATS sent the emails
+                  minus the time user alerts security office or helpdesk.
+                </li>
+              </small>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <article id="pageFive">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <h2 id="summaryTitle">Summary</h2>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <div id="summary">
+            <p>
+              Percentage of targets who clicked a malicious link in phishing
+              emails this quarter.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" id="statFlexContainer">
+      <div id="companyAverageText">
+        <div id="companyAverageBox">
+          {{ detail?.metrics.customer_clicked_avg }}%
+        </div>
+        <b>{{ detail?.customer.short_name }}</b>
+      </div>
+      <table>
+        <tr>
+          <td colspan="2">
+            <div id="nationalAverageText" style="margin: auto;">
+              <div id="nationalAverageBox">
+                {{ detail?.metrics.national_clicked_avg }}%
+              </div>
+              <b>National Average</b>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div id="sectorAverageText">
+              <div id="sectorAverageBox">
+                {{ detail?.metrics.sector_clicked_avg }}%
+              </div>
+              <b>Sector Average</b>
+            </div>
+          </td>
+          <td>
+            <div id="industryAverageText">
+              <div id="industryAverageBox">
+                {{ detail?.metrics.industry_clicked_avg }}%
+              </div>
+              <b>Industry Average</b>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <div id="yearTrendsTitle">
+          <h3>Year Trends</h3>
+          <p>
+            These trends show the effect of phishing training and email
+            filtering investments.
+          </p>
+          <br />
+        </div>
+        <div id="yearTrendGraph" class="needs-work">
+          <p class="pt-20">PERCENTAGE TRENDS</p>
+          <div id="trendLineGraph"></div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <table id="trendStatistics">
+          <tr>
+            <th>Time from start of Quarterly Campaign until first reported:</th>
+            <td>{{ detail?.metrics.shortest_time_to_report }}</td>
+          </tr>
+          <tr>
+            <th style="padding: 0 75px 0 0;">
+              Median Time to open email from first sent:
+            </th>
+            <td>{{ detail?.metrics.median_time_to_report }}</td>
+          </tr>
+          <tr class="needs-work">
+            <th><i>Geometric mean.</i></th>
+          </tr>
+          <tr>
+            <th>Shortest Time to open email:</th>
+            <td>{{ detail?.metrics.shortest_time_to_open }}</td>
+          </tr>
+          <tr>
+            <th>Longest Time to open email:</th>
+            <td>{{ detail?.metrics.longest_time_to_open }}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <div id="subNotesTwo">
+          <ul class="list-unstyled">
+            <small>
+              <li>
+                <sup>*</sup>Time from start shows how quickly your organization
+                detects a phishing campaign.
+              </li>
+              <li>
+                <sup>*</sup>Comparing median time and first reported time is the
+                attacker window.
+              </li>
+              <li>
+                <sup>*</sup>Shortest time to open compared to first report
+                indicates the window of time the attacker has before detection.
+              </li>
+              <li>
+                <sup>*</sup>An indicator of how long a phishing campaign could
+                potentially be viable.
+              </li>
+              <li>
+                <sup>**</sup>based on phishing assessments conducted by CISA VM.
+              </li>
+            </small>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <article id="pageSix">
+    <div class="row">
+      <div class="col-12">
+        <div id="successOverview" class="needs-work">
+          <h4>PHISHING SUCCESS OVERVIEW</h4>
+          <svg
+            class="chart"
+            height="210"
+            aria-labelledby="title desc"
+            role="img"
+          >
+            <title id="title">STATISTICS BY LEVEL</title>
+            <desc id="units-achieved">
+              0; 50; 100; 150; 200; 250; 300; 350; 400;
+            </desc>
+            <g class="measure-line">
+              <line
+                x1="30"
+                y1="15"
+                x2="800"
+                y2="15"
+                style="stroke: #bad6e4; stroke-width: 2;"
+              />
+              <line
+                x1="30"
+                y1="55"
+                x2="800"
+                y2="55"
+                style="stroke: #bad6e4; stroke-width: 2;"
+              />
+              <line
+                x1="30"
+                y1="95"
+                x2="800"
+                y2="95"
+                style="stroke: #bad6e4; stroke-width: 2;"
+              />
+              <line
+                x1="40"
+                y1="95"
+                x2="790"
+                y2="95"
+                style="stroke: #fdc010; stroke-width: 3;"
+              />
+              <circle cx="35" cy="95" style="fill: #fdc010;" r="5" />
+              <circle cx="795" cy="95" style="fill: #fdc010;" r="5" />
+              <text x="0" y="15" class="caption" dy=".35em">100</text>
+              <text x="8" y="55" class="caption" dy=".35em">50</text>
+              <text x="15" y="95" class="caption" dy=".35em">0</text>
+            </g>
+            <desc id="desc">Low; Moderate; High</desc>
+            <g class="bar-legend">
+              <circle
+                class="donut-ring"
+                cx="100"
+                cy="171"
+                r="15"
+                fill="transparent"
+                stroke="#FDC010"
+                stroke-width="1"
+              ></circle>
+              <circle
+                class="donut-ring"
+                cx="250"
+                cy="171"
+                r="15"
+                fill="transparent"
+                stroke="#FDC010"
+                stroke-width="1"
+              ></circle>
+              <circle
+                class="donut-ring"
+                cx="400"
+                cy="171"
+                r="15"
+                fill="transparent"
+                stroke="#FDC010"
+                stroke-width="1"
+              ></circle>
+              <circle
+                class="donut-ring"
+                cx="550"
+                cy="171"
+                r="15"
+                fill="transparent"
+                stroke="#FDC010"
+                stroke-width="1"
+              ></circle>
+              <circle
+                class="donut-ring"
+                cx="700"
+                cy="171"
+                r="15"
+                fill="transparent"
+                stroke="#FDC010"
+                stroke-width="1"
+              ></circle>
+              <text x="310" y="300" class="legend-caption" dy=".35em">
+                Low&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                Moderate&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; High
+              </text>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <h3>Details Campaigns Numbers by Deception Level</h3>
+        <p>
+          See instructions for description of deception levels and how to read
+          these statistics.
+        </p>
+        <div class="bar-chart m-2">
+          <h4>STATISTICS BY LEVEL</h4>
+          <div style="display: grid;" class="report-chart">
+            <app-chart-stats-by-level
+              *ngIf="detail"
+              [subscription]="detail"
+            ></app-chart-stats-by-level>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <article id="PageSeven">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <p class="mb-5">
+            The remainder of this report provides findings and metrics of the VM
+            phishing service for {{ detail?.customer.full_name }}.
+          </p>
+          <h2 id="methodologyTitle">
+            {{ detail?.customer.full_name }} Methodology Specifics
+          </h2>
+          <div id="methodologyText" class="mb-5">
+            <p>
+              VM used the methodology documented in
+              <u><b>Appendix A: Methodology</b></u> to perform testing
+              {{ detail?.customer.full_name }}. Specific phishing templates can
+              be reviewed in
+              <u><b>Appendix C: Templates</b></u>
+              with corresponding complexity calculations. VM divided the
+              {{ detail?.metrics.total_users_targeted }} email addresses that
+              {{ detail?.customer.full_name }} provided into three groups.
+
+              <span class="needs-work">
+                Group 1 had 333 addresses and received levels 1 and 4. Group 2
+                had 333 addresses and received levels 2 and 5. Group 3 had 334
+                addresses and received levels 3 and 6.
+              </span>
+
+              See Table 3 for descriptions of email levels 1 – 6.
+            </p>
+
+            <p>
+              The assessment’s goal was to capture the behavior-based responses
+              of
+              {{ detail?.customer.full_name }}
+              to email phishing attempts; and the assessment operated under the
+              scenario that no technical controls were able to detect, report,
+              or stop the email phishing attempts. VM, as an external body
+              conducting this PCA, did not have direct knowledge whether or not
+              emails successfully arrived in targeted
+              {{ detail?.customer.full_name }} user inboxes. To allow for a
+              clear determination of click rates email links clicked divided by
+              emails sent), {{ detail?.customer.full_name }} or VM performed the
+              following:
+            </p>
+            <ul>
+              <li>
+                {{ detail?.customer.full_name }} whitelisted the VM domain and
+                IP address during the planning stage
+              </li>
+              <li>
+                {{ detail?.customer.full_name }} created specific mail receiving
+                rules to permit the VM emails to land in user inboxes
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <h2 id="testingSummaryTitle">
+            Summary of Testing Activities and Results
+          </h2>
+          <div id="testingSummaryText" class="mb-5">
+            <p>
+              This PCA concentrated on how phishing email complexity affected
+              {{ detail?.customer.full_name }} user click behavior and response
+              behavior. VM expects that a more complex and deceptive phishing
+              email has a higher likelihood of being clicked and a lower
+              likelihood of being reported. This assessment also gathered
+              organizational emails through open-source intelligence techniques
+              to determine {{ detail?.customer.full_name }}’s potentially
+              attackable online presence. See
+              <u><b>Appendix B: Detailed Results</b></u>
+              for detailed phishing and customer email data and
+              <u><b>Appendix C: Templates</b></u> for a detailed explanation on
+              complexity levels.
+            </p>
+            <p>
+              Over six weeks, {{ detail?.customer.full_name }}’s targeted users
+              received at least two phishing emails of increasing complexity.
+              Levels 1 – 3 were &quot;easier to detect&quot; and levels 4 – 6
+              were &quot;more difficult to detect,&quot; based on the number and
+              type of indicators used. The table below summarizes the phishing
+              templates used in this PCA.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <article id="pageEight">
+    <div class="row">
+      <div class="col-12">
+        <p class="table-title">Table 3: Email Template Overview</p>
+        <table id="templateOverviewTable" class="report-table">
+          <tr>
+            <th class="text-right pr-5">Level</th>
+            <th class="text-right pr-5">Deception Score</th>
+            <th>Description</th>
+            <th>Displayed Link</th>
+          </tr>
+          <tr
+            *ngFor="let campaign of detail?.subscription_stats.campaign_results"
+          >
+            <td class="text-right pr-5">{{ campaign.deception_level }}</td>
+            <td class="text-right pr-5">
+              {{ campaign.template_details.deception_score }}
+            </td>
+            <td>{{ campaign.template_details.description }}</td>
+            <td><span class="needs-work">TEMPLATE DOMAIN NOT TRACKED</span></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <h2 id="rateComparisonTitle">Click Rate vs. Report Rate</h2>
+        <div id="rateComparisonText">
+          <p>
+            One of the most common measures of an organization’s susceptibility
+            to phishing attacks is targeted-user click rates. If an actual
+            phishing attack is able to bypass technical controls and arrive in a
+            user’s inbox, the human target must agree to click on the malicious
+            link or attachment for the attack to be successful. In practical
+            exercises such as this PCA, targeted-user click rates will fluctuate
+            depending on the email complexity used in testing. Effective
+            security awareness training, however, should result in a noticeable
+            click rate decrease over time and to a level deemed acceptable based
+            on the organization’s risk management posture.
+          </p>
+          <p>
+            The counterpart to user click rates is the user-reporting rate,
+            determined by the number of emails sent or calls to alert
+            {{ detail?.customer.full_name }}’s helpdesk during each campaign.
+            Based on previous testing, VM recommends that organizations aim to
+            have two people reporting the phishing attempts for every person
+            that clicks. This ratio ensures that there is not only reporting
+            coverage for the person clicking, but also redundant coverage in
+            case the person who clicks the link does not report or does not
+            realize they have been phished. Effective security awareness
+            training should result in a noticeable report rate increase over
+            time and to a level deemed acceptable based on the organization’s
+            risk management posture.
+          </p>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <article id="pageNine">
+    <div class="row">
+      <div class="col-12">
+        <p>
+          In this report, the percentages shown by the user click rate and user
+          report rate represent, respectively, the percentage of targeted people
+          (determined by a unique email address) who have clicked at least once
+          on a “malicious” link and those who reported a suspicious email. The
+          number of unique clicks correlates to the number of end user devices
+          potentially compromised in each campaign. The number of user reports
+          correlates to the number of opportunities the
+          {{ detail?.customer.full_name }} security team had to identify a
+          potential breach and reduce its impact. Table 4 and Figure 1 summarize
+          click and report rates.
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <p class="table-title">
+          Table 4: Unique User Click Rate and Report Rate Results
+        </p>
+        <table id="rateComparisonTable" class="report-table">
+          <tr>
+            <th class="text-right pr-5">Level</th>
+            <th>Campaign</th>
+            <th class="text-right">
+              User<br />
+              Click<br />
+              Rate
+            </th>
+            <th class="text-right">
+              Unique<br />
+              Clicks
+            </th>
+            <th class="text-right">
+              User<br />
+              Report<br />
+              Rate
+            </th>
+            <th class="text-right">
+              User<br />
+              Reports
+            </th>
+            <th class="text-right">
+              Reporting<br />
+              Ratio
+            </th>
+          </tr>
+          <tr
+            *ngFor="let campaign of detail?.subscription_stats.campaign_results"
+          >
+            <td class="text-right pr-5">{{ campaign.deception_level }}</td>
+            <td>{{ campaign.template_details.name }}</td>
+            <td class="text-right">
+              {{
+                campaign.ratios.clicked_ratio
+                  | nullishCoalesce: 0
+                  | percent: "0.2"
+              }}
+            </td>
+            <td class="text-right">
+              {{ campaign.campaign_stats.clicked?.count | nullishCoalesce: 0 }}
+            </td>
+            <td class="text-right">
+              {{
+                campaign.ratios.reported_ratio
+                  | nullishCoalesce: 0
+                  | percent: "0.2"
+              }}
+            </td>
+            <td class="text-right">
+              {{ campaign.campaign_stats.reported?.count | nullishCoalesce: 0 }}
+            </td>
+            <td class="text-right">
+              {{ campaign.ratios.reported_ratio | number: "0.4" }}
+            </td>
+          </tr>
+        </table>
+
+        <div class="bar-chart">
+          <h4>COMPLEXITY LEVEL</h4>
+          <div style="display: grid;" class="report-chart">
+            <app-chart-complexity-level
+              [subscription]="detail"
+            ></app-chart-complexity-level>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <article id="pageTen">
+    <div class="row mb-5">
+      <div class="col-12">
+        <h2 id="timeComparisonTitle">Click Time vs. Report Time</h2>
+        <div id="timeComparisonText">
+          <p>
+            To contain an attack, an organization’s security team must be aware
+            of the potential breach. In the scenario that this PCA tested, no
+            technical controls were triggered during a phishing attack and the
+            clock for a potential breach started once a targeted user clicked on
+            a “malicious” link. Timely user reporting decreases the window of
+            opportunity that an adversary has to access data or gain further
+            network entry. Timely reporting also increases the opportunity the
+            security team has to detect and respond to a potential breach. By
+            educating users on how to both spot and promptly respond to phishing
+            attempts, an organization can improve their anti-phishing defenses.
+          </p>
+          <p>
+            The following table details the time to first click and first report
+            throughout the assessment and the lead or lag times for incident
+            response measures to be activated.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-5">
+      <div class="col-12">
+        <p class="table-title">Table 5: Click Time vs. Report Time</p>
+        <table id="timeComparisonTable" class="report-table">
+          <tr>
+            <th>Level</th>
+            <th>Time to First Click</th>
+            <th>Time to First Report</th>
+            <th>Time Gap (Lead or Lag)</th>
+          </tr>
+          <tr *ngFor="let campaign of detail?.click_time_vs_report_time">
+            <td>{{ campaign.level }}</td>
+            <td>{{ campaign.time_to_first_click }}</td>
+            <td>{{ campaign.time_to_first_report }}</td>
+            <td>{{ campaign.difference }}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="row mb-5">
+      <div class="col-12">
+        <p id="intervalGraphDetails">
+          The figures below show the percentage of users who clicked during
+          certain time intervals in the first 24 hours of a campaign, and how
+          quickly each complexity level was clicked.
+          <span class="needs-work"
+            >Overall, nearly [PERCENT] of all clicks occurred within one hour of
+            receiving a phishing email. The median time to click was [TIME]
+            across all campaigns.</span
+          >
+        </p>
+      </div>
+    </div>
+
+    <div class="row mb-5">
+      <div class="col-12">
+        <div class="timeIntervalGraph">
+          <h4>TIME INTERVALS</h4>
+          <div style="display: grid;" class="report-chart">
+            <app-chart-time-intervals
+              *ngIf="detail"
+              [subscription]="detail"
+              style="height: 30rem;"
+            >
+            </app-chart-time-intervals>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <article id="pageEleven">
+    <div class="row">
+      <div class="col-12">
+        <div class="timeComplexityGraph needs-work">
+          <h4>COMPLEXITY LEVEL</h4>
+          <div id="timeComplexityGraph"></div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <article id="pageTwelve">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <h3 id="levelTitle">Closing</h3>
+
+          <div *ngFor="let conc of detail?.conclusions; index as i">
+            <div class="row">
+              <div class="col-12">
+                <h5 class="closing-header">
+                  <span>Detailed Conclusion {{ i + 1 }} </span>-
+                  {{ conc.category }}
+                </h5>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <p [innerHTML]="conc.description"></p>
+              </div>
+            </div>
+          </div>
+
+          <p>
+            Con-PCA is a young service with limited but meaningful data made
+            available to {{ detail?.customer.full_name }}. VM hopes this data
+            will be actionable and allow {{ detail?.customer.full_name }} to
+            reduce some level of risk within their organization. As more PCAs
+            are completed over time, statistical reporting will be enhanced and
+            a non-attributable overview of phishing results will be collected as
+            part of the VM annual service review.
+          </p>
+
+          <p>
+            As this new service continues to mature, VM looks forward to
+            enhancing the PCA and building new test capabilities that include
+            technical control checks. VM appreciates any comments to improve
+            this report or service as a whole. For questions about this report
+            or for future engagements with VM, please send an email to
+            VM_info@hq.dhs.gov.
+          </p>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <article id="pageThirteen">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <h3 id="levelTitle">Appendix C: Templates</h3>
+          <div id="appendixOneText">
+            <p>
+              The phishing templates used throughout this service include
+              various levels of complexity. Each level is based on a calculation
+              of the factors designed to entice users to click on a malicious
+              link. These factors are:
+            </p>
+            <ol>
+              <li>
+                <strong>Appearance and Grammar:</strong> Appearance can be
+                professional or poor. Poorly written emails should be easier to
+                identify as a phish or compromise attempt.
+              </li>
+              <li>
+                <strong>Link Domain:</strong> Is the link deceptive in its
+                appearance, such that it appears similar to an actual or real
+                domain but is not the real address. Is the link spoofed or does
+                the link appear hidden to hide the intended domain.
+              </li>
+              <li>
+                <strong>Logo / Graphics:</strong> Does the phishing email
+                utilize logos or graphics stolen from a legitimate organization
+                to present itself as legitimate.
+              </li>
+              <li>
+                <strong>Sender External:</strong> Is the sender external to the
+                organization. External senders are more likely to be a phish.
+              </li>
+
+              <li>
+                <strong>Sender Internal:</strong> Does the sender appear to be
+                internal, but actually come from an external source.
+              </li>
+              <li>
+                <strong>Authoritative:</strong> Does the email appeal to an
+                authority or have an authoritative tone? Appealing to an
+              </li>
+
+              <li>
+                <strong>Relevancy Organization:</strong> Does the email utilize
+                information that is relevant or timely to the organization
+                specifically.
+              </li>
+              <li>
+                <strong>Public News:</strong> Does the email utilize public news
+                or current events to appear legitimate or hide links or other
+                deceptions.
+              </li>
+              <li>
+                <strong>Utilizing Fear:</strong> Does the email utilize fear to
+                appeal to immediate action.
+              </li>
+              <li>
+                <strong>Appealing to Duty or Obligation:</strong> Does the
+                phishing attempt will appeal to a general sense of duty or
+                obligation. Targeted emails may have identified a specific job
+                responsibility of the target and appeal to that responsibility
+                to motivate an action.
+              </li>
+              <li>
+                <strong>Curiosity:</strong> Does the phishing attempt setup a
+                situation of a curious or interesting but unresolved nature that
+                can only be determined by clicking the link?
+              </li>
+              <li>
+                <strong>Greed:</strong> Does the phishing attempt offer free
+                items, deeply discounted items, job offers, or other appeals to
+                an individual’s greed.
+              </li>
+            </ol>
+            <p>
+              Low: A low level template are those which should be easy to
+              identify as a phishing email. The email may be poorly written. The
+              link domain may be blatantly unrelated, come from an external
+              sender, or have outlandish and ridiculous claims.
+            </p>
+            <p>
+              Moderate: Moderate level templates are more sophisticated then low
+              level and should be more difficult to detect. This level of email
+              may have well written prose, be grammatically correct, and
+              professional in display but be general in nature.
+            </p>
+            <p>
+              High: High level phish templates typically target specific
+              individuals or groups within an organization and utilize
+              information that generally would not be know by the public at
+              large. They use this targeted information to provide a feeling of
+              familiarity to better deceive the target. This level is the most
+              difficult to identify as malicious.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <div *ngFor="let group of detail?.templates_by_group; index as outer">
+    <article
+      class="template_pages"
+      *ngFor="let campaign of group; index as inner"
+    >
+      <div class="row">
+        <div class="col-12">
+          <div *ngIf="inner === 0">
+            <h3 *ngIf="outer + 1 === 1">
+              <div class="template-level-header">
+                Low Templates/Dumb Phish
+              </div>
+            </h3>
+            <h3 *ngIf="outer + 1 === 2">
+              <div class="template-level-header">
+                Medium Templates/Moderate Phish
+              </div>
+            </h3>
+            <h3 *ngIf="outer + 1 === 3">
+              <div class="template-level-header">
+                Difficult Templates/Spear Phish
+              </div>
+            </h3>
+          </div>
+          <div>
+            <div class="template-stat-header">
+              <table>
+                <tr>
+                  <td>Template Name:</td>
+                  <td>{{ campaign.template_details.name }}</td>
+                </tr>
+                <tr>
+                  <td>Deception Level:</td>
+                  <td>{{ campaign.deception_level }}</td>
+                </tr>
+                <tr>
+                  <td>Percent of Campaigns:</td>
+                  <td>{{ campaign.campaign_stats.percent_of_campaigns }}%</td>
+                </tr>
+                <tr>
+                  <td>Total Sent:</td>
+                  <td>
+                    {{
+                      campaign.campaign_stats.sent?.count | nullishCoalesce: 0
+                    }}
+                  </td>
+                </tr>
+                <tr>
+                  <td>Clicked:</td>
+                  <td>
+                    {{
+                      campaign.campaign_stats.clicked?.count
+                        | nullishCoalesce: 0
+                    }}
+                  </td>
+                </tr>
+                <tr>
+                  <td>Submitted Data:</td>
+                  <td>
+                    {{
+                      campaign.campaign_stats.submitted?.count
+                        | nullishCoalesce: 0
+                    }}
+                  </td>
+                </tr>
+                <tr>
+                  <td>Reported:</td>
+                  <td>
+                    {{
+                      campaign.campaign_stats.reported?.count
+                        | nullishCoalesce: 0
+                    }}
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <div class="template-body">
+                  <b>Subject:</b>
+                  {{ campaign.template_details.subject | nullishCoalesce: "N/A"
+                  }}<br />
+                  <b>From:</b>
+                  {{
+                    campaign.template_details.from_address
+                      | nullishCoalesce: "N/A"
+                  }}<br />
+                  <b style="margin-bottom: 1rem;">Email Body:</b>
+                  <div
+                    [innerHTML]="campaign.template_details.html | safe"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
 </div>

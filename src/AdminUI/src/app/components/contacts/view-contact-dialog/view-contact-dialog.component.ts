@@ -6,14 +6,14 @@ import { SubscriptionService } from 'src/app/services/subscription.service';
 import {
   ICustomerContact,
   Customer,
-  Contact
+  Contact,
 } from 'src/app/models/customer.model';
 import { Subscription } from 'src/app/models/subscription.model';
 
 @Component({
   selector: 'app-view-contact-dialog',
   templateUrl: './view-contact-dialog.component.html',
-  styleUrls: ['../contacts.component.scss']
+  styleUrls: ['../contacts.component.scss'],
 })
 export class ViewContactDialogComponent implements OnInit {
   form_group = new FormGroup({
@@ -26,7 +26,7 @@ export class ViewContactDialogComponent implements OnInit {
     phone: new FormControl(),
     email: new FormControl(),
     notes: new FormControl(),
-    active: new FormControl()
+    active: new FormControl(),
   });
   contactSubs: Subscription[];
   customer: Customer;
@@ -64,7 +64,7 @@ export class ViewContactDialogComponent implements OnInit {
       mobile_phone: this.data.mobile_phone,
       email: this.data.email,
       notes: this.data.notes,
-      active: this.data.active
+      active: this.data.active,
     };
     this.customer.contact_list.push(updated_contact);
     this.updateSubsContact(old_contact, updated_contact);

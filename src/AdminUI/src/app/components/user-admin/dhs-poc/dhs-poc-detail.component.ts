@@ -6,10 +6,9 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-dhs-poc-detail',
-  templateUrl: './dhs-poc-detail.component.html'
+  templateUrl: './dhs-poc-detail.component.html',
 })
 export class DhsPocDetailComponent implements OnInit {
-
   /**
    * NEW or EDIT
    */
@@ -46,7 +45,7 @@ export class DhsPocDetailComponent implements OnInit {
       officePhone: new FormControl(''),
       mobilePhone: new FormControl(''),
       notes: new FormControl(''),
-      active: new FormControl(true)
+      active: new FormControl(true),
     });
 
     if (!!this.contact?.dhs_contact_uuid) {

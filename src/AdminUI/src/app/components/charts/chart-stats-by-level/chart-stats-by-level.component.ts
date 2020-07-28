@@ -4,25 +4,22 @@ import { ChartsService } from 'src/app/services/charts.service';
 @Component({
   selector: 'app-chart-stats-by-level',
   templateUrl: './chart-stats-by-level.component.html',
-  styleUrls: ['./chart-stats-by-level.component.scss']
+  styleUrls: ['./chart-stats-by-level.component.scss'],
 })
 export class ChartStatsByLevelComponent implements OnInit, OnChanges {
-
   @Input()
   subscription: any;
 
   chart: any = {};
 
   schemeLowMedHigh = {
-    domain: ['#064875', '#fcbf10', '#007bc1']
+    domain: ['#064875', '#fcbf10', '#007bc1'],
   };
 
   /**
    *
    */
-  constructor(
-    public chartsSvc: ChartsService
-  ) { }
+  constructor(public chartsSvc: ChartsService) {}
 
   /**
    *
@@ -43,7 +40,9 @@ export class ChartStatsByLevelComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     if (!!this.subscription) {
-      this.chart.chartResults = this.chartsSvc.formatReportStatsForChart(this.subscription);
+      this.chart.chartResults = this.chartsSvc.formatReportStatsForChart(
+        this.subscription
+      );
     }
   }
 }

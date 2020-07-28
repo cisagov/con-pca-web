@@ -4,8 +4,7 @@
   margin: 0;
 }
 
-
-html {  
+html {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -18,16 +17,20 @@ body {
   padding: 0 20px;
 }
 
-
 * {
-    font-family: Arial, sans-serif;
+  font-family: Arial, sans-serif;
 }
 
 .container-fluid {
   padding: 0;
 }
 
-#cover, #pageOne, #pageTwo, #pageThree, #pageFour, #pageFive {
+#cover,
+#pageOne,
+#pageTwo,
+#pageThree,
+#pageFour,
+#pageFive {
   page-break-after: always;
 }
 
@@ -35,7 +38,7 @@ body {
   page-break-after: always;
 }
 
-article:nth-of-type(n+2) {
+article:nth-of-type(n + 2) {
   padding-top: 100px;
 }
 
@@ -43,17 +46,15 @@ h3 {
   font-weight: bold;
 }
 
-
 /* Cover */
 
 #blueDateBox {
-  background-color: #164A91 !important;
+  background-color: #164a91 !important;
   color: #fff !important;
   margin: 0 0 0 -110px;
   padding: 160px 30px 400px 100px;
   text-align: right;
 }
-
 
 .year {
   font-size: 4.7em;
@@ -70,7 +71,7 @@ h3 {
   color: #fff !important;
 }
 
-#bluePhishLogo {  
+#bluePhishLogo {
   margin: -535px -100px 0 0;
   text-align: right;
 }
@@ -88,15 +89,15 @@ h3 {
 }
 
 #leftYellowBox {
-  border-left: 2px solid #FDC010;
-  border-top: 2px solid #FDC010;
+  border-left: 2px solid #fdc010;
+  border-top: 2px solid #fdc010;
   height: 150px;
   margin: -525px 0 0 400px;
   width: 45px;
 }
 
 #rightYellowBox {
-  border: 2px solid #FDC010;
+  border: 2px solid #fdc010;
   border-left: none;
   height: 290px;
   margin: -25px 0 0 50px;
@@ -143,7 +144,8 @@ table {
   margin-bottom: 20px;
 }
 
-#subscriptionDetailsTable, #datesTable {
+#subscriptionDetailsTable,
+#datesTable {
   margin: 0 0 40px 0;
 }
 
@@ -151,7 +153,10 @@ table {
   margin-bottom: 300px;
 }
 
-#subscriptionDetailsTable td, #subscriptionDetailsTable th, #datesTable td, #datesTable th  {
+#subscriptionDetailsTable td,
+#subscriptionDetailsTable th,
+#datesTable td,
+#datesTable th {
   padding: 8px 0;
   vertical-align: bottom;
 }
@@ -173,20 +178,20 @@ table {
 
 /* Page Two */
 
-
-#companyAverageText {  
+#companyAverageText {
   text-align: center;
 }
 
-
-#statFlexContainer{
+#statFlexContainer {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
   margin-top: 20px;
 }
 
-#nationalAverageText, #industryAverageText, #sectorAverageText {
+#nationalAverageText,
+#industryAverageText,
+#sectorAverageText {
   text-align: center;
 }
 
@@ -203,18 +208,20 @@ table {
   margin: 20px;
 }
 
-#nationalAverageBox, #industryAverageBox, #sectorAverageBox {
-  background-image: linear-gradient(to right, #164A91, #1979a7) !important;
+#nationalAverageBox,
+#industryAverageBox,
+#sectorAverageBox {
+  background-image: linear-gradient(to right, #164a91, #1979a7) !important;
   color: #fff !important;
-  font-family: 'Times New Roman', Times, serif;
+  font-family: "Times New Roman", Times, serif;
   font-size: 2.5em;
   padding: 20px 30px;
 }
 
 #companyAverageBox {
-  background-image: linear-gradient(to right, #164A91, #1979a7) !important;
+  background-image: linear-gradient(to right, #164a91, #1979a7) !important;
   color: #fff !important;
-  font-family: 'Times New Roman', Times, serif;
+  font-family: "Times New Roman", Times, serif;
   font-size: 3.5em;
   padding: 20px 35px;
   max-width: 180px;
@@ -222,8 +229,9 @@ table {
 
 /* Page Three */
 
-#percentageTrendGraph, #clickedVsReportedGraph{
-  border: 1px solid #FDC010;
+#percentageTrendGraph,
+#clickedVsReportedGraph {
+  border: 1px solid #fdc010;
   border-radius: 10px;
   color: #015596;
   margin-bottom: 30px;
@@ -243,7 +251,8 @@ table {
   text-transform: uppercase;
 }
 
-#methodologyTitle, #testingSummaryTitle {
+#methodologyTitle,
+#testingSummaryTitle {
   font-size: 3em;
   color: #015596 !important;
   letter-spacing: 2px;
@@ -252,9 +261,7 @@ table {
   margin-left: 2em;
 }
 
-
 /* Page Five */
 .closing-header span {
   font-weight: 600;
 }
-

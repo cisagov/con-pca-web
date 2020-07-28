@@ -57,7 +57,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     MatTableModule,
     MatBadgeModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
   ],
   exports: [
     MatButtonModule,
@@ -88,7 +88,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     MatTableModule,
     MatBadgeModule,
     MatDatepickerModule,
-    MatNativeDateModule
-  ]
+    MatNativeDateModule,
+  ],
 })
 export class MaterialModule {}

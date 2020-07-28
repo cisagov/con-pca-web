@@ -4,7 +4,7 @@ import { SendingProfile } from '../models/sending-profile.model';
 import { SettingsService } from './settings.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SendingProfileService {
   /**

@@ -10,7 +10,7 @@ import { AppSettings } from 'src/app/AppSettings';
 import {
   MatDialog,
   MatDialogConfig,
-  MatDialogRef
+  MatDialogRef,
 } from '@angular/material/dialog';
 import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
 
@@ -22,7 +22,7 @@ interface ICustomerSubscription {
 @Component({
   selector: 'app-dashboard',
   templateUrl: './subscriptions.component.html',
-  styleUrls: ['./subscriptions.component.scss']
+  styleUrls: ['./subscriptions.component.scss'],
 })
 export class SubscriptionsComponent implements OnInit {
   public data_source: MatTableDataSource<ICustomerSubscription>;
@@ -34,7 +34,7 @@ export class SubscriptionsComponent implements OnInit {
     'customer',
     'start_date',
     'last_updated',
-    'select'
+    'select',
   ];
   dialogRefConfirm: MatDialogRef<ConfirmComponent>;
   showArchived: boolean = false;
@@ -44,13 +44,12 @@ export class SubscriptionsComponent implements OnInit {
 
   loading = false;
 
-
   constructor(
     private subscription_service: SubscriptionService,
     private customer_service: CustomerService,
     private layoutSvc: LayoutMainService,
     public dialog: MatDialog,
-    private router: Router,
+    private router: Router
   ) {
     layoutSvc.setTitle('Subscriptions');
   }
@@ -67,18 +66,22 @@ export class SubscriptionsComponent implements OnInit {
     this.subscription_service
       .getSubscriptions(this.showArchived)
       .subscribe((subscriptions: Subscription[]) => {
-        this.customer_service.getCustomers().subscribe((customers: Customer[]) => {
-          this.loading = false;
-          const customerSubscriptions: ICustomerSubscription[] = [];
-          subscriptions.map((s: Subscription) => {
-            const customerSubscription: ICustomerSubscription = {
-              customer: customers.find(o => o.customer_uuid === s.customer_uuid),
-              subscription: s
-            };
-            customerSubscriptions.push(customerSubscription);
+        this.customer_service
+          .getCustomers()
+          .subscribe((customers: Customer[]) => {
+            this.loading = false;
+            const customerSubscriptions: ICustomerSubscription[] = [];
+            subscriptions.map((s: Subscription) => {
+              const customerSubscription: ICustomerSubscription = {
+                customer: customers.find(
+                  (o) => o.customer_uuid === s.customer_uuid
+                ),
+                subscription: s,
+              };
+              customerSubscriptions.push(customerSubscription);
+            });
+            this.data_source.data = customerSubscriptions;
           });
-          this.data_source.data = customerSubscriptions;
-        });
       });
   }
 
@@ -113,36 +116,40 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   public stopSubscription(row: any) {
-    this.dialogRefConfirm = this.dialog.open(ConfirmComponent, { disableClose: false });
-    this.dialogRefConfirm.componentInstance.confirmMessage =
-      `This will stop subscription '${row.subscription.name}'.  Do you want to continue?`;
+    this.dialogRefConfirm = this.dialog.open(ConfirmComponent, {
+      disableClose: false,
+    });
+    this.dialogRefConfirm.componentInstance.confirmMessage = `This will stop subscription '${row.subscription.name}'.  Do you want to continue?`;
     this.dialogRefConfirm.componentInstance.title = 'Confirm Stop';
 
-    this.dialogRefConfirm.afterClosed().subscribe(result => {
+    this.dialogRefConfirm.afterClosed().subscribe((result) => {
       if (result) {
-        this.subscription_service.stopSubscription(row.subscription.subscription_uuid).subscribe((data: any) => {
-          this.refresh();
-        });
+        this.subscription_service
+          .stopSubscription(row.subscription.subscription_uuid)
+          .subscribe((data: any) => {
+            this.refresh();
+          });
       }
       this.dialogRefConfirm = null;
     });
   }
 
-
   public startSubscription(row: any) {
-    this.dialogRefConfirm = this.dialog.open(ConfirmComponent, { disableClose: false });
-    this.dialogRefConfirm.componentInstance.confirmMessage =
-      `This will start subscription '${row.subscription.name}'.  Do you want to continue?`;
+    this.dialogRefConfirm = this.dialog.open(ConfirmComponent, {
+      disableClose: false,
+    });
+    this.dialogRefConfirm.componentInstance.confirmMessage = `This will start subscription '${row.subscription.name}'.  Do you want to continue?`;
     this.dialogRefConfirm.componentInstance.title = 'Confirm Start';
 
-
-    this.dialogRefConfirm.afterClosed().subscribe(result => {
+    this.dialogRefConfirm.afterClosed().subscribe((result) => {
       if (result) {
         this.setSpinner(row.subscription.subscription_uuid, true);
-        this.subscription_service.startSubscription(row.subscription.subscription_uuid).subscribe((data: any) => {
-          this.setSpinner(row.subscription.subscription_uuid, false);
-          this.refresh();
-        });
+        this.subscription_service
+          .startSubscription(row.subscription.subscription_uuid)
+          .subscribe((data: any) => {
+            this.setSpinner(row.subscription.subscription_uuid, false);
+            this.refresh();
+          });
       }
 
       this.dialogRefConfirm = null;
@@ -153,7 +160,6 @@ export class SubscriptionsComponent implements OnInit {
     this.spinnerMap.set(uuid, show);
   }
 
-
   public checkSpinner(uuid: string) {
     return this.spinnerMap.get(uuid);
   }
@@ -162,7 +168,9 @@ export class SubscriptionsComponent implements OnInit {
     return status.toUpperCase() === 'STOPPED';
   }
   public editSubscription(row) {
-    this.router.navigate(['/view-subscription', row.subscription.subscription_uuid]);
+    this.router.navigate([
+      '/view-subscription',
+      row.subscription.subscription_uuid,
+    ]);
   }
-  
 }

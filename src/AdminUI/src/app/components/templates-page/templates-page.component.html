@@ -3,7 +3,12 @@
     <!-- SEARCH BAR -->
     <mat-form-field class="d-flex flex-column w-100" appearance="outline">
       <mat-label>Search</mat-label>
-      <input [(ngModel)]="search_input" (keyup)="filterTemplates($event.target.value)" matInput placeholder="Search" />
+      <input
+        [(ngModel)]="search_input"
+        (keyup)="filterTemplates($event.target.value)"
+        matInput
+        placeholder="Search"
+      />
       <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
 
@@ -24,8 +29,15 @@
   </div>
 
   <div class="col p-0 w-100">
-    <div *ngIf="loading" style="text-align: center; padding-top: 2rem; padding-bottom: 2rem;">
-      <mat-spinner class="spinner" style="margin-left: auto; margin-right: auto;" diameter="50" ></mat-spinner>
+    <div
+      *ngIf="loading"
+      style="text-align: center; padding-top: 2rem; padding-bottom: 2rem;"
+    >
+      <mat-spinner
+        class="spinner"
+        style="margin-left: auto; margin-right: auto;"
+        diameter="50"
+      ></mat-spinner>
     </div>
 
     <!-- TEMPLATES TABLE -->
@@ -63,16 +75,22 @@
         <mat-header-cell *matHeaderCellDef mat-sort-header
           >Retired</mat-header-cell
         >
-        <mat-cell *matCellDef="let row"><i *ngIf="row.retired" class="fa fa-check"></i></mat-cell>
+        <mat-cell *matCellDef="let row"
+          ><i *ngIf="row.retired" class="fa fa-check"></i
+        ></mat-cell>
       </ng-container>
       <ng-container matColumnDef="select">
-          <mat-header-cell *matHeaderCellDef>Edit</mat-header-cell>
-          <mat-cell *matCellDef="let row">
-              <button class="table-btn-icon" mat-flat-button color="primary"
-                  (click)="editTemplate(row)">
-                  <mat-icon class="table-btn-icon-size">edit</mat-icon>
-              </button>
-          </mat-cell>
+        <mat-header-cell *matHeaderCellDef>Edit</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <button
+            class="table-btn-icon"
+            mat-flat-button
+            color="primary"
+            (click)="editTemplate(row)"
+          >
+            <mat-icon class="table-btn-icon-size">edit</mat-icon>
+          </button>
+        </mat-cell>
       </ng-container>
 
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

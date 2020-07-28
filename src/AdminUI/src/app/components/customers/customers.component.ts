@@ -10,10 +10,9 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-customers',
   templateUrl: './customers.component.html',
-  styleUrls: ['./customers.component.scss']
+  styleUrls: ['./customers.component.scss'],
 })
 export class CustomersComponent implements OnInit {
-
   @Input() insideDialog: boolean;
 
   loading = false;
@@ -26,7 +25,7 @@ export class CustomersComponent implements OnInit {
     'city',
     'state',
     'zip_code',
-    'select'
+    'select',
   ];
   customersData = new MatTableDataSource<Customer>();
   search_input = '';
@@ -38,13 +37,13 @@ export class CustomersComponent implements OnInit {
     private layout_service: LayoutMainService,
     public customerSvc: CustomerService,
     public dialog: MatDialog,
-    private router: Router,
+    private router: Router
   ) {
     this.customerSvc.setCustomerInfo(false);
   }
 
   /**
-   * 
+   *
    */
   ngOnInit(): void {
     if (!this.insideDialog) {
@@ -52,7 +51,7 @@ export class CustomersComponent implements OnInit {
     }
 
     this.customersData = new MatTableDataSource();
-    this.customerSvc.getCustomerInfoStatus().subscribe(status => {
+    this.customerSvc.getCustomerInfoStatus().subscribe((status) => {
       if (status === false) {
         this.refresh();
       }
@@ -64,7 +63,7 @@ export class CustomersComponent implements OnInit {
    */
   public filterCustomers = (value: string) => {
     this.customersData.filter = value.trim().toLocaleLowerCase();
-  }
+  };
 
   /**
    *
@@ -83,9 +82,12 @@ export class CustomersComponent implements OnInit {
   public open_add_customer_dialog(): void {
     const dialog_config = new MatDialogConfig();
     dialog_config.data = {
-      insideDialog: this.insideDialog
+      insideDialog: this.insideDialog,
     };
-    const dialog_ref = this.dialog.open(AddCustomerDialogComponent, dialog_config);
+    const dialog_ref = this.dialog.open(
+      AddCustomerDialogComponent,
+      dialog_config
+    );
   }
 
   /**
@@ -96,9 +98,7 @@ export class CustomersComponent implements OnInit {
     this.dialog.closeAll();
   }
   public editCustomer(customer_uuid) {
-    if(!this.insideDialog)
-      this.router.navigate(['/customer', customer_uuid]);
-    else
-      this.setCustomer(customer_uuid)
+    if (!this.insideDialog) this.router.navigate(['/customer', customer_uuid]);
+    else this.setCustomer(customer_uuid);
   }
 }

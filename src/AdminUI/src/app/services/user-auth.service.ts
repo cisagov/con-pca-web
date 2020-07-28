@@ -1,24 +1,25 @@
 import { Injectable } from '@angular/core';
-import { Auth } from 'aws-amplify'
+import { Auth } from 'aws-amplify';
 import { Subject, Observable, BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 import { environment } from './../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserAuthService {
-
   currentAuthUser: any;
-  public currentAuthUserSubject: BehaviorSubject<string> = new BehaviorSubject<string>('Not Authorized');
+  public currentAuthUserSubject: BehaviorSubject<string> = new BehaviorSubject<
+    string
+  >('Not Authorized');
 
-  constructor(
-    private router: Router
-  ) {
+  constructor(private router: Router) {
     this.currentAuthUserSubject.subscribe((value) => {
       this.currentAuthUser = value;
     });
-    this.userIsAuthenticated().then().catch(error => console.log(error));
+    this.userIsAuthenticated()
+      .then()
+      .catch((error) => console.log(error));
   }
 
   // Handles amplify authentification notfications from Hub
@@ -28,8 +29,6 @@ export class UserAuthService {
     //     }
     //   }
   }
-
-
 
   signOut() {
     console.log('Authorize?');
@@ -66,10 +65,17 @@ export class UserAuthService {
   }
 
   _setUserName(succesfulAuthObject) {
-    if (succesfulAuthObject['signInUserSession']['idToken']['payload']['name'] != undefined) {
-      this.currentAuthUserSubject.next(String(succesfulAuthObject['signInUserSession']['idToken']['payload']['name']))
+    if (
+      succesfulAuthObject['signInUserSession']['idToken']['payload']['name'] !=
+      undefined
+    ) {
+      this.currentAuthUserSubject.next(
+        String(
+          succesfulAuthObject['signInUserSession']['idToken']['payload']['name']
+        )
+      );
     } else {
-      this.currentAuthUserSubject.next(succesfulAuthObject['username'])
+      this.currentAuthUserSubject.next(succesfulAuthObject['username']);
     }
   }
 
@@ -77,9 +83,7 @@ export class UserAuthService {
     return this.currentAuthUserSubject;
   }
 
-
   getUserTokens() {
-
     if (environment.authorize) {
       return new Promise((resolve, reject) => {
         Auth.currentAuthenticatedUser()
@@ -87,7 +91,7 @@ export class UserAuthService {
             this._setUserName(success);
             resolve({
               idToken: success.signInUserSession.accessToken.jwtToken,
-              accessToken: success.signInUserSession.idToken.jwtToken
+              accessToken: success.signInUserSession.idToken.jwtToken,
             });
           })
           .catch((error) => {
@@ -99,7 +103,7 @@ export class UserAuthService {
       return new Promise((resolve, reject) => {
         resolve({
           idToken: 'Angular not set to authorize',
-          accessToken: 'Angular not set to authorize'
+          accessToken: 'Angular not set to authorize',
         });
       });
     }

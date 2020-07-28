@@ -1,12 +1,25 @@
 <div class="container-fluid">
-    <div class="mb-2 text-right">
-        <button mat-raised-button class="add-button" color="primary" (click)="openProfileDialog(0)">New Profile</button>
-    </div>
+  <div class="mb-2 text-right">
+    <button
+      mat-raised-button
+      class="add-button"
+      color="primary"
+      (click)="openProfileDialog(0)"
+    >
+      New Profile
+    </button>
+  </div>
 
   <div class="col p-0 w-100">
-
-    <div *ngIf="loading" style="text-align: center; padding-top: 2rem; padding-bottom: 2rem;">
-      <mat-spinner class="spinner" style="margin-left: auto; margin-right: auto;" diameter="50" ></mat-spinner>
+    <div
+      *ngIf="loading"
+      style="text-align: center; padding-top: 2rem; padding-bottom: 2rem;"
+    >
+      <mat-spinner
+        class="spinner"
+        style="margin-left: auto; margin-right: auto;"
+        diameter="50"
+      ></mat-spinner>
     </div>
 
     <!-- PROFILES TABLE -->

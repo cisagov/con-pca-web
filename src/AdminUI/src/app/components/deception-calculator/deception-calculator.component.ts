@@ -5,7 +5,7 @@ import {
   FormGroupDirective,
   Validators,
   FormGroup,
-  FormBuilder
+  FormBuilder,
 } from '@angular/forms';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
@@ -22,7 +22,7 @@ import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'deception-calculator',
   templateUrl: './deception-calculator.component.html',
-  styleUrls: ['./deception-calculator.component.scss']
+  styleUrls: ['./deception-calculator.component.scss'],
 })
 export class DeceptionCalculatorComponent implements OnInit {
   //models
@@ -55,7 +55,7 @@ export class DeceptionCalculatorComponent implements OnInit {
   ngOnInit(): void {
     //Get a subscription to the template and build out the formGroup and html preview
     this.subscriptions.push(
-      this.route.params.subscribe(params => {
+      this.route.params.subscribe((params) => {
         this.templateId = params['templateId'];
         if (this.templateId != undefined) {
           this.subscriptions.push(
@@ -78,12 +78,12 @@ export class DeceptionCalculatorComponent implements OnInit {
     this.subscriptions.push(
       this.layoutSvc
         .getSideNavIsSet()
-        .subscribe(sideNavEmit => this.layoutSvc.closeSideNav())
+        .subscribe((sideNavEmit) => this.layoutSvc.closeSideNav())
     );
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach(sub => {
+    this.subscriptions.forEach((sub) => {
       sub.unsubscribe();
     });
   }
@@ -98,18 +98,19 @@ export class DeceptionCalculatorComponent implements OnInit {
       this.dialog.open(AlertComponent, {
         data: {
           title: 'Error',
-          messageText: 'Errors on deception form' + this.deceptionFormGroup.errors
-        }
+          messageText:
+            'Errors on deception form' + this.deceptionFormGroup.errors,
+        },
       });
     }
   }
 
   onValueChanges(): void {
     //Event fires for every modification to the form, used to update deception score
-    this.deceptionFormGroup.valueChanges.subscribe(val => {
+    this.deceptionFormGroup.valueChanges.subscribe((val) => {
       this.deceptionFormGroup.patchValue(
         {
-          final_deception_score: this.calcDeceptionScore(val)
+          final_deception_score: this.calcDeceptionScore(val),
         },
         { emitEvent: false }
       );
@@ -165,12 +166,12 @@ export class DeceptionCalculatorComponent implements OnInit {
       curiosity: new FormControl(template.behavior?.curiosity ?? false),
       greed: new FormControl(template.behavior?.greed ?? false),
       descriptive_words: new FormControl(template.descriptive_words ?? ' ', {
-        updateOn: 'blur'
+        updateOn: 'blur',
       }),
       final_deception_score: new FormControl({
         value: this.calcDeceptionScore(template),
-        disabled: true
-      })
+        disabled: true,
+      }),
     });
   }
   /**
@@ -200,22 +201,22 @@ export class DeceptionCalculatorComponent implements OnInit {
     saveTemplate.appearance = {
       grammar: formTemplate.grammar,
       link_domain: formTemplate.link_domain,
-      logo_graphics: formTemplate.logo_graphics
+      logo_graphics: formTemplate.logo_graphics,
     };
     saveTemplate.sender = {
       authoritative: formTemplate.authoritative,
       external: formTemplate.external,
-      internal: formTemplate.internal
+      internal: formTemplate.internal,
     };
     saveTemplate.relevancy = {
       organization: formTemplate.organization,
-      public_news: formTemplate.public_news
+      public_news: formTemplate.public_news,
     };
     saveTemplate.behavior = {
       curiosity: formTemplate.curiosity,
       duty_obligation: formTemplate.duty_obligation,
       fear: formTemplate.fear,
-      greed: formTemplate.greed
+      greed: formTemplate.greed,
     };
     saveTemplate.descriptive_words = formTemplate.descriptive_words;
     saveTemplate.template_uuid = this.templateId;

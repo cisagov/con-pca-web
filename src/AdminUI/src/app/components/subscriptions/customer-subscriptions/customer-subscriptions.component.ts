@@ -9,11 +9,9 @@ import { AppSettings } from 'src/app/AppSettings';
 @Component({
   selector: 'customer-subscriptions',
   templateUrl: './customer-subscriptions.component.html',
-  styleUrls: ['./customer-subscriptions.component.scss']
+  styleUrls: ['./customer-subscriptions.component.scss'],
 })
 export class CustomerSubscriptionsComponent implements OnInit {
-
-
   private _customer;
 
   dateFormat = AppSettings.DATE_FORMAT;
@@ -24,7 +22,6 @@ export class CustomerSubscriptionsComponent implements OnInit {
       this.refresh();
     }
   }
-
 
   @ViewChild(MatSort) sort: MatSort;
 
@@ -39,19 +36,19 @@ export class CustomerSubscriptionsComponent implements OnInit {
     'inspect',
   ];
 
-  constructor(
-    public subscriptionSvc: SubscriptionService,
-  ) { }
+  constructor(public subscriptionSvc: SubscriptionService) {}
 
   ngOnInit(): void {
     this.subscriptions.sort = this.sort;
   }
 
   refresh() {
-    this.subscriptionSvc.getSubscriptionsByCustomer(this._customer).subscribe((data: any[]) => {
-      this.subscriptions.data = data as Subscription[];
-      this.subscriptions.sort = this.sort;
-    });
+    this.subscriptionSvc
+      .getSubscriptionsByCustomer(this._customer)
+      .subscribe((data: any[]) => {
+        this.subscriptions.data = data as Subscription[];
+        this.subscriptions.sort = this.sort;
+      });
   }
 
   checkDataSourceLength(): boolean {

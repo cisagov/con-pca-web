@@ -6,10 +6,9 @@ import { humanTiming } from 'src/app/helper/utilities';
 
 @Component({
   selector: 'app-aggregate-stats',
-  templateUrl: './aggregate-stats.component.html'
+  templateUrl: './aggregate-stats.component.html',
 })
 export class AggregateStatsComponent implements OnInit {
-
   detail: any;
   avgTimeToClick: string;
 
@@ -25,17 +24,21 @@ export class AggregateStatsComponent implements OnInit {
    *
    */
   ngOnInit(): void {
-    this.statsSvc.getAggregateStats().subscribe(result => {
-      this.detail = result;
+    this.statsSvc.getAggregateStats().subscribe(
+      (result) => {
+        this.detail = result;
 
-      if (!this.detail.average_time_to_click_all_customers) {
-        this.avgTimeToClick = '(none)';
-      } else {
-        this.avgTimeToClick = humanTiming(this.detail.average_time_to_click_all_customers);
-      }
-    },
-      error => {
+        if (!this.detail.average_time_to_click_all_customers) {
+          this.avgTimeToClick = '(none)';
+        } else {
+          this.avgTimeToClick = humanTiming(
+            this.detail.average_time_to_click_all_customers
+          );
+        }
+      },
+      (error) => {
         console.log(error);
-      });
+      }
+    );
   }
 }

@@ -24,7 +24,7 @@ import { AlertComponent } from '../dialogs/alert/alert.component';
 @Component({
   selector: 'app-template-manager',
   styleUrls: ['./template-manager.component.scss'],
-  templateUrl: './template-manager.component.html'
+  templateUrl: './template-manager.component.html',
 })
 export class TemplateManagerComponent implements OnInit {
   dialogRefConfirm: MatDialogRef<ConfirmComponent>;
@@ -84,7 +84,7 @@ export class TemplateManagerComponent implements OnInit {
   ngOnInit() {
     //get subscription to height of page from main layout component
     this.subscriptions.push(
-      this.layoutSvc.getContentHeightEmitter().subscribe(height => {
+      this.layoutSvc.getContentHeightEmitter().subscribe((height) => {
         this.body_content_height = height;
         if (this.titleElement != undefined) {
           this.setEditorHeight();
@@ -93,7 +93,7 @@ export class TemplateManagerComponent implements OnInit {
     );
     //get subscription to check for the sidenav element being set in layout, and close by default
     this.subscriptions.push(
-      this.layoutSvc.getSideNavIsSet().subscribe(sideNavEmit => {
+      this.layoutSvc.getSideNavIsSet().subscribe((sideNavEmit) => {
         this.layoutSvc.closeSideNav().then(() => {
           this.setEditorHeight();
         });
@@ -101,7 +101,7 @@ export class TemplateManagerComponent implements OnInit {
     );
     //Check if template ID was included in the route, open template identified if so
     this.subscriptions.push(
-      this.route.params.subscribe(params => {
+      this.route.params.subscribe((params) => {
         this.templateId = params['templateId'];
         if (this.templateId != undefined) {
           this.selectTemplate(this.templateId);
@@ -114,7 +114,7 @@ export class TemplateManagerComponent implements OnInit {
 
   ngOnDestroy() {
     //Unsubscribe from all subscriptions
-    this.subscriptions.forEach(sub => {
+    this.subscriptions.forEach((sub) => {
       sub.unsubscribe();
     });
   }
@@ -126,7 +126,7 @@ export class TemplateManagerComponent implements OnInit {
 
   onValueChanges(): void {
     //Event fires for every modification to the form, used to update deception score
-    this.currentTemplateFormGroup.valueChanges.subscribe(val => {
+    this.currentTemplateFormGroup.valueChanges.subscribe((val) => {
       this.currentTemplateFormGroup.patchValue(
         {
           final_deception_score:
@@ -137,7 +137,7 @@ export class TemplateManagerComponent implements OnInit {
             val.logo_graphics +
             val.public_news +
             val.organization +
-            val.external
+            val.external,
         },
         { emitEvent: false }
       );
@@ -148,7 +148,7 @@ export class TemplateManagerComponent implements OnInit {
   selectTemplate(template_uuid: string) {
     //Get template and call setTemplateForm to initialize a form group using the selected template
     this.templateManagerSvc.getTemplate(template_uuid).then(
-      success => {
+      (success) => {
         let t = <Template>success;
 
         this.setTemplateForm(t);
@@ -162,7 +162,7 @@ export class TemplateManagerComponent implements OnInit {
             this.pcaSubscriptions.data = x;
           });
       },
-      error => {}
+      (error) => {}
     );
   }
 
@@ -187,7 +187,9 @@ export class TemplateManagerComponent implements OnInit {
       templateDeceptionScore: new FormControl(template.deception_score),
       templateDescriptiveWords: new FormControl(template.descriptive_words),
       templateDescription: new FormControl(template.description),
-      templateFromAddress: new FormControl(template.from_address, [Validators.required]),
+      templateFromAddress: new FormControl(template.from_address, [
+        Validators.required,
+      ]),
       templateSubject: new FormControl(template.subject, [Validators.required]),
       templateText: new FormControl(template.text),
       templateHTML: new FormControl(template.html, [Validators.required]),
@@ -206,12 +208,12 @@ export class TemplateManagerComponent implements OnInit {
       curiosity: new FormControl(template.behavior?.curiosity ?? false),
       greed: new FormControl(template.behavior?.greed ?? false),
       descriptive_words: new FormControl(template.descriptive_words ?? ' ', {
-        updateOn: 'blur'
+        updateOn: 'blur',
       }),
       final_deception_score: new FormControl({
         value: this.calcDeceptionScore(template),
-        disabled: true
-      })
+        disabled: true,
+      }),
     });
 
     this.onValueChanges();
@@ -250,27 +252,27 @@ export class TemplateManagerComponent implements OnInit {
       from_address: form.controls['templateFromAddress'].value,
       subject: form.controls['templateSubject'].value,
       text: form.controls['templateText'].value,
-      html: form.controls['templateHTML'].value
+      html: form.controls['templateHTML'].value,
     });
     saveTemplate.appearance = {
       grammar: formTemplate.grammar,
       link_domain: formTemplate.link_domain,
-      logo_graphics: formTemplate.logo_graphics
+      logo_graphics: formTemplate.logo_graphics,
     };
     saveTemplate.sender = {
       authoritative: formTemplate.authoritative,
       external: formTemplate.external,
-      internal: formTemplate.internal
+      internal: formTemplate.internal,
     };
     saveTemplate.relevancy = {
       organization: formTemplate.organization,
-      public_news: formTemplate.public_news
+      public_news: formTemplate.public_news,
     };
     saveTemplate.behavior = {
       curiosity: formTemplate.curiosity,
       duty_obligation: formTemplate.duty_obligation,
       fear: formTemplate.fear,
-      greed: formTemplate.greed
+      greed: formTemplate.greed,
     };
     saveTemplate.template_uuid = this.templateId;
     saveTemplate.deception_score = form.controls['final_deception_score'].value;
@@ -297,12 +299,12 @@ export class TemplateManagerComponent implements OnInit {
       //PATCH - existing template update
       if (this.currentTemplateFormGroup.controls['templateUUID'].value) {
         this.templateManagerSvc.updateTemplate(templateToSave).then(
-          success => {
+          (success) => {
             this.router.navigate(['/templates']);
             // let retTemplate = <Template>success
             // this.updateTemplateInList(retTemplate)
           },
-          error => {
+          (error) => {
             console.log(error);
           }
         );
@@ -313,21 +315,21 @@ export class TemplateManagerComponent implements OnInit {
             this.dialog.open(AlertComponent, {
               data: {
                 title: '',
-                messageText: 'Your template was created.'
-              }
+                messageText: 'Your template was created.',
+              },
             });
-    
+
             this.router.navigate(['/templates']);
           },
-          error => {
+          (error) => {
             console.log(error);
             if (error.status === 409) {
               this.dialog.open(AlertComponent, {
                 // Parse error here
                 data: {
                   title: 'Template Name Error',
-                  messageText: 'Template Name alreay exists.'
-                }
+                  messageText: 'Template Name alreay exists.',
+                },
               });
             }
           }
@@ -345,8 +347,8 @@ export class TemplateManagerComponent implements OnInit {
       this.dialog.open(AlertComponent, {
         data: {
           title: 'Error',
-          messageText: 'Invalid form fields: ' + invalid
-        }
+          messageText: 'Invalid form fields: ' + invalid,
+        },
       });
     }
   }
@@ -357,20 +359,20 @@ export class TemplateManagerComponent implements OnInit {
     );
 
     this.dialogRefConfirm = this.dialog.open(ConfirmComponent, {
-      disableClose: false
+      disableClose: false,
     });
     this.dialogRefConfirm.componentInstance.confirmMessage = `Are you sure you want to delete ${template_to_delete.name}?`;
     this.dialogRefConfirm.componentInstance.title = 'Confirm Delete';
 
-    this.dialogRefConfirm.afterClosed().subscribe(result => {
+    this.dialogRefConfirm.afterClosed().subscribe((result) => {
       if (result) {
         this.templateManagerSvc.deleteTemplate(template_to_delete).then(
-          success => {
+          (success) => {
             // this.updateTemplateInList(<Template>success)
             // this.setEmptyTemplateForm()
             this.router.navigate(['/templates']);
           },
-          error => {}
+          (error) => {}
         );
       }
       this.dialogRefConfirm = null;
@@ -383,9 +385,9 @@ export class TemplateManagerComponent implements OnInit {
     );
     this.dialogRefRetire = this.dialog.open(RetireTemplateDialogComponent, {
       disableClose: false,
-      data: templateToRetire
+      data: templateToRetire,
     });
-    this.dialogRefRetire.afterClosed().subscribe(result => {
+    this.dialogRefRetire.afterClosed().subscribe((result) => {
       if (result.retired) {
         this.retired = result.retired;
         this.retiredReason = result.description;
@@ -398,12 +400,12 @@ export class TemplateManagerComponent implements OnInit {
       this.currentTemplateFormGroup
     );
     this.dialogRefConfirm = this.dialog.open(ConfirmComponent, {
-      disableClose: false
+      disableClose: false,
     });
     this.dialogRefConfirm.componentInstance.confirmMessage = `Are you sure you want to restore ${templateToRestore.name}? Initial Reason for Retiring - ${templateToRestore.retired_description}`;
     this.dialogRefConfirm.componentInstance.title = 'Confirm Restore';
 
-    this.dialogRefConfirm.afterClosed().subscribe(result => {
+    this.dialogRefConfirm.afterClosed().subscribe((result) => {
       if (result) {
         templateToRestore.retired = false;
         templateToRestore.retired_description = '';
@@ -419,7 +421,7 @@ export class TemplateManagerComponent implements OnInit {
     );
 
     this.dialog.open(StopTemplateDialogComponent, {
-      data: template_to_stop
+      data: template_to_stop,
     });
   }
 
@@ -494,22 +496,22 @@ export class TemplateManagerComponent implements OnInit {
       { class: 'arial', name: 'Arial' },
       { class: 'times-new-roman', name: 'Times New Roman' },
       { class: 'calibri', name: 'Calibri' },
-      { class: 'comic-sans-ms', name: 'Comic Sans MS' }
+      { class: 'comic-sans-ms', name: 'Comic Sans MS' },
     ],
     customClasses: [
       {
         name: 'quote',
-        class: 'quote'
+        class: 'quote',
       },
       {
         name: 'redText',
-        class: 'redText'
+        class: 'redText',
       },
       {
         name: 'titleText',
         class: 'titleText',
-        tag: 'h1'
-      }
+        tag: 'h1',
+      },
     ],
     uploadUrl: this.image_upload_url,
     //uploadUrl: 'localhost:8080/server/page/upload-image',
@@ -518,8 +520,8 @@ export class TemplateManagerComponent implements OnInit {
     toolbarPosition: 'top',
     toolbarHiddenButtons: [
       ['bold', 'italic'],
-      ['fontSize', 'insertVideo']
-    ]
+      ['fontSize', 'insertVideo'],
+    ],
   };
 
   /**
@@ -549,9 +551,9 @@ export class TemplateManagerComponent implements OnInit {
     this.angularEditorEle.textArea.nativeElement.focus();
     const selection = window.getSelection().getRangeAt(0);
     this.dialogRefTagSelection = this.dialog.open(TagSelectionComponent, {
-      disableClose: false
+      disableClose: false,
     });
-    this.dialogRefTagSelection.afterClosed().subscribe(result => {
+    this.dialogRefTagSelection.afterClosed().subscribe((result) => {
       if (result) {
         this.insertTag(selection, result);
         $('.angular-editor-wrapper').removeClass('show-placeholder');

@@ -1,12 +1,8 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-} from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
   MatDialogConfig,
   MatDialog,
-  MatDialogRef
+  MatDialogRef,
 } from '@angular/material/dialog';
 import {
   FormGroup,
@@ -17,10 +13,7 @@ import {
 import { Router, ActivatedRoute } from '@angular/router';
 import { Customer, Contact } from 'src/app/models/customer.model';
 import { SubscriptionService } from 'src/app/services/subscription.service';
-import {
-  Subscription,
-  Target,
-} from 'src/app/models/subscription.model';
+import { Subscription, Target } from 'src/app/models/subscription.model';
 import { Guid } from 'guid-typescript';
 import { CustomerService } from 'src/app/services/customer.service';
 import { XlsxToCsv } from 'src/app/helper/XlsxToCsv';
@@ -34,7 +27,7 @@ import { SettingsService } from 'src/app/services/settings.service';
 @Component({
   selector: 'subscription-config-tab',
   templateUrl: './subscription-config-tab.component.html',
-  styleUrls: ['./subscription-config-tab.component.scss']
+  styleUrls: ['./subscription-config-tab.component.scss'],
 })
 export class SubscriptionConfigTab implements OnInit, OnDestroy {
   private routeSub: any;
@@ -68,7 +61,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
 
   launchSubmitted = false;
 
-  angular_subs = []
+  angular_subs = [];
 
   /**
    *
@@ -82,14 +75,14 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     public formBuilder: FormBuilder,
     public layoutSvc: LayoutMainService,
     public settingsService: SettingsService,
-    private route: ActivatedRoute,
+    private route: ActivatedRoute
   ) {
     this.loadDhsContacts();
     this.loadSendingProfiles();
   }
   ngOnDestroy(): void {
-    this.angular_subs.forEach(element => {
-      element.unsubscribe()
+    this.angular_subs.forEach((element) => {
+      element.unsubscribe();
     });
   }
 
@@ -98,30 +91,32 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
    */
   ngOnInit(): void {
     // build form
-    this.subscribeForm = new FormGroup({
-      selectedCustomerUuid: new FormControl('', {
-        validators: Validators.required
-      }),
-      primaryContact: new FormControl(null, {
-        validators: Validators.required
-      }),
-      dhsContact: new FormControl(null, {
-        validators: Validators.required
-      }),
-      startDate: new FormControl(new Date(), {
-        validators: Validators.required
-      }),
-      url: new FormControl('', {}),
-      keywords: new FormControl('', {}),
-      sendingProfile: new FormControl('', {
-        validators: Validators.required
-      }),
-      csvText: new FormControl('', {
-        validators: [Validators.required, this.invalidCsv],
-        updateOn: 'blur'
-      })
-    },
-      { updateOn: 'blur' });
+    this.subscribeForm = new FormGroup(
+      {
+        selectedCustomerUuid: new FormControl('', {
+          validators: Validators.required,
+        }),
+        primaryContact: new FormControl(null, {
+          validators: Validators.required,
+        }),
+        dhsContact: new FormControl(null, {
+          validators: Validators.required,
+        }),
+        startDate: new FormControl(new Date(), {
+          validators: Validators.required,
+        }),
+        url: new FormControl('', {}),
+        keywords: new FormControl('', {}),
+        sendingProfile: new FormControl('', {
+          validators: Validators.required,
+        }),
+        csvText: new FormControl('', {
+          validators: [Validators.required, this.invalidCsv],
+          updateOn: 'blur',
+        }),
+      },
+      { updateOn: 'blur' }
+    );
 
     this.onChanges();
 
@@ -130,43 +125,52 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     this.launchSubmitted = false;
 
     this.subscriptionSvc.subscription = new Subscription();
-    this.routeSub = this.route.params.subscribe(params => {
+    this.routeSub = this.route.params.subscribe((params) => {
       if (!params.id) {
         this.loadPageForCreate(params);
       } else {
-        this.subscriptionSvc.subBehaviorSubject.subscribe(data => {
-          if ("gophish_campaign_list" in data) {
+        this.subscriptionSvc.subBehaviorSubject.subscribe((data) => {
+          if ('gophish_campaign_list' in data) {
             this.loadPageForEdit(data);
           }
-        })
+        });
       }
     });
-
   }
 
   /**
    * Setup handlers for form field updates
    */
   onChanges(): void {
-    this.angular_subs.push(this.f.startDate.valueChanges.subscribe(val => {
-      this.subscription.start_date = val;
-      this.persistChanges();
-    }));
-    this.angular_subs.push(this.f.url.valueChanges.subscribe(val => {
-      this.subscription.url = val;
-      this.persistChanges();
-    }));
-    this.angular_subs.push(this.f.keywords.valueChanges.subscribe(val => {
-      this.subscription.keywords = val;
-      this.persistChanges();
-    }));
-    this.angular_subs.push(this.f.sendingProfile.valueChanges.subscribe(val => {
-      this.subscription.sending_profile_name = val;
-    }));
-    this.angular_subs.push(this.f.csvText.valueChanges.subscribe(val => {
-      this.evaluateTargetList(false);
-      this.persistChanges();
-    }));
+    this.angular_subs.push(
+      this.f.startDate.valueChanges.subscribe((val) => {
+        this.subscription.start_date = val;
+        this.persistChanges();
+      })
+    );
+    this.angular_subs.push(
+      this.f.url.valueChanges.subscribe((val) => {
+        this.subscription.url = val;
+        this.persistChanges();
+      })
+    );
+    this.angular_subs.push(
+      this.f.keywords.valueChanges.subscribe((val) => {
+        this.subscription.keywords = val;
+        this.persistChanges();
+      })
+    );
+    this.angular_subs.push(
+      this.f.sendingProfile.valueChanges.subscribe((val) => {
+        this.subscription.sending_profile_name = val;
+      })
+    );
+    this.angular_subs.push(
+      this.f.csvText.valueChanges.subscribe((val) => {
+        this.evaluateTargetList(false);
+        this.persistChanges();
+      })
+    );
   }
 
   /**
@@ -219,12 +223,9 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
 
     this.enableDisableFields();
 
-
-    this.customerSvc
-      .getCustomer(s.customer_uuid)
-      .subscribe((c: Customer) => {
-        this.customer = c;
-      });
+    this.customerSvc.getCustomer(s.customer_uuid).subscribe((c: Customer) => {
+      this.customer = c;
+    });
   }
 
   /**
@@ -233,14 +234,14 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
   setCustomer() {
     if (this.customerSvc.selectedCustomer.length > 0) {
       this.subscribeForm.patchValue({
-        selectedCustomerUuid: this.customerSvc.selectedCustomer
+        selectedCustomerUuid: this.customerSvc.selectedCustomer,
       });
       this.customerSvc
         .getCustomer(this.customerSvc.selectedCustomer)
         .subscribe((data: Customer) => {
           this.customer = data;
           this.customer.contact_list = this.customer.contact_list.filter(
-            contact => contact.active === true
+            (contact) => contact.active === true
           );
           this.f.selectedCustomerUuid.setValue(this.customer.customer_uuid);
         });
@@ -290,7 +291,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     dialogConfig.data = {};
     const dialogRef = this.dialog.open(CustomerDialogComponent, dialogConfig);
 
-    dialogRef.afterClosed().subscribe(value => {
+    dialogRef.afterClosed().subscribe((value) => {
       this.setCustomer();
     });
   }
@@ -300,16 +301,16 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
    */
   public archiveSubscription(): void {
     this.dialogRefConfirm = this.dialog.open(ConfirmComponent, {
-      disableClose: false
+      disableClose: false,
     });
     this.dialogRefConfirm.componentInstance.confirmMessage = `Archive '${this.subscription.name}?'`;
     this.dialogRefConfirm.componentInstance.title = 'Confirm Archive';
-    this.dialogRefConfirm.afterClosed().subscribe(result => {
+    this.dialogRefConfirm.afterClosed().subscribe((result) => {
       if (result) {
         this.subscription.archived = true;
         this.subscriptionSvc
           .patchSubscription(this.subscription)
-          .subscribe(() => { });
+          .subscribe(() => {});
         this.enableDisableFields();
       }
     });
@@ -320,16 +321,16 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
    */
   public unarchiveSubscription(): void {
     this.dialogRefConfirm = this.dialog.open(ConfirmComponent, {
-      disableClose: false
+      disableClose: false,
     });
     this.dialogRefConfirm.componentInstance.confirmMessage = `Unarchive '${this.subscription.name}?'`;
     this.dialogRefConfirm.componentInstance.title = 'Confirm unarchive';
-    this.dialogRefConfirm.afterClosed().subscribe(result => {
+    this.dialogRefConfirm.afterClosed().subscribe((result) => {
       if (result) {
         this.subscription.archived = false;
         this.subscriptionSvc
           .patchSubscription(this.subscription)
-          .subscribe(() => { });
+          .subscribe(() => {});
         this.enableDisableFields();
       }
     });
@@ -343,7 +344,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
       return;
     }
     this.primaryContact = this.customer.contact_list.find(
-      x => x.email === e.value
+      (x) => x.email === e.value
     );
     this.subscription.primary_contact = this.primaryContact;
     this.subscriptionSvc.subscription.primary_contact = this.primaryContact;
@@ -363,7 +364,9 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
    *
    */
   changeDhsContact(e: any) {
-    const contact = this.dhsContacts.find(x => x.dhs_contact_uuid === e.value);
+    const contact = this.dhsContacts.find(
+      (x) => x.dhs_contact_uuid === e.value
+    );
     if (contact) {
       this.dhsContactUuid = contact.dhs_contact_uuid;
       this.subscription.dhs_contact_uuid = this.dhsContactUuid;
@@ -428,17 +431,17 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     }
 
     this.dialogRefConfirm = this.dialog.open(ConfirmComponent, {
-      disableClose: false
+      disableClose: false,
     });
     this.dialogRefConfirm.componentInstance.confirmMessage = `Are you sure you want to restart ${this.subscription.name}?`;
     this.dialogRefConfirm.componentInstance.title = 'Confirm Restart';
 
-    this.dialogRefConfirm.afterClosed().subscribe(result => {
+    this.dialogRefConfirm.afterClosed().subscribe((result) => {
       if (result) {
         // persist any changes before restart
         this.subscriptionSvc
           .patchSubscription(this.subscription)
-          .subscribe(x => {
+          .subscribe((x) => {
             // restart
             this.subscriptionSvc
               .restartSubscription(this.subscription.subscription_uuid)
@@ -449,18 +452,18 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
                   this.dialog.open(AlertComponent, {
                     data: {
                       title: '',
-                      messageText: `Subscription ${this.subscription.name} was restarted.`
-                    }
+                      messageText: `Subscription ${this.subscription.name} was restarted.`,
+                    },
                   });
                 },
-                error => {
+                (error) => {
                   this.dialog.open(AlertComponent, {
                     data: {
                       title: 'Error',
                       messageText:
                         'An error occurred restarting the subscription: ' +
-                        error.error
-                    }
+                        error.error,
+                    },
                   });
                 }
               );
@@ -474,12 +477,12 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
    */
   stopSubscription() {
     this.dialogRefConfirm = this.dialog.open(ConfirmComponent, {
-      disableClose: false
+      disableClose: false,
     });
     this.dialogRefConfirm.componentInstance.confirmMessage = `Are you sure you want to stop ${this.subscription.name}?`;
     this.dialogRefConfirm.componentInstance.title = 'Confirm Stop';
 
-    this.dialogRefConfirm.afterClosed().subscribe(result => {
+    this.dialogRefConfirm.afterClosed().subscribe((result) => {
       if (result) {
         this.subscriptionSvc
           .stopSubscription(this.subscription.subscription_uuid)
@@ -490,18 +493,18 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
               this.dialog.open(AlertComponent, {
                 data: {
                   title: '',
-                  messageText: `Subscription ${this.subscription.name} was stopped`
-                }
+                  messageText: `Subscription ${this.subscription.name} was stopped`,
+                },
               });
             },
-            error => {
+            (error) => {
               this.dialog.open(AlertComponent, {
                 data: {
                   title: 'Error',
                   messageText:
                     'An error occurred stopping the subscription: ' +
-                    error.error
-                }
+                    error.error,
+                },
               });
             }
           );
@@ -512,7 +515,6 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
   /**
    * Set page title
    */
-
 
   /**
    * Submits the form to create a new Subscription.
@@ -552,20 +554,20 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         this.dialog.open(AlertComponent, {
           data: {
             title: '',
-            messageText: 'Your subscription was created as ' + resp.name
-          }
+            messageText: 'Your subscription was created as ' + resp.name,
+          },
         });
 
         this.router.navigate(['subscriptions']);
       },
-      error => {
+      (error) => {
         this.launchSubmitted = false;
         this.dialog.open(AlertComponent, {
           data: {
             title: 'Error',
             messageText:
-              'An error occurred submitting the subscription: ' + error.error
-          }
+              'An error occurred submitting the subscription: ' + error.error,
+          },
         });
       }
     );
@@ -611,14 +613,16 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     );
 
     if (removeDupes) {
-      const uniqueArray: Target[] = this.subscription.target_email_list.filter((t1, index) => {
-        return (
-          index ===
-          this.subscription.target_email_list.findIndex(t2 => {
-            return t2.email.toLowerCase() === t1.email.toLowerCase();
-          })
-        );
-      });
+      const uniqueArray: Target[] = this.subscription.target_email_list.filter(
+        (t1, index) => {
+          return (
+            index ===
+            this.subscription.target_email_list.findIndex((t2) => {
+              return t2.email.toLowerCase() === t1.email.toLowerCase();
+            })
+          );
+        }
+      );
       this.subscription.target_email_list = uniqueArray;
     }
 
@@ -706,5 +710,4 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
   /**
    *
    */
-
 }

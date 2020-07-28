@@ -4,7 +4,7 @@ import {
   Customer,
   Contact,
   NewCustomer,
-  ICustomerContact
+  ICustomerContact,
 } from 'src/app/models/customer.model';
 import { BehaviorSubject } from 'rxjs';
 import { SettingsService } from './settings.service';
@@ -14,7 +14,7 @@ export class CustomerService {
   constructor(
     private http: HttpClient,
     private settingsService: SettingsService
-  ) { }
+  ) {}
 
   showCustomerInfo = false;
   selectedCustomer = '';
@@ -49,7 +49,7 @@ export class CustomerService {
           mobile_phone: contact.mobile_phone,
           email: contact.email,
           notes: contact.notes,
-          active: contact.active
+          active: contact.active,
         };
         customerContacts.push(customerContact);
       });
@@ -71,7 +71,7 @@ export class CustomerService {
       mobile_phone: requestData.mobile_phone,
       email: requestData.email,
       notes: requestData.notes,
-      active: requestData.active
+      active: requestData.active,
     };
     return contact;
   }
@@ -82,9 +82,9 @@ export class CustomerService {
    */
   public getContactsForCustomer(c: Customer) {
     const a = [];
-    c.contact_list.forEach(x => {
+    c.contact_list.forEach((x) => {
       a.push({
-        name: x.first_name + ' ' + x.last_name
+        name: x.first_name + ' ' + x.last_name,
       });
     });
     return a;
@@ -92,7 +92,7 @@ export class CustomerService {
 
   public setContacts(uuid: string, contacts: Contact[]) {
     const data = {
-      contact_list: contacts
+      contact_list: contacts,
     };
 
     return this.http.patch(

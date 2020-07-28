@@ -1,26 +1,24 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 
-
 @Component({
   selector: 'app-chart-complexity-level',
   templateUrl: './chart-complexity-level.component.html',
-  styleUrls: ['./chart-complexity-level.component.scss']
+  styleUrls: ['./chart-complexity-level.component.scss'],
 })
 export class ChartComplexityLevelComponent implements OnInit, OnChanges {
-
   @Input()
   subscription: any;
 
   chart: any = {};
 
   schemeLowMedHigh = {
-    domain: ['#FDC010', '#1979a7']
+    domain: ['#FDC010', '#1979a7'],
   };
 
   /**
    *
    */
-  constructor() { }
+  constructor() {}
 
   /**
    *
@@ -58,29 +56,33 @@ export class ChartComplexityLevelComponent implements OnInit, OnChanges {
     const levels = ['1', '2', '3', '4', '5', '6'];
     const obj = [];
 
-    levels.forEach(l => {
+    levels.forEach((l) => {
       obj.push({
-        name: l.toString(), series: [{
-          name: 'Unique Click Rate',
-          value: 0
-        }, {
-          name: 'User Report Rate',
-          value: 0
-        }]
+        name: l.toString(),
+        series: [
+          {
+            name: 'Unique Click Rate',
+            value: 0,
+          },
+          {
+            name: 'User Report Rate',
+            value: 0,
+          },
+        ],
       });
     });
 
-    campaignResults.forEach(c => {
-      const o = obj.find(x => x.name === c.deception_level.toString());
+    campaignResults.forEach((c) => {
+      const o = obj.find((x) => x.name === c.deception_level.toString());
 
-      const uqr = o.series.find(x => x.name === 'Unique Click Rate');
+      const uqr = o.series.find((x) => x.name === 'Unique Click Rate');
       if (uqr.value === 0) {
         uqr.value = c.ratios.clicked_ratio * 100;
       } else {
         uqr.value = (uqr.value + c.ratios.clicked_ratio * 100) / 2;
       }
 
-      const urr = o.series.find(x => x.name === 'User Report Rate');
+      const urr = o.series.find((x) => x.name === 'User Report Rate');
       if (urr.value === 0) {
         urr.value = c.ratios.reported_ratio * 100;
       } else {

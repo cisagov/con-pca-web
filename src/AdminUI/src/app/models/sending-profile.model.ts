@@ -15,6 +15,6 @@ export class SendingProfile {
  *
  */
 export class SendingProfileHeader {
-    key: string;
-    value: string;
+  key: string;
+  value: string;
 }

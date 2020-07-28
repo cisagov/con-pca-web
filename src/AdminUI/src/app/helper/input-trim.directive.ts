@@ -5,20 +5,25 @@ import {
   Inject,
   Input,
   Optional,
-  Renderer2
+  Renderer2,
 } from '@angular/core';
 import {
   COMPOSITION_BUFFER_MODE,
   ControlValueAccessor,
-  NG_VALUE_ACCESSOR
+  NG_VALUE_ACCESSOR,
 } from '@angular/forms';
 
 @Directive({
   selector: 'input[trim], textarea[trim]',
-  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: InputTrimDirective, multi: true }]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: InputTrimDirective,
+      multi: true,
+    },
+  ],
 })
 export class InputTrimDirective implements ControlValueAccessor {
-
   private get _type(): string {
     return this._sourceElementRef.nativeElement.type || 'text';
   }
@@ -55,9 +60,9 @@ export class InputTrimDirective implements ControlValueAccessor {
     this.updateValue(event, value);
   }
 
-  onChange = (_: any) => { };
+  onChange = (_: any) => {};
 
-  onTouched = () => { };
+  onTouched = () => {};
 
   constructor(
     @Inject(Renderer2) renderer: Renderer2,
@@ -68,9 +73,13 @@ export class InputTrimDirective implements ControlValueAccessor {
     this._sourceElementRef = elementRef;
   }
 
-  registerOnChange(fn: (_: any) => void): void { this.onChange = fn; }
+  registerOnChange(fn: (_: any) => void): void {
+    this.onChange = fn;
+  }
 
-  registerOnTouched(fn: () => void): void { this.onTouched = fn; }
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
 
   /**
    * Writes a new value to the element based on the type of input element.
@@ -88,7 +97,11 @@ export class InputTrimDirective implements ControlValueAccessor {
     //
     this._value = value === '' ? '' : value || null;
 
-    this._sourceRenderer.setProperty(this._sourceElementRef.nativeElement, 'value', this._value);
+    this._sourceRenderer.setProperty(
+      this._sourceElementRef.nativeElement,
+      'value',
+      this._value
+    );
 
     // a dirty trick (or magic) goes here:
     // it updates the element value if `setProperty` doesn't set a new value for some reason.
@@ -96,12 +109,20 @@ export class InputTrimDirective implements ControlValueAccessor {
     // SEE: https://github.com/anein/angular2-trim-directive/issues/9
     //
     if (this._type !== 'text') {
-      this._sourceRenderer.setAttribute(this._sourceElementRef.nativeElement, 'value', this._value);
+      this._sourceRenderer.setAttribute(
+        this._sourceElementRef.nativeElement,
+        'value',
+        this._value
+      );
     }
   }
 
   setDisabledState(isDisabled: boolean): void {
-    this._sourceRenderer.setProperty(this._sourceElementRef.nativeElement, 'disabled', isDisabled);
+    this._sourceRenderer.setProperty(
+      this._sourceElementRef.nativeElement,
+      'disabled',
+      isDisabled
+    );
   }
 
   /**
@@ -113,11 +134,17 @@ export class InputTrimDirective implements ControlValueAccessor {
   private setCursorPointer(cursorPosition: any, hasTypedSymbol: boolean): void {
     // move the cursor to the stored position (Safari usually moves the cursor to the end)
     // setSelectionRange method apply only to inputs of types text, search, URL, tel and password
-    if (hasTypedSymbol && ['text', 'search', 'url', 'tel', 'password'].indexOf(this._type) >= 0) {
+    if (
+      hasTypedSymbol &&
+      ['text', 'search', 'url', 'tel', 'password'].indexOf(this._type) >= 0
+    ) {
       // Ok, for some reason in the tests the type changed is not being catch and because of that
       // this line is executed and causes an error of DOMException, it pass the text without problem
       // But it should be a better way to validate that type change
-      this._sourceElementRef.nativeElement.setSelectionRange(cursorPosition, cursorPosition);
+      this._sourceElementRef.nativeElement.setSelectionRange(
+        cursorPosition,
+        cursorPosition
+      );
     }
   }
 

@@ -7,7 +7,7 @@ import { NewCustomer } from 'src/app/models/customer.model';
 @Component({
   selector: 'app-add-customer-dialog',
   templateUrl: './add-customer-dialog.component.html',
-  styleUrls: ['./add-customer-dialog.component.scss']
+  styleUrls: ['./add-customer-dialog.component.scss'],
 })
 export class AddCustomerDialogComponent implements OnInit {
   form_group = new FormGroup({
@@ -17,7 +17,7 @@ export class AddCustomerDialogComponent implements OnInit {
     address_2: new FormControl(),
     city: new FormControl(),
     state: new FormControl(),
-    zip_code: new FormControl()
+    zip_code: new FormControl(),
   });
   constructor(
     public dialog_ref: MatDialogRef<AddCustomerDialogComponent>,
@@ -44,7 +44,7 @@ export class AddCustomerDialogComponent implements OnInit {
       city: this.form_group.controls['city'].value,
       state: this.form_group.controls['state'].value,
       zip_code: this.form_group.controls['zip_code'].value,
-      contact_list: []
+      contact_list: [],
     };
 
     this.customer_service.addCustomer(customer).subscribe();

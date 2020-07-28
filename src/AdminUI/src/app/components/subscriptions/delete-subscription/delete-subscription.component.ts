@@ -2,7 +2,7 @@ import { Component, Inject, Input } from '@angular/core';
 import {
   MatDialog,
   MatDialogRef,
-  MAT_DIALOG_DATA
+  MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'src/app/models/subscription.model';
@@ -17,7 +17,7 @@ export interface DialogData {
 @Component({
   selector: 'delete-subscription',
   templateUrl: 'delete-subscription.component.html',
-  styleUrls: ['delete-subscription.component.scss']
+  styleUrls: ['delete-subscription.component.scss'],
 })
 export class DeleteSubscription {
   @Input()
@@ -33,16 +33,16 @@ export class DeleteSubscription {
   openDialog(): void {
     const dialogRef = this.dialog.open(DeleteSubscriptionDialog, {
       width: '450px',
-      data: { subscription: this.subscription }
+      data: { subscription: this.subscription },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.subscriptionsrv.deleteSubscription(this.subscription).then(
-          success => {
+          (success) => {
             this.router.navigate(['/subscriptions']);
           },
-          error => {
+          (error) => {
             let snackBarRef = this._snackBar.open(
               'Subscription Deletion Failed',
               'Dismiss',
@@ -57,7 +57,7 @@ export class DeleteSubscription {
 
 @Component({
   selector: 'delete-subscription-dialog',
-  templateUrl: 'delete-subscription-dialog.html'
+  templateUrl: 'delete-subscription-dialog.html',
 })
 export class DeleteSubscriptionDialog {
   subscription: Subscription;

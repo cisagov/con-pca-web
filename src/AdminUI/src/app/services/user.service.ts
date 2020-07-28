@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
   constructor() {}
@@ -10,9 +10,8 @@ export class UserService {
    * Returns the current logged-in user
    */
   getCurrentUser() {
-    let user = localStorage.getItem("username");
-    if (user)
-       return user;
-    return "Hello"
+    let user = localStorage.getItem('username');
+    if (user) return user;
+    return 'Hello';
   }
 }

@@ -1,30 +1,32 @@
-@import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Orbitron&display=swap");
 @page {
   margin: 0;
   size: Letter;
 }
 
 html {
-  background-color: #1B2352;
+  background-color: #1b2352;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: flex-start;
 }
 
-.topBannerRow {  
-  margin-right: 0;  
+.topBannerRow {
+  margin-right: 0;
 }
 
 body {
-  -webkit-print-color-adjust: exact !important;  
+  -webkit-print-color-adjust: exact !important;
   font-size: 16px;
   max-width: 1076px;
 }
 
-body, html, aside {
+body,
+html,
+aside {
   height: 100%;
-  background-color: #1B2352;
+  background-color: #1b2352;
 }
 
 main .container-fluid {
@@ -34,7 +36,7 @@ main .container-fluid {
 /* Header */
 
 .topBanner {
-  background-color: #1B2352;
+  background-color: #1b2352;
   height: 170px;
   width: 1076px;
 }
@@ -49,13 +51,13 @@ main .container-fluid {
 }
 
 #cisaLogo img {
-  transform: scale(.7);
+  transform: scale(0.7);
 }
 
 /* Sidebar */
 
 aside {
-  background-color: #1B2352;
+  background-color: #1b2352;
   color: white;
   display: flex;
   flex-direction: column;
@@ -81,14 +83,17 @@ aside {
 
 #gonePhishingImage {
   margin: 55px 0 0 82px;
-  transform: scale(1.5,1.4);
+  transform: scale(1.5, 1.4);
 }
 
 #gonePhishingImage img {
   margin-left: -20px;
 }
 
-#primaryContact, #cisaContact, #numbersTitle, #campaignNumbers {
+#primaryContact,
+#cisaContact,
+#numbersTitle,
+#campaignNumbers {
   padding-left: 40px;
 }
 
@@ -100,7 +105,8 @@ aside {
   z-index: 10;
 }
 
-#primaryContact h2, #numbersTitle h2 {
+#primaryContact h2,
+#numbersTitle h2 {
   font-size: 1.25em;
   margin-bottom: 5px;
 }
@@ -114,7 +120,7 @@ aside {
 }
 
 #campaignNumbers {
-  border: 1px solid #FDC010;
+  border: 1px solid #fdc010;
   color: white;
   font-size: 0.925em;
   line-height: 2em;
@@ -140,18 +146,18 @@ aside {
 /* Main Content */
 
 main > .row:first-of-type {
-  background-color: #1B2352;
+  background-color: #1b2352;
 }
 
 .main-content {
-  border-left: 15px solid #1B2352;
-  border-top: 3px solid #1B2352;
-  border-top-left-radius:25%100px;
+  border-left: 15px solid #1b2352;
+  border-top: 3px solid #1b2352;
+  border-top-left-radius: 25%100px;
   margin: -2px -20px 0 -23px;
   width: 67%;
 }
 
-.main-content  .row:nth-of-type(-n+3) {
+.main-content .row:nth-of-type(-n + 3) {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -164,8 +170,8 @@ main > .row:first-of-type {
 }
 
 h1 strong {
-  color: #164A91;
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  color: #164a91;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
   font-size: 1em;
   font-stretch: extra-condensed;
   left: 75px;
@@ -176,10 +182,11 @@ h1 strong {
 }
 
 #reportTitle span {
-  color: #164A91;
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  color: #164a91;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   font-size: 3em;
-  letter-spacing: 65px; 
+  letter-spacing: 65px;
   line-height: 1em;
   margin-left: 75px;
 }
@@ -190,16 +197,18 @@ h1 strong {
   position: relative;
 }
 
-#averageClickTitle h3, #averageReportTitle h3 {
-  color: #174A91;
+#averageClickTitle h3,
+#averageReportTitle h3 {
+  color: #174a91;
   font-size: 1.65em;
   font-weight: 400;
   margin-top: 40px;
   text-align: center;
 }
 
-#averageClickTime, #averageReportTime {
-  color: #174A91;
+#averageClickTime,
+#averageReportTime {
+  color: #174a91;
   font-size: 1.95em;
   line-height: 0.9em;
   text-align: center;
@@ -209,8 +218,9 @@ h1 strong {
   align-items: center;
 }
 
-#averageClickTime span, #averageReportTime span {
-  font-family: 'Orbitron', sans-serif;
+#averageClickTime span,
+#averageReportTime span {
+  font-family: "Orbitron", sans-serif;
   font-size: 1.125em;
   font-weight: 700;
   line-height: 1em;
@@ -218,10 +228,10 @@ h1 strong {
 
 .yellow-circle-container {
   display: flex;
-  flex-direction: row; 
+  flex-direction: row;
   align-items: center;
   justify-content: center;
-  z-index: 10; 
+  z-index: 10;
   margin-top: -240px;
 }
 
@@ -231,7 +241,7 @@ h1 strong {
 }
 
 .circles img {
-  filter: drop-shadow( 3px 3px 2px rgba(0, 0, 0, .3));
+  filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, 0.3));
 }
 
 /* SVG donut */
@@ -244,14 +254,15 @@ h1 strong {
 }
 
 .donut-caption {
-  color: #164A91;
+  color: #164a91;
   text-align: center;
 }
 
 /* SVG Bar Chart */
-.caption, .legend-caption {
-  fill: #164A91;
-  color: #164A91;
+.caption,
+.legend-caption {
+  fill: #164a91;
+  color: #164a91;
 }
 
 .legend-caption {
@@ -259,21 +270,21 @@ h1 strong {
 }
 
 .blue-bar {
-  fill:#1979a7
+  fill: #1979a7;
 }
 
 .dark-blue-bar {
-  fill:#164A91;
+  fill: #164a91;
 }
 
 .yellow-bar {
-  fill:#FDC010;
+  fill: #fdc010;
 }
 
-.bar-chart{
-  border: 1px solid #FDC010;
+.bar-chart {
+  border: 1px solid #fdc010;
   border-radius: 10px;
-  color: #164A91;
+  color: #164a91;
   height: auto;
   margin: 20px auto 0 auto;
   text-align: center;
@@ -304,11 +315,11 @@ h1 strong {
 }
 
 .legend li:nth-of-type(1)::after {
-  color: #164A91;  
+  color: #164a91;
 }
 
 .legend li:nth-of-type(2)::after {
-  color: #FDC010;  
+  color: #fdc010;
 }
 
 .legend li:nth-of-type(3)::after {

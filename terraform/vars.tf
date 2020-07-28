@@ -20,4 +20,3 @@ variable "image_repo" {
 variable "image_tag" {
   type = string
 }
-

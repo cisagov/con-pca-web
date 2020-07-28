@@ -5,10 +5,9 @@ import { DomSanitizer } from '@angular/platform-browser';
 @Component({
   selector: 'app-stats-by-level',
   templateUrl: './stats-by-level.component.html',
-  styleUrls: ['./stats-by-level.component.scss']
+  styleUrls: ['./stats-by-level.component.scss'],
 })
 export class StatsByLevelComponent implements OnInit {
-
   groups: any[] = [];
 
   // the horizontal (X) spacing of each group
@@ -32,7 +31,7 @@ export class StatsByLevelComponent implements OnInit {
   /**
    * Constructor.
    */
-  constructor() { }
+  constructor() {}
 
   /**
    * OnInit.
@@ -66,7 +65,7 @@ export class StatsByLevelComponent implements OnInit {
 }
 
 /**
- * 
+ *
  */
 export class ScaleLine {
   realNumber: number;

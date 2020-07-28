@@ -11,7 +11,7 @@ import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
 @Component({
   selector: '',
   templateUrl: './recommendations.component.html',
-  styleUrls: ['./recommendations.component.scss']
+  styleUrls: ['./recommendations.component.scss'],
 })
 export class RecommendationsComponent implements OnInit, AfterViewInit {
   displayedColumns = ['name', 'created_by', 'action'];
@@ -55,7 +55,10 @@ export class RecommendationsComponent implements OnInit, AfterViewInit {
     this.recommendationsData.filter = value.trim().toLocaleLowerCase();
   };
   public editRecommendations(recommendations: Recommendations) {
-    this.router.navigate(['/recommendationsmanager', recommendations.recommendations_uuid]);
+    this.router.navigate([
+      '/recommendationsmanager',
+      recommendations.recommendations_uuid,
+    ]);
   }
 
   onRetiredToggle() {
@@ -77,17 +80,17 @@ export class RecommendationsComponent implements OnInit, AfterViewInit {
     });
   }
   /**
- * Confirm that they want to delete the profile.
- * @param row
- */
+   * Confirm that they want to delete the profile.
+   * @param row
+   */
   confirmDeleteRecommendations(row: any): void {
     this.dialogRefConfirm = this.dialog.open(ConfirmComponent, {
-      disableClose: false
+      disableClose: false,
     });
     this.dialogRefConfirm.componentInstance.confirmMessage = `This will delete recommendation '${row.name}'.  Do you want to continue?`;
     this.dialogRefConfirm.componentInstance.title = 'Confirm Delete';
 
-    this.dialogRefConfirm.afterClosed().subscribe(result => {
+    this.dialogRefConfirm.afterClosed().subscribe((result) => {
       if (result) {
         this.deleteRecommendation(row);
       }

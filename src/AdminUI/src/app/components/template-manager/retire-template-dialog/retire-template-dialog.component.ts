@@ -7,10 +7,9 @@ import { Template } from 'src/app/models/template.model';
   selector: 'app-retire-template-dialog',
   templateUrl: './retire-template-dialog.component.html',
   styleUrls: ['../template-manager.component.scss'],
-  host: { class: 'd-flex flex-column flex-11a' }
+  host: { class: 'd-flex flex-column flex-11a' },
 })
 export class RetireTemplateDialogComponent implements OnInit {
-
   template: Template;
   retiredDescription: string;
   canRetire: boolean;
@@ -23,8 +22,7 @@ export class RetireTemplateDialogComponent implements OnInit {
     this.template = data;
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   updateReason(): void {
     if (this.retiredDescription !== '' && this.retiredDescription != null) {
@@ -38,7 +36,10 @@ export class RetireTemplateDialogComponent implements OnInit {
     this.template.retired = true;
     this.template.retired_description = this.retiredDescription;
     this.templateSvc.updateTemplate(this.template);
-    this.dialogRef.close({ retired: true, description: this.retiredDescription });
+    this.dialogRef.close({
+      retired: true,
+      description: this.retiredDescription,
+    });
   }
 
   cancel(): void {
@@ -48,5 +49,4 @@ export class RetireTemplateDialogComponent implements OnInit {
   onNoClick(): void {
     this.dialogRef.close({ retired: false });
   }
-
 }

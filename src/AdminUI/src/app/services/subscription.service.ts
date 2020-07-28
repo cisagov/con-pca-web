@@ -9,11 +9,10 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { start } from 'repl';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SubscriptionService {
-
-  subscription: Subscription
+  subscription: Subscription;
   subBehaviorSubject = new BehaviorSubject<Subscription>(new Subscription());
   cycleBehaviorSubject = new BehaviorSubject<any>({});
   customer: Customer;
@@ -27,7 +26,7 @@ export class SubscriptionService {
   constructor(
     private http: HttpClient,
     private settingsService: SettingsService
-  ) { }
+  ) {}
 
   public getSubBehaviorSubject() {
     return this.subBehaviorSubject;
@@ -36,7 +35,9 @@ export class SubscriptionService {
     this.subBehaviorSubject.next(sub);
   }
   public clearSubBehaviorSubject() {
-    this.subBehaviorSubject = new BehaviorSubject<Subscription>(new Subscription())
+    this.subBehaviorSubject = new BehaviorSubject<Subscription>(
+      new Subscription()
+    );
   }
 
   public getCycleBehaviorSubject() {
@@ -87,10 +88,10 @@ export class SubscriptionService {
           `${this.settingsService.settings.apiUrl}/api/v1/subscription/${subscription.subscription_uuid}/`
         )
         .subscribe(
-          success => {
+          (success) => {
             resolve(success);
           },
-          error => {
+          (error) => {
             reject(error);
           }
         );
@@ -123,7 +124,7 @@ export class SubscriptionService {
    * @param subscription
    */
   patchSubscription(subscription: Subscription) {
-    console.log("PATCH ISSUE")
+    console.log('PATCH ISSUE');
     return this.http.patch(
       `${this.settingsService.settings.apiUrl}/api/v1/subscription/${subscription.subscription_uuid}/`,
       subscription
@@ -258,16 +259,16 @@ export class SubscriptionService {
 
   public getReportValuesForSubscription(subscription_uuid) {
     const url = `${this.settingsService.settings.apiUrl}/api/v1/cycleemailreported/${subscription_uuid}/`;
-    return this.http.get(url)
+    return this.http.get(url);
   }
   public postReportValuesForSubscription(data, subscription_uuid) {
-    console.log(data)
+    console.log(data);
     const url = `${this.settingsService.settings.apiUrl}/api/v1/cycleemailreported/${subscription_uuid}/`;
-    return this.http.post(url, data)
+    return this.http.post(url, data);
   }
   public getSusbcriptionStatusEmailsSent(subscription_uuid) {
     const url = `${this.settingsService.settings.apiUrl}/api/v1/cycleemailreported/${subscription_uuid}/`;
-    return this.http.get(url)
+    return this.http.get(url);
     // return [
     //     {
     //         "report_type": "Cycle Complete",
@@ -311,5 +312,4 @@ export class SubscriptionService {
     //     }
     //   ]
   }
-
 }

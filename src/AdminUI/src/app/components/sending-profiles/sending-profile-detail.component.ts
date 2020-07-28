@@ -1,4 +1,10 @@
-import { Component, OnInit, Inject, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Inject,
+  ChangeDetectorRef,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SendingProfileService } from 'src/app/services/sending-profile.service';
@@ -7,7 +13,7 @@ import { SendingProfile } from 'src/app/models/sending-profile.model';
 @Component({
   selector: 'app-sending-profile-detail',
   templateUrl: './sending-profile-detail.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SendingProfileDetailComponent implements OnInit {
   /**
@@ -20,7 +26,6 @@ export class SendingProfileDetailComponent implements OnInit {
   id: number;
   headers: Map<string, string>;
   submitted = false;
-
 
   /**
    * Constructor.
@@ -54,27 +59,28 @@ export class SendingProfileDetailComponent implements OnInit {
       password: new FormControl(''),
       ignoreCertErrors: new FormControl(false),
       newHeaderName: new FormControl(''),
-      newHeaderValue: new FormControl('')
+      newHeaderValue: new FormControl(''),
     });
 
     if (!!this.id) {
       this.mode = 'edit';
 
-      this.sendingProfileSvc.getProfile(this.id).subscribe((data: any) => {
-        this.profile = data as SendingProfile;
+      this.sendingProfileSvc.getProfile(this.id).subscribe(
+        (data: any) => {
+          this.profile = data as SendingProfile;
 
-        this.f.name.setValue(this.profile.name);
-        this.f.interfaceType.setValue(this.profile.interface_type);
-        this.f.from.setValue(this.profile.from_address);
-        this.f.host.setValue(this.profile.host);
-        this.f.username.setValue(this.profile.username);
-        this.f.password.setValue(this.profile.password);
-        this.f.ignoreCertErrors.setValue(this.profile.ignore_cert_errors);
-        this.headers = new Map<string, string>();
-        for (const h of this.profile.headers) {
-          this.headers.set(h.key, h.value);
-        }
-      },
+          this.f.name.setValue(this.profile.name);
+          this.f.interfaceType.setValue(this.profile.interface_type);
+          this.f.from.setValue(this.profile.from_address);
+          this.f.host.setValue(this.profile.host);
+          this.f.username.setValue(this.profile.username);
+          this.f.password.setValue(this.profile.password);
+          this.f.ignoreCertErrors.setValue(this.profile.ignore_cert_errors);
+          this.headers = new Map<string, string>();
+          for (const h of this.profile.headers) {
+            this.headers.set(h.key, h.value);
+          }
+        },
         (err) => {
           console.log(err);
         }
@@ -95,7 +101,6 @@ export class SendingProfileDetailComponent implements OnInit {
     this.f.newHeaderName.setValue('');
     this.f.newHeaderValue.setValue('');
   }
-
 
   /**
    * Deletes a custom email header from the internal list.
@@ -126,7 +131,8 @@ export class SendingProfileDetailComponent implements OnInit {
     if (!!this.headers) {
       for (const [key, value] of this.headers) {
         const h = {
-          key, value
+          key,
+          value,
         };
         sp.headers.push(h);
       }

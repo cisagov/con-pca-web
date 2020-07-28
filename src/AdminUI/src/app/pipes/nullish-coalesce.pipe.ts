@@ -8,13 +8,12 @@ import { Pipe, PipeTransform } from '@angular/core';
  * Example:
  *   {{ null | nullishCoalesce:'some fallback value' }}
  *   formats to: 'some fallback value'
-*/
+ */
 @Pipe({
-  name: 'nullishCoalesce'
+  name: 'nullishCoalesce',
 })
 export class NullishCoalescePipe implements PipeTransform {
-
   transform<T, K>(value: T, fallbackValue: K): NonNullable<T> | K {
-    return value != null ? value as NonNullable<T> : fallbackValue;
+    return value != null ? (value as NonNullable<T>) : fallbackValue;
   }
 }

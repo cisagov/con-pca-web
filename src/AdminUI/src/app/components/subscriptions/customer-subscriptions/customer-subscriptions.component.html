@@ -16,13 +16,21 @@
       >
       <mat-cell *matCellDef="let row">{{ row.active }}</mat-cell>
     </ng-container>
-    <ng-container matColumnDef="start_date" >
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Start Date</mat-header-cell>
-        <mat-cell *matCellDef="let row">{{row.start_date | date:dateFormat}}</mat-cell>
+    <ng-container matColumnDef="start_date">
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >Start Date</mat-header-cell
+      >
+      <mat-cell *matCellDef="let row">{{
+        row.start_date | date: dateFormat
+      }}</mat-cell>
     </ng-container>
-    <ng-container matColumnDef="lub_timestamp" >
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Last Updated</mat-header-cell>
-        <mat-cell *matCellDef="let row">{{row.lub_timestamp | date:dateFormat}}</mat-cell>
+    <ng-container matColumnDef="lub_timestamp">
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >Last Updated</mat-header-cell
+      >
+      <mat-cell *matCellDef="let row">{{
+        row.lub_timestamp | date: dateFormat
+      }}</mat-cell>
     </ng-container>
     <ng-container matColumnDef="inspect">
       <mat-header-cell *matHeaderCellDef>Inspect</mat-header-cell>

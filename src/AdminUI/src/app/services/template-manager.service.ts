@@ -6,7 +6,7 @@ import { SettingsService } from './settings.service';
 
 const headers = {
   headers: new HttpHeaders().set('Content-Type', 'application/json'),
-  params: new HttpParams()
+  params: new HttpParams(),
 };
 
 @Injectable()
@@ -48,10 +48,10 @@ export class TemplateManagerService {
       this.http
         .get(`${this.settingsService.settings.apiUrl}/api/v1/template/${uuid}`)
         .subscribe(
-          success => {
+          (success) => {
             resolve(success);
           },
-          error => {
+          (error) => {
             reject(error);
           },
           () => {}
@@ -82,10 +82,10 @@ export class TemplateManagerService {
           template
         )
         .subscribe(
-          success => {
+          (success) => {
             resolve(success);
           },
-          error => {
+          (error) => {
             reject(error);
           },
           () => {}
@@ -104,10 +104,10 @@ export class TemplateManagerService {
           `${this.settingsService.settings.apiUrl}/api/v1/template/${template.template_uuid}/`
         )
         .subscribe(
-          success => {
+          (success) => {
             resolve(success);
           },
-          error => {
+          (error) => {
             reject(error);
           }
         );

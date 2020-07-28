@@ -1,46 +1,85 @@
 <div>
-    <mat-card>
-        <mat-card-title>
-            Reporting
-        </mat-card-title>
-        Reporting Cycle:
+  <mat-card>
+    <mat-card-title>
+      Reporting
+    </mat-card-title>
+    Reporting Cycle:
 
-        <div class="cycle-select-wrapper" *ngIf="subscription">
-            <mat-form-field class="cycle-select-dropdown" *ngIf="subscription.cycles" appearance="outline">
-                <mat-label>Cycle</mat-label>
-                <mat-select [(value)]="selectedCycle" (selectionChange)="cycleChange($event)">
-                    <mat-option *ngFor="let c of subscription.cycles" [value]="c">
-                        {{ c.start_date | UTCtoReadableTime }} - {{ c.end_date | UTCtoReadableTime }}</mat-option>
-                </mat-select>
-            </mat-form-field>
-        </div>
-    </mat-card>
-    <mat-card>
-        <mat-label class="h6">Reports</mat-label>
-        <div class="mb-4">
-            <div class="text-muted">View or send this subscription's reports</div>
-            <button mat-raised-button color="primary" class="mb-3"
-                (click)="viewMonthlyReport(); $event.preventDefault()">Download Monthly
-                Report</button>
-            <button mat-raised-button color="primary" class="mb-3"
-                (click)="viewCycleReport(); $event.preventDefault()">Download Cycle
-                Report</button>
-            <button mat-raised-button color="primary" class="mb-3"
-                (click)="viewYearlyReport(); $event.preventDefault()">Download Yearly
-                Report</button>
-            <br><br>
-            <button mat-raised-button color="accent" class="mb-3"
-                (click)="sendMonthlyReport(); $event.preventDefault()">Send Monthly
-                Report</button>
-            <button mat-raised-button color="accent" class="mb-3"
-                (click)="sendCycleReport(); $event.preventDefault()">Send Cycle
-                Report</button>
-            <button mat-raised-button color="accent" class="mb-3"
-                (click)="sendYearlyReport(); $event.preventDefault()">Send Yearly
-                Report</button><br>
-        </div>
-    </mat-card>
-    <!-- 
+    <div class="cycle-select-wrapper" *ngIf="subscription">
+      <mat-form-field
+        class="cycle-select-dropdown"
+        *ngIf="subscription.cycles"
+        appearance="outline"
+      >
+        <mat-label>Cycle</mat-label>
+        <mat-select
+          [(value)]="selectedCycle"
+          (selectionChange)="cycleChange($event)"
+        >
+          <mat-option *ngFor="let c of subscription.cycles" [value]="c">
+            {{ c.start_date | UTCtoReadableTime }} -
+            {{ c.end_date | UTCtoReadableTime }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </mat-card>
+  <mat-card>
+    <mat-label class="h6">Reports</mat-label>
+    <div class="mb-4">
+      <div class="text-muted">View or send this subscription's reports</div>
+      <button
+        mat-raised-button
+        color="primary"
+        class="mb-3"
+        (click)="viewMonthlyReport(); $event.preventDefault()"
+      >
+        Download Monthly Report
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        class="mb-3"
+        (click)="viewCycleReport(); $event.preventDefault()"
+      >
+        Download Cycle Report
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        class="mb-3"
+        (click)="viewYearlyReport(); $event.preventDefault()"
+      >
+        Download Yearly Report
+      </button>
+      <br /><br />
+      <button
+        mat-raised-button
+        color="accent"
+        class="mb-3"
+        (click)="sendMonthlyReport(); $event.preventDefault()"
+      >
+        Send Monthly Report
+      </button>
+      <button
+        mat-raised-button
+        color="accent"
+        class="mb-3"
+        (click)="sendCycleReport(); $event.preventDefault()"
+      >
+        Send Cycle Report
+      </button>
+      <button
+        mat-raised-button
+        color="accent"
+        class="mb-3"
+        (click)="sendYearlyReport(); $event.preventDefault()"
+      >
+        Send Yearly Report</button
+      ><br />
+    </div>
+  </mat-card>
+  <!--
     <div *ngIf="subscription">
         <mat-form-field class="cycle-select-dropdown" *ngIf="subscription.cycles" appearance="outline">
             <mat-label>Cycle</mat-label>
@@ -51,38 +90,54 @@
         </mat-form-field>
     </div> -->
 
-    <mat-card>
-        <div class="mb-3">
-            <mat-table [dataSource]="emailsSent" matSort>
-                <ng-container matColumnDef="report">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>Report</mat-header-cell>
-                    <mat-cell *matCellDef="let row">{{ row.report_type }}</mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="sent">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>Sent</mat-header-cell>
-                    <mat-cell *matCellDef="let row">{{ row.sent | UTCtoReadableTime}}</mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="to">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>To</mat-header-cell>
-                    <mat-cell *matCellDef="let row">{{ row.email_to }}</mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="from">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>From</mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{row.email_from}}</mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="bcc">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>BCC</mat-header-cell>
-                    <mat-cell *matCellDef="let row">{{ row.bcc }}</mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="manual">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>Manual</mat-header-cell>
-                    <mat-cell *matCellDef="let row">{{ row.manual }}</mat-cell>
-                </ng-container>
+  <mat-card>
+    <div class="mb-3">
+      <mat-table [dataSource]="emailsSent" matSort>
+        <ng-container matColumnDef="report">
+          <mat-header-cell *matHeaderCellDef mat-sort-header
+            >Report</mat-header-cell
+          >
+          <mat-cell *matCellDef="let row">{{ row.report_type }}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="sent">
+          <mat-header-cell *matHeaderCellDef mat-sort-header
+            >Sent</mat-header-cell
+          >
+          <mat-cell *matCellDef="let row">{{
+            row.sent | UTCtoReadableTime
+          }}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="to">
+          <mat-header-cell *matHeaderCellDef mat-sort-header
+            >To</mat-header-cell
+          >
+          <mat-cell *matCellDef="let row">{{ row.email_to }}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="from">
+          <mat-header-cell *matHeaderCellDef mat-sort-header
+            >From</mat-header-cell
+          >
+          <mat-cell *matCellDef="let row"> {{ row.email_from }}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="bcc">
+          <mat-header-cell *matHeaderCellDef mat-sort-header
+            >BCC</mat-header-cell
+          >
+          <mat-cell *matCellDef="let row">{{ row.bcc }}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="manual">
+          <mat-header-cell *matHeaderCellDef mat-sort-header
+            >Manual</mat-header-cell
+          >
+          <mat-cell *matCellDef="let row">{{ row.manual }}</mat-cell>
+        </ng-container>
 
-                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                <mat-row class="table-row" *matRowDef="let row; columns: displayedColumns"></mat-row>
-            </mat-table>
-        </div>
-
-    </mat-card>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row
+          class="table-row"
+          *matRowDef="let row; columns: displayedColumns"
+        ></mat-row>
+      </mat-table>
+    </div>
+  </mat-card>
 </div>
