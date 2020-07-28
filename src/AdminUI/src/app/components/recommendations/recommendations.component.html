@@ -1,0 +1,63 @@
+<div class="container-fluid">
+  <div class="d-flex flex-row flex-grow-1">
+    <!-- SEARCH BAR -->
+    <mat-form-field class="d-flex flex-column w-100" appearance="outline">
+      <mat-label>Search</mat-label>
+      <input [(ngModel)]="search_input" (keyup)="filterRecommendations($event.target.value)" matInput
+        placeholder="Search" />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <!-- CREATE RECOMMENDATIONS -->
+    <div class="d-inline-flex flex-column ml-2">
+      <button mat-raised-button color="primary" routerLink="/recommendationsmanager">
+        New Recommendation
+      </button>
+    </div>
+  </div>
+
+  <div class="col p-0 w-100">
+    <div *ngIf="loading" style="text-align: center; padding-top: 2rem; padding-bottom: 2rem;">
+      <mat-spinner class="spinner" style="margin-left: auto; margin-right: auto;" diameter="50"></mat-spinner>
+    </div>
+
+    <!-- RECOMMENDATIONS TABLE -->
+    <mat-table *ngIf="!loading" [dataSource]="recommendationsData" matSort>
+      <!-- NAME -->
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{ row.name }}</mat-cell>
+      </ng-container>
+      <!-- DECEPTION SCORE -->
+      <ng-container matColumnDef="deception_score">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Deception Score</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{ row.deception_score }}</mat-cell>
+      </ng-container>
+      <!-- CREATED BY -->
+      <ng-container matColumnDef="created_by">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Created By</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{ row.created_by }}</mat-cell>
+      </ng-container>
+      <!-- RETIRED -->
+      <ng-container matColumnDef="retired">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Retired</mat-header-cell>
+        <mat-cell *matCellDef="let row"><i *ngIf="row.retired" class="fa fa-check"></i></mat-cell>
+      </ng-container>
+      <!-- ACTION ICONS -->
+      <ng-container matColumnDef="action">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <button class="table-btn-icon" mat-flat-button color="primary">
+            <mat-icon class="mat-icon table-btn-icon-size material-icons mat-icon-no-color"
+              (click)="editRecommendations(row)">edit</mat-icon>
+          </button>
+          <button class="table-btn-icon" mat-flat-button color="warn" (click)="confirmDeleteRecommendations(row)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row class="table-row cursor-pointer" *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+  </div>
+</div>

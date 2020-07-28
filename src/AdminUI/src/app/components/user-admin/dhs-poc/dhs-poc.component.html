@@ -1,0 +1,78 @@
+<div class="container-fluid">
+    <!-- Search Bar -->
+    <div class="d-flex flex-row flex-grow-1">
+        <div class="d-flex flex-column w-100">
+            <mat-form-field class="search-bar" appearance="outline">
+                <mat-label>Search</mat-label>
+                <input matInput (keyup)="filterContacts($event.target.value)">
+                <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+        </div>
+        <div class="d-inline-flex flex-column ml-2">
+            <button mat-raised-button color="primary" (click)="editContact({})">
+                New Contact
+            </button>
+        </div>
+    </div>
+
+
+
+    <mat-table *ngIf="this.dhsContacts.data.length > 0" class="w-100" [dataSource]="dhsContacts">
+        <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef>
+                Contact Name
+            </mat-header-cell>
+            <mat-cell *matCellDef="let contact">
+                {{contact.first_name}} {{contact.last_name}}
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="title">
+            <mat-header-cell *matHeaderCellDef>
+                Title
+            </mat-header-cell>
+            <mat-cell *matCellDef="let contact">
+                {{contact.title}}
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+            <mat-header-cell *matHeaderCellDef>
+                Email
+            </mat-header-cell>
+            <mat-cell *matCellDef="let contact">
+                {{contact.email}}
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="active">
+            <mat-header-cell *matHeaderCellDef class="text-center">
+                Active
+            </mat-header-cell>
+            <mat-cell *matCellDef="let contact" class="text-center">
+                <i *ngIf="contact.active" class="fa fa-check"></i>
+            </mat-cell>
+        </ng-container>
+
+
+        <ng-container matColumnDef="select">
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let contact" class="text-right">
+                <button class="table-btn-icon" mat-flat-button color="primary" (click)="editContact(contact)">
+                    <mat-icon class="table-btn-icon-size">edit</mat-icon>
+                </button>
+                <button class="table-btn-icon" mat-flat-button color="warn" (click)="confirmDeleteContact(contact)">
+                    <mat-icon class="table-btn-icon-size">delete</mat-icon>
+                </button>
+            </mat-cell>
+        </ng-container>
+
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns" class="table-row cursor-pointer"></mat-row>
+    </mat-table>
+    <div *ngIf="this.dhsContacts.data.length == 0" class="p-3 text-center">
+        No DHS contacts are defined
+    </div>
+
+</div>

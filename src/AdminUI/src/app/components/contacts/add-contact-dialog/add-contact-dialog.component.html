@@ -1,0 +1,112 @@
+<h1>Add New Contact</h1>
+
+<div class="d-flex flex-column" [formGroup]="form_group">
+  <div class="d-flex flex-row">
+    <!-- FIRST NAME -->
+    <mat-form-field appearance="outline">
+      <mat-label>First Name</mat-label>
+      <input
+        matInput trim="blur"
+        type="text"
+        formControlName="first_name"
+        placeholder="First Name"
+      />
+    </mat-form-field>
+
+    <!-- LAST NAME -->
+    <mat-form-field appearance="outline">
+      <mat-label>Last Name</mat-label>
+      <input
+        matInput
+        trim="blur"
+        type="text"
+        formControlName="last_name"
+        placeholder="Last Name"
+      />
+    </mat-form-field>
+  </div>
+
+  <!-- TITLE -->
+  <mat-form-field appearance="outline">
+    <mat-label>Position</mat-label>
+    <input
+      matInput
+      trim="blur"
+      type="text"
+      formControlName="title"
+      placeholder="Position"
+    />
+  </mat-form-field>
+
+  <!-- CUSTOMER -->
+  <mat-form-field appearance="outline">
+    <mat-label>Customer</mat-label>
+    <mat-select formControlName="customer_uuid">
+      <mat-option *ngFor="let c of customers" [value]="c.customer_uuid">
+        {{ c.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- OFFICE PHONE -->
+  <mat-form-field appearance="outline">
+    <mat-label>Office Phone Number</mat-label>
+    <input
+      matInput
+      trim="blur"
+      type="text"
+      formControlName="office_phone"
+      placeholder="(222)222-2222"
+    />
+  </mat-form-field>
+
+  <!-- MOBILE PHONE -->
+  <mat-form-field appearance="outline">
+    <mat-label>Mobile Phone Number</mat-label>
+    <input
+      matInput
+      trim="blur"
+      type="text"
+      formControlName="mobile_phone"
+      placeholder="(222)222-2222"
+    />
+  </mat-form-field>
+
+  <!-- EMAIL -->
+  <mat-form-field appearance="outline">
+    <mat-label>Email</mat-label>
+    <input
+      matInput
+      trim="blur"
+      type="text"
+      formControlName="email"
+      placeholder="Email@exmaple.com"
+    />
+  </mat-form-field>
+
+  <!-- NOTES -->
+  <mat-form-field appearance="outline">
+    <mat-label>Notes</mat-label>
+    <textarea
+      matInput
+      trim="blur"
+      cdkTextareaAutosize
+      #autosize="cdkTextareaAutosize"
+      formControlName="notes"
+      placeholder="Special Notes"
+    ></textarea>
+  </mat-form-field>
+
+  <div class="d-flex flex-row justify-content-end">
+    <div class="d-flex flex-column">
+      <button mat-raised-button color="accent" (click)="onCancelClick()">
+        Cancel
+      </button>
+    </div>
+    <div class="d-flex flex-column">
+      <button mat-raised-button color="success" (click)="onSaveClick()">
+        Save & Exit
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,77 @@
+.tab-form-error::after {
+  content: "*";
+  color: red;
+}
+
+.template-list {
+  border: rgba(0, 0, 0, 0.15) solid 1px;
+  border-radius: 7px;
+}
+
+.selected_template_title div {
+  padding-bottom: 0em;
+}
+:host ::ng-deep .mat-form-field-wrapper {
+  margin: 0 !important;
+  padding: 0;
+}
+
+.selected-template button {
+  display: flex;
+  justify-content: center;
+  padding: 0em 3em;
+}
+.save_container {
+  align-items: flex-end;
+  flex: auto;
+}
+
+.deception_calc_content {
+  height: calc(100% - 48px);
+}
+
+.radio_selection {
+  width: 100%;
+  padding-left: 2em;
+}
+
+.radio_selection_group {
+  margin-left: 1em;
+  padding-top: 0.5em;
+}
+
+.radio_selection_group mat-radio-button {
+  width: 100%;
+}
+
+.check-box-wrapper {
+  display: inline-block;
+}
+
+.deception_checkboxes {
+  display: flex;
+  flex-direction: column;
+}
+
+// :root {
+//   --radio-button-size: 10px
+// }
+
+// :host ::ng-deep .mat-radio-container{
+//   height: var(--radio-button-size);
+//   width: 10px;
+// }
+// :host ::ng-deep .mat-radio-outer-circle{
+//   height: 10px;
+//   width: 10px;
+// }
+// :host ::ng-deep .mat-radio-inner-circle{
+//   height: 10px;
+//   width: 10px;
+// }
+// :host ::ng-deep .mat-radio-button .mat-radio-ripple{
+//   height: 20px; /*double of your required circle radius*/
+//   width: 20px;  /*double of your required circle radius*/
+//   left: calc(50% - 10px); /*'10px'-same as your required circle radius*/
+//   top: calc(50% - 10px); /*'10px'-same as your required circle radius*/
+// }

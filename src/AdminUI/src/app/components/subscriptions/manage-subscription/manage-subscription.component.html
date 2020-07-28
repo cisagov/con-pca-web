@@ -1,0 +1,14 @@
+<mat-tab-group (selectedTabChange)="onTabChanged($event);">
+    <mat-tab label="Subscription Configuration">
+        <subscription-config-tab></subscription-config-tab>
+    </mat-tab>
+    <mat-tab label="Statistics">
+        <subscription-stats-tab></subscription-stats-tab>
+    </mat-tab>
+    <mat-tab label="Reporting">
+        <subscription-report-tab></subscription-report-tab>
+    </mat-tab>
+    <mat-tab label="Tasks">
+        <app-subscription-tasks-tab></app-subscription-tasks-tab>
+    </mat-tab>
+</mat-tab-group>

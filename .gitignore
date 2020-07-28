@@ -2,3 +2,15 @@
 .pytest_cache
 .python-version
 __pycache__
+
+.vscode
+.idea/
+
+.env
+.terraform
+
+src/AdminUI/node_modules
+src/AdminUI/node_modules/*
+src/AdminUI/dist
+src/.env
+src/AdminUI/package-lock.json

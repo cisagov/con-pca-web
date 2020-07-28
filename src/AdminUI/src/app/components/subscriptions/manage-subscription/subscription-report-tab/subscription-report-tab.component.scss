@@ -1,0 +1,14 @@
+ng-select { 
+    .ng-dropdown-panel { 
+        width: auto !important;
+        max-width: 550px;
+        border: solid red 1px;
+    } 
+}
+.cycle-select-dropdown {
+    min-width:25em !important;
+}
+.cycle-select-wrapper {
+    display: inline-block;
+    margin-left: 1em;
+}

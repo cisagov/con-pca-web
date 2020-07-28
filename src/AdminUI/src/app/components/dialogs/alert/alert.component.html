@@ -1,0 +1,15 @@
+
+  <h1>{{ data.title | titlecase }}</h1>
+
+  <div class="p-3 pb-0 pr-0 mt-2 oy-auto d-flex flex-column flex-11a">
+    <mat-dialog-content class="p-0 pr-3">
+      <div [innerHTML]="data.messageText | safe" class="pre-wrap">
+      </div>
+    </mat-dialog-content>
+  </div>
+
+  <div class="mt-2 mb-2 d-flex flex-row justify-content-end">
+    <mat-dialog-actions>
+      <button mat-raised-button color="primary" (click)="dialogRef.close()">OK</button>
+    </mat-dialog-actions>
+  </div>

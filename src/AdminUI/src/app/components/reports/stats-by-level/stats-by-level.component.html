@@ -1,0 +1,26 @@
+<svg width="100%">
+    <g class="measure-line">
+        <line *ngFor="let l of yScaleLines" 
+            x1="30" [attr.y1]="l.y" x2="100%" [attr.y2]="chartHeight" style="stroke:#BAD6E4;stroke-width:1" />
+        <text *ngFor="let l of yScaleLines" x="15" [attr.y]="l.y" class="caption" dy=".35em">0</text>
+    </g>
+    <g *ngFor="let group of metrics?.stats; let i = index"
+        [attr.transform]="'translate(' + ((i + 1) * groupX) + ')'">
+        <g x="0">
+            <rect style="fill:#164A91;" width="15"
+                [attr.height]="group.lowN" [attr.x]="0"
+                [attr.y]="chartHeight - group.lowN"></rect>
+            <rect style="fill:#FDC010;" width="15"
+                [attr.height]="group.moderateN" [attr.x]="20"
+                [attr.y]="chartHeight - group.moderateN"></rect>
+            <rect style="fill:#1979a7" width="15"
+                [attr.height]="group.highN" [attr.x]="40"
+                [attr.y]="chartHeight - group.highN"></rect>
+        </g>
+        <g [attr.transform]="'translate(0,' + (chartHeight + 20) + ')'" width="100%">
+            <text class="caption" dy=".35em" width="100%">
+                <tspan text-anchor="middle">{{group.type | titlecase}}</tspan>
+            </text>
+        </g>
+    </g>
+</svg>

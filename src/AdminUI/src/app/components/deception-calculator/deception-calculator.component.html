@@ -1,0 +1,234 @@
+<div class="d-flex flex-row container-fluid row deception_calc_content">
+  <!-- Left Column - Template Preview -->
+  <div class="col-5 border-right h-100 overflow-auto p-3">
+    <h1>Template: {{ templateName }}</h1>
+    <h4>Subject: {{ templateSubject }}</h4>
+    <div [innerHTML]="templateHTML">template</div>
+  </div>
+  <!-- Right Column - Calculation -->
+  <div class="col-7 h-100 overflow-auto">
+    <div class="p-3">
+      <h1>Deception Calculations</h1>
+      <div class="mb-3">
+        <!-- <div class="d-flex flex-grow-1 flex-column row"> -->
+        <div class="">
+          <b> Instructions: </b>
+          <p>The higher the score the greater perceived deception level</p>
+        </div>
+        <div class="row">
+          <!-- Left Column Calcs -->
+          <div class="d-flex flex-column col-md-12 col-lg-5">
+            <div class="" [formGroup]="deceptionFormGroup">
+              <mat-label class="mb-3">Appearance & Grammar</mat-label>
+              <mat-radio-group
+                appearance="outline"
+                class="row radio_selection_group"
+                formControlName="grammar"
+              >
+                <mat-radio-button [value]="0" radioGroup="grammarRadioGroup"
+                  >0 = Poor</mat-radio-button
+                >
+                <mat-radio-button [value]="1" radioGroup="grammarRadioGroup"
+                  >1 = Decent</mat-radio-button
+                >
+                <mat-radio-button [value]="2" radioGroup="grammarRadioGroup"
+                  >2 = Proper</mat-radio-button
+                >
+              </mat-radio-group>
+            </div>
+            <div class="" [formGroup]="deceptionFormGroup">
+              <mat-label class="mb-3">Link Domain</mat-label>
+              <mat-radio-group
+                appearance="outline"
+                class="row radio_selection_group"
+                formControlName="link_domain"
+              >
+                <mat-radio-button [value]="0" radioGroup="linkRadioGroup"
+                  >0 = Fake</mat-radio-button
+                >
+                <mat-radio-button [value]="1" radioGroup="linkRadioGroup"
+                  >1 = Spoofed / Hidden</mat-radio-button
+                >
+              </mat-radio-group>
+            </div>
+            <div class="" [formGroup]="deceptionFormGroup">
+              <mat-label class="mb-3">Logo / Graphics</mat-label>
+              <mat-radio-group
+                appearance="outline"
+                class="row radio_selection_group"
+                formControlName="logo_graphics"
+              >
+                <mat-radio-button [value]="0" radioGroup="graphicsRadioGroup"
+                  >0 = Fake / None</mat-radio-button
+                >
+                <mat-radio-button [value]="1" radioGroup="graphicsRadioGroup"
+                  >1 = Spoofed / HTML</mat-radio-button
+                >
+              </mat-radio-group>
+            </div>
+            <div class="" [formGroup]="deceptionFormGroup">
+              <mat-label class="mb-3">Sender External</mat-label>
+              <mat-radio-group
+                appearance="outline"
+                class="row radio_selection_group"
+                formControlName="external"
+              >
+                <mat-radio-button
+                  [value]="0"
+                  radioGroup="senderExternalRadioGroup"
+                  >0 = Fake / NA</mat-radio-button
+                >
+                <mat-radio-button
+                  [value]="1"
+                  radioGroup="senderExternalRadioGroup"
+                  >1 = Spoofed</mat-radio-button
+                >
+              </mat-radio-group>
+            </div>
+            <div class="" [formGroup]="deceptionFormGroup">
+              <mat-label class="mb-3">Internal</mat-label>
+              <mat-radio-group
+                appearance="outline"
+                class="row radio_selection_group"
+                formControlName="internal"
+              >
+                <mat-radio-button [value]="0" radioGroup="internalRadioGroup"
+                  >0 = Fake / NA</mat-radio-button
+                >
+                <mat-radio-button [value]="1" radioGroup="internalRadioGroup"
+                  >1 = Unknown Spoofed</mat-radio-button
+                >
+                <mat-radio-button [value]="2" radioGroup="internalRadioGroup"
+                  >2 = Known Spoofed</mat-radio-button
+                >
+              </mat-radio-group>
+            </div>
+            <div class="" [formGroup]="deceptionFormGroup">
+              <mat-label class="mb-3">Authoritative</mat-label>
+              <mat-radio-group
+                appearance="outline"
+                class="row radio_selection_group"
+                formControlName="authoritative"
+              >
+                <mat-radio-button
+                  [value]="0"
+                  radioGroup="authoritativeRadioGroup"
+                  >0 = None</mat-radio-button
+                >
+                <mat-radio-button
+                  [value]="1"
+                  radioGroup="authoritativeRadioGroup"
+                  >1 = Corporate / Local</mat-radio-button
+                >
+                <mat-radio-button
+                  [value]="2"
+                  radioGroup="authoritativeRadioGroup"
+                  >2 = Federal / State</mat-radio-button
+                >
+              </mat-radio-group>
+            </div>
+            <!-- End of left calcs     -->
+          </div>
+
+          <!-- Right column Calcs -->
+          <div class="d-flex flex-column col-md-12 col-lg-7 ">
+            <div class="" [formGroup]="deceptionFormGroup">
+              <mat-label class="mb-3">Relevancy Organization</mat-label>
+              <mat-radio-group
+                appearance="outline"
+                class="row radio_selection_group"
+                formControlName="organization"
+              >
+                <mat-radio-button
+                  [value]="0"
+                  radioGroup="relevancyOrganizationGroup"
+                  >0 = No</mat-radio-button
+                >
+                <mat-radio-button
+                  [value]="1"
+                  radioGroup="relevancyOrganizationGroup"
+                  >1 = Yes</mat-radio-button
+                >
+              </mat-radio-group>
+            </div>
+            <div class="" [formGroup]="deceptionFormGroup">
+              <mat-label class="mb-3">Public News</mat-label>
+              <mat-radio-group
+                appearance="outline"
+                class="row radio_selection_group"
+                formControlName="public_news"
+              >
+                <mat-radio-button [value]="0" radioGroup="publicNewsGroup"
+                  >0 = No</mat-radio-button
+                >
+                <mat-radio-button [value]="1" radioGroup="publicNewsGroup"
+                  >1 = Yes</mat-radio-button
+                >
+              </mat-radio-group>
+            </div>
+            <div class="check-box-wrapper">
+              <div
+                class="deception_checkboxes mt-2"
+                [formGroup]="deceptionFormGroup"
+              >
+                <mat-checkbox formControlName="fear"
+                  >Behavior Fear
+                </mat-checkbox>
+                <mat-checkbox formControlName="curiosity"
+                  >Duty or Obligation</mat-checkbox
+                >
+                <mat-checkbox formControlName="duty_obligation"
+                  >Curiosity</mat-checkbox
+                >
+                <mat-checkbox formControlName="greed">Greed</mat-checkbox>
+              </div>
+            </div>
+            <div class="d-flex flex-column mt-2">
+              <mat-form-field
+                appearance="outline"
+                class="flex-grow-1"
+                [formGroup]="deceptionFormGroup"
+              >
+                <mat-label>Template Additional Word Tags*</mat-label>
+                <textarea
+                  matInput
+                  cdkTextareaAutosize
+                  cdkAutosizeMinRows="2"
+                  cdkAutosizeMaxRows="5"
+                  placeholder="Additional Word Tags"
+                  formControlName="descriptive_words"
+                ></textarea>
+              </mat-form-field>
+            </div>
+            <div class="d-flex flex-column mt-auto">
+              <div class="d-flex flex-row">
+                <mat-form-field
+                  appearance="outline"
+                  class="flex-grow-1"
+                  [formGroup]="deceptionFormGroup"
+                >
+                  <mat-label>Final Deception Score</mat-label>
+                  <input
+                    type="text"
+                    matInput
+                    placeholder="DeceptionScore"
+                    formControlName="final_deception_score"
+                  />
+                </mat-form-field>
+              </div>
+              <div class="d-flex flex-row ml-auto">
+                <button
+                  mat-raised-button
+                  color="primary"
+                  (click)="saveAndReturn()"
+                >
+                  Save and Return to Template Editor
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

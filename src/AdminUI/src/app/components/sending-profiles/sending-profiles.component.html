@@ -1,0 +1,72 @@
+<div class="container-fluid">
+    <div class="mb-2 text-right">
+        <button mat-raised-button class="add-button" color="primary" (click)="openProfileDialog(0)">New Profile</button>
+    </div>
+
+  <div class="col p-0 w-100">
+
+    <div *ngIf="loading" style="text-align: center; padding-top: 2rem; padding-bottom: 2rem;">
+      <mat-spinner class="spinner" style="margin-left: auto; margin-right: auto;" diameter="50" ></mat-spinner>
+    </div>
+
+    <!-- PROFILES TABLE -->
+    <mat-table [dataSource]="sendingProfilesData" *ngIf="!loading" matSort>
+      <!-- NAME -->
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Name</mat-header-cell
+        >
+        <mat-cell *matCellDef="let row">{{ row.name }}</mat-cell>
+      </ng-container>
+      <!-- INTERFACE TYPE -->
+      <ng-container matColumnDef="interface_type">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Interface Type</mat-header-cell
+        >
+        <mat-cell *matCellDef="let row">{{ row.interface_type }}</mat-cell>
+      </ng-container>
+      <!-- LAST MODIFIED DATE -->
+      <ng-container matColumnDef="modified_date">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Last Modified Date</mat-header-cell
+        >
+        <mat-cell *matCellDef="let row">{{
+          row.modified_date | date: "yyyy-MM-dd HH:mm"
+        }}</mat-cell>
+      </ng-container>
+
+      <!-- ACTION ICONS -->
+      <ng-container matColumnDef="action">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <button
+            class="table-btn-icon"
+            mat-flat-button
+            color="primary"
+            (click)="openProfileDialog(row)"
+          >
+            <mat-icon
+              class="mat-icon table-btn-icon-size material-icons mat-icon-no-color"
+              >edit</mat-icon
+            >
+          </button>
+          <button
+            class="table-btn-icon"
+            mat-flat-button
+            color="warn"
+            (click)="confirmDeleteProfile(row)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row
+        class="table-row"
+        *matRowDef="let row; columns: displayedColumns"
+      >
+      </mat-row>
+    </mat-table>
+  </div>
+</div>

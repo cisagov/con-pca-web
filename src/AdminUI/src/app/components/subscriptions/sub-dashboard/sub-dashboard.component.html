@@ -1,0 +1,71 @@
+<mat-card *ngIf="dataAvailable" class="mb-4">  
+  <!-- <mat-card-header>
+    <mat-card-title style="margin-left: -16px !important">
+      Statistics For Current Cycle
+    </mat-card-title>
+  </mat-card-header> -->
+  <mat-card-content>
+    <div class="d-flex flex-column">
+      <div style="max-height: 200px; margin-bottom: 1rem;">
+        <h4>Statistics By Level</h4>
+        <ngx-charts-bar-vertical-2d
+          [results]="chart.chartResults"
+          [scheme]="chart.colorScheme"
+          [gradient]="chart.gradient"
+          [xAxis]="chart.showXAxis"
+          [showXAxisLabel]="chart.showXAxisLabel"
+          [xAxisLabel]="chart.xAxisLabel"
+          [yAxis]="chart.showYAxis"
+          [showYAxisLabel]="chart.showYAxisLabel"
+          [yAxisLabel]="chart.yAxisLabel"
+          [yAxisTickFormatting]="axisFormat"
+          [legend]="chart.showLegend"
+          [legendPosition]="chart.legendPosition"
+          [legendTitle]="''"
+          [roundEdges]="false"
+        >
+        </ngx-charts-bar-vertical-2d>
+      </div>
+
+      <div class="d-block mb-4 w-100" style="max-height: 100px;">
+        <h4>Number of Emails Sent</h4>
+        <ngx-charts-bar-horizontal-stacked
+          [results]="chartSent.chartResults"
+          [scheme]="chartSent.colorScheme"
+          [gradient]="chartSent.gradient"
+          [xAxis]="chartSent.showXAxis"
+          [yAxis]="chartSent.showYAxis"
+          [legend]="chartSent.showLegend"
+          [showXAxisLabel]="chartSent.showXAxisLabel"
+          [xAxisTickFormatting]="axisFormat"
+          [showYAxisLabel]="chartSent.showYAxisLabel"
+          [xAxisLabel]="chartSent.xAxisLabel"
+          [yAxisLabel]="chartSent.yAxisLabel"
+        >
+        </ngx-charts-bar-horizontal-stacked>
+      </div>
+
+      <div class="mb-4">
+        Number of Templates in Use: {{numberTemplatesInUse}}
+      </div>
+
+      <h4>Response Statistics</h4>
+      <div>Average Time to First Click: {{ avgTTFC }}</div>
+      <div>Average Time to First Report: {{ avgTTFR }}</div>
+      <div>Aggregate Count:
+        <ul>
+          <li>Sent: {{aggregateCounts.sent.count}}</li>
+          <li>Opened: {{aggregateCounts.opened.count}}</li>
+          <li>Clicked: {{aggregateCounts.clicked.count}}</li>
+          <li>Submitted: {{aggregateCounts.submitted.count}}</li>
+          <li>Reported: {{aggregateCounts.reported.count}}</li>
+        </ul>
+      </div>
+      <div>Template Deception Breakdown:
+        <ul>
+          <li *ngFor="let campaign of campaignsDetails">Deception Score: {{campaign.template_details.deception_score}} - Template Name: {{campaign.template_details.name}}</li>
+        </ul>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

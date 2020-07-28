@@ -1,42 +1,28 @@
-ARG GIT_COMMIT=unspecified
-ARG GIT_REMOTE=unspecified
-ARG VERSION=unspecified
+FROM nginx:1.19
 
-FROM python:3.7-alpine
+WORKDIR /app
 
-ARG GIT_COMMIT
-ARG GIT_REMOTE
-ARG VERSION
+RUN apt update -y
+RUN apt install npm -y
 
-LABEL git_commit=${GIT_COMMIT}
-LABEL git_remote=${GIT_REMOTE}
-LABEL maintainer="mark.feldhousen@trio.dhs.gov"
-LABEL vendor="Cyber and Infrastructure Security Agency"
-LABEL version=${VERSION}
+COPY ./src/AdminUI/package.json ./
 
-ARG CISA_UID=421
-ENV CISA_HOME="/home/cisa"
-ENV ECHO_MESSAGE="Hello World from Dockerfile"
+RUN npm install
 
-RUN addgroup --system --gid ${CISA_UID} cisa \
-  && adduser --system --uid ${CISA_UID} --ingroup cisa cisa
+RUN npm install -g @angular/cli
 
-RUN apk --update --no-cache add \
-ca-certificates \
-openssl \
-py-pip
+COPY ./src/AdminUI .
 
-WORKDIR ${CISA_HOME}
+RUN apt install openssl
 
-RUN wget -O sourcecode.tgz https://github.com/cisagov/skeleton-python-library/archive/v${VERSION}.tar.gz && \
-  tar xzf sourcecode.tgz --strip-components=1 && \
-  pip install --requirement requirements.txt && \
-  ln -snf /run/secrets/quote.txt src/example/data/secret.txt && \
-  rm sourcecode.tgz
+RUN mkdir /certs
 
-USER cisa
+RUN openssl req -x509 -nodes -days 365 -subj "/C=CA/ST=ID/O=INL/CN=localhost" -newkey rsa:2048 -keyout /certs/server.key -out /certs/server.crt
 
-EXPOSE 8080/TCP
-VOLUME ["/var/log"]
-ENTRYPOINT ["example"]
-CMD ["--log-level", "DEBUG"]
+COPY ./src/etc/default.conf /etc/nginx/conf.d/default.conf
+COPY ./src/etc/mime.types /etc/nginx/mime.types
+
+COPY ./etc/entrypoint.sh /usr/share/nginx/entrypoint.sh
+RUN chmod 755 /usr/share/nginx/entrypoint.sh
+
+ENTRYPOINT ["/usr/share/nginx/entrypoint.sh"]

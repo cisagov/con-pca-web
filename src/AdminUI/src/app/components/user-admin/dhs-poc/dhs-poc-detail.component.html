@@ -1,0 +1,65 @@
+<h1>{{ mode | titlecase }} DHS Contact</h1>
+
+<div mat-dialog-content class="d-flex flex-column" [formGroup]="contactForm">
+    <div class="d-flex flex-row">
+        <!-- FIRST NAME -->
+        <div class="d-flex flex-column">
+            <mat-form-field appearance="outline">
+                <mat-label>First Name</mat-label>
+                <input matInput type="text" formControlName="firstName" />
+                <mat-error *ngIf="f.firstName.hasError('required')">
+                    First name <strong>required</strong>
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <!-- LAST NAME -->
+        <div class="d-flex flex-column">
+            <mat-form-field appearance="outline">
+                <mat-label>Last Name</mat-label>
+                <input matInput type="text" formControlName="lastName" />
+                <mat-error *ngIf="f.lastName.hasError('required')">
+                    Last name <strong>required</strong>
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+    <!-- TITLE -->
+    <mat-form-field appearance="outline">
+        <mat-label>Title</mat-label>
+        <input matInput type="text" formControlName="title" />
+    </mat-form-field>
+    <!-- OFFICE PHONE -->
+    <mat-form-field appearance="outline">
+        <mat-label>Office Phone Number</mat-label>
+        <input matInput type="text" formControlName="officePhone" />
+    </mat-form-field>
+    <!-- MOBILE PHONE -->
+    <mat-form-field appearance="outline">
+        <mat-label>Mobile Phone Number</mat-label>
+        <input matInput type="text" formControlName="mobilePhone" />
+    </mat-form-field>
+    <!-- EMAIL -->
+    <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email" />
+    </mat-form-field>
+    <!-- NOTES -->
+    <mat-form-field appearance="outline">
+        <mat-label>Notes</mat-label>
+        <input matInput type="text" formControlName="notes" />
+    </mat-form-field>
+    <!-- ACTIVE -->
+    <mat-checkbox formControlName="active">
+        <mat-label>Active</mat-label>
+    </mat-checkbox>
+</div>
+
+
+<div class="text-right mt-3">
+    <button mat-raised-button class="add-button" color="primary" (click)="onSaveClick()">
+        Save
+    </button>
+    <button mat-flat-button class="add-button" color="basic" (click)="onCancelClick()">
+        Cancel
+    </button>
+</div>

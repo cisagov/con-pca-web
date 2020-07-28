@@ -1,0 +1,23 @@
+<svg height="100" width="100%" (window:resize)="onResize($event)">
+  <g>
+    <line x1="0" y1="30" [attr.x2]="pixelWidth" y2="30" class="timeline-line"></line>
+  </g>
+
+  <g *ngFor="let t of items" #tick>
+    <g *ngIf="t.title === 'Today'">
+      <line class="timeline-line" opacity="0.3" [attr.x1]="t.x" [attr.x2]="t.x" [attr.y1]="30" [attr.y2]="80"></line>
+      <text [attr.x]="t.x" y="90" text-anchor="middle" class="timeline-text">Today</text>
+    </g>
+    <g *ngIf="t.title !== 'Today'">
+      <text [attr.x]="t.x" y="10" text-anchor="middle" class="timeline-icon" [innerHTML]="t.icon">
+      </text>
+      <circle r="3" [attr.cx]="t.x" cy="30" stroke-width="1" class="timeline-circle"></circle>
+      <g [attr.transform]="'translate(' + t.x  + ' 50)'">
+        <text x="0" y="0" text-anchor="middle" class="timeline-text">
+          <tspan x="0" dy="0">{{t.title}}</tspan>
+          <tspan x="0" dy="1.2em">{{t.date | date:dateFormat}}</tspan>
+        </text>
+      </g>
+    </g>
+  </g>
+</svg>

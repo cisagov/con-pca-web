@@ -1,0 +1,62 @@
+<div>
+    <mat-card>
+        <div class="mb-3">
+            <mat-table [dataSource]="tasks">
+                <ng-container matColumnDef="task_uuid">
+                    <mat-header-cell *matHeaderCellDef>Task UUID</mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                        {{row.task_uuid}}
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="message_type">
+                    <mat-header-cell *matHeaderCellDef>Message Type</mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                        {{row.message_type}}
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="scheduled_date">
+                    <mat-header-cell *matHeaderCellDef>Scheduled Date</mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                        {{row.scheduled_date | date:dateFormat}}
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="executed">
+                    <mat-header-cell *matHeaderCellDef>Executed</mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                        {{row.executed}}
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="executed_date">
+                    <mat-header-cell *matHeaderCellDef>Executed Date</mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                        {{row.executed_date | date:dateFormat}}
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="error">
+                    <mat-header-cell *matHeaderCellDef>Error</mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                        {{row.error}}
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="action">
+                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                        <button class="table-btn-icon" mat-flat-button color="warn">
+                            <mat-icon class="table-btn-icon-size" (click)="deleteTask(row)">delete</mat-icon>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row class="table-row" *matRowDef="let row; columns: displayedColumns"></mat-row>
+            </mat-table>
+
+        </div>
+    </mat-card>
+</div>
