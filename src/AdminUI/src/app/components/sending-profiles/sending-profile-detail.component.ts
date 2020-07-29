@@ -97,6 +97,9 @@ export class SendingProfileDetailComponent implements OnInit {
       return;
     }
 
+    if (!this.headers) {
+      this.headers = this.headers = new Map<string, string>();
+    }
     this.headers.set(key, this.f.newHeaderValue.value.trim());
     this.f.newHeaderName.setValue('');
     this.f.newHeaderValue.setValue('');
