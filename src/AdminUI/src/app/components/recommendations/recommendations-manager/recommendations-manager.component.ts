@@ -60,6 +60,11 @@ export class RecommendationsManagerComponent implements OnInit {
     });
   }
 
+
+  onCancelClick() {
+        this.router.navigate(['/recommendations']);
+  }
+
   //Create a formgroup using a Template as initial data
   setRecommendationsForm(recommendation: Recommendations) {
     if (!recommendation.appearance) {

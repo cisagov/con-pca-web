@@ -8,7 +8,7 @@
             [formGroup]="recommendationsFormGroup"
           >
             <div class="d-flex flex-row">
-              <mat-form-field appearance="outline" class="flex-grow-1">
+              <mat-form-field appearance="outline" class="flex-grow-1 pb-3" >
                 <mat-label>Recommendation Name*</mat-label>
                 <input
                   type="text"
@@ -17,14 +17,23 @@
                   placeholder="Recommendation Name"
                   formControlName="recommendationsName"
                 />
-                <mat-error>
-                  Recommendation name is <strong>required</strong>
+                <mat-error 
+                *ngIf="
+                recommendationsFormGroup.controls.recommendationsName.hasError(
+                  'required'
+                  )
+                  "> Recommendation name is <strong>required</strong>
                 </mat-error>
-                <mat-error>
-                  Recommendation name may not contain only spaces
+                <mat-error
+                *ngIf="
+                recommendationsFormGroup.controls.recommendationsName.hasError(
+                  'whitespace'
+                  )
+                  "> Recommendation name may not contain only spaces
                 </mat-error>
               </mat-form-field>
             </div>
+
             <div class="d-flex flex-row">
               <mat-form-field appearance="outline" class="flex-grow-1">
                 <mat-label>Description</mat-label>
@@ -57,7 +66,7 @@
             Save Recommendation
           </button>
         </div>
-        <button id="save-button" class="d-flex" mat-flat-button>Cancel</button>
+        <button id="save-button-cancel" class="d-flex" mat-flat-button (click)="onCancelClick()">Cancel</button>
       </div>
     </div>
     <div class="col-4 h-100 testing overflow-auto border-left">
