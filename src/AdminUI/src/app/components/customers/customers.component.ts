@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { CustomerService } from 'src/app/services/customer.service';
@@ -6,6 +6,7 @@ import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { AddCustomerDialogComponent } from './add-customer-dialog/add-customer-dialog.component';
 import { Customer } from 'src/app/models/customer.model';
 import { Router } from '@angular/router';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-customers',
@@ -13,8 +14,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./customers.component.scss'],
 })
 export class CustomersComponent implements OnInit {
+
   @Input() insideDialog: boolean;
 
+  @ViewChild(MatSort) sort: MatSort;
   loading = false;
 
   displayed_columns = [
@@ -72,6 +75,7 @@ export class CustomersComponent implements OnInit {
     this.loading = true;
     this.customerSvc.getCustomers().subscribe((data: any) => {
       this.customersData.data = data as Customer[];
+      this.customersData.sort = this.sort;
       this.loading = false;
     });
   }

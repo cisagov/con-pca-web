@@ -38,24 +38,24 @@
   </div>
 
   <!-- TABLE -->
-  <mat-table [dataSource]="data_source" *ngIf="!loading">
+  <mat-table [dataSource]="dataSource" [hidden]="loading" matSort>
     <!-- SUBSCRIPTION NAME -->
     <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef>Subscription Name</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Subscription Name</mat-header-cell>
       <mat-cell *matCellDef="let row"> {{ row.subscription.name }}</mat-cell>
     </ng-container>
 
     <!-- STATUS -->
     <ng-container matColumnDef="status">
-      <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
       <mat-cell *matCellDef="let row">
         {{ row.subscription.status | titlecase }}</mat-cell
       >
     </ng-container>
 
     <!-- PRIMARY CONTACT -->
-    <ng-container matColumnDef="primary_contact">
-      <mat-header-cell *matHeaderCellDef>Primary Contact</mat-header-cell>
+    <ng-container matColumnDef="primaryContact">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Primary Contact</mat-header-cell>
       <mat-cell *matCellDef="let row">
         {{
           row.subscription.primary_contact?.first_name || "No Primary Contact"
@@ -65,22 +65,22 @@
     </ng-container>
 
     <!-- CUSTOMER -->
-    <ng-container matColumnDef="customer">
-      <mat-header-cell *matHeaderCellDef>Customer</mat-header-cell>
+    <ng-container matColumnDef="customerName">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Customer</mat-header-cell>
       <mat-cell *matCellDef="let row">{{ row.customer.name }}</mat-cell>
     </ng-container>
 
     <!-- START DATE -->
-    <ng-container matColumnDef="start_date">
-      <mat-header-cell *matHeaderCellDef>Start Date</mat-header-cell>
+    <ng-container matColumnDef="startDate">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Start Date</mat-header-cell>
       <mat-cell *matCellDef="let row">
         {{ row.subscription.start_date | date: dateFormat }}</mat-cell
       >
     </ng-container>
 
     <!-- LAST UDPATED DATE -->
-    <ng-container matColumnDef="last_updated">
-      <mat-header-cell *matHeaderCellDef>Last Updated</mat-header-cell>
+    <ng-container matColumnDef="lastUpdated">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Last Updated</mat-header-cell>
       <mat-cell *matCellDef="let row">
         {{ row.subscription.lub_timestamp | date: dateFormat }}</mat-cell
       >
@@ -131,11 +131,11 @@
       </mat-cell>
     </ng-container>
     <!-- HEADER ROW -->
-    <mat-header-row *matHeaderRowDef="displayed_columns"></mat-header-row>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
 
     <!-- ROW DEFINITION -->
     <mat-row
-      *matRowDef="let row; columns: displayed_columns"
+      *matRowDef="let row; columns: displayedColumns"
       class="table-row cursor-pointer"
       (click)="editSubscription(row)"
     >

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { SendingProfile } from 'src/app/models/sending-profile.model';
 import { SendingProfileService } from 'src/app/services/sending-profile.service';
@@ -10,6 +10,7 @@ import {
 import { SendingProfileDetailComponent } from './sending-profile-detail.component';
 import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-sending-profiles',
@@ -21,6 +22,7 @@ export class SendingProfilesComponent implements OnInit {
 
   dialogRefConfirm: MatDialogRef<ConfirmComponent>;
 
+  @ViewChild(MatSort) sort: MatSort;
   loading = false;
 
   constructor(
@@ -45,6 +47,7 @@ export class SendingProfilesComponent implements OnInit {
     this.loading = true;
     this.sendingProfileSvc.getAllProfiles().subscribe((data: any) => {
       this.sendingProfilesData.data = data as SendingProfile[];
+      this.sendingProfilesData.sort = this.sort;
       this.loading = false;
     });
   }
