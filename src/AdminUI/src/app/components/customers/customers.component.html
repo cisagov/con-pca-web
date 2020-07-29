@@ -4,86 +4,64 @@
       <!-- SEARCH BAR -->
       <mat-form-field class="d-flex flex-column w-100" appearance="outline">
         <mat-label>Search</mat-label>
-        <input
-          [(ngModel)]="search_input"
-          (keyup)="filterCustomers($event.target.value)"
-          matInput
-          placeholder="Search"
-        />
+        <input [(ngModel)]="search_input" (keyup)="filterCustomers($event.target.value)" matInput
+          placeholder="Search" />
         <mat-icon matSuffix>search</mat-icon>
       </mat-form-field>
 
       <div class="d-inline-flex flex-column ml-2">
-        <button
-          mat-raised-button
-          color="primary"
-          (click)="this.customerSvc.setCustomerInfo(true)"
-        >
-          New Customer
-        </button>
+        <button mat-raised-button color="primary" (click)="this.customerSvc.setCustomerInfo(true)">New
+          Customer</button>
       </div>
     </div>
 
-    <div
-      *ngIf="loading"
-      style="text-align: center; padding-top: 2rem; padding-bottom: 2rem;"
-    >
-      <mat-spinner
-        class="spinner"
-        style="margin-left: auto; margin-right: auto;"
-        diameter="50"
-      ></mat-spinner>
+    <div *ngIf="loading" style="text-align: center; padding-top: 2rem; padding-bottom: 2rem;">
+      <mat-spinner class="spinner" style="margin-left: auto; margin-right: auto;" diameter="50"></mat-spinner>
     </div>
 
-    <mat-table [dataSource]="customersData" *ngIf="!loading">
+    <mat-table [dataSource]="customersData" [hidden]="loading" matSort>
       <ng-container matColumnDef="name">
-        <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
         <mat-cell *matCellDef="let row"> {{ row.name }} </mat-cell>
       </ng-container>
       <ng-container matColumnDef="identifier">
-        <mat-header-cell *matHeaderCellDef>Identifier</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Identifier</mat-header-cell>
         <mat-cell *matCellDef="let row"> {{ row.identifier }} </mat-cell>
       </ng-container>
       <ng-container matColumnDef="address_1">
-        <mat-header-cell *matHeaderCellDef>Address 1</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Address 1</mat-header-cell>
         <mat-cell *matCellDef="let row"> {{ row.address_1 }} </mat-cell>
       </ng-container>
       <ng-container matColumnDef="address_2">
-        <mat-header-cell *matHeaderCellDef>Address 2</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Address 2</mat-header-cell>
         <mat-cell *matCellDef="let row"> {{ row.address_2 }} </mat-cell>
       </ng-container>
       <ng-container matColumnDef="city">
-        <mat-header-cell *matHeaderCellDef>City</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>City</mat-header-cell>
         <mat-cell *matCellDef="let row"> {{ row.city }} </mat-cell>
       </ng-container>
       <ng-container matColumnDef="state">
-        <mat-header-cell *matHeaderCellDef>State</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>State</mat-header-cell>
         <mat-cell *matCellDef="let row"> {{ row.state }} </mat-cell>
       </ng-container>
       <ng-container matColumnDef="zip_code">
-        <mat-header-cell *matHeaderCellDef>Zip Code</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Zip Code</mat-header-cell>
         <mat-cell *matCellDef="let row"> {{ row.zip_code }} </mat-cell>
       </ng-container>
       <ng-container matColumnDef="select">
         <mat-header-cell *matHeaderCellDef>Edit</mat-header-cell>
         <mat-cell *matCellDef="let row">
-          <button
-            class="table-btn-icon"
-            mat-flat-button
-            color="primary"
-            [routerLink]="['/customer', row.customer_uuid]"
-          >
+          <button class="table-btn-icon" mat-flat-button color="primary"
+            [routerLink]="['/customer', row.customer_uuid]">
             <mat-icon class="table-btn-icon-size">edit</mat-icon>
           </button>
         </mat-cell>
       </ng-container>
 
+
       <mat-header-row *matHeaderRowDef="displayed_columns"></mat-header-row>
-      <mat-row
-        class="table-row cursor-pointer"
-        *matRowDef="let row; columns: displayed_columns"
-        (click)="editCustomer(row.customer_uuid)"
-      ></mat-row>
+      <mat-row class="table-row cursor-pointer" *matRowDef="let row; columns: displayed_columns"
+        (click)="editCustomer(row.customer_uuid)"></mat-row>
     </mat-table>
   </div>
   <div class="container-fluid" *ngIf="customerSvc.showCustomerInfo">
