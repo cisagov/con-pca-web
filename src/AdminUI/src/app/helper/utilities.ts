@@ -40,7 +40,7 @@ export function humanTiming(seconds: number) {
     { s: 86400, label1: 'day', label: 'days' },
     { s: 3600, label1: 'hour', label: 'hours' },
     { s: 60, label1: 'minute', label: 'minutes' },
-    { s: 1, label1: 'second', label: 'seconds' },
+    { s: 1, label1: 'second', label: 'seconds' }
   ];
 
   let s = '';
@@ -48,11 +48,48 @@ export function humanTiming(seconds: number) {
     const numberOfUnits = Math.floor(seconds / token.s);
     seconds = seconds - token.s * numberOfUnits;
     if (numberOfUnits !== 0) {
-      s += `${numberOfUnits} ${
-        numberOfUnits === 1 ? token.label1 : token.label
-      } `;
+      s += `${numberOfUnits} ${numberOfUnits === 1 ? token.label1 : token.label}, `;
+    }
+  }
+
+  return s.trimRight().replace(/,+$/g, '');
+}
+
+/**
+ * Convert a number of seconds to HH:MM:SS format.
+ */
+export function secondsToHHMMSS(seconds: number) {
+  const tokens = [
+    { s: 3600, delim: ':' },
+    { s: 60, delim: ':' },
+    { s: 1, delim: '' }
+  ];
+
+  let s = '';
+  for (const token of tokens) {
+    const numberOfUnits = Math.floor(seconds / token.s);
+    seconds = seconds - token.s * numberOfUnits;
+    if (numberOfUnits !== 0) {
+      s += `${numberOfUnits}${token.delim}`;
     }
   }
 
   return s;
+}
+
+/**
+ * Returns a string with 'and' conjunctions
+ */
+export function listToText(list: any[]) {
+  let output = '';
+  for (let i = 0; i < list.length; i++) {
+    output += list[i];
+    if (i < list.length - 2) {
+      output += ', ';
+    } else if (i === list.length - 2) {
+      output += ' and ';
+    }
+  }
+
+  return output;
 }
