@@ -41,7 +41,7 @@
         {{ detail?.customer.full_name }}<br />
         {{ detail?.customer.address_1 }} {{ detail?.customer.address_2 }}<br />
         {{ detail?.customer.city }}, {{ detail?.customer.state }}
-        {{ detail?.customer.zip }}
+        {{ detail?.customer.zip_code }}
       </div>
       <div id="dhsContactDetails">
         <div class="mb-2">
@@ -422,7 +422,7 @@
       </div>
     </div>
 
-    <div class="row" id="statFlexContainer">
+    <div class="row mb-2" id="statFlexContainer">
       <div id="companyAverageText">
         <div id="companyAverageBox">
           {{ detail?.metrics.customer_clicked_avg }}%
@@ -461,10 +461,10 @@
       </table>
     </div>
 
-    <div class="row">
+    <div class="row d-none">
       <div class="col-12">
         <div id="yearTrendsTitle">
-          <h3>Year Trends</h3>
+          <h3>90-Day Cycle Trends</h3>
           <p>
             These trends show the effect of phishing training and email
             filtering investments.
@@ -534,7 +534,7 @@
   </article>
 
   <article id="pageSix">
-    <div class="row">
+    <div class="row d-none">
       <div class="col-12">
         <div id="successOverview" class="needs-work">
           <h4>PHISHING SUCCESS OVERVIEW</h4>
