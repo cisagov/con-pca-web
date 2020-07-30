@@ -76,3 +76,20 @@ export function secondsToHHMMSS(seconds: number) {
 
   return s;
 }
+
+/**
+ * Returns a string with 'and' conjunctions
+ */
+export function listToText(list: any[]) {
+  let output = '';
+  for (let i = 0; i < list.length; i++) {
+    output += list[i];
+    if (i < list.length - 2) {
+      output += ', ';
+    } else if (i === list.length - 2) {
+      output += ' and ';
+    }
+  }
+
+  return output;
+}

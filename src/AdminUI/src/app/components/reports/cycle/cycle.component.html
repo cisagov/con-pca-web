@@ -613,13 +613,9 @@
               with corresponding complexity calculations. VM divided the
               {{ detail?.metrics.total_users_targeted }} email addresses that
               {{ detail?.customer.full_name }} provided into three groups.
-
-              <span class="needs-work">
-                Group 1 had 333 addresses and received levels 1 and 4. Group 2
-                had 333 addresses and received levels 2 and 5. Group 3 had 334
-                addresses and received levels 3 and 6.
-              </span>
-
+              <ng-container *ngFor="let g of groupLevels">
+                Group {{g?.groupNumber}} had {{g?.sentCount}} addresses{{g?.levelText}}.
+              </ng-container>
               See Table 3 for descriptions of email levels 1 – 6.
             </p>
 
@@ -763,7 +759,7 @@
         <p class="table-title">
           Table 4: Unique User Click Rate and Report Rate Results
         </p>
-        <table id="rateComparisonTable" class="report-table">
+        <table id="rateComparisonTable" class="report-table w-100">
           <tr>
             <th class="text-right pr-5">Level</th>
             <th>Campaign</th>
@@ -819,9 +815,11 @@
           </tr>
         </table>
 
-        <div class="bar-chart" style="display: grid">
+        <div class="bar-chart m-2">
           <h4>Unique User Click Rate vs. Report Rate per Level of Complexity</h4>
-          <app-chart-complexity-level class="report-chart" [subscription]="detail" style="height: 30rem;"></app-chart-complexity-level>
+          <div style="display: grid;" class="report-chart">
+            <app-chart-complexity-level [subscription]="detail"></app-chart-complexity-level>
+          </div>
         </div>
       </div>
     </div>
@@ -900,11 +898,11 @@
   <article id="pageEleven">
     <div class="row">
       <div class="col-12">
-        <div class="timeComplexityGraph needs-work" style="display: grid">
+        <div class="timeComplexityGraph" style="display: grid">
           <h4>Time to First Click per Level of Complexity</h4>
           <div style="display: grid">
-            <app-chart-time-to-first-click-levels *ngIf="detail" 
-              [subscription]="detail" class="report-chart" style="height: 30rem;">
+            <app-chart-time-to-first-click-levels *ngIf="detail" [subscription]="detail" class="report-chart"
+              style="height: 30rem;">
             </app-chart-time-to-first-click-levels>
           </div>
         </div>
