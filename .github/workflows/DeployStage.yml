@@ -1,12 +1,12 @@
-name: Deploy Dev
+name: Deploy Stage
 
 on:
     push:
         branches:
-            - develop
+            - stage
 
 env:
-  ENVIRONMENT: dev
+  ENVIRONMENT: stage
   IMAGE_NAME: con-pca-web
   ECR_URI: ${{ secrets.ECR_URI }}
   REGION: us-east-1
