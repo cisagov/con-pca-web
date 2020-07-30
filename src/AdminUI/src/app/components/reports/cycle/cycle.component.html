@@ -903,8 +903,9 @@
         <div class="timeComplexityGraph needs-work" style="display: grid">
           <h4>Time to First Click per Level of Complexity</h4>
           <div style="display: grid">
-            <app-chart-time-to-first-click-levels *ngIf="detail" [subscription]="detail" class="report-chart"
-              style="height: 30rem;"></app-chart-time-to-first-click-levels>
+            <app-chart-time-to-first-click-levels *ngIf="detail" 
+              [subscription]="detail" class="report-chart" style="height: 30rem;">
+            </app-chart-time-to-first-click-levels>
           </div>
         </div>
       </div>

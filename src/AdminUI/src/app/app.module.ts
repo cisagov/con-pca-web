@@ -85,6 +85,7 @@ import { AggregateStatsComponent } from './components/user-admin/aggregate-stats
 import { ChartComplexityLevelComponent } from './components/charts/chart-complexity-level/chart-complexity-level.component';
 import { ChartStatsByLevelComponent } from './components/charts/chart-stats-by-level/chart-stats-by-level.component';
 import { ChartTimeIntervalsComponent } from './components/charts/chart-time-intervals/chart-time-intervals.component';
+import { ChartTimeToFirstClickLevelsComponent } from './components/charts/chart-time-to-first-click-levels/chart-time-to-first-click-levels.component';
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
   return () => settingsHttpService.initializeApp();
@@ -144,6 +145,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     ChartComplexityLevelComponent,
     ChartStatsByLevelComponent,
     ChartTimeIntervalsComponent,
+    ChartTimeToFirstClickLevelsComponent,
   ],
   imports: [
     BrowserModule,
