@@ -3,12 +3,14 @@ import {
   OnInit,
   Inject,
   ChangeDetectorRef,
-  ChangeDetectionStrategy,
+  ChangeDetectionStrategy, ViewChild
 } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SendingProfileService } from 'src/app/services/sending-profile.service';
 import { SendingProfile } from 'src/app/models/sending-profile.model';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-sending-profile-detail',
@@ -24,7 +26,15 @@ export class SendingProfileDetailComponent implements OnInit {
   profileForm: FormGroup;
   profile: SendingProfile;
   id: number;
-  headers: Map<string, string>;
+
+  @ViewChild(MatSort) sort: MatSort;
+  displayedColumns = [
+    'header',
+    'value',
+    'actions'
+  ];
+
+  headerList: MatTableDataSource<CustomHeader>;
   submitted = false;
 
   /**
@@ -33,7 +43,7 @@ export class SendingProfileDetailComponent implements OnInit {
   constructor(
     private sendingProfileSvc: SendingProfileService,
     private changeDetector: ChangeDetectorRef,
-    public dialog_ref: MatDialogRef<SendingProfileDetailComponent>,
+    public dialogRef: MatDialogRef<SendingProfileDetailComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.id = data.sendingProfileId;
@@ -76,10 +86,14 @@ export class SendingProfileDetailComponent implements OnInit {
           this.f.username.setValue(this.profile.username);
           this.f.password.setValue(this.profile.password);
           this.f.ignoreCertErrors.setValue(this.profile.ignore_cert_errors);
-          this.headers = new Map<string, string>();
+          this.headerList = new MatTableDataSource<CustomHeader>();
           for (const h of this.profile.headers) {
-            this.headers.set(h.key, h.value);
+            const headerListItem = new CustomHeader();
+            headerListItem.header = h.key;
+            headerListItem.value = h.value;
+            this.headerList.data.push(headerListItem);
           }
+          this.headerList.sort = this.sort;
         },
         (err) => {
           console.log(err);
@@ -97,10 +111,17 @@ export class SendingProfileDetailComponent implements OnInit {
       return;
     }
 
-    if (!this.headers) {
-      this.headers = this.headers = new Map<string, string>();
+    if (!this.headerList) {
+      this.headerList = new MatTableDataSource<CustomHeader>();
     }
-    this.headers.set(key, this.f.newHeaderValue.value.trim());
+
+    const data = this.headerList.data;
+    const newHeader = new CustomHeader();
+    newHeader.header = key;
+    newHeader.value = this.f.newHeaderValue.value.trim();
+    data.push(newHeader);
+    this.headerList.data = data;
+
     this.f.newHeaderName.setValue('');
     this.f.newHeaderValue.setValue('');
   }
@@ -108,8 +129,8 @@ export class SendingProfileDetailComponent implements OnInit {
   /**
    * Deletes a custom email header from the internal list.
    */
-  deleteHeader(headerKey: any) {
-    this.headers.delete(headerKey);
+  deleteHeader(headerToDelete: any) {
+    this.headerList.data = this.headerList.data.filter(x => x.header !== headerToDelete.header);
   }
 
   /**
@@ -131,11 +152,11 @@ export class SendingProfileDetailComponent implements OnInit {
     sp.from_address = this.f.from.value;
     sp.ignore_cert_errors = this.f.ignoreCertErrors.value;
     sp.headers = [];
-    if (!!this.headers) {
-      for (const [key, value] of this.headers) {
+    if (!!this.headerList.data) {
+      for (const ch of this.headerList.data) {
         const h = {
-          key,
-          value,
+          key: ch.header,
+          value: ch.value
         };
         sp.headers.push(h);
       }
@@ -146,7 +167,7 @@ export class SendingProfileDetailComponent implements OnInit {
     }
 
     this.sendingProfileSvc.saveProfile(sp).subscribe(() => {
-      this.dialog_ref.close();
+      this.dialogRef.close();
     });
   }
 
@@ -154,6 +175,11 @@ export class SendingProfileDetailComponent implements OnInit {
    *
    */
   onCancelClick() {
-    this.dialog_ref.close();
+    this.dialogRef.close();
   }
+}
+
+export class CustomHeader {
+  header: string;
+  value: string;
 }
