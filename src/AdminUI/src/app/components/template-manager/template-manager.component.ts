@@ -330,13 +330,6 @@ export class TemplateManagerComponent implements OnInit {
                 messageText: 'Could not Create Template.',
               },
             });
-            const invalid = [];
-            const controls = this.currentTemplateFormGroup.controls;
-            for (const name in controls) {
-              if (controls[name].invalid) {
-                invalid.push(name);
-              }
-            }
           }
         );
       }
