@@ -321,9 +321,9 @@ export class TemplateManagerComponent implements OnInit {
 
             this.router.navigate(['/templates']);
           },
-          (error) => {
+          (error: any) => {
             console.log(error);
-            if (error.status === 409) {
+            if (error.status === 409 || error === "Conflict") {
               this.dialog.open(AlertComponent, {
                 // Parse error here
                 data: {
