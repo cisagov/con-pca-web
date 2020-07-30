@@ -323,14 +323,19 @@ export class TemplateManagerComponent implements OnInit {
           },
           (error: any) => {
             console.log(error);
-            if (error.status === 409 || error === "Conflict") {
-              this.dialog.open(AlertComponent, {
-                // Parse error here
-                data: {
-                  title: 'Template Name Error',
-                  messageText: 'Template Name alreay exists.',
-                },
-              });
+            this.dialog.open(AlertComponent, {
+              // Parse error here
+              data: {
+                title: 'Template Error',
+                messageText: 'Could not Create Template.',
+              },
+            });
+            const invalid = [];
+            const controls = this.currentTemplateFormGroup.controls;
+            for (const name in controls) {
+              if (controls[name].invalid) {
+                invalid.push(name);
+              }
             }
           }
         );
