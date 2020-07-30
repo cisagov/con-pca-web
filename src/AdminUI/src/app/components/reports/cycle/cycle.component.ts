@@ -17,15 +17,11 @@ export class CycleComponent implements OnInit {
 
   detail: any;
   recommendations: any[] = [];
+  clickPercentFirstHour = '';
+  medianClickTime = '';
 
   dateFormat = AppSettings.DATE_FORMAT;
 
-  chart: any = {};
-  schemeLowMedHigh = {
-    domain: ['#064875', '#fcbf10', '#007bc1'],
-  };
-
-  chartComplexityLevel: any = {};
 
   /**
    *
@@ -34,7 +30,7 @@ export class CycleComponent implements OnInit {
     public reportsSvc: ReportsService,
     public chartsSvc: ChartsService,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   /**
    *
@@ -69,5 +65,25 @@ export class CycleComponent implements OnInit {
   /**
    *
    */
-  renderReport() {}
+  renderReport() {
+    if (!!this.detail.recommendations) {
+      this.recommendations = this.detail.recommendations;
+    }
+
+    // percent of all clicks occurring in the first hour
+    let pct = 0;
+    if (this.detail.metrics.number_of_clicked_emails > 0) {
+      pct = Math.round(
+        ((this.detail.subscription_stats.clicks_over_time.one_hour ?? 0) / this.detail.metrics.number_of_clicked_emails) * 100
+      );
+    }
+
+    this.clickPercentFirstHour = pct.toString();
+    if (pct > 0) {
+      this.clickPercentFirstHour = 'nearly ' + this.clickPercentFirstHour;
+    }
+
+    // median time to click
+    this.medianClickTime = this.detail.metrics.median_time_to_first_click;
+  }
 }
