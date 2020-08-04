@@ -53,15 +53,13 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
         (error) => {
           console.log(error);
           this.router.navigate(['/subscriptions']);
-          if (error.status === 404) {
-            this.dialog.open(AlertComponent, {
-              // Parse error here
-              data: {
-                title: 'Not Found',
-                messageText: 'Subscription Not Found.',
-              },
-            });
-          }
+          this.dialog.open(AlertComponent, {
+            // Parse error here
+            data: {
+              title: 'Not Found',
+              messageText: 'Subscription Not Found.',
+            },
+          });
         }
       );
   }

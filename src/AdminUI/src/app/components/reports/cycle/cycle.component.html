@@ -4,20 +4,14 @@
       <div id="blueDateBox">
         <span class="year">{{
           detail?.target_cycle.start_date | date: "yyyy"
-        }}</span
-        ><br />
-        <span class="dateRange"
-          >{{ detail?.target_cycle.start_date | date: dateFormat }} -
-          {{ detail?.target_cycle.end_date | date: dateFormat }}</span
-        >
+        }}</span><br />
+        <span class="dateRange">{{ detail?.target_cycle.start_date | date: dateFormat }} -
+          {{ detail?.target_cycle.end_date | date: dateFormat }}</span>
       </div>
     </div>
     <div class="row">
       <div id="bluePhishLogo" class="col-12">
-        <img
-          src="/assets/blue_phishlogo.png"
-          alt="Continuous Phishing Campaign Assessment Logo"
-        />
+        <img src="/assets/blue_phishlogo.png" alt="Continuous Phishing Campaign Assessment Logo" />
       </div>
     </div>
     <div class="row">
@@ -31,10 +25,7 @@
     </div>
     <div class="row">
       <div id="blueHacker" class="col-12">
-        <img
-          src="/assets/blue_hacker.png"
-          alt="blue hacker image with code overlay"
-        />
+        <img src="/assets/blue_hacker.png" alt="blue hacker image with code overlay" />
       </div>
     </div>
     <div class="row">
@@ -50,7 +41,7 @@
         {{ detail?.customer.full_name }}<br />
         {{ detail?.customer.address_1 }} {{ detail?.customer.address_2 }}<br />
         {{ detail?.customer.city }}, {{ detail?.customer.state }}
-        {{ detail?.customer.zip }}
+        {{ detail?.customer.zip_code }}
       </div>
       <div id="dhsContactDetails">
         <div class="mb-2">
@@ -67,11 +58,8 @@
         </div>
       </div>
       <div id="cisa_logo">
-        <img
-          src="/assets/CISA_Logo.png"
-          style="width: 8rem;"
-          alt="Cybersecurity & Infrastructure Security Agency Logo"
-        />
+        <img src="/assets/CISA_Logo.png" style="width: 8rem;"
+          alt="Cybersecurity & Infrastructure Security Agency Logo" />
       </div>
     </div>
   </article>
@@ -81,11 +69,8 @@
       <div class="row">
         <div class="col-12">
           <div id="centerCisaLogo">
-            <img
-              src="/assets/CISA_Logo.png"
-              style="width: 8rem;"
-              alt="Cybersecurity & Infrastructure Security Agency Logo"
-            />
+            <img src="/assets/CISA_Logo.png" style="width: 8rem;"
+              alt="Cybersecurity & Infrastructure Security Agency Logo" />
           </div>
         </div>
       </div>
@@ -437,7 +422,7 @@
       </div>
     </div>
 
-    <div class="row" id="statFlexContainer">
+    <div class="row mb-2" id="statFlexContainer">
       <div id="companyAverageText">
         <div id="companyAverageBox">
           {{ detail?.metrics.customer_clicked_avg }}%
@@ -476,10 +461,10 @@
       </table>
     </div>
 
-    <div class="row">
+    <div class="row d-none">
       <div class="col-12">
         <div id="yearTrendsTitle">
-          <h3>Year Trends</h3>
+          <h3>90-Day Cycle Trends</h3>
           <p>
             These trends show the effect of phishing training and email
             filtering investments.
@@ -503,10 +488,7 @@
             <th style="padding: 0 75px 0 0;">
               Median Time to open email from first sent:
             </th>
-            <td>{{ detail?.metrics.median_time_to_report }}</td>
-          </tr>
-          <tr class="needs-work">
-            <th><i>Geometric mean.</i></th>
+            <td>{{ detail?.metrics.median_time_to_open }}</td>
           </tr>
           <tr>
             <th>Shortest Time to open email:</th>
@@ -552,49 +534,20 @@
   </article>
 
   <article id="pageSix">
-    <div class="row">
+    <div class="row d-none">
       <div class="col-12">
         <div id="successOverview" class="needs-work">
           <h4>PHISHING SUCCESS OVERVIEW</h4>
-          <svg
-            class="chart"
-            height="210"
-            aria-labelledby="title desc"
-            role="img"
-          >
+          <svg class="chart" height="210" aria-labelledby="title desc" role="img">
             <title id="title">STATISTICS BY LEVEL</title>
             <desc id="units-achieved">
               0; 50; 100; 150; 200; 250; 300; 350; 400;
             </desc>
             <g class="measure-line">
-              <line
-                x1="30"
-                y1="15"
-                x2="800"
-                y2="15"
-                style="stroke: #bad6e4; stroke-width: 2;"
-              />
-              <line
-                x1="30"
-                y1="55"
-                x2="800"
-                y2="55"
-                style="stroke: #bad6e4; stroke-width: 2;"
-              />
-              <line
-                x1="30"
-                y1="95"
-                x2="800"
-                y2="95"
-                style="stroke: #bad6e4; stroke-width: 2;"
-              />
-              <line
-                x1="40"
-                y1="95"
-                x2="790"
-                y2="95"
-                style="stroke: #fdc010; stroke-width: 3;"
-              />
+              <line x1="30" y1="15" x2="800" y2="15" style="stroke: #bad6e4; stroke-width: 2;" />
+              <line x1="30" y1="55" x2="800" y2="55" style="stroke: #bad6e4; stroke-width: 2;" />
+              <line x1="30" y1="95" x2="800" y2="95" style="stroke: #bad6e4; stroke-width: 2;" />
+              <line x1="40" y1="95" x2="790" y2="95" style="stroke: #fdc010; stroke-width: 3;" />
               <circle cx="35" cy="95" style="fill: #fdc010;" r="5" />
               <circle cx="795" cy="95" style="fill: #fdc010;" r="5" />
               <text x="0" y="15" class="caption" dy=".35em">100</text>
@@ -603,51 +556,16 @@
             </g>
             <desc id="desc">Low; Moderate; High</desc>
             <g class="bar-legend">
-              <circle
-                class="donut-ring"
-                cx="100"
-                cy="171"
-                r="15"
-                fill="transparent"
-                stroke="#FDC010"
-                stroke-width="1"
-              ></circle>
-              <circle
-                class="donut-ring"
-                cx="250"
-                cy="171"
-                r="15"
-                fill="transparent"
-                stroke="#FDC010"
-                stroke-width="1"
-              ></circle>
-              <circle
-                class="donut-ring"
-                cx="400"
-                cy="171"
-                r="15"
-                fill="transparent"
-                stroke="#FDC010"
-                stroke-width="1"
-              ></circle>
-              <circle
-                class="donut-ring"
-                cx="550"
-                cy="171"
-                r="15"
-                fill="transparent"
-                stroke="#FDC010"
-                stroke-width="1"
-              ></circle>
-              <circle
-                class="donut-ring"
-                cx="700"
-                cy="171"
-                r="15"
-                fill="transparent"
-                stroke="#FDC010"
-                stroke-width="1"
-              ></circle>
+              <circle class="donut-ring" cx="100" cy="171" r="15" fill="transparent" stroke="#FDC010" stroke-width="1">
+              </circle>
+              <circle class="donut-ring" cx="250" cy="171" r="15" fill="transparent" stroke="#FDC010" stroke-width="1">
+              </circle>
+              <circle class="donut-ring" cx="400" cy="171" r="15" fill="transparent" stroke="#FDC010" stroke-width="1">
+              </circle>
+              <circle class="donut-ring" cx="550" cy="171" r="15" fill="transparent" stroke="#FDC010" stroke-width="1">
+              </circle>
+              <circle class="donut-ring" cx="700" cy="171" r="15" fill="transparent" stroke="#FDC010" stroke-width="1">
+              </circle>
               <text x="310" y="300" class="legend-caption" dy=".35em">
                 Low&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 Moderate&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; High
@@ -665,12 +583,9 @@
           these statistics.
         </p>
         <div class="bar-chart m-2">
-          <h4>STATISTICS BY LEVEL</h4>
+          <h4>Responses per Deception Level</h4>
           <div style="display: grid;" class="report-chart">
-            <app-chart-stats-by-level
-              *ngIf="detail"
-              [subscription]="detail"
-            ></app-chart-stats-by-level>
+            <app-chart-stats-by-level *ngIf="detail" [subscription]="detail"></app-chart-stats-by-level>
           </div>
         </div>
       </div>
@@ -698,13 +613,9 @@
               with corresponding complexity calculations. VM divided the
               {{ detail?.metrics.total_users_targeted }} email addresses that
               {{ detail?.customer.full_name }} provided into three groups.
-
-              <span class="needs-work">
-                Group 1 had 333 addresses and received levels 1 and 4. Group 2
-                had 333 addresses and received levels 2 and 5. Group 3 had 334
-                addresses and received levels 3 and 6.
-              </span>
-
+              <ng-container *ngFor="let g of groupLevels">
+                Group {{g?.groupNumber}} had {{g?.sentCount}} addresses{{g?.levelText}}.
+              </ng-container>
               See Table 3 for descriptions of email levels 1 – 6.
             </p>
 
@@ -780,9 +691,7 @@
             <th>Description</th>
             <th>Displayed Link</th>
           </tr>
-          <tr
-            *ngFor="let campaign of detail?.subscription_stats.campaign_results"
-          >
+          <tr *ngFor="let campaign of detail?.subscription_stats.campaign_results">
             <td class="text-right pr-5">{{ campaign.deception_level }}</td>
             <td class="text-right pr-5">
               {{ campaign.template_details.deception_score }}
@@ -850,7 +759,7 @@
         <p class="table-title">
           Table 4: Unique User Click Rate and Report Rate Results
         </p>
-        <table id="rateComparisonTable" class="report-table">
+        <table id="rateComparisonTable" class="report-table w-100">
           <tr>
             <th class="text-right pr-5">Level</th>
             <th>Campaign</th>
@@ -877,9 +786,7 @@
               Ratio
             </th>
           </tr>
-          <tr
-            *ngFor="let campaign of detail?.subscription_stats.campaign_results"
-          >
+          <tr *ngFor="let campaign of detail?.subscription_stats.campaign_results">
             <td class="text-right pr-5">{{ campaign.deception_level }}</td>
             <td>{{ campaign.template_details.name }}</td>
             <td class="text-right">
@@ -908,12 +815,10 @@
           </tr>
         </table>
 
-        <div class="bar-chart">
-          <h4>COMPLEXITY LEVEL</h4>
+        <div class="bar-chart m-2">
+          <h4>Unique User Click Rate vs. Report Rate per Level of Complexity</h4>
           <div style="display: grid;" class="report-chart">
-            <app-chart-complexity-level
-              [subscription]="detail"
-            ></app-chart-complexity-level>
+            <app-chart-complexity-level [subscription]="detail"></app-chart-complexity-level>
           </div>
         </div>
       </div>
@@ -970,13 +875,9 @@
       <div class="col-12">
         <p id="intervalGraphDetails">
           The figures below show the percentage of users who clicked during
-          certain time intervals in the first 24 hours of a campaign, and how
-          quickly each complexity level was clicked.
-          <span class="needs-work"
-            >Overall, nearly [PERCENT] of all clicks occurred within one hour of
-            receiving a phishing email. The median time to click was [TIME]
-            across all campaigns.</span
-          >
+          certain time intervals in the first 24 hours of a campaign, and how quickly each complexity level
+          was clicked. Overall, {{clickPercentFirstHour}} percent of all clicks occurred within one hour
+          of receiving a phishing email. The median time to click was {{medianClickTime}} across all campaigns.
         </p>
       </div>
     </div>
@@ -984,13 +885,9 @@
     <div class="row mb-5">
       <div class="col-12">
         <div class="timeIntervalGraph">
-          <h4>TIME INTERVALS</h4>
+          <h4>Timeline of Unique User Clicks Across All Levels</h4>
           <div style="display: grid;" class="report-chart">
-            <app-chart-time-intervals
-              *ngIf="detail"
-              [subscription]="detail"
-              style="height: 30rem;"
-            >
+            <app-chart-time-intervals *ngIf="detail" [subscription]="detail" style="height: 30rem;">
             </app-chart-time-intervals>
           </div>
         </div>
@@ -1001,9 +898,13 @@
   <article id="pageEleven">
     <div class="row">
       <div class="col-12">
-        <div class="timeComplexityGraph needs-work">
-          <h4>COMPLEXITY LEVEL</h4>
-          <div id="timeComplexityGraph"></div>
+        <div class="timeComplexityGraph" style="display: grid">
+          <h4>Time to First Click per Level of Complexity</h4>
+          <div style="display: grid">
+            <app-chart-time-to-first-click-levels *ngIf="detail" [subscription]="detail" class="report-chart"
+              style="height: 30rem;">
+            </app-chart-time-to-first-click-levels>
+          </div>
         </div>
       </div>
     </div>
@@ -1156,10 +1057,7 @@
   </article>
 
   <div *ngFor="let group of detail?.templates_by_group; index as outer">
-    <article
-      class="template_pages"
-      *ngFor="let campaign of group; index as inner"
-    >
+    <article class="template_pages" *ngFor="let campaign of group; index as inner">
       <div class="row">
         <div class="col-12">
           <div *ngIf="inner === 0">
@@ -1243,9 +1141,7 @@
                       | nullishCoalesce: "N/A"
                   }}<br />
                   <b style="margin-bottom: 1rem;">Email Body:</b>
-                  <div
-                    [innerHTML]="campaign.template_details.html | safe"
-                  ></div>
+                  <div [innerHTML]="campaign.template_details.html | safe"></div>
                 </div>
               </div>
             </div>
