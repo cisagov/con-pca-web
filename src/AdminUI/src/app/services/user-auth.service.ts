@@ -19,13 +19,6 @@ export class UserAuthService {
     this.currentAuthUserSubject.subscribe((value) => {
       this.currentAuthUser = value;
     });
-
-    console.log("Inside user auth constructor")
-    console.log(this.route.queryParams)
-
-    // this.userIsAuthenticated()
-    //   .then()
-    //   .catch((error) => console.log(error));
   }
 
   // Handles amplify authentification notfications from Hub
@@ -117,20 +110,15 @@ export class UserAuthService {
 
   getUserTokens() {
     if (environment.authorize) {
-      console.log("Authorizing")
-      console.log(this.route.snapshot.url)
-      console.log(this.route.snapshot.params)
-      console.log(this.route.snapshot.queryParams)
+      console.log("Getting User Tokens")
 
+      const reportTokenGlobal = (new URL(document.location.toString())).searchParams.get('reportToken');
 
-      const reportToken = this.route.snapshot.queryParams.reportToken;
-      console.log(reportToken);
-      if (reportToken) {
-
+      if (reportTokenGlobal) {
         console.log("using report token")
         return new Promise((resolve, reject) => {
           resolve({
-            idToken: reportToken
+            idToken: reportTokenGlobal
           });
         });
       }
