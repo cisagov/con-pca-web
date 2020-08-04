@@ -10,9 +10,12 @@ services:
       - "4200:443"
     networks:
       - frontend
+      - backend
     env_file:
       - .env
 
 networks:
   frontend:
     name: pca_frontend
+  backend:
+    name: pca_backend

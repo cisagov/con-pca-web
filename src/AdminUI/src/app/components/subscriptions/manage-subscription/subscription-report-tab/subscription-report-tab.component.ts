@@ -22,7 +22,7 @@ export class SubscriptionReportTab implements OnInit {
     private subscriptionSvc: SubscriptionService,
     private reportSvc: ReportsService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.subscriptionSvc.subBehaviorSubject.subscribe((data) => {
@@ -66,7 +66,7 @@ export class SubscriptionReportTab implements OnInit {
     this.router.navigate([
       '/reports/monthly',
       this.subscription.subscription_uuid,
-      new Date(),
+      new Date().toISOString(),
       false,
     ]);
   }
@@ -75,7 +75,7 @@ export class SubscriptionReportTab implements OnInit {
     this.router.navigate([
       '/reports/cycle',
       this.subscription.subscription_uuid,
-      new Date(),
+      new Date().toISOString(),
       false,
     ]);
   }
@@ -84,28 +84,28 @@ export class SubscriptionReportTab implements OnInit {
     this.router.navigate([
       '/reports/yearly',
       this.subscription.subscription_uuid,
-      new Date(),
+      new Date().toISOString(),
       false,
     ]);
   }
 
-  // viewMonthlyReport() {
-  //   this.subscriptionSvc.getMonthlyReport(this.subscription).subscribe(blob => {
-  //     this.downloadObject('subscription_status_report.pdf', blob);
-  //   });
-  // }
+  downloadMonthlyReport() {
+    this.subscriptionSvc.getMonthlyReport(this.subscription).subscribe(blob => {
+      this.downloadObject('subscription_status_report.pdf', blob);
+    });
+  }
 
-  // viewCycleReport() {
-  //   this.subscriptionSvc.getCycleReport(this.subscription).subscribe(blob => {
-  //     this.downloadObject('subscription_cycle_report.pdf', blob);
-  //   });
-  // }
+  downloadCycleReport() {
+    this.subscriptionSvc.getCycleReport(this.subscription).subscribe(blob => {
+      this.downloadObject('subscription_cycle_report.pdf', blob);
+    });
+  }
 
-  // viewYearlyReport() {
-  //   this.subscriptionSvc.getYearlyReport(this.subscription).subscribe(blob => {
-  //     this.downloadObject('subscription_yearly_report.pdf', blob);
-  //   });
-  // }
+  downloadYearlyReport() {
+    this.subscriptionSvc.getYearlyReport(this.subscription).subscribe(blob => {
+      this.downloadObject('subscription_yearly_report.pdf', blob);
+    });
+  }
 
   sendMonthlyReport() {
     this.subscriptionSvc.sendMonthlyReport(this.subscription).subscribe(() => {
