@@ -20,7 +20,7 @@
     "font-awesome": "^4.7.0",
     "guid-typescript": "^1.0.9",
     "jquery": "^3.5.1",
-    "moment": "^2.26.0",
+    "moment": "^2.27.0",
     "ngx-autosize": "^1.8.0",
     "rxjs": "^6.5.5",
     "tslib": "^1.13.0",

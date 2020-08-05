@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { SettingsService } from './settings.service';
-import * as moment from 'node_modules/moment/moment';
+import * as moment from 'moment';
 import { AppSettings } from 'src/app/AppSettings';
 
 @Injectable({
@@ -28,9 +28,7 @@ export class ReportsService {
         : this.settingsService.settings.apiUrlHeadless;
     const url =
       urlRoot +
-      `/reports/${subscriptionUuid}/yearly/${m.format(
-        AppSettings.MOMENT_ISO_DATE_FORMAT
-      )}Z/`;
+      `/reports/${subscriptionUuid}/yearly/${m.format(AppSettings.MOMENT_ISO_DATE_FORMAT)}/`;
     return this.http.get(url);
   }
 
@@ -45,9 +43,7 @@ export class ReportsService {
         : this.settingsService.settings.apiUrlHeadless;
     const url =
       urlRoot +
-      `/reports/${subscriptionUuid}/cycle/${m.format(
-        AppSettings.MOMENT_ISO_DATE_FORMAT
-      )}Z/`;
+      `/reports/${subscriptionUuid}/cycle/${m.format(AppSettings.MOMENT_ISO_DATE_FORMAT)}/`;
     return this.http.get(url);
   }
 
@@ -67,9 +63,7 @@ export class ReportsService {
 
     const url =
       urlRoot +
-      `/reports/${subscriptionUuid}/monthly/${m.format(
-        AppSettings.MOMENT_ISO_DATE_FORMAT
-      )}Z/`;
+      `/reports/${subscriptionUuid}/monthly/${m.format(AppSettings.MOMENT_ISO_DATE_FORMAT)}/`;
     return this.http.get(url);
   }
 }
