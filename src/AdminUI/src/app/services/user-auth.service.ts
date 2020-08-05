@@ -23,15 +23,10 @@ export class UserAuthService {
 
   // Handles amplify authentification notfications from Hub
   handleAuthNotification(data) {
-    //   if(data['channel'] === 'auth'){
-    //     if(data['payload']['event'] === 'signIn'){
-    //     }
-    //   }
+
   }
 
   signOut() {
-    console.log('Authorize?');
-    console.log(environment.authorize);
     Auth.signOut();
   }
 
@@ -41,10 +36,6 @@ export class UserAuthService {
 
   // Check Authentication, refreshing if possible. Redirecting to sign in if not authenticated
   userIsAuthenticated() {
-    console.log("user is authenticated")
-    console.log(this.route.snapshot.queryParams)
-
-
     if (environment.authorize) {
       return new Promise((resolve, reject) => {
         Auth.currentAuthenticatedUser()
@@ -53,7 +44,6 @@ export class UserAuthService {
             resolve(true);
           })
           .catch((error) => {
-            console.log(error);
             this.signOut();
             this.redirectToSignIn();
             reject(error);
@@ -61,7 +51,6 @@ export class UserAuthService {
       });
     } else if (!environment.authorize) {
       return new Promise((resolve, reject) => {
-        console.log('Environment not set to authorize');
         resolve(true);
       });
     }
@@ -89,33 +78,26 @@ export class UserAuthService {
 
   getReportToken() {
     if (environment.authorize) {
-      console.log('using report token 1')
       return new Promise((resolve, reject) => {
         this.route.queryParamMap.toPromise()
           .then((success) => {
-            console.log('using report token 2')
-            console.log(success)
             resolve({
               idToken: success['reportToken'],
             });
           })
           .catch((error) => {
-            console.log('report token error')
-            console.log(error)
-            reject(error)
-          })
+            reject(error);
+          });
       });
     }
   }
 
   getUserTokens() {
     if (environment.authorize) {
-      console.log("Getting User Tokens")
 
       const reportTokenGlobal = (new URL(document.location.toString())).searchParams.get('reportToken');
 
       if (reportTokenGlobal) {
-        console.log("using report token")
         return new Promise((resolve, reject) => {
           resolve({
             idToken: reportTokenGlobal
@@ -123,19 +105,16 @@ export class UserAuthService {
         });
       }
       else {
-        console.log("checking for local storage token.")
         return new Promise((resolve, reject) => {
           Auth.currentAuthenticatedUser()
             .then((success) => {
               this._setUserName(success);
-              console.log('using local storage token')
               resolve({
                 idToken: success.signInUserSession.accessToken.jwtToken,
                 accessToken: success.signInUserSession.idToken.jwtToken,
               });
             })
             .catch((error) => {
-              console.log('no tokens present')
               reject(error);
               this.redirectToSignIn();
             });

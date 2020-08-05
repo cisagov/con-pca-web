@@ -75,7 +75,7 @@ export class SubscriptionReportTab implements OnInit {
     this.router.navigate([
       '/reports/cycle',
       this.subscription.subscription_uuid,
-      new Date().toISOString(),
+      this.selectedCycle.start_date,
       false,
     ]);
   }
@@ -84,43 +84,43 @@ export class SubscriptionReportTab implements OnInit {
     this.router.navigate([
       '/reports/yearly',
       this.subscription.subscription_uuid,
-      new Date().toISOString(),
+      this.selectedCycle.start_date,
       false,
     ]);
   }
 
   downloadMonthlyReport() {
-    this.subscriptionSvc.getMonthlyReport(this.subscription).subscribe(blob => {
+    this.subscriptionSvc.getMonthlyReport(this.subscription.subscription_uuid, new Date().toISOString()).subscribe(blob => {
       this.downloadObject('subscription_status_report.pdf', blob);
     });
   }
 
   downloadCycleReport() {
-    this.subscriptionSvc.getCycleReport(this.subscription).subscribe(blob => {
+    this.subscriptionSvc.getCycleReport(this.subscription.subscription_uuid, this.selectedCycle.start_date).subscribe(blob => {
       this.downloadObject('subscription_cycle_report.pdf', blob);
     });
   }
 
   downloadYearlyReport() {
-    this.subscriptionSvc.getYearlyReport(this.subscription).subscribe(blob => {
+    this.subscriptionSvc.getYearlyReport(this.subscription.subscription_uuid, this.selectedCycle.start_date).subscribe(blob => {
       this.downloadObject('subscription_yearly_report.pdf', blob);
     });
   }
 
   sendMonthlyReport() {
-    this.subscriptionSvc.sendMonthlyReport(this.subscription).subscribe(() => {
+    this.subscriptionSvc.sendMonthlyReport(this.subscription.subscription_uuid).subscribe(() => {
       console.log('Sending monthly report.');
     });
   }
 
   sendCycleReport() {
-    this.subscriptionSvc.sendMonthlyReport(this.subscription).subscribe(() => {
+    this.subscriptionSvc.sendMonthlyReport(this.subscription.subscription_uuid).subscribe(() => {
       console.log('Sending cycle report.');
     });
   }
 
   sendYearlyReport() {
-    this.subscriptionSvc.sendYearlyReport(this.subscription).subscribe(() => {
+    this.subscriptionSvc.sendYearlyReport(this.subscription.subscription_uuid).subscribe(() => {
       console.log('Sending yearly report.');
     });
   }
