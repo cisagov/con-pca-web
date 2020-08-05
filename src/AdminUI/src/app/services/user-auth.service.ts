@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Auth } from 'aws-amplify';
-import { Subject, Observable, BehaviorSubject } from 'rxjs';
-import { Router } from '@angular/router';
+import { Subject, Observable, BehaviorSubject, from } from 'rxjs';
+import { Router, ActivatedRoute } from '@angular/router';
 import { environment } from './../../environments/environment';
+import { resolve } from 'dns';
+import { switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -13,26 +15,18 @@ export class UserAuthService {
     string
   >('Not Authorized');
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private route: ActivatedRoute) {
     this.currentAuthUserSubject.subscribe((value) => {
       this.currentAuthUser = value;
     });
-    this.userIsAuthenticated()
-      .then()
-      .catch((error) => console.log(error));
   }
 
   // Handles amplify authentification notfications from Hub
   handleAuthNotification(data) {
-    //   if(data['channel'] === 'auth'){
-    //     if(data['payload']['event'] === 'signIn'){
-    //     }
-    //   }
+
   }
 
   signOut() {
-    console.log('Authorize?');
-    console.log(environment.authorize);
     Auth.signOut();
   }
 
@@ -50,7 +44,6 @@ export class UserAuthService {
             resolve(true);
           })
           .catch((error) => {
-            console.log(error);
             this.signOut();
             this.redirectToSignIn();
             reject(error);
@@ -58,7 +51,6 @@ export class UserAuthService {
       });
     } else if (!environment.authorize) {
       return new Promise((resolve, reject) => {
-        console.log('Environment not set to authorize');
         resolve(true);
       });
     }
@@ -83,23 +75,52 @@ export class UserAuthService {
     return this.currentAuthUserSubject;
   }
 
-  getUserTokens() {
+
+  getReportToken() {
     if (environment.authorize) {
       return new Promise((resolve, reject) => {
-        Auth.currentAuthenticatedUser()
+        this.route.queryParamMap.toPromise()
           .then((success) => {
-            this._setUserName(success);
             resolve({
-              idToken: success.signInUserSession.accessToken.jwtToken,
-              accessToken: success.signInUserSession.idToken.jwtToken,
+              idToken: success['reportToken'],
             });
           })
           .catch((error) => {
             reject(error);
-            this.redirectToSignIn();
           });
       });
-    } else if (!environment.authorize) {
+    }
+  }
+
+  getUserTokens() {
+    if (environment.authorize) {
+
+      const reportTokenGlobal = (new URL(document.location.toString())).searchParams.get('reportToken');
+
+      if (reportTokenGlobal) {
+        return new Promise((resolve, reject) => {
+          resolve({
+            idToken: reportTokenGlobal
+          });
+        });
+      }
+      else {
+        return new Promise((resolve, reject) => {
+          Auth.currentAuthenticatedUser()
+            .then((success) => {
+              this._setUserName(success);
+              resolve({
+                idToken: success.signInUserSession.accessToken.jwtToken,
+                accessToken: success.signInUserSession.idToken.jwtToken,
+              });
+            })
+            .catch((error) => {
+              reject(error);
+              this.redirectToSignIn();
+            });
+        });
+      }
+    } else {
       return new Promise((resolve, reject) => {
         resolve({
           idToken: 'Angular not set to authorize',

@@ -8,10 +8,11 @@ import {
 import { UserAuthService } from '../services/user-auth.service';
 import { Observable, from } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { ActivatedRouteSnapshot, ActivatedRoute, Router } from '@angular/router';
 
 @Injectable()
 export class AuthAppendInterceptor implements HttpInterceptor {
-  constructor(private userAuthSvc: UserAuthService) {}
+  constructor(private userAuthSvc: UserAuthService, private router: Router) { }
   intercept(
     httpRequest: HttpRequest<any>,
     next: HttpHandler
@@ -20,7 +21,6 @@ export class AuthAppendInterceptor implements HttpInterceptor {
       switchMap((token) => {
         const headers = httpRequest.headers
           .set('Authorization', 'Bearer ' + token['idToken'])
-          //   .set('Authorization', token["idToken"])
           .append('Content-Type', 'application/json');
         const requestClone = httpRequest.clone({
           headers,

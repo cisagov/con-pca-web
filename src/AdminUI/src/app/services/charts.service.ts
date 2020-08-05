@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { SettingsService } from './settings.service';
 import { report } from 'process';
 import { toTitleCase } from 'src/app/helper/utilities';
+import { AppSettings } from '../AppSettings';
+import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root',
@@ -14,13 +16,13 @@ export class ChartsService {
   constructor(
     private http: HttpClient,
     private settingsService: SettingsService
-  ) {}
+  ) { }
 
   /**
    * Gets the subscriptions's statistics
    */
   getStatisticsReport(subscriptionUuid: string, start_date: string) {
-    const url = `${this.settingsService.settings.apiUrl}/reports/${subscriptionUuid}/subscription-stats-page/${start_date}/`;
+    const url = `${this.settingsService.settings.apiUrl}/reports/${subscriptionUuid}/subscription-stats-page/${moment(start_date).format(AppSettings.MOMENT_ISO_DATE_FORMAT)}/`;
     return this.http.get(url);
   }
 
