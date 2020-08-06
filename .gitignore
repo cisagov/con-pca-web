@@ -9,6 +9,8 @@ __pycache__
 .env
 .terraform
 
+/node_modules
+
 src/AdminUI/node_modules
 src/AdminUI/node_modules/*
 src/AdminUI/dist
