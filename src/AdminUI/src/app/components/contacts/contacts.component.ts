@@ -1,23 +1,21 @@
 import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
-import { FormGroup, FormControl } from '@angular/forms';
 import {
-  MatDialogRef,
   MatDialog,
-  MatDialogConfig,
-  MAT_DIALOG_DATA
+  MatDialogConfig
 } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { CustomerService } from 'src/app/services/customer.service';
-import { MatTab } from '@angular/material/tabs';
 import {
-  Contact,
   Customer,
   ICustomerContact
 } from 'src/app/models/customer.model';
 import { AddContactDialogComponent } from './add-contact-dialog/add-contact-dialog.component';
 import { ViewContactDialogComponent } from './view-contact-dialog/view-contact-dialog.component';
 import { MatSort } from '@angular/material/sort';
+import { Router } from '@angular/router';
+import { AlertComponent } from '../dialogs/alert/alert.component';
+
 
 @Component({
   selector: '',
@@ -41,7 +39,8 @@ export class ContactsComponent implements OnInit {
   constructor(
     private layoutSvc: LayoutMainService,
     public dialog: MatDialog,
-    public customerService: CustomerService
+    public customerService: CustomerService,
+    public router: Router,
   ) {
     layoutSvc.setTitle('Contacts');
   }
@@ -67,6 +66,17 @@ export class ContactsComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(value => {
       this.refresh();
+    });
+  }
+
+  createNewContact() {
+    console.log("clicked");
+    this.router.navigate(['/customers']);
+    this.dialog.open(AlertComponent, {
+      data: {
+        title: 'Create New Contact',
+        messageText: 'Select a Customer to add a new contact.',
+      },
     });
   }
 

@@ -34,7 +34,7 @@
         class="mb-3"
         (click)="viewMonthlyReport(); $event.preventDefault()"
       >
-        Download Monthly Report
+        View Monthly Report
       </button>
       <button
         mat-raised-button
@@ -42,13 +42,38 @@
         class="mb-3"
         (click)="viewCycleReport(); $event.preventDefault()"
       >
-        Download Cycle Report
+        View Cycle Report
       </button>
       <button
         mat-raised-button
         color="primary"
         class="mb-3"
         (click)="viewYearlyReport(); $event.preventDefault()"
+      >
+        View Yearly Report
+      </button>
+      <br /><br />
+      <button
+        mat-raised-button
+        color="primary"
+        class="mb-3"
+        (click)="downloadMonthlyReport(); $event.preventDefault()"
+      >
+        Download Monthly Report
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        class="mb-3"
+        (click)="downloadCycleReport(); $event.preventDefault()"
+      >
+        Download Cycle Report
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        class="mb-3"
+        (click)="downloadYearlyReport(); $event.preventDefault()"
       >
         Download Yearly Report
       </button>

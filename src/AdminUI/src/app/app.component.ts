@@ -15,9 +15,9 @@ export class AppComponent {
     private themeSvc: ThemeService,
     private userAuthSvc: UserAuthService
   ) {
-    //Listen for any auth changes from amplifyy and handle
+    // Listen for any auth changes from amplifyy and handle
     Hub.listen('auth', (data) => {
-      userAuthSvc.handleAuthNotification(data);
+      this.userAuthSvc.handleAuthNotification(data);
     });
   }
 
@@ -25,5 +25,5 @@ export class AppComponent {
     return this.themeSvc.getStoredTheme();
   }
 
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void { }
 }
