@@ -31,7 +31,7 @@ export class CampaignTimelineItem {
 //     office_phone: string;
 // }
 
-export interface SubscriptionClicksModel {}
+export interface SubscriptionClicksModel { }
 
 export class Subscription {
   active: boolean;
@@ -49,6 +49,7 @@ export class Subscription {
   status: string;
   subscription_uuid: string;
   tasks: Task[] = [];
+  templates_selected_uuid_list: string[];
   url: string;
   target_email_list: Target[] = [];
   gophish_campaign_list: GoPhishCampaignModel[];
