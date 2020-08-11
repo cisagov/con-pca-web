@@ -108,19 +108,19 @@ export class SubscriptionReportTab implements OnInit {
   }
 
   sendMonthlyReport() {
-    this.subscriptionSvc.sendMonthlyReport(this.subscription.subscription_uuid).subscribe(() => {
+    this.subscriptionSvc.sendMonthlyReport(this.subscription.subscription_uuid, new Date().toISOString()).subscribe(() => {
       console.log('Sending monthly report.');
     });
   }
 
   sendCycleReport() {
-    this.subscriptionSvc.sendMonthlyReport(this.subscription.subscription_uuid).subscribe(() => {
+    this.subscriptionSvc.sendMonthlyReport(this.subscription.subscription_uuid, this.selectedCycle.start_date).subscribe(() => {
       console.log('Sending cycle report.');
     });
   }
 
   sendYearlyReport() {
-    this.subscriptionSvc.sendYearlyReport(this.subscription.subscription_uuid).subscribe(() => {
+    this.subscriptionSvc.sendYearlyReport(this.subscription.subscription_uuid, this.selectedCycle.start_date).subscribe(() => {
       console.log('Sending yearly report.');
     });
   }

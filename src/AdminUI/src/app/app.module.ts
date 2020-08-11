@@ -89,6 +89,9 @@ import { YearlyPercentageTrendsComponent } from './components/charts/yearly-perc
 import { ChartTimeToFirstClickLevelsComponent } from './components/charts/chart-time-to-first-click-levels/chart-time-to-first-click-levels.component';
 import { YearlyClickRateVsReportRateComponent } from './components/charts/yearly-clickrate-vs-reportedrate/yearly-clickrate-vs-reportedrate.component'
 
+import { LandingPagesComponent } from './components/landing-pages/landing-pages.component';
+import { LandingPageManagerService } from './services/landing-page-manager.service';
+import { LandingPagesManagerComponent } from './components/landing-pages-manager/landing-pages-manager.component';
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
   return () => settingsHttpService.initializeApp();
@@ -151,6 +154,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     ChartTimeToFirstClickLevelsComponent,
     YearlyPercentageTrendsComponent,
     YearlyClickRateVsReportRateComponent,
+    LandingPagesComponent, LandingPagesManagerComponent,
   ],
   imports: [
     BrowserModule,
@@ -171,6 +175,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     DeceptionCalculatorService,
     CustomerService,
     TemplateManagerService,
+    LandingPageManagerService,
     RecommendationsService,
     ThemeService,
     LayoutMainService,

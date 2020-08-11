@@ -24,6 +24,9 @@ import { MonthlyComponent } from './components/reports/monthly/monthly.component
 import { CycleComponent } from './components/reports/cycle/cycle.component';
 import { YearlyComponent } from './components/reports/yearly/yearly.component';
 import { AggregateStatsComponent } from './components/user-admin/aggregate-stats/aggregate-stats.component';
+import { LandingPagesComponent } from './components/landing-pages/landing-pages.component';
+import { LandingPagesManagerComponent } from './components/landing-pages-manager/landing-pages-manager.component';
+import { LandingPageManagerService } from './services/landing-page-manager.service';
 
 const routes: Routes = [
   {
@@ -166,6 +169,24 @@ const routes: Routes = [
     component: LayoutMainComponent,
     canActivate: [AuthGuard],
     children: [{ path: '', component: SendingProfilesComponent }],
+  },
+  {
+    path: 'landing-pages',
+    component: LayoutMainComponent,
+    canActivate: [AuthGuard],
+    children: [{ path: '', component: LandingPagesComponent }],
+  },
+  {
+    path: 'landingpagesmanager',
+    component: LayoutMainComponent,
+    canActivate: [AuthGuard],
+    children: [{ path: '', component: LandingPagesManagerComponent }],
+  },
+  {
+    path: 'landingpagesmanager/:landing_page_uuid',
+    component: LayoutMainComponent,
+    canActivate: [AuthGuard],
+    children: [{ path: '', component: LandingPagesManagerComponent }],
   },
   {
     path: '',

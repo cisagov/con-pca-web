@@ -1,8 +1,10 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { Contact } from 'src/app/models/customer.model';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { AlertComponent } from '../../dialogs/alert/alert.component';
+
 
 @Component({
   selector: 'app-dhs-poc-detail',
@@ -21,7 +23,8 @@ export class DhsPocDetailComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<DhsPocDetailComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public subscriptionSvc: SubscriptionService
+    public subscriptionSvc: SubscriptionService,
+    public dialog: MatDialog
   ) {
     this.contact = data.contact;
   }
@@ -83,9 +86,29 @@ export class DhsPocDetailComponent implements OnInit {
     c.notes = this.f.notes.value;
     c.active = this.f.active.value;
 
-    this.subscriptionSvc.saveDhsContact(c).subscribe(() => {
-      this.dialogRef.close();
-    });
+    this.subscriptionSvc.saveDhsContact(c).subscribe(
+      (resp: any) => {
+        this.dialog.open(AlertComponent, {
+          data: {
+            title: 'Created',
+            messageText: 'DHS Contact was created.',
+          },
+        });
+        this.dialogRef.close();
+      },
+      (error: any) => {
+        // Console log error
+        console.log(error);
+        // Set fields to invalid
+        this.contactForm.controls['email'].setErrors({'incorrect': true})
+        this.dialog.open(AlertComponent, {
+          data: {
+            title: 'Creation Error',
+            messageText: 'Could not Create New DHS Contact. Please Check the Form and try again.',
+          },
+        });
+      }
+    );
   }
 
   /**

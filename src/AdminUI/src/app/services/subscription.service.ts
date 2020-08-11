@@ -124,7 +124,6 @@ export class SubscriptionService {
    * @param subscription
    */
   patchSubscription(subscription: Subscription) {
-    console.log('PATCH ISSUE');
     return this.http.patch(
       `${this.settingsService.settings.apiUrl}/api/v1/subscription/${subscription.subscription_uuid}/`,
       subscription
@@ -242,18 +241,18 @@ export class SubscriptionService {
     return this.http.get(url, { headers: headers, responseType: 'blob' });
   }
 
-  public sendMonthlyReport(uuid: string) {
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${uuid}/email/monthly/`;
+  public sendMonthlyReport(uuid: string, date) {
+    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${uuid}/email/monthly/${date}/`;
     return this.http.get(url);
   }
 
-  public sendCycleReport(uuid: string) {
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${uuid}/email/cycle/`;
+  public sendCycleReport(uuid: string, date) {
+    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${uuid}/email/cycle/${date}/`;
     return this.http.get(url);
   }
 
-  public sendYearlyReport(uuid: string) {
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${uuid}/email/yearly/`;
+  public sendYearlyReport(uuid: string, date) {
+    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${uuid}/email/yearly/${date}/`;
     return this.http.get(url);
   }
 
