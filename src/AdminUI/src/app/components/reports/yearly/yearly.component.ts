@@ -51,6 +51,7 @@ export class YearlyComponent implements OnInit {
         .subscribe(
           (resp) => {
             this.detail = resp;
+            console.log(this.detail)
             this.renderReport();
           },
           (error) => {

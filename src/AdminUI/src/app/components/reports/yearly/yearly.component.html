@@ -127,12 +127,12 @@
     <div class="row">
       <div id="blueDateBox">
         <span class="year">{{
-          detail?.target_year.start_date | date: "yyyy"
+          detail?.yearly_report_start_date | date: "yyyy"
         }}</span
         ><br />
         <span class="dateRange"
-          >{{ detail?.target_year.start_date | date: dateFormat }} -
-          {{ detail?.target_year.end_date | date: dateFormat }}</span
+          >{{ detail?.yearly_report_start_date | date: dateFormat }} -
+          {{ detail?.yearly_report_end_date | date: dateFormat }}</span
         >
       </div>
     </div>
@@ -171,7 +171,7 @@
     <div id="coverFooter" class="row mb-2">
       <div id="preparationDetails">
         Prepared for:<br />
-        {{ detail?.customer.full_name }}<br />
+        {{ detail?.customer.name }}<br />
         {{ detail?.customer.address_1 }} {{ detail?.customer.address_2 }}
       </div>
       <div id="dhsContactDetails">
@@ -223,7 +223,7 @@
           <table id="subscriptionDetailsTable">
             <tr>
               <td>Customer Name:</td>
-              <td>{{ detail?.customer.full_name }}</td>
+              <td>{{ detail?.customer.name }}</td>
             </tr>
             <tr>
               <td>Customer POC:</td>
@@ -242,8 +242,8 @@
             <tr>
               <td>Dates:</td>
               <td>
-                {{ detail?.target_year.start_date | date: "MMM d, yyyy" }} -
-                {{ detail?.target_year.end_date | date: "MMM d, yyyy" }}
+                {{ detail?.yearly_report_start_date | date: "MMM d, yyyy" }} -
+                {{ detail?.yearly_report_end_date | date: "MMM d, yyyy" }}
               </td>
             </tr>
             <tr>
@@ -276,10 +276,11 @@
               <th>Start Date - End Date</th>
               <th>Notes</th>
             </tr>
-            <tr *ngFor="let cycle of detail?.cycles; index as i">
+            <tr *ngFor="let cycle of detail?.cycles">
               <td>{{ cycle.year }} {{ cycle.quarter }}</td>
               <td>
-                {{ cycle.start_date | date }} - {{ cycle.end_date | date }}
+                {{ cycle.start_date | date: "MMM d, yyyy" }} -
+                {{ cycle.end_date | date: "MMM d, yyyy" }}
               </td>
               <td>{{ cycle.notes }}</td>
             </tr>
@@ -348,7 +349,7 @@
         <div id="companyAverageBox">
           {{ detail?.metrics.customer_clicked_avg }}%
         </div>
-        <b>{{ detail?.customer.short_name }}</b>
+        <b>{{ detail?.customer.identifier }}</b>
       </div>
       <div>
         <table>
@@ -402,22 +403,20 @@
     </div>
     <div class="row">
       <div class="col-12">
-        <div id="percentageTrendGraph">
-          <p class="pt-20">PERCENTAGE TRENDS</p>
-          <div id="percentageLineGraph"></div>
+
+        <div class="line-chart m-2">
+          <h4>Percentage Trends</h4>
+          <div style="display: grid;" class="report-chart">
+            <yearly-percentage-trends *ngIf="detail" [data]="detail.percentage_trends_data"></yearly-percentage-trends>
+          </div>
         </div>
-      </div>
-    </div>
-    <p style="color: red;">
-      NOTE TO DEVELOPER (This should contain all time (every cycle they have
-      ever done).
-    </p>
-    <div class="row">
-      <div class="col-12">
-        <div id="clickedVsReportedGraph">
-          <p class="pt-20">PERCENTAGE TRENDS</p>
-          <div id="clickedVsReportedLineGraph"></div>
+        <div class="line-chart m-2">
+          <h4>Click Rate vs. Reported Rate</h4>
+          <div style="display: grid;" class="report-chart">
+            <yearly-click-rate-vs-report-rate *ngIf="detail" [data]="detail.clickrate_vs_reportrate_data"></yearly-click-rate-vs-report-rate>
+          </div>
         </div>
+
       </div>
     </div>
 
@@ -432,7 +431,7 @@
             <th style="padding: 0 75px 0 0;">
               Median Time to open email from first sent:
             </th>
-            <td>{{ detail?.metrics.median_time_to_report }}</td>
+            <td>{{ detail?.metrics.median_time_to_open }}</td>
           </tr>
           <tr>
             <th><i>Geometric mean.</i></th>
@@ -479,79 +478,6 @@
     </div>
   </article>
 
-  <article id="pageFour">
-    <div class="row">
-      <div class="col-12">
-        <h2 id="methodologyTitle">Example Methodology Specifics</h2>
-        <div id="methodologyText">
-          <p>
-            VM used the methodology documented in
-            <u><b>Appendix A: Methodology</b></u> to perform testing
-            {{ detail?.customer.full_name }}. Specific phishing templates can be
-            reviewed in
-            <u><b>Appendix C: Templates</b></u>
-            with corresponding complexity calculations. VM divided the 1000
-            email addresses that
-            {{ detail?.customer.full_name }} provided into three groups. Group 1
-            had 333 addresses and received levels 1 and 4. Group 2 had 333
-            addresses and received levels 2 and 5. Group 3 had 334 addresses and
-            received levels 3 and 6. See Table 3 for descriptions of email
-            levels 1 – 6.
-          </p>
-          <p>
-            The assessment’s goal was to capture the behavior-based responses of
-            {{ detail?.customer.full_name }}
-            to email phishing attempts; and the assessment operated under the
-            scenario that no technical controls were able to detect, report, or
-            stop the email phishing attempts. VM, as an external body conducting
-            this PCA, did not have direct knowledge whether or not emails
-            successfully arrived in targeted
-            {{ detail?.customer.full_name }} user inboxes. To allow for a clear
-            determination of click rates (email links clicked divided by emails
-            sent), {{ detail?.customer.full_name }} or VM performed the
-            following:
-          </p>
-          <ul>
-            <li>
-              {{ detail?.customer.full_name }} whitelisted the VM domain and IP
-              address during the planning stage
-            </li>
-            <li>
-              {{ detail?.customer.full_name }} created specific mail receiving
-              rules to permit the VM emails to land in user inboxes
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12">
-        <h2 id="testingSummaryTitle">
-          Summary of Testing Activities and Results
-        </h2>
-        <div id="testingSummaryText">
-          <p>
-            This PCA concentrated on how phishing email complexity affected
-            EXAMPLE user click behavior and response behavior. VM expects that a
-            more complex and deceptive phishing email has a higher likelihood of
-            being clicked and a lower likelihood of being reported. This
-            assessment also gathered organizational emails through open-source
-            intelligence techniques to determine EXAMPLE’s potentially
-            attackable online presence. See Appendix B: Detailed Results for
-            detailed phishing and customer email data and Appendix C: Templates
-            for a detailed explanation on complexity levels.
-          </p>
-          <p>
-            Over six weeks, EXAMPLE’s targeted users received at least two
-            phishing emails of increasing complexity. Levels 1 – 3 were “easier
-            to detect” and levels 4 – 6 were “more difficult to detect,” based
-            on the number and type of indicators used. The table below
-            summarizes the phishing templates used in this PCA.
-          </p>
-        </div>
-      </div>
-    </div>
-  </article>
 
   <article id="pageFive">
     <div class="row">
@@ -576,7 +502,7 @@
       </div>
     </div>
 
-    <div *ngIf="improvingTrend" class="row">
+    <div *ngIf="detail?.trend == 'improving'" class="row">
       <div class="col-12">
         <p>
           Your trends for this past year indicate that your security posture is
@@ -585,7 +511,7 @@
         </p>
       </div>
     </div>
-    <div *ngIf="degradingTrend" class="row">
+    <div *ngIf="detail?.trend == 'degrading'" class="row">
       <div class="col-12">
         <p>
           Your trends for this past year indicate that your security posture is
