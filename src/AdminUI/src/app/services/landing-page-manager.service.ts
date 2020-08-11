@@ -24,7 +24,7 @@ export class LandingPageManagerService {
   }
 
   /**
-   * GET a list of all landingpagess
+   * GET a list of all landingpages
    * @param retired
    */
   getAlllandingpages(retired: boolean = false) {
@@ -36,13 +36,13 @@ export class LandingPageManagerService {
   }
 
   /**
-   * GET a single landingpages using the provided temlpate_uuid
+   * GET a single landingpage using the provided temlpate_uuid
    * @param uuid
    */
-  getlandingpages(uuid: string) {
+  getlandingpage(uuid: string) {
     return new Promise((resolve, reject) => {
       this.http
-        .get(`${this.settingsService.settings.apiUrl}/api/v1/landingpages/${uuid}`)
+        .get(`${this.settingsService.settings.apiUrl}/api/v1/landingpage/${uuid}`)
         .subscribe(
           (success) => {
             resolve(success);
@@ -56,26 +56,26 @@ export class LandingPageManagerService {
   }
 
   /**
-   * POST a new landingpages
-   * @param landingpages
+   * POST a new landingpage
+   * @param landingpage
    */
-  saveNewlandingpages(landingpages: Landing_Page) {
+  saveNewlandingpage(landingpage: Landing_Page) {
     return this.http.post(
-      `${this.settingsService.settings.apiUrl}/api/v1/landingpagess/`,
-      landingpages
+      `${this.settingsService.settings.apiUrl}/api/v1/landingpages/`,
+      landingpage
     );
   }
 
   /**
-   * PATCH an existing landingpages with partial data
-   * @param landingpages
+   * PATCH an existing landingpage with partial data
+   * @param landingpage
    */
-  updatelandingpages(landingpages: Landing_Page) {
+  updatelandingpage(landingpage: Landing_Page) {    
     return new Promise((resolve, reject) => {
       this.http
         .patch(
-          `${this.settingsService.settings.apiUrl}/api/v1/landingpages/${landingpages.landing_page_uuid}/`,
-          landingpages
+          `${this.settingsService.settings.apiUrl}/api/v1/landingpage/${landingpage.landing_page_uuid}/`,
+          landingpage
         )
         .subscribe(
           (success) => {
@@ -91,13 +91,13 @@ export class LandingPageManagerService {
 
   /**
    *
-   * @param landingpages
+   * @param landingpage
    */
-  deletelandingpages(landingpages: Landing_Page) {
+  deletelandingpage(landingpage: Landing_Page) {
     return new Promise((resolve, reject) => {
       this.http
         .delete(
-          `${this.settingsService.settings.apiUrl}/api/v1/landingpages/${landingpages.landing_page_uuid}/`
+          `${this.settingsService.settings.apiUrl}/api/v1/landingpage/${landingpage.landing_page_uuid}/`
         )
         .subscribe(
           (success) => {
@@ -112,11 +112,11 @@ export class LandingPageManagerService {
 
   /**
    *
-   * @param landingpages
+   * @param landingpage
    */
-  stoplandingpages(landingpages: Landing_Page) {
+  stoplandingpage(landingpage: Landing_Page) {
     return this.http.get(
-      `${this.settingsService.settings.apiUrl}/api/v1/landingpages/stop/${landingpages.landing_page_uuid}/`
+      `${this.settingsService.settings.apiUrl}/api/v1/landingpage/stop/${landingpage.landing_page_uuid}/`
     );
   }
 

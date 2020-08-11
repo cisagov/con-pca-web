@@ -183,7 +183,7 @@ const routes: Routes = [
     children: [{ path: '', component: LandingPagesManagerComponent }],
   },
   {
-    path: 'landingpagesmanager/:templateId',
+    path: 'landingpagesmanager/:landing_page_uuid',
     component: LayoutMainComponent,
     canActivate: [AuthGuard],
     children: [{ path: '', component: LandingPagesManagerComponent }],

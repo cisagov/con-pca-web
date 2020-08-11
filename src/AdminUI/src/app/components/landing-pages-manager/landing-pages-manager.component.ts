@@ -16,10 +16,11 @@ import { SubscriptionService } from 'src/app/services/subscription.service';
 import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
 import { AppSettings } from 'src/app/AppSettings';
 import { MatTableDataSource } from '@angular/material/table';
-import { TagSelectionComponent } from '../dialogs/tag-selection/tag-selection.component';
 import { SettingsService } from 'src/app/services/settings.service';
 import { RetireTemplateDialogComponent } from '../template-manager/retire-template-dialog/retire-template-dialog.component';
 import { AlertComponent } from '../dialogs/alert/alert.component';
+import { LandingPageManagerService } from 'src/app/services/landing-page-manager.service';
+import { Landing_Page } from 'src/app/models/landing-page.models';
 
 @Component({
   selector: 'app-landing-pages-manager',
@@ -27,8 +28,7 @@ import { AlertComponent } from '../dialogs/alert/alert.component';
   styleUrls: ['./landing-pages-manager.component.scss']
 })
 export class LandingPagesManagerComponent implements OnInit {
-    dialogRefConfirm: MatDialogRef<ConfirmComponent>;
-    dialogRefTagSelection: MatDialogRef<TagSelectionComponent>;
+    dialogRefConfirm: MatDialogRef<ConfirmComponent>;    
     dialogRefRetire: MatDialogRef<RetireTemplateDialogComponent>;
   
     //Full template list variables
@@ -69,7 +69,7 @@ export class LandingPagesManagerComponent implements OnInit {
   
     constructor(
       private layoutSvc: LayoutMainService,
-      private templateManagerSvc: TemplateManagerService,
+      private landingPageManagerSvc: LandingPageManagerService,
       private subscriptionSvc: SubscriptionService,
       private route: ActivatedRoute,
       private router: Router,
@@ -78,7 +78,7 @@ export class LandingPagesManagerComponent implements OnInit {
     ) {
       layoutSvc.setTitle('Edit Landing Page');
       //this.setEmptyTemplateForm();
-      this.setTemplateForm(new Template());
+      this.setTemplateForm(new Landing_Page());
       //this.getAllTemplates();
     }
     ngOnInit() {
@@ -102,8 +102,8 @@ export class LandingPagesManagerComponent implements OnInit {
       //Check if template ID was included in the route, open template identified if so
       this.subscriptions.push(
         this.route.params.subscribe((params) => {
-          this.templateId = params['templateId'];
-          if (this.templateId != undefined) {
+          this.templateId = params['landing_page_uuid'];          
+          if (this.templateId != undefined) {            
             this.selectTemplate(this.templateId);
           } else {
             //Use preset empty form
@@ -120,117 +120,33 @@ export class LandingPagesManagerComponent implements OnInit {
     }
   
     ngAfterViewInit() {
-      this.configAngularEditor();
-      this.addInsertTagButtonIntoEditor();
-    }
-  
-    onValueChanges(): void {
-      //Event fires for every modification to the form, used to update deception score
-      this.currentTemplateFormGroup.valueChanges.subscribe((val) => {
-        this.currentTemplateFormGroup.patchValue(
-          {
-            final_deception_score:
-              val.authoritative +
-              val.grammar +
-              val.internal +
-              val.link_domain +
-              val.logo_graphics +
-              val.public_news +
-              val.organization +
-              val.external,
-          },
-          { emitEvent: false }
-        );
-      });
+      this.configAngularEditor();      
     }
   
     //Select a template based on template_uuid, returns the full template
     selectTemplate(template_uuid: string) {
       //Get template and call setTemplateForm to initialize a form group using the selected template
-      this.templateManagerSvc.getTemplate(template_uuid).then(
+      this.landingPageManagerSvc.getlandingpage(template_uuid).then(
         (success) => {
-          let t = <Template>success;
+          let t = <Landing_Page>success;
   
           this.setTemplateForm(t);
-          this.templateId = t.template_uuid;
+          this.templateId = t.landing_page_uuid;
           this.retired = t.retired;
           this.retiredReason = t.retired_description;
-  
-          this.subscriptionSvc
-            .getSubscriptionsByTemplate(t)
-            .subscribe((x: PcaSubscription[]) => {
-              this.pcaSubscriptions.data = x;
-            });
         },
         (error) => {}
       );
     }
   
     //Create a formgroup using a Template as initial data
-    setTemplateForm(template: Template) {
-      if (!template.appearance) {
-        template.appearance = <any>{};
-      }
-      if (!template.sender) {
-        template.sender = <any>{};
-      }
-      if (!template.relevancy) {
-        template.relevancy = <any>{};
-      }
-      if (!template.behavior) {
-        template.behavior = <any>{};
-      }
-  
+    setTemplateForm(template: Landing_Page) {      
       this.currentTemplateFormGroup = new FormGroup({
-        templateUUID: new FormControl(template.template_uuid),
-        templateName: new FormControl(template.name, [Validators.required]),
-        templateDeceptionScore: new FormControl(template.deception_score),
-        templateDescriptiveWords: new FormControl(template.descriptive_words),
-        templateDescription: new FormControl(template.description),
-        templateFromAddress: new FormControl(template.from_address, [
-          Validators.required,
-        ]),
-        templateSubject: new FormControl(template.subject, [Validators.required]),
-        templateText: new FormControl(template.text),
+        landingPageUUID: new FormControl(template.landing_page_uuid),
+        templateName: new FormControl(template.name, [Validators.required]),        
         templateHTML: new FormControl(template.html, [Validators.required]),
-        templateLandingPage: new FormControl(template.html, [Validators.required]),
-        authoritative: new FormControl(template.sender?.authoritative ?? 0),
-        external: new FormControl(template.sender?.external ?? 0),
-        internal: new FormControl(template.sender?.internal ?? 0),
-        grammar: new FormControl(template.appearance?.grammar ?? 0),
-        link_domain: new FormControl(template.appearance?.link_domain ?? 0),
-        logo_graphics: new FormControl(template.appearance?.logo_graphics ?? 0),
-        organization: new FormControl(template.relevancy.organization ?? 0),
-        public_news: new FormControl(template.relevancy.public_news ?? 0),
-        fear: new FormControl(template.behavior?.fear ?? false),
-        duty_obligation: new FormControl(
-          template.behavior?.duty_obligation ?? false
-        ),
-        curiosity: new FormControl(template.behavior?.curiosity ?? false),
-        greed: new FormControl(template.behavior?.greed ?? false),
-        descriptive_words: new FormControl(template.descriptive_words ?? ' ', {
-          updateOn: 'blur',
-        }),
-        final_deception_score: new FormControl({
-          value: this.calcDeceptionScore(template),
-          disabled: true,
-        }),
+        templateLandingPage: new FormControl(template.html, [Validators.required]),        
       });
-  
-      this.onValueChanges();
-    }
-  
-    calcDeceptionScore(formValues) {
-      return (
-        (formValues.sender?.authoritative ?? 0) +
-        (formValues.sender?.external ?? 0) +
-        (formValues.sender?.internal ?? 0) +
-        (formValues.appearance?.grammar ?? 0) +
-        (formValues.appearance?.link_domain ?? 0) +
-        (formValues.appearance?.logo_graphics ?? 0) +
-        (formValues.relevancy?.public_news ?? 0) +
-        (formValues.relevancy?.organization ?? 0)
-      );
     }
   
     //Get Template model from the form group
@@ -239,44 +155,14 @@ export class LandingPagesManagerComponent implements OnInit {
       form.controls['templateHTML'].setValue(
         this.angularEditorEle.textArea.nativeElement.innerHTML
       );
-      form.controls['templateText'].setValue(
-        this.angularEditorEle.textArea.nativeElement.innerText
-      );
-  
-      let formTemplate = new Template(form.value);
-      let saveTemplate = new Template({
-        template_uuid: form.controls['templateUUID'].value,
+     
+      let formTemplate = new Landing_Page(form.value);
+      let saveTemplate = new Landing_Page({
+        landing_page_uuid: form.controls['landingPageUUID'].value,
         name: form.controls['templateName'].value,
-        deception_score: form.controls['templateDeceptionScore'].value,
-        descriptive_words: form.controls['templateDescriptiveWords'].value,
-        description: form.controls['templateDescription'].value,
-        from_address: form.controls['templateFromAddress'].value,
-        subject: form.controls['templateSubject'].value,
-        text: form.controls['templateText'].value,
         html: form.controls['templateHTML'].value,
       });
-      saveTemplate.appearance = {
-        grammar: formTemplate.grammar,
-        link_domain: formTemplate.link_domain,
-        logo_graphics: formTemplate.logo_graphics,
-      };
-      saveTemplate.sender = {
-        authoritative: formTemplate.authoritative,
-        external: formTemplate.external,
-        internal: formTemplate.internal,
-      };
-      saveTemplate.relevancy = {
-        organization: formTemplate.organization,
-        public_news: formTemplate.public_news,
-      };
-      saveTemplate.behavior = {
-        curiosity: formTemplate.curiosity,
-        duty_obligation: formTemplate.duty_obligation,
-        fear: formTemplate.fear,
-        greed: formTemplate.greed,
-      };
-      saveTemplate.template_uuid = this.templateId;
-      saveTemplate.deception_score = form.controls['final_deception_score'].value;
+      saveTemplate.landing_page_uuid = this.templateId;
       return saveTemplate;
     }
   
@@ -284,7 +170,7 @@ export class LandingPagesManagerComponent implements OnInit {
      *
      */
     onCancelClick() {
-      this.router.navigate(['/templates']);
+      this.router.navigate(['/landing-pages']);
     }
   
     /**
@@ -297,11 +183,11 @@ export class LandingPagesManagerComponent implements OnInit {
         let templateToSave = this.getTemplateFromForm(
           this.currentTemplateFormGroup
         );
-        //PATCH - existing template update
-        if (this.currentTemplateFormGroup.controls['templateUUID'].value) {
-          this.templateManagerSvc.updateTemplate(templateToSave).then(
+        //PATCH - existing template update        
+        if (this.currentTemplateFormGroup.controls['landingPageUUID'].value) {
+          this.landingPageManagerSvc.updatelandingpage(templateToSave).then(
             (success) => {
-              this.router.navigate(['/templates']);
+              this.router.navigate(['/landing-pages']);
               // let retTemplate = <Template>success
               // this.updateTemplateInList(retTemplate)
             },
@@ -311,7 +197,7 @@ export class LandingPagesManagerComponent implements OnInit {
           );
           //POST - new template creation
         } else {
-          this.templateManagerSvc.saveNewTemplate(templateToSave).subscribe(
+          this.landingPageManagerSvc.saveNewlandingpage(templateToSave).subscribe(
             (resp: any) => {
               this.dialog.open(AlertComponent, {
                 data: {
@@ -320,7 +206,7 @@ export class LandingPagesManagerComponent implements OnInit {
                 },
               });
   
-              this.router.navigate(['/templates']);
+              this.router.navigate(['/landing-pages']);
             },
             (error: any) => {
               console.log(error);
@@ -365,11 +251,11 @@ export class LandingPagesManagerComponent implements OnInit {
   
       this.dialogRefConfirm.afterClosed().subscribe((result) => {
         if (result) {
-          this.templateManagerSvc.deleteTemplate(template_to_delete).then(
+          this.landingPageManagerSvc.deletelandingpage(template_to_delete).then(
             (success) => {
               // this.updateTemplateInList(<Template>success)
               // this.setEmptyTemplateForm()
-              this.router.navigate(['/templates']);
+              this.router.navigate(['/landing-pages']);
             },
             (error) => {}
           );
@@ -408,7 +294,7 @@ export class LandingPagesManagerComponent implements OnInit {
         if (result) {
           templateToRestore.retired = false;
           templateToRestore.retired_description = '';
-          this.templateManagerSvc.updateTemplate(templateToRestore);
+          this.landingPageManagerSvc.updatelandingpage(templateToRestore);
           this.retired = templateToRestore.retired;
         }
       });
@@ -521,55 +407,8 @@ export class LandingPagesManagerComponent implements OnInit {
         ['bold', 'italic'],
         ['fontSize', 'insertVideo'],
       ],
-    };
+    };  
   
-    /**
-     * Hack the angular-editor to add a new button after the "clear formatting" button.
-     * Clicking it clicks a hidden button to get us back into Angular.
-     */
-    addInsertTagButtonIntoEditor() {
-      let btnClearFormatting = $(this.angularEditorEle.doc).find(
-        "[title='Horizontal Line']"
-      )[0];
-      let attribs = btnClearFormatting.attributes;
-      // this assumes that the _ngcontent attribute occurs first
-      let ngcontent = attribs.item(0).name;
-      let newButtonHtml1 = `<button ${ngcontent} type="button" title="Insert Tag" tabindex="-1" class="angular-editor-button" id="insertTag-" `;
-      let newButtonHtml2 =
-        'onclick="var h = document.getElementsByClassName(\'hidden-insert-tag-button\'); h[0].click();">';
-      let newButtonHtml3 = `<i ${ngcontent} class="fa fa-tag"></i></button>`;
-      $(btnClearFormatting)
-        .closest('div')
-        .append(newButtonHtml1 + newButtonHtml2 + newButtonHtml3);
-    }
-  
-    /**
-     * Opens a dialog that presents the tag options.
-     */
-    openTagChoice() {
-      this.angularEditorEle.textArea.nativeElement.focus();
-      const selection = window.getSelection().getRangeAt(0);
-      this.dialogRefTagSelection = this.dialog.open(TagSelectionComponent, {
-        disableClose: false,
-      });
-      this.dialogRefTagSelection.afterClosed().subscribe((result) => {
-        if (result) {
-          this.insertTag(selection, result);
-          $('.angular-editor-wrapper').removeClass('show-placeholder');
-        }
-        this.dialogRefTagSelection = null;
-      });
-    }
-  
-    /**
-     * Inserts a span containing the tag at the location of the selection.
-     * @param selection
-     * @param tag
-     */
-    insertTag(selection, tagText: string) {
-      const newNode = document.createTextNode(tagText);
-      selection.insertNode(newNode);
-    }
 }
   
 

@@ -27,7 +27,7 @@
                 )
               "
             >
-              Template name <strong>required</strong>
+              Page name <strong>required</strong>
             </mat-error>
             <mat-error
               *ngIf="
@@ -36,7 +36,7 @@
                 )
               "
             >
-              Template name may not contain only spaces
+              Page name may not contain only spaces
             </mat-error>
           </mat-form-field>          
         </div>
@@ -60,17 +60,9 @@
                           'whitespace'
                         ))
                   }"
-                  >HTML View
+                  >Landing Page Editor HTML View
                 </span>
-              </ng-template>
-              <button
-                mat-raised-button
-                color="primary"
-                (click)="openTagChoice()"
-                class="hidden-insert-tag-button d-none"
-              >
-                Insert Tag
-              </button>
+              </ng-template>              
               <div>
                 <angular-editor
                   #angularEditor
@@ -79,40 +71,7 @@
                   [config]="editorConfig"
                 ></angular-editor>
               </div>
-            </mat-tab>
-            <mat-tab>
-              <ng-template mat-tab-label>
-                <span
-                  [ngClass]="{
-                    'tab-form-error':
-                      currentTemplateFormGroup.controls.templateHTML.touched &&
-                      (currentTemplateFormGroup.controls.templateHTML.hasError(
-                        'required'
-                      ) ||
-                        currentTemplateFormGroup.controls.templateHTML.hasError(
-                          'whitespace'
-                        ))
-                  }"
-                  >Template View
-                </span>
-              </ng-template>
-              <button
-                mat-raised-button
-                color="primary"
-                (click)="openTagChoice()"
-                class="hidden-insert-tag-button d-none"
-              >
-                Insert Tag
-              </button>
-              <div>
-                <angular-editor
-                  #angularEditor
-                  [style.height.px]="text_editor_height"
-                  formControlName="templateLandingPage"
-                  [config]="editorConfig"
-                ></angular-editor>
-              </div>
-            </mat-tab>
+            </mat-tab>     
           </mat-tab-group>
         </div>
   
@@ -124,10 +83,10 @@
             color="primary"
             (click)="setEmptyTemplateForm()"
           >
-            New Template
+            New Page
           </button> -->
           <!-- <button id="delete-button" class="d-flex" mat-raised-button color="warn" (click)="deleteTemplate()" *ngIf=templateId>
-            Delete Template
+            Delete Page
           </button> -->
           <div class="flex-container flex-row save_container pb-3">
             <button
@@ -138,7 +97,7 @@
               (click)="openRetireTemplateDialog()"
               *ngIf="templateId && !retired"
             >
-              Retire Template
+              Retire Page
             </button>
             <button
               id="restore-button"
@@ -148,18 +107,8 @@
               (click)="openRestoreTemplateDialog()"
               *ngIf="templateId && retired"
             >
-              Restore Template
-            </button>
-            <button
-              id="stop-button"
-              class="d-flex"
-              mat-raised-button
-              color="warn"
-              (click)="openStopTemplateDialog()"
-              *ngIf="templateId"
-            >
-              Stop Template
-            </button>
+              Restore Page
+            </button>          
             <div class="ml-auto d-flex flex-row">
               <button
                 id="save-button"
@@ -177,7 +126,7 @@
                 color="primary"
                 (click)="saveTemplate()"
               >
-                Save Template
+                Save Page
               </button>
             </div>
           </div>

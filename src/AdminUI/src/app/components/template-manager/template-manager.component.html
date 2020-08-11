@@ -278,40 +278,6 @@
               </div>
             </div>
           </mat-tab>
-          
-          <mat-tab>
-            <ng-template mat-tab-label>
-              <span
-                [ngClass]="{
-                  'tab-form-error':
-                    currentTemplateFormGroup.controls.templateHTML.touched &&
-                    (currentTemplateFormGroup.controls.templateHTML.hasError(
-                      'required'
-                    ) ||
-                      currentTemplateFormGroup.controls.templateHTML.hasError(
-                        'whitespace'
-                      ))
-                }"
-                >Template View
-              </span>
-            </ng-template>
-            <button
-              mat-raised-button
-              color="primary"
-              (click)="openTagChoice()"
-              class="hidden-insert-tag-button d-none"
-            >
-              Insert Tag
-            </button>
-            <div>
-              <angular-editor
-                #angularEditor
-                [style.height.px]="text_editor_height"
-                formControlName="templateLandingPage"
-                [config]="editorConfig"
-              ></angular-editor>
-            </div>
-          </mat-tab>
         </mat-tab-group>
       </div>
 
