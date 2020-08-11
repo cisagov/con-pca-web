@@ -148,7 +148,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     ChartComplexityLevelComponent,
     ChartStatsByLevelComponent,
     ChartTimeIntervalsComponent,
-    ChartTimeToFirstClickLevelsComponent,    
+    ChartTimeToFirstClickLevelsComponent,
     LandingPagesComponent, LandingPagesManagerComponent,
   ],
   imports: [

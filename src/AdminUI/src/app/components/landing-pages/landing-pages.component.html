@@ -6,24 +6,24 @@
         <input [(ngModel)]="search_input" (keyup)="filterTemplates($event.target.value)" matInput placeholder="Search" />
         <mat-icon matSuffix>search</mat-icon>
       </mat-form-field>
-  
+
       <!-- CREATE TEMPLATE -->
       <div class="d-inline-flex flex-column ml-2">
         <button mat-raised-button color="primary" routerLink="/landingpagesmanager">
           New Landing Page
         </button>
-  
+
         <mat-slide-toggle class="mt-3 ml-1 mb-2" [(ngModel)]="showRetired" (change)="onRetiredToggle()">
           Show Retired
         </mat-slide-toggle>
       </div>
     </div>
-  
+
     <div class="col p-0 w-100">
       <div *ngIf="loading" style="text-align: center; padding-top: 2rem; padding-bottom: 2rem;">
         <mat-spinner class="spinner" style="margin-left: auto; margin-right: auto;" diameter="50"></mat-spinner>
       </div>
-  
+
       <!-- TEMPLATES TABLE -->
       <mat-table [hidden]="loading" [dataSource]="landingPageData" matSort>
         <!-- NAME -->
@@ -54,11 +54,10 @@
             </button>
           </mat-cell>
         </ng-container>
-  
+
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row class="table-row cursor-pointer" *matRowDef="let row; columns: displayedColumns"
           (click)="editTemplate(row)"></mat-row>
       </mat-table>
     </div>
   </div>
-  

@@ -10,7 +10,7 @@ const headers = {
 
 @Injectable()
 export class LandingPageManagerService {
-  
+
 
   /**
    * Constructor.
@@ -20,7 +20,7 @@ export class LandingPageManagerService {
     private http: HttpClient,
     private settingsService: SettingsService
   ) {
-    // load the tags collection up front  
+    // load the tags collection up front
   }
 
   /**
@@ -70,7 +70,7 @@ export class LandingPageManagerService {
    * PATCH an existing landingpage with partial data
    * @param landingpage
    */
-  updatelandingpage(landingpage: Landing_Page) {    
+  updatelandingpage(landingpage: Landing_Page) {
     return new Promise((resolve, reject) => {
       this.http
         .patch(

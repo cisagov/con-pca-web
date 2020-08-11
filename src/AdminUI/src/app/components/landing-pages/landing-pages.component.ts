@@ -17,11 +17,11 @@ export class LandingPagesComponent implements OnInit , AfterViewInit {
         landingPageData = new MatTableDataSource<Landing_Page>();
         search_input = '';
         @ViewChild(MatSort) sort: MatSort;
-      
+
         showRetired: boolean = false;
-      
+
         loading = true;
-      
+
         constructor(
           private templateSvc: LandingPageManagerService,
           private router: Router,
@@ -29,11 +29,11 @@ export class LandingPagesComponent implements OnInit , AfterViewInit {
         ) {
           layoutSvc.setTitle('Landing Pages');
         }
-      
+
         ngOnInit() {
           this.refresh();
         }
-      
+
         refresh() {
           this.loading = true;
           this.templateSvc
@@ -44,18 +44,18 @@ export class LandingPagesComponent implements OnInit , AfterViewInit {
               this.loading = false;
             });
         }
-      
+
         ngAfterViewInit(): void {
           this.landingPageData.sort = this.sort;
         }
-      
+
         public filterTemplates = (value: string) => {
           this.landingPageData.filter = value.trim().toLocaleLowerCase();
         };
         public editTemplate(template: Landing_Page) {
           this.router.navigate(['/landingpagesmanager', template.landing_page_uuid]);
         }
-      
+
         onRetiredToggle() {
           if (this.displayedColumns.includes('retired')) {
             this.displayedColumns.pop();
