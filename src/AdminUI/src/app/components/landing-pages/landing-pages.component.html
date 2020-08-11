@@ -9,7 +9,7 @@
   
       <!-- CREATE TEMPLATE -->
       <div class="d-inline-flex flex-column ml-2">
-        <button mat-raised-button color="primary" routerLink="/landingpagemanger">
+        <button mat-raised-button color="primary" routerLink="/landingpagesmanager">
           New Landing Page
         </button>
   
@@ -28,13 +28,8 @@
       <mat-table [hidden]="loading" [dataSource]="landingPageData" matSort>
         <!-- NAME -->
         <ng-container matColumnDef="name">
-          <mat-header-cell *matHeaderCellDef mat-sort-header>Template Name</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
           <mat-cell *matCellDef="let row">{{ row.name }}</mat-cell>
-        </ng-container>
-        <!-- DECEPTION SCORE -->
-        <ng-container matColumnDef="deception_score">
-          <mat-header-cell *matHeaderCellDef mat-sort-header>Deception Score</mat-header-cell>
-          <mat-cell *matCellDef="let row">{{ row.deception_score }}</mat-cell>
         </ng-container>
         <!-- TEMPLATE TYPE -->
         <ng-container matColumnDef="template_type">

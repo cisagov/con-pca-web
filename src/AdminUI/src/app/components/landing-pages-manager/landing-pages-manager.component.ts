@@ -144,8 +144,7 @@ export class LandingPagesManagerComponent implements OnInit {
       this.currentTemplateFormGroup = new FormGroup({
         landingPageUUID: new FormControl(template.landing_page_uuid),
         templateName: new FormControl(template.name, [Validators.required]),        
-        templateHTML: new FormControl(template.html, [Validators.required]),
-        templateLandingPage: new FormControl(template.html, [Validators.required]),        
+        templateHTML: new FormControl(template.html, [Validators.required]),               
       });
     }
   
@@ -155,7 +154,7 @@ export class LandingPagesManagerComponent implements OnInit {
       form.controls['templateHTML'].setValue(
         this.angularEditorEle.textArea.nativeElement.innerHTML
       );
-     
+
       let formTemplate = new Landing_Page(form.value);
       let saveTemplate = new Landing_Page({
         landing_page_uuid: form.controls['landingPageUUID'].value,
