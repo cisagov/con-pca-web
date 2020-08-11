@@ -126,14 +126,14 @@
   <article id="cover">
     <div class="row">
       <div id="blueDateBox">
-        <span class="year">{{
+        <!-- <span class="year">{{
           detail?.target_year.start_date | date: "yyyy"
-        }}</span
+        }}</span -->
         ><br />
-        <span class="dateRange"
+        <!-- <span class="dateRange"
           >{{ detail?.target_year.start_date | date: dateFormat }} -
           {{ detail?.target_year.end_date | date: dateFormat }}</span
-        >
+        > -->
       </div>
     </div>
     <div class="row">
@@ -171,7 +171,7 @@
     <div id="coverFooter" class="row mb-2">
       <div id="preparationDetails">
         Prepared for:<br />
-        {{ detail?.customer.full_name }}<br />
+        {{ detail?.customer.name }}<br />
         {{ detail?.customer.address_1 }} {{ detail?.customer.address_2 }}
       </div>
       <div id="dhsContactDetails">
@@ -242,8 +242,8 @@
             <tr>
               <td>Dates:</td>
               <td>
-                {{ detail?.target_year.start_date | date: "MMM d, yyyy" }} -
-                {{ detail?.target_year.end_date | date: "MMM d, yyyy" }}
+                {{ detail?.yearly_report_start_date | date: "MMM d, yyyy" }} -
+                {{ detail?.yearly_report_end_date | date: "MMM d, yyyy" }}
               </td>
             </tr>
             <tr>
@@ -276,10 +276,11 @@
               <th>Start Date - End Date</th>
               <th>Notes</th>
             </tr>
-            <tr *ngFor="let cycle of detail?.cycles; index as i">
+            <tr *ngFor="let cycle of detail?.cycles">
               <td>{{ cycle.year }} {{ cycle.quarter }}</td>
               <td>
-                {{ cycle.start_date | date }} - {{ cycle.end_date | date }}
+                {{ cycle.start_date | date: "MMM d, yyyy" }} -
+                {{ cycle.end_date | date: "MMM d, yyyy" }}
               </td>
               <td>{{ cycle.notes }}</td>
             </tr>
