@@ -124,7 +124,7 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
       this.chartsSvc
         .getStatisticsReport(
           this.subscriptionUuid,
-          this.selected_cycle['start_date']
+          this.selected_cycle['cycle_uuid']
         )
         .subscribe((stats: any) => {
           this.chart.chartResults = this.chartsSvc.formatStatistics(stats);
@@ -149,7 +149,6 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
           }
           this.aggregateCounts = stats['aggregate_stats'];
           this.campaignsDetails = stats['campaign_details'];
-          console.log(this.campaignsDetails);
         });
     }
   }

@@ -21,8 +21,8 @@ export class ChartsService {
   /**
    * Gets the subscriptions's statistics
    */
-  getStatisticsReport(subscriptionUuid: string, start_date: string) {
-    const url = `${this.settingsService.settings.apiUrl}/reports/${subscriptionUuid}/subscription-stats-page/${moment(start_date).format(AppSettings.MOMENT_ISO_DATE_FORMAT)}/`;
+  getStatisticsReport(subscriptionUuid: string, cycle_uuid: string) {
+    const url = `${this.settingsService.settings.apiUrl}/reports/${subscriptionUuid}/subscription-stats-page/${cycle_uuid}/`;
     return this.http.get(url);
   }
 

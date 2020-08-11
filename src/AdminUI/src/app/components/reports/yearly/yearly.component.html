@@ -126,14 +126,14 @@
   <article id="cover">
     <div class="row">
       <div id="blueDateBox">
-        <!-- <span class="year">{{
-          detail?.target_year.start_date | date: "yyyy"
-        }}</span -->
+        <span class="year">{{
+          detail?.yearly_report_start_date | date: "yyyy"
+        }}</span
         ><br />
-        <!-- <span class="dateRange"
-          >{{ detail?.target_year.start_date | date: dateFormat }} -
-          {{ detail?.target_year.end_date | date: dateFormat }}</span
-        > -->
+        <span class="dateRange"
+          >{{ detail?.yearly_report_start_date | date: dateFormat }} -
+          {{ detail?.yearly_report_end_date | date: dateFormat }}</span
+        >
       </div>
     </div>
     <div class="row">
@@ -223,7 +223,7 @@
           <table id="subscriptionDetailsTable">
             <tr>
               <td>Customer Name:</td>
-              <td>{{ detail?.customer.full_name }}</td>
+              <td>{{ detail?.customer.name }}</td>
             </tr>
             <tr>
               <td>Customer POC:</td>
@@ -349,7 +349,7 @@
         <div id="companyAverageBox">
           {{ detail?.metrics.customer_clicked_avg }}%
         </div>
-        <b>{{ detail?.customer.short_name }}</b>
+        <b>{{ detail?.customer.identifier }}</b>
       </div>
       <div>
         <table>
@@ -403,23 +403,21 @@
     </div>
     <div class="row">
       <div class="col-12">
-        <div id="percentageTrendGraph">
-          <p class="pt-20">PERCENTAGE TRENDS</p>
-          <div id="percentageLineGraph"></div>
+        
+        <div class="line-chart m-2">
+          <h4>Percentage Trends</h4>
+          <div style="display: grid;" class="report-chart">
+            <yearly-percentage-trends *ngIf="detail" [data]="detail.percentage_trends_data"></yearly-percentage-trends>
+          </div>
         </div>
-      </div>
-    </div>
-    <p style="color: red;">
-      NOTE TO DEVELOPER (This should contain all time (every cycle they have
-      ever done).
-    </p>
-    <div class="row">
-      <div class="col-12">
-        <div id="clickedVsReportedGraph">
-          <p class="pt-20">PERCENTAGE TRENDS</p>
-          <div id="clickedVsReportedLineGraph"></div>
+        <div class="line-chart m-2">
+          <h4>Click Rate vs. Reported Rate</h4>
+          <div style="display: grid;" class="report-chart">
+            <yearly-click-rate-vs-report-rate *ngIf="detail" [data]="detail.clickrate_vs_reportrate_data"></yearly-click-rate-vs-report-rate>
+          </div>
         </div>
-      </div>
+
+      </div>    
     </div>
 
     <div class="row">
@@ -433,7 +431,7 @@
             <th style="padding: 0 75px 0 0;">
               Median Time to open email from first sent:
             </th>
-            <td>{{ detail?.metrics.median_time_to_report }}</td>
+            <td>{{ detail?.metrics.median_time_to_open }}</td>
           </tr>
           <tr>
             <th><i>Geometric mean.</i></th>

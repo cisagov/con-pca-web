@@ -228,6 +228,9 @@ table {
 }
 
 /* Page Three */
+#percentageLineGraph{
+  width:50em;
+}
 
 #percentageTrendGraph,
 #clickedVsReportedGraph {
@@ -236,6 +239,19 @@ table {
   color: #015596;
   margin-bottom: 30px;
   text-align: center;
+  height: 30em;
+  width: 50em;
+}
+
+.line-chart,
+#successOverview {
+  border: 1px solid #fdc010;
+  border-radius: 10px;
+  color: #164a91;
+  height: auto;
+  margin: 20px auto 0 auto;
+  text-align: center;
+  width: 100%;
 }
 
 #trendStatistics {
