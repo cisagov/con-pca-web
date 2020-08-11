@@ -50,7 +50,7 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
   constructor(
     public chartsSvc: ChartsService,
     private subscriptionSvc: SubscriptionService
-  ) {}
+  ) { }
 
   /**
    *
@@ -62,6 +62,7 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
       this.subscriptionSvc.getSubBehaviorSubject().subscribe((data) => {
         if ('subscription_uuid' in data && !this.subscriptionUuid) {
           this.subscriptionUuid = data.subscription_uuid;
+          this.numberTemplatesInUse = data.templates_selected_uuid_list.length;
           this.dataAvailable = true;
           this.drawGraphs();
         }
@@ -131,12 +132,6 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
           this.chartSent.chartResults = this.chartsSvc.getSentEmailNumbers(
             stats
           );
-
-          for (const k in stats.templates) {
-            if (stats.templates.hasOwnProperty(k)) {
-              ++this.numberTemplatesInUse;
-            }
-          }
 
           this.avgTTFC = stats.avg_time_to_first_click;
           if (!this.avgTTFC) {

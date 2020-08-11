@@ -124,7 +124,6 @@ export class SubscriptionService {
    * @param subscription
    */
   patchSubscription(subscription: Subscription) {
-    console.log('PATCH ISSUE');
     return this.http.patch(
       `${this.settingsService.settings.apiUrl}/api/v1/subscription/${subscription.subscription_uuid}/`,
       subscription
