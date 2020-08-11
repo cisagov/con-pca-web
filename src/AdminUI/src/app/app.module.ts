@@ -86,6 +86,9 @@ import { ChartComplexityLevelComponent } from './components/charts/chart-complex
 import { ChartStatsByLevelComponent } from './components/charts/chart-stats-by-level/chart-stats-by-level.component';
 import { ChartTimeIntervalsComponent } from './components/charts/chart-time-intervals/chart-time-intervals.component';
 import { ChartTimeToFirstClickLevelsComponent } from './components/charts/chart-time-to-first-click-levels/chart-time-to-first-click-levels.component';
+import { LandingPagesComponent } from './components/landing-pages/landing-pages.component';
+import { LandingPageManagerService } from './services/landing-page-manager.service';
+import { LandingPagesManagerComponent } from './components/landing-pages-manager/landing-pages-manager.component';
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
   return () => settingsHttpService.initializeApp();
@@ -145,7 +148,8 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     ChartComplexityLevelComponent,
     ChartStatsByLevelComponent,
     ChartTimeIntervalsComponent,
-    ChartTimeToFirstClickLevelsComponent,
+    ChartTimeToFirstClickLevelsComponent,    
+    LandingPagesComponent, LandingPagesManagerComponent,
   ],
   imports: [
     BrowserModule,
@@ -166,6 +170,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     DeceptionCalculatorService,
     CustomerService,
     TemplateManagerService,
+    LandingPageManagerService,
     RecommendationsService,
     ThemeService,
     LayoutMainService,
