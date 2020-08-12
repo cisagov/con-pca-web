@@ -17,8 +17,8 @@ export class MonthlyComponent implements OnInit {
   reportStartDate: Date;
   detail: any;
 
-  avgTTFC: string;
-  avgTTFR: string;
+  avgTTFC: any;
+  avgTTFR: any;
 
   sentCircleSvg: any;
   openedCircleSvg: any;
@@ -67,13 +67,30 @@ export class MonthlyComponent implements OnInit {
     });
   }
 
+  secondsToDay(input_seconds){
+    let day = Math.floor(input_seconds / ( 24 * 3600 ))
+    input_seconds = input_seconds % ( 24 * 3600 )
+    let hour = Math.floor(input_seconds / 3600)
+    input_seconds = input_seconds % 3600
+    let minute = Math.floor(input_seconds / 60)
+    input_seconds =  input_seconds % 60
+    let seconds = Math.floor(input_seconds)
+    return {
+      "day": day,
+      "hour": hour,
+      "minute": minute,
+      "seconds": seconds
+    }
+  }
   /**
    *
    */
   renderReport() {
     // format the 'time to first X' text
-    this.avgTTFC = this.formatTTF(this.detail.metrics.avg_time_to_first_click);
-    this.avgTTFR = this.formatTTF(this.detail.metrics.avg_time_to_first_report);
+    this.avgTTFC = this.secondsToDay(this.detail.metrics.avg_time_to_first_click)
+    console.log(this.avgTTFC)
+    // this.avgTTFCFormatted = this.formatTTF(this.detail.metrics.avg_time_to_first_click);
+    this.avgTTFR = this.secondsToDay(this.detail.metrics.avg_time_to_first_report);
 
     // build statistics by level chart
     this.chart.showXAxis = true;

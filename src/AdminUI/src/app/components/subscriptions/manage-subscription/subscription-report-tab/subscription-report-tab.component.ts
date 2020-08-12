@@ -17,6 +17,7 @@ export class SubscriptionReportTab implements OnInit {
   emailsSent = new MatTableDataSource<any>();
   @ViewChild(MatSort) sort: MatSort;
   displayedColumns = ['report', 'sent', 'to', 'from', 'bcc', 'manual'];
+  loading = false
 
   constructor(
     private subscriptionSvc: SubscriptionService,
@@ -90,38 +91,50 @@ export class SubscriptionReportTab implements OnInit {
   }
 
   downloadMonthlyReport() {
+    this.loading = true
     this.subscriptionSvc.getMonthlyReport(this.subscription.subscription_uuid, this.selectedCycle.end_date).subscribe(blob => {
       this.downloadObject('subscription_status_report.pdf', blob);
+      this.loading = false
     });
   }
 
   downloadCycleReport() {
+    this.loading = true
     this.subscriptionSvc.getCycleReport(this.subscription.subscription_uuid, this.selectedCycle.start_date).subscribe(blob => {
       this.downloadObject('subscription_cycle_report.pdf', blob);
+      this.loading = false
     });
   }
 
   downloadYearlyReport() {
+    this.loading = true
     this.subscriptionSvc.getYearlyReport(this.subscription.subscription_uuid, this.selectedCycle.start_date).subscribe(blob => {
       this.downloadObject('subscription_yearly_report.pdf', blob);
+      this.loading = false
     });
   }
 
   sendMonthlyReport() {
+    this.loading = true
     this.subscriptionSvc.sendMonthlyReport(this.subscription.subscription_uuid, this.selectedCycle.end_date).subscribe(() => {
       console.log('Sending monthly report.');
+      this.loading = false
     });
   }
 
   sendCycleReport() {
+    this.loading = true
     this.subscriptionSvc.sendMonthlyReport(this.subscription.subscription_uuid, this.selectedCycle.start_date).subscribe(() => {
       console.log('Sending cycle report.');
+      this.loading = false
     });
   }
 
   sendYearlyReport() {
+    this.loading = true
     this.subscriptionSvc.sendYearlyReport(this.subscription.subscription_uuid, this.selectedCycle.start_date).subscribe(() => {
       console.log('Sending yearly report.');
+      this.loading = false
     });
   }
 }
