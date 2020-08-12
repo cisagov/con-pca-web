@@ -27,7 +27,7 @@ export class YearlyClickRateVsReportRateComponent implements OnInit, OnChanges {
     domain: ['#3977a6', '#f4c145', '#bfbfbf', '#f0d87a','#85b0ce','#91ad5c']
   };
 
-  constructor(private datePipe: DatePipe) { 
+  constructor(private datePipe: DatePipe) {
   }
 
   onSelect(event) {

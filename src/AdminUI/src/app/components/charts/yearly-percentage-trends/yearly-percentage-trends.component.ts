@@ -27,7 +27,7 @@ export class YearlyPercentageTrendsComponent implements OnInit, OnChanges {
     domain: ['#1e4872','#f4c145','#337dbd']
   };
 
-  constructor(private datePipe: DatePipe) { 
+  constructor(private datePipe: DatePipe) {
   }
 
   onSelect(event) {
