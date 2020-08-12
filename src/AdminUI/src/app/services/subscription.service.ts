@@ -12,6 +12,7 @@ import { start } from 'repl';
   providedIn: 'root',
 })
 export class SubscriptionService {
+
   subscription: Subscription;
   subBehaviorSubject = new BehaviorSubject<Subscription>(new Subscription());
   cycleBehaviorSubject = new BehaviorSubject<any>({});
@@ -98,6 +99,12 @@ export class SubscriptionService {
     });
   }
 
+  changeTargetCache(subscription: Subscription) {
+    return this.http.post(
+      `${this.settingsService.settings.apiUrl}/api/v1/subscription/targetcache/${subscription.subscription_uuid}/`,
+      subscription.target_email_list_cached_copy
+    );
+  }
   /**
    * Sends all information to the API to start a new subscription.
    * @param s

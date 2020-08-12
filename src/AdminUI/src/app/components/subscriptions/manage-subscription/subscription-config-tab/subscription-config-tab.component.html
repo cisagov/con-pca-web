@@ -237,6 +237,7 @@
           autosize
           formControlName="csvText"
           [ngClass]="{ 'is-invalid': submitted && f.csvText.errors }"
+          (change)="targetsChanged($event)"
         >
         </textarea>
         <mat-error

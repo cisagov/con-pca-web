@@ -52,6 +52,7 @@ export class Subscription {
   templates_selected_uuid_list: string[];
   url: string;
   target_email_list: Target[] = [];
+  target_email_list_cached_copy: Target[] = [];
   gophish_campaign_list: GoPhishCampaignModel[];
   sending_profile_name: string;
 }
