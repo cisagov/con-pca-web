@@ -70,8 +70,8 @@ export class CycleComponent implements OnInit {
    *
    */
   renderReport() {
-    if (!!this.detail.recommendations) {
-      this.recommendations = this.detail.recommendations;
+    if (!!this.detail?.recommendations) {
+      this.recommendations = this.detail?.recommendations;
     }
 
     // percent of all clicks occurring in the first hour
@@ -89,7 +89,6 @@ export class CycleComponent implements OnInit {
 
     // median time to click
     this.medianClickTime = this.detail.metrics.median_time_to_first_click;
-
 
     // figure out sent counts and deception levels
     this.groupLevels.push({ groupNumber: 1, sentCount: 0, levels: [], levelText: '' });
