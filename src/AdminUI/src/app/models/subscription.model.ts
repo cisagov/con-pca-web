@@ -54,6 +54,7 @@ export class Subscription {
   target_email_list: Target[] = [];
   gophish_campaign_list: GoPhishCampaignModel[];
   sending_profile_name: string;
+  target_domain: string;
 }
 
 /**
