@@ -86,7 +86,7 @@
                     </h3>
                   </div>
                   <div id="averageClickTime">
-                    <span [innerHTML]="this.avgTTFC"> </span>
+                    <span *ngIf="this.avgTTFC != '~'" [innerHTML]="this.avgTTFC  | date:'mm:ss'"> </span>
                   </div>
                 </div>
                 <div class="col-5">
@@ -97,7 +97,7 @@
                     </h3>
                   </div>
                   <div id="averageReportTime">
-                    <span [innerHTML]="this.avgTTFR"> </span>
+                    <span *ngIf="this.avgTTFR != '~'" [innerHTML]="this.avgTTFR   | date:'mm:ss'"> </span>
                   </div>
                 </div>
               </div>
