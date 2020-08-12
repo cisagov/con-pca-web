@@ -66,7 +66,7 @@ export class SubscriptionReportTab implements OnInit {
     this.router.navigate([
       '/reports/monthly',
       this.subscription.subscription_uuid,
-      new Date().toISOString(),
+      this.selectedCycle.end_date,
       false,
     ]);
   }
