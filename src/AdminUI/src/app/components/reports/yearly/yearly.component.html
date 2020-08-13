@@ -525,6 +525,26 @@
     <div class="row">
       <div class="col-12">
         <h3>Closing</h3>
+
+      <div class="row mb-3">
+        <div class="col-12">
+          <h3 id="recommendationsTitle">Recommendations</h3>
+          <div id="recommendations">
+            <p>
+              Based on the assessment data, Vulnerability Managements recommends
+              implementing the following:
+            </p>
+            <p *ngFor="let rec of detail?.recommendations; let i = index">
+              <b>Recommendation {{ i + 1 }}:</b> {{ rec.name }}
+              <br>
+              {{rec.description}}
+            
+            <p *ngIf="detail?.recommendations?.length === 0">
+              (no recommendations found for the problem templates)
+            </p>
+          </div>
+        </div>
+      </div>
       </div>
     </div>
 
