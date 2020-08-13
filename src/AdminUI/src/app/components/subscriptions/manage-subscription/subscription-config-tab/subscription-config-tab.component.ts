@@ -120,7 +120,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         }),
         csvText: new FormControl('', {
           validators: [
-            Validators.required, 
+            Validators.required,
             this.invalidCsv,
             this.domainListValidator(this.target_email_domain)
           ],
@@ -733,14 +733,14 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         return { invalidEmailFormat: true };
       }
     }
-    
+
 
     return null;
-  }  
+  }
   validDomain(control: FormControl) {
     const exprEmail = /^@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    
+
     let value = control.value
     if(value == null){ return null}
     if (!exprEmail.test(value.toLowerCase())) {
@@ -759,7 +759,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
       let BS_sub = domain.subscribe(val =>{
         domain_target = val
       })
-      BS_sub.unsubscribe()      
+      BS_sub.unsubscribe()
 
       const lines = control.value.split('\n');
       for (const line of lines) {
@@ -767,13 +767,13 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         if (parts.length !== 4) {
           return { invalidTargetCsv: true };
         }
-  
+
         for (const part of parts) {
           if (part.trim() === '') {
             return { invalidTargetCsv: true };
           }
         }
-  
+
         if (!!parts[0] && !exprEmail.test(String(parts[0]).toLowerCase())) {
           return { invalidEmailFormat: true };
         }
@@ -786,10 +786,10 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         }
         if(("@" + line_domain[1]) != domain_target){
           return { emailDoesntMatchDomain: true }
-        } 
+        }
 
       }
-      
+
       return null;
 
     };
