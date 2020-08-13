@@ -758,7 +758,6 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
       let domain_target = null
       let BS_sub = domain.subscribe(val =>{
         domain_target = val
-        console.log(domain_target)
       })
       BS_sub.unsubscribe()      
 
@@ -782,7 +781,6 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
           return { noTargetDomain: true}
         }
         let line_domain = parts[0].split('@')
-        console.log(line_domain)
         if(line_domain.length != 2){
           return { invalidEmailFormat:true  }
         }
