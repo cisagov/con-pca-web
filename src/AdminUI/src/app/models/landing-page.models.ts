@@ -17,6 +17,7 @@ export class Landing_Page {
     cb_timestamp?: Date;
     last_updated_by?: string;
     lub_timestamp?: Date;
+    is_default_template: boolean;
 
     public constructor(init?: Partial<Landing_Page>) {
       Object.assign(this, init);
