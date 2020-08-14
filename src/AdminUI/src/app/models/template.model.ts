@@ -54,6 +54,7 @@ export class Template {
   cb_timestamp?: Date;
   last_updated_by?: string;
   lub_timestamp?: Date;
+  landing_page_uuid: any;
 
   public constructor(init?: Partial<Template>) {
     Object.assign(this, init);

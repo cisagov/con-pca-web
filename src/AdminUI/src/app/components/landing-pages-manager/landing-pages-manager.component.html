@@ -34,11 +34,11 @@
                 currentTemplateFormGroup.controls.templateName.hasError(
                   'whitespace'
                 )
-              "
-            >
-              Page name may not contain only spaces
-            </mat-error>
+              ">Page name may not contain only spaces</mat-error>
           </mat-form-field>
+        </div>
+        <div>
+            <mat-checkbox   formControlName="IsDefaultTemplate">Set As System Default Template</mat-checkbox>
         </div>
         <div class="d-flex">
           <mat-tab-group

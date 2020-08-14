@@ -4,8 +4,6 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MyErrorStateMatcher } from 'src/app/helper/ErrorStateMatcher';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
-import { TemplateManagerService } from 'src/app/services/template-manager.service';
-import { Template, TagModel } from 'src/app/models/template.model';
 import { Subscription as PcaSubscription } from 'src/app/models/subscription.model';
 import { Subscription } from 'rxjs';
 import $ from 'jquery';
@@ -43,6 +41,7 @@ export class LandingPagesManagerComponent implements OnInit {
     matchFromAddress = new MyErrorStateMatcher();
     matchTemplateName = new MyErrorStateMatcher();
     matchTemplateHTML = new MyErrorStateMatcher();
+    IsDefaultTemplate: boolean = false;
 
     //RxJS Subscriptions
     subscriptions = Array<Subscription>();
@@ -55,8 +54,6 @@ export class LandingPagesManagerComponent implements OnInit {
     image_upload_url: string = `${this.settingsService.settings.apiUrl}/api/v1/imageupload/`;
 
     dateFormat = AppSettings.DATE_FORMAT;
-
-    tags: TagModel[];
 
     //Styling variables, required to properly size and display the angular-editor import
     body_content_height: number;
@@ -134,6 +131,7 @@ export class LandingPagesManagerComponent implements OnInit {
           this.templateId = t.landing_page_uuid;
           this.retired = t.retired;
           this.retiredReason = t.retired_description;
+          this.IsDefaultTemplate = t.is_default_template?true:false;
         },
         (error) => {}
       );
@@ -145,6 +143,7 @@ export class LandingPagesManagerComponent implements OnInit {
         landingPageUUID: new FormControl(template.landing_page_uuid),
         templateName: new FormControl(template.name, [Validators.required]),
         templateHTML: new FormControl(template.html, [Validators.required]),
+        IsDefaultTemplate: new FormControl({value: template.is_default_template, disabled: template.is_default_template},[Validators.nullValidator]),
       });
     }
 
@@ -160,7 +159,11 @@ export class LandingPagesManagerComponent implements OnInit {
         landing_page_uuid: form.controls['landingPageUUID'].value,
         name: form.controls['templateName'].value,
         html: form.controls['templateHTML'].value,
+        is_default_template: form.controls['IsDefaultTemplate'].value,
       });
+      if(saveTemplate.is_default_template===undefined)
+        saveTemplate.is_default_template = false;
+
       saveTemplate.landing_page_uuid = this.templateId;
       return saveTemplate;
     }

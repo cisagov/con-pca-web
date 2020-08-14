@@ -257,7 +257,6 @@
           Remove Duplicate Emails
         </button>
       </div>
-
       <mat-form-field class="w-100 flex-grow-1" appearance="outline">
         <mat-label>Target Emails</mat-label>
         <textarea
@@ -265,6 +264,7 @@
           autosize
           formControlName="csvText"
           [ngClass]="{ 'is-invalid': submitted && f.csvText.errors }"
+          (change)="targetsChanged($event)"
         >
         </textarea>
         <mat-error
@@ -298,7 +298,9 @@
           A Target Email Domain must be specified
         </mat-error>
       </mat-form-field>
-
+      <div class="text-muted" *ngIf="f.csvText?.enabled">
+        *Note while a subscription is actively running, changes to the email list will not take effect until the next 90 day cycle.
+      </div>
       <div class="text-right mt-3">
         <button
           type="submit"

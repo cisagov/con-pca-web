@@ -207,7 +207,6 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
 
     // patch the subscription in real time if in edit mode
     if (!this.subscribeForm.errors && this.pageMode.toLowerCase() === 'edit') {
-      console.log(this.subscription)
       this.subscriptionSvc.patchSubscription(this.subscription).subscribe();
     }
   }
@@ -243,7 +242,8 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     this.f.startDate.setValue(s.start_date);
     this.f.url.setValue(s.url);
     this.f.keywords.setValue(s.keywords);
-    this.f.csvText.setValue(this.formatTargetsToCSV(s.target_email_list));
+    this.f.csvText.setValue(this.formatTargetsToCSV(s.target_email_list_cached_copy));
+
     this.f.sendingProfile.setValue(s.sending_profile_name);
     this.f.targetDomain.setValue(s?.target_domain)
 
@@ -432,6 +432,17 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
       this.csvText = xyz;
       this.f.csvText.setValue(xyz);
     });
+    if(this.submitted){
+      this.subscriptionSvc.changeTargetCache(this.subscription).subscribe();
+    }
+  }
+
+  targetsChanged(e: any){
+    this.csvText = e.target.value;
+    this.f.csvText.setValue(e.target.value);
+    if(this.submitted){
+      this.subscriptionSvc.changeTargetCache(this.subscription).subscribe();
+    }
   }
 
   /**
@@ -464,6 +475,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
 
     this.dialogRefConfirm.afterClosed().subscribe((result) => {
       if (result) {
+        this.subscription.target_email_list = this.subscription.target_email_list_cached_copy;
         // persist any changes before restart
         this.subscriptionSvc
           .patchSubscription(this.subscription)
@@ -483,6 +495,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
                   });
                 },
                 (error) => {
+                  this.submitted = false;
                   this.dialog.open(AlertComponent, {
                     data: {
                       title: 'Error',
@@ -570,8 +583,8 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
 
     // set the target list
     const csv = this.f.csvText.value;
-    sub.target_email_list = this.buildTargetsFromCSV(csv);
-
+    sub.target_email_list_cached_copy = this.buildTargetsFromCSV(csv);
+    sub.target_email_list = sub.target_email_list_cached_copy;
     sub.sending_profile_name = this.f.sendingProfile.value;
 
     // call service with everything needed to start the subscription
@@ -609,15 +622,13 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
       this.f.url.disable();
       this.f.keywords.disable();
       this.f.sendingProfile.disable();
-      this.f.csvText.disable();
-      this.f.targetDomain.disable();
+      //this.f.csvText.disable();
     } else {
       this.f.startDate.enable();
       this.f.url.enable();
       this.f.keywords.enable();
       this.f.sendingProfile.enable();
-      this.f.csvText.enable();
-      this.f.targetDomain.enable();
+      //this.f.csvText.enable();
     }
   }
 
@@ -636,26 +647,26 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
    * Formats the targets back into CSV text and refreshes the field.
    */
   evaluateTargetList(removeDupes: boolean) {
-    this.subscription.target_email_list = this.buildTargetsFromCSV(
+    this.subscription.target_email_list_cached_copy = this.buildTargetsFromCSV(
       this.f.csvText.value
     );
 
     if (removeDupes) {
-      const uniqueArray: Target[] = this.subscription.target_email_list.filter(
+      const uniqueArray: Target[] = this.subscription.target_email_list_cached_copy.filter(
         (t1, index) => {
           return (
             index ===
-            this.subscription.target_email_list.findIndex((t2) => {
+            this.subscription.target_email_list_cached_copy.findIndex((t2) => {
               return t2.email.toLowerCase() === t1.email.toLowerCase();
             })
           );
         }
       );
-      this.subscription.target_email_list = uniqueArray;
+      this.subscription.target_email_list_cached_copy = uniqueArray;
     }
 
     this.f.csvText.setValue(
-      this.formatTargetsToCSV(this.subscription.target_email_list),
+      this.formatTargetsToCSV(this.subscription.target_email_list_cached_copy),
       { emitEvent: false }
     );
   }

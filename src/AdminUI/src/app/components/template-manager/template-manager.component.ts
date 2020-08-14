@@ -20,6 +20,8 @@ import { TagSelectionComponent } from '../dialogs/tag-selection/tag-selection.co
 import { SettingsService } from 'src/app/services/settings.service';
 import { RetireTemplateDialogComponent } from './retire-template-dialog/retire-template-dialog.component';
 import { AlertComponent } from '../dialogs/alert/alert.component';
+import { LandingPageManagerService } from 'src/app/services/landing-page-manager.service';
+import { Landing_Page } from 'src/app/models/landing-page.models';
 
 @Component({
   selector: 'app-template-manager',
@@ -57,6 +59,7 @@ export class TemplateManagerComponent implements OnInit {
   dateFormat = AppSettings.DATE_FORMAT;
 
   tags: TagModel[];
+  pagesList: Landing_Page[];
 
   //Styling variables, required to properly size and display the angular-editor import
   body_content_height: number;
@@ -67,10 +70,12 @@ export class TemplateManagerComponent implements OnInit {
   @ViewChild('tabs') tabElement: any;
   @ViewChild('angularEditor') angularEditorEle: any;
 
+
   constructor(
     private layoutSvc: LayoutMainService,
     private templateManagerSvc: TemplateManagerService,
     private subscriptionSvc: SubscriptionService,
+    private landingPageSvc: LandingPageManagerService,
     private route: ActivatedRoute,
     private router: Router,
     private settingsService: SettingsService,
@@ -110,6 +115,10 @@ export class TemplateManagerComponent implements OnInit {
         }
       })
     );
+
+    this.landingPageSvc.getAlllandingpages(false).subscribe((data: any) =>{
+      this.pagesList = data;
+    });
   }
 
   ngOnDestroy() {
@@ -193,7 +202,7 @@ export class TemplateManagerComponent implements OnInit {
       templateSubject: new FormControl(template.subject, [Validators.required]),
       templateText: new FormControl(template.text),
       templateHTML: new FormControl(template.html, [Validators.required]),
-      templateLandingPage: new FormControl(template.html, [Validators.required]),
+      landingPage: new FormControl(template.landing_page_uuid, [Validators.required]),
       authoritative: new FormControl(template.sender?.authoritative ?? 0),
       external: new FormControl(template.sender?.external ?? 0),
       internal: new FormControl(template.sender?.internal ?? 0),
@@ -247,6 +256,7 @@ export class TemplateManagerComponent implements OnInit {
     let saveTemplate = new Template({
       template_uuid: form.controls['templateUUID'].value,
       name: form.controls['templateName'].value,
+      landing_page_uuid: form.controls['landingPage'].value,
       deception_score: form.controls['templateDeceptionScore'].value,
       descriptive_words: form.controls['templateDescriptiveWords'].value,
       description: form.controls['templateDescription'].value,
@@ -569,5 +579,9 @@ export class TemplateManagerComponent implements OnInit {
   insertTag(selection, tagText: string) {
     const newNode = document.createTextNode(tagText);
     selection.insertNode(newNode);
+  }
+
+  openLandingPageEditor(){
+    this.router.navigate(['/landing-pages']);
   }
 }

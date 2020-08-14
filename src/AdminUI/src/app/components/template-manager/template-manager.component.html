@@ -231,6 +231,17 @@
                   ></textarea>
                 </mat-form-field>
               </div>
+              <div class="d-flex flex-column pb-3">
+                <mat-form-field appearance="outline" class="flex-grow-1">
+                  <mat-label>Landing Page Selection</mat-label>
+                  <mat-select formControlName="landingPage">
+                    <mat-option *ngFor="let page of pagesList" [value]="page.landing_page_uuid">{{page.name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="d-flex flex-column pb-1">
+                <button (click)="openLandingPageEditor()">Open Landing Pages Editor</button>
+              </div>
             </div>
           </mat-tab>
 
