@@ -353,9 +353,11 @@
               Based on the assessment data, Vulnerability Managements recommends
               implementing the following:
             </p>
-            <p *ngFor="let rec of recommendations; let i = index">
-              <b>Recommendation {{ i + 1 }}:</b> {{ rec }}
-            </p>
+            <p *ngFor="let rec of detail?.recommendations; let i = index">
+              <b>Recommendation {{ i + 1 }}:</b> {{ rec.name }}
+              <br>
+              {{rec.description}}
+            
             <p *ngIf="recommendations?.length === 0">
               (no recommendations)
             </p>

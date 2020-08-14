@@ -4,8 +4,6 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MyErrorStateMatcher } from 'src/app/helper/ErrorStateMatcher';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
-import { TemplateManagerService } from 'src/app/services/template-manager.service';
-import { Template, TagModel } from 'src/app/models/template.model';
 import { Subscription as PcaSubscription } from 'src/app/models/subscription.model';
 import { Subscription } from 'rxjs';
 import $ from 'jquery';
@@ -56,8 +54,6 @@ export class LandingPagesManagerComponent implements OnInit {
     image_upload_url: string = `${this.settingsService.settings.apiUrl}/api/v1/imageupload/`;
 
     dateFormat = AppSettings.DATE_FORMAT;
-
-    tags: TagModel[];
 
     //Styling variables, required to properly size and display the angular-editor import
     body_content_height: number;

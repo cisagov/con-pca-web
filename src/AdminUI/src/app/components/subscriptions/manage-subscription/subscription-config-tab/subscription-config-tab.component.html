@@ -186,7 +186,35 @@
           Create one or more Sending Profiles before proceeding.
         </div>
       </div>
+      <div class="mb-3">
 
+        <mat-label class="h6">Target Email Domain</mat-label>
+        <div class="text-muted">
+          The domain that all target emails must be under. Will be used to ensure
+          that all emails provided in the target recipients list are valid.
+        </div>
+        <mat-form-field class="w-100" appearance="outline">
+          <input
+            matInput
+            formControlName="targetDomain"
+            type="text"
+            trim="blur"
+            [ngClass]="{ 'is-invalid': submitted  && f.targetDomain.errors }"
+          />
+          <mat-error
+            *ngIf="f.targetDomain.errors?.required"
+            class="invalid-feedback"
+          >
+            Target Eamil Domain is a a required field
+          </mat-error>
+          <mat-error
+            *ngIf="f.targetDomain.errors?.invalidDomain"
+            class="invalid-feedback"
+          >
+            Must be a valid domain format - '@example.com'
+          </mat-error>
+        </mat-form-field>
+      </div>
       <div class="mb-3">
         <div>
           <mat-label class="h6">Target Recipients</mat-label>
@@ -240,7 +268,7 @@
         >
         </textarea>
         <mat-error
-          *ngIf="submitted && f.csvText.hasError('invalidEmailFormat')"
+          *ngIf="f.csvText.errors?.invalidEmailFormat"
           class="invalid-feedback"
         >
           One or more email addresses are invalid
@@ -252,10 +280,22 @@
           At least 1 target must be defined
         </mat-error>
         <mat-error
-          *ngIf="submitted && f.csvText.hasError('invalidTargetCsv')"
+          *ngIf="submitted &&f.csvText.errors?.invalidTargetCsv"
           class="invalid-feedback"
         >
           All target lines must have all parts
+        </mat-error>
+        <mat-error
+          *ngIf="submitted && f.csvText.errors?.emailDoesntMatchDomain"
+          class="invalid-feedback"
+        >
+          Target email domains must match the Target Email Domain field
+        </mat-error>
+        <mat-error
+          *ngIf="submitted && f.csvText.errors?.noTargetDomain"
+          class="invalid-feedback"
+        >
+          A Target Email Domain must be specified
         </mat-error>
       </mat-form-field>
       <div class="text-muted" *ngIf="f.csvText?.enabled">
@@ -308,7 +348,7 @@
           <button
             mat-raised-button
             *ngIf="
-              subscription?.status == 'In Progress' && !subscription?.archived
+              (subscription?.status == 'In Progress' || subscription?.status == 'Queued') && !subscription?.archived
             "
             color="accent"
             (click)="stopSubscription()"
