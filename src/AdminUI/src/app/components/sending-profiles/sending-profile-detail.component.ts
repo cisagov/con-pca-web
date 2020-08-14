@@ -1,3 +1,4 @@
+import swal from 'sweetalert';
 import {
   Component,
   OnInit,
@@ -5,7 +6,7 @@ import {
   ChangeDetectorRef,
   ChangeDetectionStrategy, ViewChild
 } from '@angular/core';
-import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { FormControl, Validators, FormGroup, ValidatorFn, AbstractControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SendingProfileService } from 'src/app/services/sending-profile.service';
 import { SendingProfile } from 'src/app/models/sending-profile.model';
@@ -22,6 +23,7 @@ export class SendingProfileDetailComponent implements OnInit {
    * NEW or EDIT
    */
   mode = 'new';
+  testEmail = "";
 
   profileForm: FormGroup;
   profile: SendingProfile;
@@ -63,7 +65,8 @@ export class SendingProfileDetailComponent implements OnInit {
     this.profileForm = new FormGroup({
       name: new FormControl('', Validators.required),
       interfaceType: new FormControl(''),
-      from: new FormControl('', [Validators.required, Validators.email]),
+      from: new FormControl('', [Validators.required,
+         Validators.pattern("^\\s*([A-Za-z\\d\\s]+?)\\s*<([\\w.!#$%&’*+\/=?^_`{|}~-]+@[\\w-]+(?:\\.[\\w-]+)+)>\\s*$")]),
       host: new FormControl('', Validators.required),
       username: new FormControl(''),
       password: new FormControl(''),
@@ -74,7 +77,6 @@ export class SendingProfileDetailComponent implements OnInit {
 
     if (!!this.id) {
       this.mode = 'edit';
-
       this.sendingProfileSvc.getProfile(this.id).subscribe(
         (data: any) => {
           this.profile = data as SendingProfile;
@@ -137,9 +139,17 @@ export class SendingProfileDetailComponent implements OnInit {
    *
    */
   onSaveClick() {
+    let sp: SendingProfile;
     this.submitted = true;
+    sp = this.save();
+    this.sendingProfileSvc.saveProfile(sp).subscribe(() => {
+      this.dialogRef.close();
+    });
+  }
 
+  save(){
     if (this.profileForm.invalid) {
+      console.log(this.f.from.errors);
       return;
     }
 
@@ -165,10 +175,7 @@ export class SendingProfileDetailComponent implements OnInit {
     if (this.id) {
       sp.id = this.id;
     }
-
-    this.sendingProfileSvc.saveProfile(sp).subscribe(() => {
-      this.dialogRef.close();
-    });
+    return sp;
   }
 
   /**
@@ -176,6 +183,18 @@ export class SendingProfileDetailComponent implements OnInit {
    */
   onCancelClick() {
     this.dialogRef.close();
+  }
+
+  onSendTestClick(){
+    let sp: SendingProfile;
+    sp = this.save();
+    this.sendingProfileSvc.sentTestEmail(sp,this.testEmail).subscribe((data: any) => {
+      console.log(data);
+      swal(data.message);
+      },
+    error => {
+        console.log('Error sending test email: ' + (<Error>error).name + (<Error>error).message);
+    });
   }
 }
 

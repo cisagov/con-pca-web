@@ -17,10 +17,11 @@
 
     <mat-form-field appearance="outline" class="w-100">
       <mat-label>From</mat-label>
-      <input formControlName="from" matInput [ngClass]="{ 'is-invalid': submitted && f.from.errors }" />
+      <input formControlName="from" matInput
+       [ngClass]="{ 'is-invalid': submitted && f.from.errors }" />
       <div *ngIf="submitted && f.from.errors" class="invalid-feedback">
         <div *ngIf="f.from.errors.required">From address is required</div>
-        <div *ngIf="f.from.errors.email">
+        <div *ngIf="f.from.errors.pattern">
           From address must be a valid email address
         </div>
       </div>
@@ -94,12 +95,20 @@
         No headers defined
       </div>
     </div>
-
-    <div *ngIf="headerList?.data.length == 0">
-      No headers defined
-    </div>
   </div>
 
+  <div class="text-left mt-3 mb-4">
+    <mat-form-field>
+      <mat-label>Test Email</mat-label>
+      <input matInput id="testEmail" name="testEmail" class="mr-2 ml-3"
+        [(ngModel)]="testEmail"
+        [ngModelOptions]="{standalone: true}"
+        placeholder="Test Email" maxlength="100" email/>
+      </mat-form-field>
+      <button mat-flat-button class="add-button" color="primary" (click)="onSendTestClick()">
+        Send Test Email
+      </button>
+  </div>
   <div class="text-right mt-3">
     <button mat-flat-button class="add-button" color="basic" (click)="onCancelClick()">
       Cancel

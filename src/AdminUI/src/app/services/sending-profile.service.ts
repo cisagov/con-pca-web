@@ -7,6 +7,7 @@ import { SettingsService } from './settings.service';
   providedIn: 'root',
 })
 export class SendingProfileService {
+
   /**
    * Constructor.
    * @param http
@@ -58,5 +59,10 @@ export class SendingProfileService {
   public deleteProfile(spId: number) {
     let url = `${this.settingsService.settings.apiUrl}/api/v1/sendingprofile/${spId}`;
     return this.http.delete(url);
+  }
+
+  sentTestEmail(sp: SendingProfile,testEmail: string) {
+    let url = `${this.settingsService.settings.apiUrl}/api/v1/sendingprofiles/?testEmail=`+encodeURIComponent(testEmail);
+    return this.http.post(url,sp);
   }
 }
