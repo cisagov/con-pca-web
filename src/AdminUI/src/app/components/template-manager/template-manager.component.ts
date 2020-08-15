@@ -1,3 +1,4 @@
+import swal from 'sweetalert';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
@@ -22,6 +23,7 @@ import { RetireTemplateDialogComponent } from './retire-template-dialog/retire-t
 import { AlertComponent } from '../dialogs/alert/alert.component';
 import { LandingPageManagerService } from 'src/app/services/landing-page-manager.service';
 import { Landing_Page } from 'src/app/models/landing-page.models';
+import { SendingProfile } from 'src/app/models/sending-profile.model';
 
 @Component({
   selector: 'app-template-manager',
@@ -35,6 +37,7 @@ export class TemplateManagerComponent implements OnInit {
 
   //Full template list variables
   search_input: string;
+  testEmail = "";
 
   //Body Form Variables
   templateId: string;
@@ -584,4 +587,18 @@ export class TemplateManagerComponent implements OnInit {
   openLandingPageEditor(){
     this.router.navigate(['/landing-pages']);
   }
+
+
+  onSendTestClick(){
+    let sp: SendingProfile;
+    //need to go get the sending profile from gophish
+    this.sendingProfileSvc.sentTestEmail(sp,this.testEmail).subscribe((data: any) => {
+      console.log(data);
+      swal(data.message);
+      },
+    error => {
+        console.log('Error sending test email: ' + (<Error>error).name + (<Error>error).message);
+    });
+  }
+}
 }

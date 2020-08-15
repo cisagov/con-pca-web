@@ -289,6 +289,48 @@
               </div>
             </div>
           </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              Template Testing
+            </ng-template>
+            <mat-label class="h6">Sending Profile</mat-label>
+            <div class="mb-4">
+              <div class="text-muted" *ngIf="sendingProfiles.length > 0">
+                Select the sending profile that will be used
+              </div>
+              <mat-form-field appearance="outline" *ngIf="sendingProfiles.length > 0">
+                <mat-label>Sending Profile</mat-label>
+                <mat-select formControlName="sendingProfile">
+                  <mat-option [value]="null">--Select--</mat-option>
+                  <mat-option *ngFor="let sp of sendingProfiles" [value]="sp.name">
+                    {{ sp.name }}</mat-option
+                  >
+                </mat-select>
+                <mat-error
+                  *ngIf="submitted && f.sendingProfile.errors?.required"
+                  class="invalid-feedback"
+                >
+                  Sending Profile required
+                </mat-error>
+              </mat-form-field>
+              <div class="error-color" *ngIf="sendingProfiles.length === 0">
+                A Sending Profile is required, but none are currently configured.
+                Create one or more Sending Profiles before proceeding.
+              </div>
+            </div>
+          </mat-tab>
+          <div class="text-left mt-3 mb-4">
+            <mat-form-field>
+              <mat-label>Test Email</mat-label>
+              <input matInput id="testEmail" name="testEmail" class="mr-2 ml-3"
+                [(ngModel)]="testEmail"
+                [ngModelOptions]="{standalone: true}"
+                placeholder="Test Email" maxlength="100" email/>
+              </mat-form-field>
+              <button mat-flat-button class="add-button" color="primary" (click)="onSendTestClick()">
+                Send Test Email
+              </button>
+          </div>
         </mat-tab-group>
       </div>
 
