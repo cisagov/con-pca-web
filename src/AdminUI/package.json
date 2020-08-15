@@ -23,6 +23,7 @@
     "moment": "^2.26.0",
     "ngx-autosize": "^1.8.0",
     "rxjs": "^6.5.5",
+    "sweetalert2": "^9.17.1",
     "tslib": "^1.13.0",
     "xlsx": "^0.16.2",
     "zone.js": "~0.10.2"

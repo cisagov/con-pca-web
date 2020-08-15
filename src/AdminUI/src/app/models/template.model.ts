@@ -8,6 +8,14 @@ export class TemplateShort {
   }
 }
 
+export class GoPhishTemplate{
+  attachments:[];
+  name: string;
+  subject: string;
+  html: string;
+  text: string;
+}
+
 export class Template {
   //EMail Data
   template_uuid: string;

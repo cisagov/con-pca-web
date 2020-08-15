@@ -301,15 +301,13 @@
               <mat-form-field appearance="outline" *ngIf="sendingProfiles.length > 0">
                 <mat-label>Sending Profile</mat-label>
                 <mat-select formControlName="sendingProfile">
-                  <mat-option [value]="null">--Select--</mat-option>
-                  <mat-option *ngFor="let sp of sendingProfiles" [value]="sp.name">
+                  <mat-option [value]=null>--Select--</mat-option>
+                  <mat-option *ngFor="let sp of sendingProfiles" [value]="sp">
                     {{ sp.name }}</mat-option
                   >
                 </mat-select>
-                <mat-error
-                  *ngIf="submitted && f.sendingProfile.errors?.required"
-                  class="invalid-feedback"
-                >
+                <mat-error *ngIf="submitted && f.sendingProfile.errors?.required"
+                class="invalid-feedback">
                   Sending Profile required
                 </mat-error>
               </mat-form-field>
@@ -318,19 +316,41 @@
                 Create one or more Sending Profiles before proceeding.
               </div>
             </div>
-          </mat-tab>
-          <div class="text-left mt-3 mb-4">
-            <mat-form-field>
-              <mat-label>Test Email</mat-label>
-              <input matInput id="testEmail" name="testEmail" class="mr-2 ml-3"
-                [(ngModel)]="testEmail"
-                [ngModelOptions]="{standalone: true}"
-                placeholder="Test Email" maxlength="100" email/>
+            <div class="text-left mt-3 mb-4">
+              <mat-form-field appearance="outline">
+                <mat-label>Test Email</mat-label>
+                <input matInput id="testEmail" name="testEmail" class="mr-2 ml-3"
+                  [(ngModel)]="testEmail"
+                  [ngModelOptions]="{standalone: true}"
+                  placeholder="Test Email" maxlength="100" email/>
               </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Test First Name</mat-label>
+                <input matInput id="firstName" name="firstName" class="mr-2 ml-3"
+                  [(ngModel)]="firstName"
+                  [ngModelOptions]="{standalone: true}"
+                  placeholder="First Name" maxlength="100"/>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Last Name</mat-label>
+                <input matInput id="lastName" name="lastName" class="mr-2 ml-3"
+                  [(ngModel)]="lastName"
+                  [ngModelOptions]="{standalone: true}"
+                  placeholder="Last Name" maxlength="100"/>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Role</mat-label>
+                <input matInput id="role" name="role" class="mr-2 ml-3"
+                  [(ngModel)]="role"
+                  [ngModelOptions]="{standalone: true}"
+                  placeholder="Role" maxlength="100"/>
+              </mat-form-field>
+
               <button mat-flat-button class="add-button" color="primary" (click)="onSendTestClick()">
                 Send Test Email
               </button>
-          </div>
+            </div>
+          </mat-tab>
         </mat-tab-group>
       </div>
 

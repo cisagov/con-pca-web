@@ -1,4 +1,4 @@
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 import {
   Component,
   OnInit,
@@ -12,6 +12,7 @@ import { SendingProfileService } from 'src/app/services/sending-profile.service'
 import { SendingProfile } from 'src/app/models/sending-profile.model';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { TestEmail } from 'src/app/models/test-email.model';
 
 @Component({
   selector: 'app-sending-profile-detail',
@@ -188,13 +189,40 @@ export class SendingProfileDetailComponent implements OnInit {
   onSendTestClick(){
     let sp: SendingProfile;
     sp = this.save();
-    this.sendingProfileSvc.sentTestEmail(sp,this.testEmail).subscribe((data: any) => {
+    sp.from_address = this.getEmailFromBrackets(this.testEmail);
+    let email_for_test: TestEmail ={
+      template: {
+        attachments: [],
+        html: null,
+        text: null,
+        name: null,
+        subject: null
+      },//template name to be used in the test
+      first_name: "test",
+      last_name: "test",
+      email: this.testEmail,
+      position: "tester",
+      url: "",
+      smtp: sp
+    };
+
+    this.sendingProfileSvc.sendTestEmail(email_for_test).subscribe((data: any) => {
       console.log(data);
-      swal(data.message);
+      Swal.fire(data.message);
       },
     error => {
         console.log('Error sending test email: ' + (<Error>error).name + (<Error>error).message);
     });
+  }
+
+  getEmailFromBrackets(email_with_brackets: string){
+    var regex = /.+\<(.+@.+)>/g
+    if(regex.test(email_with_brackets)){
+      var match = regex.exec(email_with_brackets);
+      console.log(match[0]);
+      return(match[0]);
+    }
+    return email_with_brackets;
   }
 }
 
