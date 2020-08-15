@@ -1,3 +1,5 @@
+
+
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
@@ -5,7 +7,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MyErrorStateMatcher } from 'src/app/helper/ErrorStateMatcher';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { TemplateManagerService } from 'src/app/services/template-manager.service';
-import { Template, TagModel } from 'src/app/models/template.model';
+import { Template, TagModel, GoPhishTemplate } from 'src/app/models/template.model';
 import { Subscription as PcaSubscription } from 'src/app/models/subscription.model';
 import { Subscription } from 'rxjs';
 import $ from 'jquery';
@@ -22,19 +24,30 @@ import { RetireTemplateDialogComponent } from './retire-template-dialog/retire-t
 import { AlertComponent } from '../dialogs/alert/alert.component';
 import { LandingPageManagerService } from 'src/app/services/landing-page-manager.service';
 import { Landing_Page } from 'src/app/models/landing-page.models';
+import { SendingProfile } from 'src/app/models/sending-profile.model';
+import Swal from 'sweetalert2'
 
+
+import { SendingProfileService } from 'src/app/services/sending-profile.service';
+import { TestEmail } from 'src/app/models/test-email.model';
 @Component({
   selector: 'app-template-manager',
   styleUrls: ['./template-manager.component.scss'],
   templateUrl: './template-manager.component.html',
 })
 export class TemplateManagerComponent implements OnInit {
+
   dialogRefConfirm: MatDialogRef<ConfirmComponent>;
   dialogRefTagSelection: MatDialogRef<TagSelectionComponent>;
   dialogRefRetire: MatDialogRef<RetireTemplateDialogComponent>;
 
   //Full template list variables
   search_input: string;
+  sendingProfiles = [];
+  testEmail = "";
+  firstName = "";
+  lastName = "";
+  role = "";
 
   //Body Form Variables
   templateId: string;
@@ -69,6 +82,7 @@ export class TemplateManagerComponent implements OnInit {
   @ViewChild('selectedTemplateTitle') titleElement: ElementRef;
   @ViewChild('tabs') tabElement: any;
   @ViewChild('angularEditor') angularEditorEle: any;
+  submitted: boolean = true;
 
 
   constructor(
@@ -76,6 +90,7 @@ export class TemplateManagerComponent implements OnInit {
     private templateManagerSvc: TemplateManagerService,
     private subscriptionSvc: SubscriptionService,
     private landingPageSvc: LandingPageManagerService,
+    public sendingProfileSvc: SendingProfileService,
     private route: ActivatedRoute,
     private router: Router,
     private settingsService: SettingsService,
@@ -86,6 +101,14 @@ export class TemplateManagerComponent implements OnInit {
     this.setTemplateForm(new Template());
     //this.getAllTemplates();
   }
+
+  /**
+   * convenience getter for easy access to form fields
+   */
+  get f() {
+    return this.currentTemplateFormGroup.controls;
+  }
+
   ngOnInit() {
     //get subscription to height of page from main layout component
     this.subscriptions.push(
@@ -118,6 +141,9 @@ export class TemplateManagerComponent implements OnInit {
 
     this.landingPageSvc.getAlllandingpages(false).subscribe((data: any) =>{
       this.pagesList = data;
+    });
+    this.sendingProfileSvc.getAllProfiles().subscribe((data: any) => {
+      this.sendingProfiles = data;
     });
   }
 
@@ -199,6 +225,7 @@ export class TemplateManagerComponent implements OnInit {
       templateFromAddress: new FormControl(template.from_address, [
         Validators.required,
       ]),
+      sendingProfile: new FormControl(""),
       templateSubject: new FormControl(template.subject, [Validators.required]),
       templateText: new FormControl(template.text),
       templateHTML: new FormControl(template.html, [Validators.required]),
@@ -583,5 +610,54 @@ export class TemplateManagerComponent implements OnInit {
 
   openLandingPageEditor(){
     this.router.navigate(['/landing-pages']);
+  }
+
+  getGophishTemplateFromForm(form: FormGroup) {
+    // form fields might not have the up-to-date content that the angular-editor has
+    form.controls['templateHTML'].setValue(
+      this.angularEditorEle.textArea.nativeElement.innerHTML
+    );
+    form.controls['templateText'].setValue(
+      this.angularEditorEle.textArea.nativeElement.innerText
+    );
+    let saveTemplate: GoPhishTemplate ={
+      attachments: [],
+      name: form.controls['templateName'].value,
+      subject: form.controls['templateSubject'].value,
+      text: form.controls['templateText'].value,
+      html: form.controls['templateHTML'].value,
+    };
+
+    return saveTemplate;
+  }
+
+  onSendTestClick(){
+    this.submitted = true;
+
+    let sp :SendingProfile = this.f.sendingProfile.value;
+    if(sp==null){
+      Swal.fire("sending profile to test email is required");
+      return;
+    }
+
+    //need to go get the sending profile from gophish
+    let tmp_template = this.getGophishTemplateFromForm(this.currentTemplateFormGroup);
+    let email_for_test: TestEmail ={
+      template: tmp_template,//template name to be used in the test
+      first_name: this.firstName,
+      last_name: this.lastName,
+      email: this.testEmail,
+      position: this.role,
+      url: "",
+      smtp: sp
+    };
+
+    this.sendingProfileSvc.sendTestEmail(email_for_test).subscribe((data: any) => {
+      console.log(data);
+      Swal.fire(data.message);
+      },
+    error => {
+        console.log('Error sending test email: ' + (<Error>error).name + (<Error>error).message);
+    });
   }
 }

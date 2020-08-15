@@ -300,7 +300,6 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
    *
    */
   loadSendingProfiles() {
-    // get the customer and contacts from the API
     this.sendingProfileSvc.getAllProfiles().subscribe((data: any) => {
       this.sendingProfiles = data;
     });

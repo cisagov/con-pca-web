@@ -2,11 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { SendingProfile } from '../models/sending-profile.model';
 import { SettingsService } from './settings.service';
+import { TestEmail } from '../models/test-email.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SendingProfileService {
+
   /**
    * Constructor.
    * @param http
@@ -58,5 +60,10 @@ export class SendingProfileService {
   public deleteProfile(spId: number) {
     let url = `${this.settingsService.settings.apiUrl}/api/v1/sendingprofile/${spId}`;
     return this.http.delete(url);
+  }
+
+  sendTestEmail(sp: TestEmail) {
+    let url = `${this.settingsService.settings.apiUrl}/api/v1/test_email/`;
+    return this.http.post(url,sp);
   }
 }
