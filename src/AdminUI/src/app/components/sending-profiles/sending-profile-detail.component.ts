@@ -67,7 +67,7 @@ export class SendingProfileDetailComponent implements OnInit {
       name: new FormControl('', Validators.required),
       interfaceType: new FormControl(''),
       from: new FormControl('', [Validators.required,
-         Validators.pattern("^\\s*([A-Za-z\\d\\s]+?)\\s*<([\\w.!#$%&’*+\/=?^_`{|}~-]+@[\\w-]+(?:\\.[\\w-]+)+)>\\s*$")]),
+         Validators.pattern("^\\s*([A-Za-z\\d\\s]+?)\\s*<([\\w.!#$%&’*+\\/=?^_`{|}~-]+@[\\w-]+(?:\\.[\\w-]+)+)>\\s*$|^\\s*([\\w.!#$%&’*+\\/=?^_`{|}~-]+@[\\w-]+(?:\\.[\\w-]+)+)\\s*$")]),
       host: new FormControl('', Validators.required),
       username: new FormControl(''),
       password: new FormControl(''),
@@ -99,6 +99,7 @@ export class SendingProfileDetailComponent implements OnInit {
           this.headerList.sort = this.sort;
         },
         (err) => {
+          console.log("send profile error:");
           console.log(err);
         }
       );
@@ -219,7 +220,6 @@ export class SendingProfileDetailComponent implements OnInit {
     var regex = /.+\<(.+@.+)>/g
     if(regex.test(email_with_brackets)){
       var match = regex.exec(email_with_brackets);
-      console.log(match[0]);
       return(match[0]);
     }
     return email_with_brackets;
