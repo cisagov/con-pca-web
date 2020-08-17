@@ -37,7 +37,7 @@ export class SendingProfileDetailComponent implements OnInit {
     'actions'
   ];
 
-  headerList: MatTableDataSource<CustomHeader>;
+  headerList: MatTableDataSource<CustomHeader> = new MatTableDataSource<CustomHeader>();
   submitted = false;
 
   /**
@@ -164,6 +164,7 @@ export class SendingProfileDetailComponent implements OnInit {
     sp.from_address = this.f.from.value;
     sp.ignore_cert_errors = this.f.ignoreCertErrors.value;
     sp.headers = [];
+
     if (!!this.headerList.data) {
       for (const ch of this.headerList.data) {
         const h = {
@@ -213,6 +214,7 @@ export class SendingProfileDetailComponent implements OnInit {
       },
     error => {
         console.log('Error sending test email: ' + (<Error>error).name + (<Error>error).message);
+        console.log(error);
     });
   }
 
