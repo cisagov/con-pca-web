@@ -70,45 +70,58 @@ export class DhsPocDetailComponent implements OnInit {
    */
   onSaveClick() {
     this.submitted = true;
+    this.contactForm.markAllAsTouched();
 
     if (this.contactForm.invalid) {
-      return;
-    }
-
-    const c = new Contact();
-    c.dhs_contact_uuid = this.contact?.dhs_contact_uuid;
-    c.first_name = this.f.firstName.value;
-    c.last_name = this.f.lastName.value;
-    c.title = this.f.title.value;
-    c.email = this.f.email.value;
-    c.office_phone = this.f.officePhone.value;
-    c.mobile_phone = this.f.mobilePhone.value;
-    c.notes = this.f.notes.value;
-    c.active = this.f.active.value;
-
-    this.subscriptionSvc.saveDhsContact(c).subscribe(
-      (resp: any) => {
-        this.dialog.open(AlertComponent, {
-          data: {
-            title: 'Created',
-            messageText: 'DHS Contact was created.',
-          },
-        });
-        this.dialogRef.close();
-      },
-      (error: any) => {
-        // Console log error
-        console.log(error);
-        // Set fields to invalid
-        this.contactForm.controls['email'].setErrors({'incorrect': true})
-        this.dialog.open(AlertComponent, {
-          data: {
-            title: 'Creation Error',
-            messageText: 'Could not Create New DHS Contact. Please Check the Form and try again.',
-          },
-        });
+      const invalid = [];
+      for (const name in this.contactForm.controls) {
+        if (this.contactForm.controls[name].invalid) {
+          invalid.push(name);
+          this.contactForm.controls[name].setErrors({'incorrect': true});
+        }
       }
-    );
+      this.dialog.open(AlertComponent, {
+        data: {
+          title: 'Error',
+          messageText: 'Invalid form fields: ' + invalid,
+        },
+      });
+    } else {
+      const c = new Contact();
+      c.dhs_contact_uuid = this.contact?.dhs_contact_uuid;
+      c.first_name = this.f.firstName.value;
+      c.last_name = this.f.lastName.value;
+      c.title = this.f.title.value;
+      c.email = this.f.email.value;
+      c.office_phone = this.f.officePhone.value;
+      c.mobile_phone = this.f.mobilePhone.value;
+      c.notes = this.f.notes.value;
+      c.active = this.f.active.value;
+
+      this.subscriptionSvc.saveDhsContact(c).subscribe(
+        (resp: any) => {
+          this.dialog.open(AlertComponent, {
+            data: {
+              title: 'Created',
+              messageText: 'DHS Contact was created.',
+            },
+          });
+          this.dialogRef.close();
+        },
+        (error: any) => {
+          // Console log error
+          console.log(error);
+          // Set fields to invalid
+          this.contactForm.controls['email'].setErrors({'incorrect': true})
+          this.dialog.open(AlertComponent, {
+            data: {
+              title: 'Creation Error',
+              messageText: 'Could not Create New DHS Contact. Please Check the Form and try again.',
+            },
+          });
+        }
+      );
+    }
   }
 
   /**
