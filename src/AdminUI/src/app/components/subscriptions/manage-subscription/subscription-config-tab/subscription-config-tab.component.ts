@@ -740,13 +740,18 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
   validDomain(control: FormControl) {
     const exprEmail = /^@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
+    // const lines = control.value.split('\n');
+
+    const parts = control.value.split(',');
+    for(const part of parts) {
+      let trimmedPart = part.trim()
+      if (!exprEmail.test(trimmedPart.toLowerCase())) {
+        return { invalidDomain: true };
+      }
+    }
 
     let value = control.value
     if(value == null){ return null}
-    if (!exprEmail.test(value.toLowerCase())) {
-      console.log("not valid")
-      return { invalidDomain: true };
-    }
 
     return null;
   }
@@ -755,9 +760,15 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
   domainListValidator(domain: BehaviorSubject<string>): ValidatorFn {
     return (control: AbstractControl): { [key: string]: boolean } | null => {
       const exprEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      let domain_target = null
+      let domain_targets = []
       let BS_sub = domain.subscribe(val =>{
-        domain_target = val
+        if(val){
+          let vals = val.split(',')
+          for(const value of vals){
+            console.log("+" + value.trim() + "+")
+            domain_targets.push(value.trim())
+          }
+        }
       })
       BS_sub.unsubscribe()
 
@@ -777,15 +788,25 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         if (!!parts[0] && !exprEmail.test(String(parts[0]).toLowerCase())) {
           return { invalidEmailFormat: true };
         }
-        if(domain_target == null || isUndefined(domain_target)){
+        if(domain_targets.length == 0){
           return { noTargetDomain: true}
         }
         let line_domain = parts[0].split('@')
         if(line_domain.length != 2){
           return { invalidEmailFormat:true  }
         }
-        if(("@" + line_domain[1]) != domain_target){
-          return { emailDoesntMatchDomain: true }
+        let val_not_found = true
+        console.log(domain_targets)
+        for(const domain_target of domain_targets){
+          console.log(domain_target)
+          console.log("@"+line_domain[1])
+          if(("@" + line_domain[1]) == domain_target){
+            val_not_found = false
+          }
+        }
+
+        if(!val_not_found){
+          return { emailDoesntMatchDomain: line_domain[1] }
         }
 
       }
