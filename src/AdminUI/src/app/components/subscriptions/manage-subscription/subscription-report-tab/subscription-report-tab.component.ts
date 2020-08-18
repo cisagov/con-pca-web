@@ -124,7 +124,7 @@ export class SubscriptionReportTab implements OnInit {
 
   sendCycleReport() {
     this.loading = true
-    this.subscriptionSvc.sendMonthlyReport(this.subscription.subscription_uuid, this.selectedCycle.start_date).subscribe(() => {
+    this.subscriptionSvc.sendCycleReport(this.subscription.subscription_uuid, this.selectedCycle.start_date).subscribe(() => {
       console.log('Sending cycle report.');
       this.loading = false
     });
