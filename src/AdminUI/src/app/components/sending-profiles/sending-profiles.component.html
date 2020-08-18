@@ -44,7 +44,7 @@
       </ng-container>
 
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row class="table-row" *matRowDef="let row; columns: displayedColumns">
+      <mat-row class="table-row cursor-pointer" *matRowDef="let row; columns: displayedColumns" (click)="openProfileDialog(row)">
       </mat-row>
     </mat-table>
   </div>
