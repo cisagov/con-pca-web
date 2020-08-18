@@ -10,6 +10,7 @@ import {
   FormBuilder,
   Validators,
   ValidatorFn,
+  ValidationErrors,
   AbstractControl,
 } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -67,6 +68,9 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
 
   angular_subs = [];
   target_email_domain = new BehaviorSubject(null)
+  validationErrors = {
+    "emailDoesntMatchDomain": ""
+  }
 
   /**
    *
@@ -180,6 +184,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     this.angular_subs.push(
       this.f.csvText.valueChanges.subscribe((val) => {
         this.evaluateTargetList(false);
+        this.getValidationMessage()
         this.persistChanges();
       })
     );
@@ -207,7 +212,6 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
 
     // patch the subscription in real time if in edit mode
     if (!this.subscribeForm.errors && this.pageMode.toLowerCase() === 'edit') {
-      console.log(this.subscription)
       this.subscriptionSvc.patchSubscription(this.subscription).subscribe();
     }
   }
@@ -729,7 +733,6 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
       }
 
       if (!!parts[0] && !exprEmail.test(String(parts[0]).toLowerCase())) {
-        console.log("ASDSAD")
         return { invalidEmailFormat: true };
       }
     }
@@ -765,7 +768,6 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         if(val){
           let vals = val.split(',')
           for(const value of vals){
-            console.log("+" + value.trim() + "+")
             domain_targets.push(value.trim())
           }
         }
@@ -796,17 +798,14 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
           return { invalidEmailFormat:true  }
         }
         let val_not_found = true
-        console.log(domain_targets)
         for(const domain_target of domain_targets){
-          console.log(domain_target)
-          console.log("@"+line_domain[1])
           if(("@" + line_domain[1]) == domain_target){
             val_not_found = false
           }
         }
 
-        if(!val_not_found){
-          return { emailDoesntMatchDomain: line_domain[1] }
+        if(val_not_found){
+          return { emailDoesntMatchDomain: parts[0] }
         }
 
       }
@@ -816,6 +815,19 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     };
   }
 
+
+  getValidationMessage() {
+    // const errors = this.reportedStatsForm.controls[control].errors;
+    Object.keys(this.subscribeForm.controls).forEach((key) => {
+      const controlErrors: ValidationErrors = this.subscribeForm.get(key)
+        .errors;
+      if (controlErrors != null) {
+        Object.keys(controlErrors).forEach((element) => {
+          this.validationErrors[element] = controlErrors[element];
+        });
+      }
+    });
+  }
   /**
    *
    */

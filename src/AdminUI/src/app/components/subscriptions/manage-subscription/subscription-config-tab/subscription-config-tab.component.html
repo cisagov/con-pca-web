@@ -190,8 +190,10 @@
 
         <mat-label class="h6">Target Email Domain</mat-label>
         <div class="text-muted">
-          The domain that all target emails must be under. Will be used to ensure
-          that all emails provided in the target recipients list are valid.
+          Specify the domains that the target emails can be under. Provide a list of domains seperated by commas.
+        </div>
+        <div class="text-muted">
+          <em>Format: @domainOne.com, @domainTwo.com, @domainThree.com</em>
         </div>
         <mat-form-field class="w-100" appearance="outline">
           <input
@@ -286,10 +288,10 @@
           All target lines must have all parts
         </mat-error>
         <mat-error
-          *ngIf="submitted && f.csvText.errors?.emailDoesntMatchDomain"
+          *ngIf="f.csvText.errors?.emailDoesntMatchDomain"
           class="invalid-feedback"
         >
-          Target email domains must match the Target Email Domain field
+          The email {{this.validationErrors.emailDoesntMatchDomain}} does not match any of the domain targets specified in the domain targets field
         </mat-error>
         <mat-error
           *ngIf="submitted && f.csvText.errors?.noTargetDomain"
