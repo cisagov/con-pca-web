@@ -61,12 +61,14 @@ export class ContactsComponent implements OnInit {
   }
 
   openViewDialog(row: ICustomerContact): void {
-    const dialogRef = this.dialog.open(ViewContactDialogComponent, {
-      data: row
-    });
-    dialogRef.afterClosed().subscribe(value => {
-      this.refresh();
-    });
+    if(this.dialog.openDialogs.length==0){
+      const dialogRef = this.dialog.open(ViewContactDialogComponent, {
+        data: row
+      });
+      dialogRef.afterClosed().subscribe(value => {
+        this.refresh();
+      });
+     }
   }
 
   createNewContact() {
