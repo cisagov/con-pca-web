@@ -109,7 +109,7 @@
             >
               Insert Tag
             </button>
-            <div>
+            <div [style.height.px]="text_editor_height2">
               <angular-editor
                 #angularEditor
                 [style.height.px]="text_editor_height"
@@ -301,7 +301,7 @@
               <mat-form-field appearance="outline" *ngIf="sendingProfiles.length > 0">
                 <mat-label>Sending Profile</mat-label>
                 <mat-select formControlName="sendingProfile">
-                  <mat-option [value]=null>--Select--</mat-option>
+                  <mat-option [value]='null'>--Select--</mat-option>
                   <mat-option *ngFor="let sp of sendingProfiles" [value]="sp">
                     {{ sp.name }}</mat-option
                   >
@@ -349,6 +349,9 @@
               <button mat-flat-button class="add-button" color="primary" (click)="onSendTestClick()">
                 Send Test Email
               </button>
+            </div>
+            <div class="flex-container flex-row">
+              <iframe class="mb-3" style="flex-grow: 2;" [src]="mailtester_iframe_url" title="Testing results" [style.height.px]="iframe_height"></iframe>
             </div>
           </mat-tab>
         </mat-tab-group>
