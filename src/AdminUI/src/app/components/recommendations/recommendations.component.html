@@ -3,8 +3,7 @@
     <!-- SEARCH BAR -->
     <mat-form-field class="d-flex flex-column w-100" appearance="outline">
       <mat-label>Search</mat-label>
-      <input [(ngModel)]="search_input" (keyup)="filterRecommendations($event.target.value)" matInput
-        placeholder="Search" />
+      <input [(ngModel)]="search_input" (keyup)="filterRecommendations($event.target.value)" matInput placeholder="Search" />
       <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
 
@@ -48,8 +47,7 @@
         <mat-header-cell *matHeaderCellDef></mat-header-cell>
         <mat-cell *matCellDef="let row">
           <button class="table-btn-icon" mat-flat-button color="primary">
-            <mat-icon class="mat-icon table-btn-icon-size material-icons mat-icon-no-color"
-              (click)="editRecommendations(row)">edit</mat-icon>
+            <mat-icon class="mat-icon table-btn-icon-size material-icons mat-icon-no-color" (click)="editRecommendations(row)">edit</mat-icon>
           </button>
           <button class="table-btn-icon" mat-flat-button color="warn" (click)="confirmDeleteRecommendations(row)">
             <mat-icon>delete</mat-icon>
@@ -57,7 +55,7 @@
         </mat-cell>
       </ng-container>
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row class="table-row cursor-pointer" *matRowDef="let row; columns: displayedColumns"></mat-row>
+      <mat-row class="table-row cursor-pointer" *matRowDef="let row; columns: displayedColumns" (click)="editRecommendations(row)"></mat-row>
     </mat-table>
   </div>
 </div>
