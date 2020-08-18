@@ -191,7 +191,7 @@ export class SendingProfileDetailComponent implements OnInit {
   onSendTestClick(){
     let sp: SendingProfile;
     sp = this.save();
-    sp.from_address = this.getEmailFromBrackets(this.testEmail);
+    sp.from_address = this.getEmailFromBrackets(sp.from_address);
     let email_for_test: TestEmail ={
       template: {
         attachments: [],

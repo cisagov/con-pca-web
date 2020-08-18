@@ -30,6 +30,7 @@ import Swal from 'sweetalert2'
 
 import { SendingProfileService } from 'src/app/services/sending-profile.service';
 import { TestEmail } from 'src/app/models/test-email.model';
+import { DomSanitizer, SafeResourceUrl, SafeUrl} from '@angular/platform-browser';
 @Component({
   selector: 'app-template-manager',
   styleUrls: ['./template-manager.component.scss'],
@@ -59,6 +60,9 @@ export class TemplateManagerComponent implements OnInit {
   matchTemplateName = new MyErrorStateMatcher();
   matchTemplateHTML = new MyErrorStateMatcher();
 
+  mailtester_iframe_url = this.cleanURL("");
+
+
   //RxJS Subscriptions
   subscriptions = Array<Subscription>();
 
@@ -77,7 +81,11 @@ export class TemplateManagerComponent implements OnInit {
   //Styling variables, required to properly size and display the angular-editor import
   body_content_height: number;
   text_editor_height: number;
+  text_editor_height2: number;
+  iframe_height: number;
   text_area_bot_marg: number = 20; //based on the default text area padding on a mat textarea element
+
+
   //Elements used to get reference sizes for styling
   @ViewChild('selectedTemplateTitle') titleElement: ElementRef;
   @ViewChild('tabs') tabElement: any;
@@ -94,7 +102,8 @@ export class TemplateManagerComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private settingsService: SettingsService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private domSanitizer : DomSanitizer
   ) {
     layoutSvc.setTitle('Edit Template');
     //this.setEmptyTemplateForm();
@@ -187,6 +196,7 @@ export class TemplateManagerComponent implements OnInit {
         let t = <Template>success;
 
         this.setTemplateForm(t);
+        this.testEmail = this.getRecommendedEmail();
         this.templateId = t.template_uuid;
         this.retired = t.retired;
         this.retiredReason = t.retired_description;
@@ -489,6 +499,9 @@ export class TemplateManagerComponent implements OnInit {
       tab_height -
       mat_text_area_height -
       save_button_row_height;
+    this.text_editor_height2 = this.text_editor_height;
+    this.iframe_height = this.text_editor_height-220;
+
 
     //Get the angular-editor toolbar height as it changes when the buttons wrap
     let angular_editor_tool_bar_height = $('.angular-editor-toolbar')[0]
@@ -634,8 +647,16 @@ export class TemplateManagerComponent implements OnInit {
   onSendTestClick(){
     this.submitted = true;
 
-    let sp :SendingProfile = this.f.sendingProfile.value;
+    const sp :SendingProfile = this.f.sendingProfile.value;
+    if(!sp){
+      Swal.fire("sending profile to test email is required");
+      return;
+    }
     if(sp==null){
+      Swal.fire("sending profile to test email is required");
+      return;
+    }
+    if(sp==undefined){
       Swal.fire("sending profile to test email is required");
       return;
     }
@@ -655,9 +676,25 @@ export class TemplateManagerComponent implements OnInit {
     this.sendingProfileSvc.sendTestEmail(email_for_test).subscribe((data: any) => {
       console.log(data);
       Swal.fire(data.message);
+
+      this.mailtester_iframe_url = this.cleanURL("https://www.mail-tester.com/barryhansen-"+this.getCleanJobName());
+
       },
     error => {
         console.log('Error sending test email: ' + (<Error>error).name + (<Error>error).message);
     });
+  }
+  cleanURL(oldURL){
+    return this.domSanitizer.bypassSecurityTrustResourceUrl(oldURL);
+  }
+
+  getCleanJobName(){
+    let name = this.currentTemplateFormGroup.controls['templateName'].value;
+    const tname = name.replace(/[^a-zA-Z0-9_]/g,'');
+    return tname;
+  }
+
+  getRecommendedEmail(){
+    return "barryhansen-"+this.getCleanJobName()+"@srv1.mail-tester.com";
   }
 }
