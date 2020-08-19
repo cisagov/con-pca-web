@@ -57,18 +57,21 @@ export class SendingProfilesComponent implements OnInit {
    * @param row
    */
   confirmDeleteProfile(row: any): void {
-    this.dialogRefConfirm = this.dialog.open(ConfirmComponent, {
-      disableClose: false,
-    });
-    this.dialogRefConfirm.componentInstance.confirmMessage = `This will delete sending profile '${row.name}'.  Do you want to continue?`;
-    this.dialogRefConfirm.componentInstance.title = 'Confirm Delete';
 
-    this.dialogRefConfirm.afterClosed().subscribe((result) => {
-      if (result) {
-        this.deleteProfile(row);
-      }
-      this.dialogRefConfirm = null;
-    });
+    if(this.dialog.openDialogs.length==0){
+      this.dialogRefConfirm = this.dialog.open(ConfirmComponent, {
+        disableClose: false,
+      });
+      this.dialogRefConfirm.componentInstance.confirmMessage = `This will delete sending profile '${row.name}'.  Do you want to continue?`;
+      this.dialogRefConfirm.componentInstance.title = 'Confirm Delete';
+
+      this.dialogRefConfirm.afterClosed().subscribe((result) => {
+        if (result) {
+          this.deleteProfile(row);
+        }
+        this.dialogRefConfirm = null;
+      });
+     }
   }
 
   /**
@@ -85,18 +88,21 @@ export class SendingProfilesComponent implements OnInit {
    * Open the detail dialog and pass the ID of the clicked row, or 0 if they clicked 'new'.
    */
   openProfileDialog(row: any): void {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.width = '60vw';
-    dialogConfig.data = {
-      sendingProfileId: row.id,
-    };
-    const dialogRef = this.dialog.open(
-      SendingProfileDetailComponent,
-      dialogConfig
-    );
 
-    dialogRef.afterClosed().subscribe((value) => {
-      this.refresh();
-    });
+    if(this.dialog.openDialogs.length==0){
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.width = '60vw';
+      dialogConfig.data = {
+        sendingProfileId: row.id,
+      };
+      const dialogRef = this.dialog.open(
+        SendingProfileDetailComponent,
+        dialogConfig
+      );
+
+      dialogRef.afterClosed().subscribe((value) => {
+        this.refresh();
+      });
+     }
   }
 }
