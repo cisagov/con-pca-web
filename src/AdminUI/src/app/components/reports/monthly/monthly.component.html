@@ -57,11 +57,11 @@
               {{ detail?.metrics?.number_of_email_sent_overall }}<br />
               Email Click Rate:
               {{ detail?.metrics?.number_of_clicked_emails }} ({{
-                detail?.metrics?.percent_of_clicked_emails | number: "1.0-2"
+                detail?.metrics?.percent_of_clicked_emails | percent
               }}%)<br />
               Reported Emails:
               {{ detail?.metrics?.number_of_reports_to_helpdesk }} ({{
-                detail?.metrics?.percent_of_reported_emails | number: "1.0-2"
+                detail?.metrics?.percent_report_rate | percent
               }}%)<br />
             </div>
             <div id="preparedFor">
@@ -144,7 +144,7 @@
                       <li>
                         Of the total
                         {{ detail?.metrics?.total_users_targeted }} targets in
-                        this quarter cycle,
+                        this cycle,
                         {{ detail?.metrics?.number_of_email_sent_overall }}
                         targets have had emails sent.
                       </li>

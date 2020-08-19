@@ -10,6 +10,7 @@ import {
   FormBuilder,
   Validators,
   ValidatorFn,
+  ValidationErrors,
   AbstractControl,
 } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -67,6 +68,9 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
 
   angular_subs = [];
   target_email_domain = new BehaviorSubject(null)
+  validationErrors = {
+    "emailDoesntMatchDomain": ""
+  }
 
   /**
    *
@@ -180,6 +184,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     this.angular_subs.push(
       this.f.csvText.valueChanges.subscribe((val) => {
         this.evaluateTargetList(false);
+        this.getValidationMessage()
         this.persistChanges();
       })
     );
@@ -739,7 +744,6 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
       }
 
       if (!!parts[0] && !exprEmail.test(String(parts[0]).toLowerCase())) {
-        console.log("ASDSAD")
         return { invalidEmailFormat: true };
       }
     }
@@ -750,13 +754,18 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
   validDomain(control: FormControl) {
     const exprEmail = /^@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
+    // const lines = control.value.split('\n');
+
+    const parts = control.value.split(',');
+    for(const part of parts) {
+      let trimmedPart = part.trim()
+      if (!exprEmail.test(trimmedPart.toLowerCase())) {
+        return { invalidDomain: true };
+      }
+    }
 
     let value = control.value
     if(value == null){ return null}
-    if (!exprEmail.test(value.toLowerCase())) {
-      console.log("not valid")
-      return { invalidDomain: true };
-    }
 
     return null;
   }
@@ -765,9 +774,14 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
   domainListValidator(domain: BehaviorSubject<string>): ValidatorFn {
     return (control: AbstractControl): { [key: string]: boolean } | null => {
       const exprEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      let domain_target = null
+      let domain_targets = []
       let BS_sub = domain.subscribe(val =>{
-        domain_target = val
+        if(val){
+          let vals = val.split(',')
+          for(const value of vals){
+            domain_targets.push(value.trim())
+          }
+        }
       })
       BS_sub.unsubscribe()
 
@@ -787,15 +801,22 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         if (!!parts[0] && !exprEmail.test(String(parts[0]).toLowerCase())) {
           return { invalidEmailFormat: true };
         }
-        if(domain_target == null || isUndefined(domain_target)){
+        if(domain_targets.length == 0){
           return { noTargetDomain: true}
         }
         let line_domain = parts[0].split('@')
         if(line_domain.length != 2){
           return { invalidEmailFormat:true  }
         }
-        if(("@" + line_domain[1]) != domain_target){
-          return { emailDoesntMatchDomain: true }
+        let val_not_found = true
+        for(const domain_target of domain_targets){
+          if(("@" + line_domain[1]) == domain_target){
+            val_not_found = false
+          }
+        }
+
+        if(val_not_found){
+          return { emailDoesntMatchDomain: parts[0] }
         }
 
       }
@@ -805,6 +826,19 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     };
   }
 
+
+  getValidationMessage() {
+    // const errors = this.reportedStatsForm.controls[control].errors;
+    Object.keys(this.subscribeForm.controls).forEach((key) => {
+      const controlErrors: ValidationErrors = this.subscribeForm.get(key)
+        .errors;
+      if (controlErrors != null) {
+        Object.keys(controlErrors).forEach((element) => {
+          this.validationErrors[element] = controlErrors[element];
+        });
+      }
+    });
+  }
   /**
    *
    */
