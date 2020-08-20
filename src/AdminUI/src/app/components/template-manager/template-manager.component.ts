@@ -1,7 +1,7 @@
 
 
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { FormControl, Validators, FormGroup, RangeValueAccessor } from '@angular/forms';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MyErrorStateMatcher } from 'src/app/helper/ErrorStateMatcher';
@@ -232,14 +232,12 @@ export class TemplateManagerComponent implements OnInit {
       templateDeceptionScore: new FormControl(template.deception_score),
       templateDescriptiveWords: new FormControl(template.descriptive_words),
       templateDescription: new FormControl(template.description),
-      templateFromAddress: new FormControl(template.from_address, [
-        Validators.required,
-      ]),
+      templateFromAddress: new FormControl(template.from_address),
       sendingProfile: new FormControl(""),
       templateSubject: new FormControl(template.subject, [Validators.required]),
       templateText: new FormControl(template.text),
       templateHTML: new FormControl(template.html, [Validators.required]),
-      landingPage: new FormControl(template.landing_page_uuid, [Validators.required]),
+      landingPage: new FormControl(template.landing_page_uuid),
       authoritative: new FormControl(template.sender?.authoritative ?? 0),
       external: new FormControl(template.sender?.external ?? 0),
       internal: new FormControl(template.sender?.internal ?? 0),
@@ -279,6 +277,12 @@ export class TemplateManagerComponent implements OnInit {
     );
   }
 
+  replaceEscapeSequence(value: string){
+    let rval = value.split('&lt;%').join('<%');
+    rval = rval.split('%&gt;').join('%>');
+    return rval;
+  }
+
   //Get Template model from the form group
   getTemplateFromForm(form: FormGroup) {
     // form fields might not have the up-to-date content that the angular-editor has
@@ -290,6 +294,7 @@ export class TemplateManagerComponent implements OnInit {
     );
 
     let formTemplate = new Template(form.value);
+    let htmlValue = this.replaceEscapeSequence(form.controls['templateHTML'].value);
     let saveTemplate = new Template({
       template_uuid: form.controls['templateUUID'].value,
       name: form.controls['templateName'].value,
@@ -300,7 +305,7 @@ export class TemplateManagerComponent implements OnInit {
       from_address: form.controls['templateFromAddress'].value,
       subject: form.controls['templateSubject'].value,
       text: form.controls['templateText'].value,
-      html: form.controls['templateHTML'].value,
+      html: htmlValue,
     });
     saveTemplate.appearance = {
       grammar: formTemplate.grammar,
