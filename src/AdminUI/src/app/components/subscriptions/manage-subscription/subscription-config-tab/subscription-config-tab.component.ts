@@ -589,6 +589,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     const csv = this.f.csvText.value;
     sub.target_email_list_cached_copy = this.buildTargetsFromCSV(csv);
     sub.target_email_list = sub.target_email_list_cached_copy;
+    sub.target_domain = this.target_email_domain.value;
     sub.sending_profile_name = this.f.sendingProfile.value;
 
     // call service with everything needed to start the subscription
@@ -755,17 +756,18 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     const exprEmail = /^@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     // const lines = control.value.split('\n');
-
-    const parts = control.value.split(',');
-    for(const part of parts) {
-      let trimmedPart = part.trim()
-      if (!exprEmail.test(trimmedPart.toLowerCase())) {
-        return { invalidDomain: true };
+    if(control.value){
+      const parts = control.value.split(',');
+      for(const part of parts) {
+        let trimmedPart = part.trim()
+        if (!exprEmail.test(trimmedPart.toLowerCase())) {
+          return { invalidDomain: true };
+        }
       }
-    }
 
-    let value = control.value
-    if(value == null){ return null}
+      let value = control.value
+      if(value == null){ return null}
+    }
 
     return null;
   }
