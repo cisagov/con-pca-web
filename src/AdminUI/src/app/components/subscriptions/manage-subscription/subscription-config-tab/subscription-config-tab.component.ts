@@ -143,6 +143,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     this.subscriptionSvc.subscription = new Subscription();
     this.routeSub = this.route.params.subscribe((params) => {
       if (!params.id) {
+        this.layoutSvc.setTitle('New Subscription');
         this.loadPageForCreate(params);
       } else {
         this.subscriptionSvc.subBehaviorSubject.subscribe((data) => {
