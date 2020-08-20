@@ -60,6 +60,7 @@ export class CycleComponent implements OnInit {
           },
           (error) => {
             console.log(this.detail);
+            console.log(error);
             this.renderReport();
           }
         );
