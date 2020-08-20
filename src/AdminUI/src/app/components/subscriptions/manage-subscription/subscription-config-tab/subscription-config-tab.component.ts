@@ -82,7 +82,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     private router: Router,
     public dialog: MatDialog,
     public formBuilder: FormBuilder,
-    public layoutSvc: LayoutMainService,
+    private layoutSvc: LayoutMainService,
     public settingsService: SettingsService,
     private route: ActivatedRoute
   ) {

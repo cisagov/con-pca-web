@@ -186,5 +186,8 @@ export class SubscriptionsComponent implements OnInit {
   public editSubscription(row) {
     this.router.navigate(['/view-subscription', row.subscription.subscription_uuid]);
   }
+  public createSubscription() {
+    this.router.navigate(['/create-subscription']);
+  }
 
 }
