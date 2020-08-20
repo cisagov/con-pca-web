@@ -82,7 +82,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     private router: Router,
     public dialog: MatDialog,
     public formBuilder: FormBuilder,
-    public layoutSvc: LayoutMainService,
+    private layoutSvc: LayoutMainService,
     public settingsService: SettingsService,
     private route: ActivatedRoute
   ) {
@@ -143,6 +143,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     this.subscriptionSvc.subscription = new Subscription();
     this.routeSub = this.route.params.subscribe((params) => {
       if (!params.id) {
+        this.layoutSvc.setTitle('New Subscription');
         this.loadPageForCreate(params);
       } else {
         this.subscriptionSvc.subBehaviorSubject.subscribe((data) => {
