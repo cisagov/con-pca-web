@@ -18,6 +18,6 @@ data "aws_ssm_parameter" "cognito_domain" {
   name = "/${var.env}/${var.app}/cognito/domain"
 }
 
-data "aws_iam_server_certificate" "self" {
-  name = "${var.app}-${var.env}-alb"
+data "aws_acm_certificate" "cert" {
+  domain = var.domain_name
 }

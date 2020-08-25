@@ -20,13 +20,13 @@ module "container" {
   log_retention   = 7
 
   environment = {
-    "API_URL" : "https://${data.aws_lb.public.dns_name}:8043",
-    "API_URL_HEADLESS" : "https://${data.aws_lb.public.dns_name}:8043",
+    "API_URL" : "https://${var.domain_name}:8043",
+    "API_URL_HEADLESS" : "https://${var.domain_name}:8043",
     "AWS_PROJECT_REGION" : var.region,
     "AWS_USER_POOLS_ID" : element(tolist(data.aws_cognito_user_pools.users.ids), 0),
 
     "OAUTH_DOMAIN" : "${data.aws_ssm_parameter.cognito_domain.value}.auth.${var.region}.amazoncognito.com",
-    "OAUTH_REDIRECT_URL" : "https://${data.aws_lb.public.dns_name}"
+    "OAUTH_REDIRECT_URL" : "https://${var.domain_name}"
   }
 
   secrets = {
@@ -41,7 +41,7 @@ module "fargate" {
   stage     = "${var.env}"
   name      = "web"
 
-  iam_server_cert_arn              = data.aws_iam_server_certificate.self.arn
+  https_cert_arn                   = data.aws_acm_certificate.cert.arn
   container_port                   = local.container_port
   container_definition             = module.container.json
   container_protocol               = "HTTPS"
