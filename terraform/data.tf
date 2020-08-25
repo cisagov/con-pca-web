@@ -1,25 +1,3 @@
-data "aws_vpc" "vpc" {
-  tags = {
-    Name = "${var.app}-vpc"
-  }
-}
-
-data "aws_subnet_ids" "public" {
-  vpc_id = data.aws_vpc.vpc.id
-
-  tags = {
-    Name = "${var.app}-subnet-public*"
-  }
-}
-
-data "aws_subnet_ids" "private" {
-  vpc_id = data.aws_vpc.vpc.id
-
-  tags = {
-    Name = "${var.app}-subnet-private*"
-  }
-}
-
 data "aws_lb" "public" {
   name = "${var.app}-${var.env}-public"
 }
