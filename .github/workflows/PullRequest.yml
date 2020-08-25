@@ -64,33 +64,33 @@
         run: docker build -t example .
 
     terraform_plan:
-    runs-on: ubuntu-latest
+      runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v2
+      steps:
+        - uses: actions/checkout@v2
 
-      - uses: hashicorp/setup-terraform@v1
-        with:
-          terraform_version: 0.12.28
+        - uses: hashicorp/setup-terraform@v1
+          with:
+            terraform_version: 0.12.28
 
-      - name: Terraform Init
-        working-directory: ./terraform
-        run: terraform init -input=false
+        - name: Terraform Init
+          working-directory: ./terraform
+          run: terraform init -input=false
 
-      - name: Terraform Workspace
-        working-directory: ./terraform
-        run: |
-          terraform workspace select $ENVIRONMENT
-          terraform workspace show
+        - name: Terraform Workspace
+          working-directory: ./terraform
+          run: |
+            terraform workspace select $ENVIRONMENT
+            terraform workspace show
 
-      - name: Terraform Validate
-        working-directory: ./terraform
-        run: terraform validate
+        - name: Terraform Validate
+          working-directory: ./terraform
+          run: terraform validate
 
-      - name: Get Tag
-        id: vars
-        run: echo ::set-output name=tag::$(echo ${GITHUB_SHA:0:10})
+        - name: Get Tag
+          id: vars
+          run: echo ::set-output name=tag::$(echo ${GITHUB_SHA:0:10})
 
-      - name: Terraform Plan
-        working-directory: ./terraform
-        run: terraform plan -input=false -var="image_tag=${{steps.vars.outputs.tag}}" -var-file ./vars/$ENVIRONMENT.tfvars
+        - name: Terraform Plan
+          working-directory: ./terraform
+          run: terraform plan -input=false -var="image_tag=${{steps.vars.outputs.tag}}" -var-file ./vars/$ENVIRONMENT.tfvars
