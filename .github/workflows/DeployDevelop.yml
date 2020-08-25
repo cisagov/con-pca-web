@@ -48,24 +48,33 @@ jobs:
     needs: build
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - uses: hashicorp/setup-terraform@v1
-      with:
-        terraform_version: 0.12.28
+      - uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 0.12.28
 
-    - name: Verify Terraform version
-      run: terraform --version
+      - name: Verify Terraform version
+        run: terraform --version
 
-    - name: Terraform init
-      working-directory: ./terraform
-      run: terraform init -input=false -backend-config="bucket=$TF_BUCKET" -backend-config="key=tfstate/$ENVIRONMENT/$IMAGE_NAME.tfstate" -backend-config="region=$REGION" -backend-config="dynamodb_table=$TF_DYNAMO_TABLE"
+      - name: Terraform init
+        working-directory: ./terraform
+        run: terraform init -input=false
 
+      - name: Terraform Workspace
+        working-directory: ./terraform
+        run: |
+          terraform workspace select $ENVIRONMENT
+          terraform workspace show
 
-    - name: Terraform validation
-      working-directory: ./terraform
-      run: terraform validate
+      - name: Terraform validation
+        working-directory: ./terraform
+        run: terraform validate
 
-    - name: Terraform Apply
-      working-directory: ./terraform
-      run: terraform apply -auto-approve -input=false -var="image_tag=${{needs.build.outputs.tag}}" -var="env=$ENVIRONMENT"
+      - name: Terraform plan
+        working-directory: ./terraform
+        run: terraform plan -input=false -var="image_tag=${{needs.build.outputs.tag}}" -var-file ./vars/$ENVIRONMENT.tfvars
+
+      - name: Terraform Apply
+        working-directory: ./terraform
+        run: terraform apply -auto-approve -input=false -var="image_tag=${{needs.build.outputs.tag}}" -var-file ./vars/$ENVIRONMENT.tfvars

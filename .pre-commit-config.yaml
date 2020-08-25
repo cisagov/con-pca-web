@@ -7,7 +7,6 @@ repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v3.1.0
     hooks:
-      - id: check-executables-have-shebangs
       # - id: check-json
       - id: check-merge-conflict
       - id: check-xml
@@ -41,44 +40,6 @@ repos:
   #   rev: 1.0.5
   #   hooks:
   #     - id: shell-lint
-  - repo: https://gitlab.com/pycqa/flake8
-    rev: 3.8.3
-    hooks:
-      - id: flake8
-        additional_dependencies:
-          - flake8-docstrings
-  - repo: https://github.com/asottile/pyupgrade
-    rev: v2.7.0
-    hooks:
-      - id: pyupgrade
-  # Run bandit on "tests" tree with a configuration
-  - repo: https://github.com/PyCQA/bandit
-    rev: 1.6.2
-    hooks:
-      - id: bandit
-        name: bandit (tests tree)
-        files: tests
-        args:
-          - --config=.bandit.yml
-  # Run bandit everything but tests directory
-  - repo: https://github.com/PyCQA/bandit
-    rev: 1.6.1
-    hooks:
-      - id: bandit
-        name: bandit (everything else)
-        exclude: tests
-  - repo: https://github.com/python/black
-    rev: 19.10b0
-    hooks:
-      - id: black
-  - repo: https://github.com/asottile/seed-isort-config
-    rev: v2.2.0
-    hooks:
-      - id: seed-isort-config
-  - repo: https://github.com/timothycrosley/isort
-    rev: 5.0.7
-    hooks:
-      - id: isort
   # - repo: https://github.com/IamTheFij/docker-pre-commit
   #   rev: v2.0.0
   #   hooks:
@@ -87,7 +48,3 @@ repos:
   #   rev: 2.0.5
   #   hooks:
   #     - id: prettier
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v0.782
-    hooks:
-      - id: mypy

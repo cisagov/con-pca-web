@@ -48,7 +48,7 @@ module "fargate" {
   container_name                   = local.container_name
   memory                           = 4096
   cpu                              = 2048
-  vpc_id                           = data.aws_vpc.vpc.id
+  vpc_id                           = var.vpc_id
   health_check_interval            = 120
   health_check_unhealthy_threshold = 5
   health_check_healthy_threshold   = 3
@@ -57,7 +57,7 @@ module "fargate" {
   load_balancer_arn                = data.aws_lb.public.arn
   load_balancer_port               = 443
   desired_count                    = 1
-  subnet_ids                       = data.aws_subnet_ids.private.ids
+  subnet_ids                       = var.private_subnet_ids
   security_group_ids               = [aws_security_group.web.id]
 }
 
@@ -68,7 +68,7 @@ module "fargate" {
 resource "aws_security_group" "web" {
   name        = "${var.app}-${var.env}-web-alb"
   description = "Allow traffic for web from alb"
-  vpc_id      = data.aws_vpc.vpc.id
+  vpc_id      = var.vpc_id
 
   ingress {
     description     = "Allow container port from ALB"
