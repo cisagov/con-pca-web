@@ -264,6 +264,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
    *
    */
   setCustomer() {
+    console.log("setCustomer");
     if (this.customerSvc.selectedCustomer.length > 0) {
       this.subscribeForm.patchValue({
         selectedCustomerUuid: this.customerSvc.selectedCustomer,
@@ -307,7 +308,11 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
    */
   loadSendingProfiles() {
     this.sendingProfileSvc.getAllProfiles().subscribe((data: any) => {
-      this.sendingProfiles = data;
+    var filterData =  data.filter(function(d) {
+      const regex = /.*_[0-9]+.[0-9]+.[0-9]+.[0-9]+.*/g;
+      return !d.name.match(regex);
+    });
+    this.sendingProfiles = filterData;
     });
   }
 

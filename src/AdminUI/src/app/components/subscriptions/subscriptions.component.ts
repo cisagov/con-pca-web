@@ -98,6 +98,7 @@ export class SubscriptionsComponent implements OnInit {
               customerSubscriptions.push(customerSubscription);
             });
           console.log(customerSubscriptions);
+          console.log("poop");
           this.dataSource.data = customerSubscriptions as ICustomerSubscription[];
           this.dataSource.sort = this.sort;
           });
