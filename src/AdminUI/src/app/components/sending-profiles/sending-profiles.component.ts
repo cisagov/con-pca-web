@@ -47,9 +47,23 @@ export class SendingProfilesComponent implements OnInit {
     this.loading = true;
     this.sendingProfileSvc.getAllProfiles().subscribe((data: any) => {
       this.sendingProfilesData.data = data as SendingProfile[];
+      this.filterSendingProfiles();
       this.sendingProfilesData.sort = this.sort;
       this.loading = false;
     });
+  }
+
+
+  /**
+   * Filters out auto generated sending profiles on the page display.
+   */
+  filterSendingProfiles(): void {
+    const sendingProfiles = this.sendingProfilesData.data;
+    var filterData =  sendingProfiles.filter(function(sendingProfile) {
+      const regex = /.*_[0-9]+.[0-9]+.[0-9]+.[0-9]+.*/g;
+      return !sendingProfile.name.match(regex);
+    });
+    this.sendingProfilesData.data = filterData;
   }
 
   /**
