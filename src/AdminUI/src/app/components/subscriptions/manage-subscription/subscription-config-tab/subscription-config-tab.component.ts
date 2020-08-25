@@ -264,7 +264,6 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
    *
    */
   setCustomer() {
-    console.log("setCustomer");
     if (this.customerSvc.selectedCustomer.length > 0) {
       this.subscribeForm.patchValue({
         selectedCustomerUuid: this.customerSvc.selectedCustomer,
