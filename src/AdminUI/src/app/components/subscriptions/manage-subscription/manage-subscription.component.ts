@@ -69,7 +69,8 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     this.subscription = s as Subscription;
     this.subscriptionSvc.subscription = this.subscription;
     //@ts-ignore
-    this.subscriptionSvc.setCycleBhaviorSubject(s['cycles'][0]);
+    let currentCycleIndex = s["cycles"].length - 1 
+    this.subscriptionSvc.setCycleBehaviorSubject(s['cycles'][currentCycleIndex]);
     this.setPageTitle();
   }
 

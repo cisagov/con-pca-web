@@ -31,7 +31,8 @@ export class SubscriptionReportTab implements OnInit {
         this.subscription = data;
         this.emailsSent.sort = this.sort;
         //@ts-ignore
-        this.selectedCycle = this.subscription.cycles[0];
+        let selectedCycleIndex = this.subscription.cycles.length - 1
+        this.selectedCycle = this.subscription.cycles[selectedCycleIndex];
         if ('email_report_history' in data) {
           //@ts-ignore
           this.emailsSent.data = data.email_report_history;

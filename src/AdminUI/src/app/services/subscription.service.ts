@@ -44,8 +44,11 @@ export class SubscriptionService {
   public getCycleBehaviorSubject() {
     return this.cycleBehaviorSubject;
   }
-  public setCycleBhaviorSubject(cycle) {
+  public setCycleBehaviorSubject(cycle) {
     this.cycleBehaviorSubject.next(cycle);
+  }
+  public clearCycleBehaviorSubject() {
+    this.cycleBehaviorSubject = new BehaviorSubject<any>({});
   }
 
   /**
@@ -261,7 +264,7 @@ export class SubscriptionService {
   public sendYearlyReport(uuid: string, date) {
     const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${uuid}/email/yearly/${date}/`;
     return this.http.get(url);
-  }
+  } 
 
   public getReportValuesForSubscription(subscription_uuid) {
     const url = `${this.settingsService.settings.apiUrl}/api/v1/cycleemailreported/${subscription_uuid}/`;
