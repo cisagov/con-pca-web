@@ -28,13 +28,13 @@ export class AggregateStatsComponent implements OnInit {
       (result) => {
         this.detail = result;
 
-        if (!this.detail.average_time_to_click_all_customers) {
-          this.avgTimeToClick = '(none)';
-        } else {
-          this.avgTimeToClick = humanTiming(
-            this.detail.average_time_to_click_all_customers
-          );
-        }
+        // if (!this.detail.average_time_to_click_all_customers) {
+        //   this.avgTimeToClick = '(none)';
+        // } else {
+        //   this.avgTimeToClick = humanTiming(
+        //     this.detail.average_time_to_click_all_customers
+        //   );
+        // }
       },
       (error) => {
         console.log(error);
