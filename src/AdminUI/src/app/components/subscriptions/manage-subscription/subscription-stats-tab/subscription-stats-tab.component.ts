@@ -108,7 +108,7 @@ export class SubscriptionStatsTab implements OnInit {
     }
     let cycleReports = null;
     // find the correct cycle report data to use
-    if (cycle && this.subscription.cycles) {
+    if (this.selectedCycle && this.subscription.cycles) {
       this.reportsData.forEach((element) => {
         if (this.selectedCycle.cycle_uuid == element.cycle_uuid) {
           cycleReports = element;
@@ -263,6 +263,7 @@ export class SubscriptionStatsTab implements OnInit {
     if (this.reportedStatsForm.valid) {
       addRemoveList['start_date'] = this.selectedCycle['start_date'];
       addRemoveList['end_date'] = this.selectedCycle['end_date'];
+      addRemoveList["cycle_uuid"] = this.selectedCycle["cycle_uuid"]
       this.subscriptionSvc
         .postReportValuesForSubscription(addRemoveList, this.subscription_uuid)
         .subscribe(
