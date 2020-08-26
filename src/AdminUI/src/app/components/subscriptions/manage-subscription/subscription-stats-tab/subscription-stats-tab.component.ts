@@ -94,30 +94,34 @@ export class SubscriptionStatsTab implements OnInit {
         this.buildSubscriptionTimeline(this.subscription);
         this.subscription = data;
         //@ts-ignore
-        this.selectedCycle = this.subscription.cycles[0];
-        this.subscriptionSvc.getCycleBehaviorSubject().subscribe((data) => {
-          this.selectedCycle = data;
-        });
+        let selectedCycleIndex = this.subscription.cycles.length - 1
+        this.selectedCycle = this.subscription.cycles[selectedCycleIndex];
+        this.subscriptionSvc.setCycleBehaviorSubject(this.selectedCycle)
+        this.setReportsForCycle(this.selectedCycle);
       }
     });
   }
+
   setReportsForCycle(cycle = null) {
+    if(!this.reportsData){
+      return
+    }
     let cycleReports = null;
     // find the correct cycle report data to use
     if (cycle && this.subscription.cycles) {
       this.reportsData.forEach((element) => {
-        if (this.selectedCycle.start_date == element.start_date) {
+        if (this.selectedCycle.cycle_uuid == element.cycle_uuid) {
           cycleReports = element;
         }
       });
     } else {
-      cycleReports = this.reportsData[0];
+      // cycleReports = this.reportsData[0];
     }
     if (!cycleReports) {
-      console.log('error finding correct cyclereports');
+      this.activeCycleReports = []
       return;
     }
-    //
+    
     if (cycleReports.override_total_reported != -1) {
       this.reportedStatsForm.controls['overRiderNumber'].setValue(
         cycleReports.override_total_reported
@@ -321,7 +325,7 @@ export class SubscriptionStatsTab implements OnInit {
   }
 
   cycleChange(event) {
-    this.subscriptionSvc.setCycleBhaviorSubject(event.value);
+    this.subscriptionSvc.setCycleBehaviorSubject(event.value);
     this.setReportsForCycle(event.value);
   }
 
