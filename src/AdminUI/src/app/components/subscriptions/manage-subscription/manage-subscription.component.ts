@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { Subscription } from 'src/app/models/subscription.model';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { AlertComponent } from '../../dialogs/alert/alert.component';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -17,6 +17,8 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
 
   sub_subscription: any;
 
+  selectedTabIndex: number;
+
   constructor(
     private layoutSvc: LayoutMainService,
     private subscriptionSvc: SubscriptionService,
@@ -26,17 +28,34 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.router.routeReuseStrategy.shouldReuseRoute = function(){
+      return false;
+  };
+
+  this.router.events.subscribe((evt) => {
+      if (evt instanceof NavigationEnd) {
+          this.router.navigated = false;
+      }
+  });
     this.routeSub = this.route.params.subscribe((params) => {
       if (!params.id) {
         //this.loadPageForCreate(params);
       } else {
         this.loadPageForEdit(params);
+        this.route.queryParams.subscribe((queryParams) => {
+          if (!queryParams.tab) {
+            this.selectedTabIndex = 0;
+          } else {
+            this.selectedTabIndex = queryParams.tab;
+          }
+        });
       }
     });
   }
 
   onTabChanged(event) {
     window.dispatchEvent(new Event('resize'));
+    this.selectedTabIndex = event.index;
   }
 
   loadPageForEdit(params: any) {
@@ -69,7 +88,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     this.subscription = s as Subscription;
     this.subscriptionSvc.subscription = this.subscription;
     //@ts-ignore
-    let currentCycleIndex = s["cycles"].length - 1 
+    let currentCycleIndex = s["cycles"].length - 1
     this.subscriptionSvc.setCycleBehaviorSubject(s['cycles'][currentCycleIndex]);
     this.setPageTitle();
   }

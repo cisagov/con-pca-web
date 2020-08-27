@@ -18,6 +18,7 @@ import {
 } from '@angular/forms';
 import { isSameDate } from 'src/app/helper/utilities';
 import { ResolvedStaticSymbol } from '@angular/compiler';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'subscription-stats-tab',
@@ -48,10 +49,17 @@ export class SubscriptionStatsTab implements OnInit {
 
   constructor(
     public subscriptionSvc: SubscriptionService,
-    public datePipe: DatePipe
+    public datePipe: DatePipe,
+    private router: Router
   ) {
     this.subscription = new Subscription();
     this.initValidationList();
+  }
+
+  pageRefresh(): void {
+    this.router.navigate(['/view-subscription', this.subscription.subscription_uuid], { queryParams: {
+      tab: 1
+    }});
   }
 
   ngOnInit() {
@@ -121,7 +129,7 @@ export class SubscriptionStatsTab implements OnInit {
       this.activeCycleReports = []
       return;
     }
-    
+
     if (cycleReports.override_total_reported != -1) {
       this.reportedStatsForm.controls['overRiderNumber'].setValue(
         cycleReports.override_total_reported
