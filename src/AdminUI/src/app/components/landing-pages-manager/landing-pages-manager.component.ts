@@ -228,13 +228,14 @@ export class LandingPagesManagerComponent implements OnInit {
         const controls = this.currentTemplateFormGroup.controls;
         for (const name in controls) {
           if (controls[name].invalid) {
-            invalid.push(name);
+            invalid.push(name.replace(/template/g,''));
           }
         }
         this.dialog.open(AlertComponent, {
           data: {
-            title: 'Error',
-            messageText: 'Invalid form fields: ' + invalid,
+            title: 'Missing Required Information',
+            messageText: '',
+            invalidData: invalid,
           },
         });
       }
