@@ -20,9 +20,17 @@
             {{ c.start_date | UTCtoReadableTime }} -
             {{ c.end_date | UTCtoReadableTime }}</mat-option
           >
-        </mat-select>        
+        </mat-select>
       </mat-form-field>
     </div>
+    <button
+            mat-raised-button
+            color="primary"
+            (click)="pageRefresh()"
+          >
+           Refresh
+           <mat-icon class="table-btn-icon-size">autorenew</mat-icon>
+          </button>
   </mat-card>
   <app-sub-dashboard></app-sub-dashboard>
 
