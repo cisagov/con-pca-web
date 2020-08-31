@@ -1,6 +1,6 @@
 
 
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { FormControl, Validators, FormGroup, RangeValueAccessor } from '@angular/forms';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -31,12 +31,13 @@ import Swal from 'sweetalert2'
 import { SendingProfileService } from 'src/app/services/sending-profile.service';
 import { TestEmail } from 'src/app/models/test-email.model';
 import { DomSanitizer, SafeResourceUrl, SafeUrl} from '@angular/platform-browser';
+import { Variable } from '@angular/compiler/src/render3/r3_ast';
 @Component({
   selector: 'app-template-manager',
   styleUrls: ['./template-manager.component.scss'],
   templateUrl: './template-manager.component.html',
 })
-export class TemplateManagerComponent implements OnInit {
+export class TemplateManagerComponent implements OnInit, AfterViewInit {
 
   dialogRefConfirm: MatDialogRef<ConfirmComponent>;
   dialogRefTagSelection: MatDialogRef<TagSelectionComponent>;
@@ -103,12 +104,24 @@ export class TemplateManagerComponent implements OnInit {
     private router: Router,
     private settingsService: SettingsService,
     public dialog: MatDialog,
-    private domSanitizer : DomSanitizer
+    private domSanitizer : DomSanitizer,
+    private cdr: ChangeDetectorRef
   ) {
-    layoutSvc.setTitle('Edit Template');
+    //layoutSvc.setTitle('Edit Template');
     //this.setEmptyTemplateForm();
     this.setTemplateForm(new Template());
     //this.getAllTemplates();
+    // Here updating title on creation.
+    route.params.subscribe((params) => {
+      this.templateId = params['templateId'];
+      if (this.templateId != undefined) {
+        layoutSvc.setTitle('Edit Template');
+        this.selectTemplate(this.templateId);
+      } else {
+        //Use preset empty form
+        layoutSvc.setTitle('New Template');
+      }
+    })
   }
 
   /**
@@ -392,13 +405,15 @@ export class TemplateManagerComponent implements OnInit {
       const controls = this.currentTemplateFormGroup.controls;
       for (const name in controls) {
         if (controls[name].invalid) {
-          invalid.push(name);
+          let nameIng = 'Tempalte ' + name.replace(/template/g,'');
+          invalid.push(nameIng);
         }
       }
       this.dialog.open(AlertComponent, {
         data: {
-          title: 'Error',
-          messageText: 'Invalid form fields: ' + invalid,
+          title: 'Missing Required Information',
+          messageText: '',
+          invalidData: invalid,
         },
       });
     }

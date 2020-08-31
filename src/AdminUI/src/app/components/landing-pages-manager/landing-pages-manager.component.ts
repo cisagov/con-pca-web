@@ -73,7 +73,16 @@ export class LandingPagesManagerComponent implements OnInit {
       private settingsService: SettingsService,
       public dialog: MatDialog
     ) {
-      layoutSvc.setTitle('Edit Landing Page');
+      // Set title of page
+      route.params.subscribe((params) => {
+        this.templateId = params['landing_page_uuid'];
+        if (this.templateId != undefined) {
+          layoutSvc.setTitle('Edit Landing Page');
+        } else {
+          //Use preset empty form
+          layoutSvc.setTitle('New Landing Page');
+        }
+      })
       //this.setEmptyTemplateForm();
       this.setTemplateForm(new Landing_Page());
       //this.getAllTemplates();
@@ -226,15 +235,21 @@ export class LandingPagesManagerComponent implements OnInit {
         //non valid form, collect nonvalid fields and display to user
         const invalid = [];
         const controls = this.currentTemplateFormGroup.controls;
-        for (const name in controls) {
+        for (var name in controls) {
           if (controls[name].invalid) {
+            if (name == 'templateName') {
+              name = 'Page Name';
+            } else if (name == 'templateHTML') {
+              name = 'Template HTML';
+            }
             invalid.push(name);
           }
         }
         this.dialog.open(AlertComponent, {
           data: {
-            title: 'Error',
-            messageText: 'Invalid form fields: ' + invalid,
+            title: 'Missing Required Information',
+            messageText: '',
+            invalidData: invalid,
           },
         });
       }
