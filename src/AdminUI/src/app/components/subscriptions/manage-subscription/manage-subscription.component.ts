@@ -84,11 +84,12 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   }
 
   setPageForEdit(s: Subscription) {
+    s.cycles.reverse()
     this.subscriptionSvc.setSubBhaviorSubject(s);
     this.subscription = s as Subscription;
     this.subscriptionSvc.subscription = this.subscription;
     //@ts-ignore
-    let currentCycleIndex = s["cycles"].length - 1
+    let currentCycleIndex = 0
     this.subscriptionSvc.setCycleBehaviorSubject(s['cycles'][currentCycleIndex]);
     this.setPageTitle();
   }

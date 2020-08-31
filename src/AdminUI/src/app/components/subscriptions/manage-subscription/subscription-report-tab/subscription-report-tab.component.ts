@@ -5,6 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { ReportsService } from 'src/app/services/reports.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { input } from 'aws-amplify';
 
 @Component({
   selector: 'subscription-report-tab',
@@ -31,7 +32,7 @@ export class SubscriptionReportTab implements OnInit {
         this.subscription = data;
         this.emailsSent.sort = this.sort;
         //@ts-ignore
-        let selectedCycleIndex = this.subscription.cycles.length - 1
+        let selectedCycleIndex = 0
         this.selectedCycle = this.subscription.cycles[selectedCycleIndex];
         if ('email_report_history' in data) {
           //@ts-ignore
@@ -58,10 +59,10 @@ export class SubscriptionReportTab implements OnInit {
   }
 
   cycleChange(event) {
-    console.log(
-      'cycle period changed, new Value ready for choosing the correct report'
-    );
-    console.log(event.value);
+    // console.log(
+    //   'cycle period changed, new Value ready for choosing the correct report'
+    // );
+    // console.log(event.value);
   }
 
   viewMonthlyReport() {

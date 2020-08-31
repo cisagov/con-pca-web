@@ -88,7 +88,6 @@ export class MonthlyComponent implements OnInit {
   renderReport() {
     // format the 'time to first X' text
     this.avgTTFC = this.secondsToDay(this.detail.metrics.avg_time_to_first_click)
-    console.log(this.avgTTFC)
     // this.avgTTFCFormatted = this.formatTTF(this.detail.metrics.avg_time_to_first_click);
     this.avgTTFR = this.secondsToDay(this.detail.metrics.avg_time_to_first_report);
 
@@ -110,15 +109,15 @@ export class MonthlyComponent implements OnInit {
     // draw circles
     this.sentCircleSvg = drawSvgCircle(
       this.detail.metrics.number_of_email_sent_overall,
-      this.detail.metrics.total_users_targeted
+      this.detail.metrics.target_count
     );
     this.openedCircleSvg = drawSvgCircle(
       this.detail.metrics.number_of_opened_emails,
-      this.detail.metrics.total_users_targeted
+      this.detail.metrics.target_count
     );
     this.clickedCircleSvg = drawSvgCircle(
       this.detail.metrics.number_of_clicked_emails,
-      this.detail.metrics.total_users_targeted
+      this.detail.metrics.target_count
     );
   }
 
