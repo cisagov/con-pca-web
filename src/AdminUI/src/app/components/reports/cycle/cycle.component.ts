@@ -77,12 +77,13 @@ export class CycleComponent implements OnInit {
 
     // percent of all clicks occurring in the first hour
     let pct = 0;
-    if (this.detail.metrics.number_of_clicked_emails > 0) {
-      pct = Math.round(
-        ((this.detail.subscription_stats.clicks_over_time.one_hour ?? 0) / this.detail.metrics.number_of_clicked_emails) * 100
-      );
+    let one_hour_clicks = this.detail.subscription_stats.clicks_over_time.one_hour
+    if(one_hour_clicks){
+      one_hour_clicks = one_hour_clicks * 100
     }
-
+    pct = Math.round(
+      this.detail.subscription_stats.clicks_over_time.one_hour ?? 0
+    );
     this.clickPercentFirstHour = pct.toString();
     if (pct > 0) {
       this.clickPercentFirstHour = 'nearly ' + this.clickPercentFirstHour;
