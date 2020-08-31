@@ -94,7 +94,7 @@ export class SubscriptionStatsTab implements OnInit {
         this.buildSubscriptionTimeline(this.subscription);
         this.subscription = data;
         //@ts-ignore
-        let selectedCycleIndex = this.subscription.cycles.length - 1
+        let selectedCycleIndex = 0
         this.selectedCycle = this.subscription.cycles[selectedCycleIndex];
         this.subscriptionSvc.setCycleBehaviorSubject(this.selectedCycle)
         this.setReportsForCycle(this.selectedCycle);
