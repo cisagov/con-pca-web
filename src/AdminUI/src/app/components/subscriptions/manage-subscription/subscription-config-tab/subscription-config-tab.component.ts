@@ -639,7 +639,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
       this.f.url.enable();
       this.f.keywords.enable();
       this.f.sendingProfile.enable();
-      this.f.targetDomain.disable();
+      this.f.targetDomain.enable();
       //this.f.csvText.enable();
     }
   }
