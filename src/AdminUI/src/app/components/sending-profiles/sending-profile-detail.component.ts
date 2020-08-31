@@ -7,12 +7,13 @@ import {
   ChangeDetectionStrategy, ViewChild
 } from '@angular/core';
 import { FormControl, Validators, FormGroup, ValidatorFn, AbstractControl } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { SendingProfileService } from 'src/app/services/sending-profile.service';
 import { SendingProfile } from 'src/app/models/sending-profile.model';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { TestEmail } from 'src/app/models/test-email.model';
+import { AlertComponent } from '../dialogs/alert/alert.component';
 
 @Component({
   selector: 'app-sending-profile-detail',
@@ -47,6 +48,7 @@ export class SendingProfileDetailComponent implements OnInit {
     private sendingProfileSvc: SendingProfileService,
     private changeDetector: ChangeDetectorRef,
     public dialogRef: MatDialogRef<SendingProfileDetailComponent>,
+    public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.id = data.sendingProfileId;
@@ -143,10 +145,38 @@ export class SendingProfileDetailComponent implements OnInit {
   onSaveClick() {
     let sp: SendingProfile;
     this.submitted = true;
-    sp = this.save();
-    this.sendingProfileSvc.saveProfile(sp).subscribe(() => {
-      this.dialogRef.close();
-    });
+
+    if (this.profileForm.valid) {
+      sp = this.save();
+      this.sendingProfileSvc.saveProfile(sp).subscribe(() => {
+        this.dialogRef.close();
+      });
+    } else {
+      //non valid form, collect nonvalid fields and display to user
+      const invalid = [];
+      const controls = this.profileForm.controls;
+      for (var name in controls) {
+        if (controls[name].invalid) {
+          if (name == 'from') {
+            controls[name].hasError('pattern');
+            name = 'From as a valid Email';
+          }
+          invalid.push(this.capitalizeFirstLetter(name));
+        }
+      }
+      this.dialog.open(AlertComponent, {
+        data: {
+          title: 'Missing Required Information',
+          messageText: '',
+          invalidData: invalid,
+        },
+      });
+
+    }
+  }
+
+  capitalizeFirstLetter(word: string): string {
+    return word.charAt(0).toUpperCase() + word.slice(1);
   }
 
   save(){
