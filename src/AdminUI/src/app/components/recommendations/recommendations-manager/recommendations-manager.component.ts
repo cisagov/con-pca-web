@@ -27,7 +27,17 @@ export class RecommendationsManagerComponent implements OnInit {
     public layoutSvc: LayoutMainService,
     public dialog: MatDialog
   ) {
-    layoutSvc.setTitle('Edit Recommendations');
+    // Set title
+    route.params.subscribe((params) => {
+      this.recommendationsId = params['recommendationsId'];
+      if (this.recommendationsId != undefined) {
+        layoutSvc.setTitle('Edit Recommendation');
+      } else {
+        //Use preset empty form
+        layoutSvc.setTitle('New Recommendation');
+      }
+    })
+
     this.setRecommendationsForm(new Recommendations());
   }
 

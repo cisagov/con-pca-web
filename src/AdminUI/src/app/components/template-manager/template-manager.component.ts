@@ -1,6 +1,6 @@
 
 
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { FormControl, Validators, FormGroup, RangeValueAccessor } from '@angular/forms';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -37,7 +37,7 @@ import { Variable } from '@angular/compiler/src/render3/r3_ast';
   styleUrls: ['./template-manager.component.scss'],
   templateUrl: './template-manager.component.html',
 })
-export class TemplateManagerComponent implements OnInit {
+export class TemplateManagerComponent implements OnInit, AfterViewInit {
 
   dialogRefConfirm: MatDialogRef<ConfirmComponent>;
   dialogRefTagSelection: MatDialogRef<TagSelectionComponent>;
@@ -104,12 +104,24 @@ export class TemplateManagerComponent implements OnInit {
     private router: Router,
     private settingsService: SettingsService,
     public dialog: MatDialog,
-    private domSanitizer : DomSanitizer
+    private domSanitizer : DomSanitizer,
+    private cdr: ChangeDetectorRef
   ) {
-    layoutSvc.setTitle('Edit Template');
+    //layoutSvc.setTitle('Edit Template');
     //this.setEmptyTemplateForm();
     this.setTemplateForm(new Template());
     //this.getAllTemplates();
+    // Here updating title on creation.
+    route.params.subscribe((params) => {
+      this.templateId = params['templateId'];
+      if (this.templateId != undefined) {
+        layoutSvc.setTitle('Edit Template');
+        this.selectTemplate(this.templateId);
+      } else {
+        //Use preset empty form
+        layoutSvc.setTitle('New Template');
+      }
+    })
   }
 
   /**

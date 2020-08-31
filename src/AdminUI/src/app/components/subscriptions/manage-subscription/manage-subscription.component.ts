@@ -101,6 +101,9 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
         title += ' (stopped)';
       }
       this.layoutSvc.setTitle(title);
+    } else {
+      let title = `New Subscription `;
+      this.layoutSvc.setTitle(title);
     }
   }
 

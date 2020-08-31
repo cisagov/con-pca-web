@@ -73,7 +73,16 @@ export class LandingPagesManagerComponent implements OnInit {
       private settingsService: SettingsService,
       public dialog: MatDialog
     ) {
-      layoutSvc.setTitle('Edit Landing Page');
+      // Set title of page
+      route.params.subscribe((params) => {
+        this.templateId = params['landing_page_uuid'];
+        if (this.templateId != undefined) {
+          layoutSvc.setTitle('Edit Landing Page');
+        } else {
+          //Use preset empty form
+          layoutSvc.setTitle('New Landing Page');
+        }
+      })
       //this.setEmptyTemplateForm();
       this.setTemplateForm(new Landing_Page());
       //this.getAllTemplates();
