@@ -226,9 +226,14 @@ export class LandingPagesManagerComponent implements OnInit {
         //non valid form, collect nonvalid fields and display to user
         const invalid = [];
         const controls = this.currentTemplateFormGroup.controls;
-        for (const name in controls) {
+        for (var name in controls) {
           if (controls[name].invalid) {
-            invalid.push(name.replace(/template/g,''));
+            if (name == 'templateName') {
+              name = 'Page Name';
+            } else if (name == 'templateHTML') {
+              name = 'Template HTML';
+            }
+            invalid.push(name);
           }
         }
         this.dialog.open(AlertComponent, {
