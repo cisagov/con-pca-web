@@ -31,6 +31,7 @@ import Swal from 'sweetalert2'
 import { SendingProfileService } from 'src/app/services/sending-profile.service';
 import { TestEmail } from 'src/app/models/test-email.model';
 import { DomSanitizer, SafeResourceUrl, SafeUrl} from '@angular/platform-browser';
+import { Variable } from '@angular/compiler/src/render3/r3_ast';
 @Component({
   selector: 'app-template-manager',
   styleUrls: ['./template-manager.component.scss'],
@@ -392,13 +393,15 @@ export class TemplateManagerComponent implements OnInit {
       const controls = this.currentTemplateFormGroup.controls;
       for (const name in controls) {
         if (controls[name].invalid) {
-          invalid.push(name);
+          let nameIng = 'Tempalte ' + name.replace(/template/g,'');
+          invalid.push(nameIng);
         }
       }
       this.dialog.open(AlertComponent, {
         data: {
-          title: 'Error',
-          messageText: 'Invalid form fields: ' + invalid,
+          title: 'Missing Required Information',
+          messageText: '',
+          invalidData: invalid,
         },
       });
     }

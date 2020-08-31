@@ -3,6 +3,11 @@
 <div class="p-3 pb-0 pr-0 mt-2 oy-auto d-flex flex-column flex-11a">
   <mat-dialog-content class="p-0 pr-3">
     <div [innerHTML]="data.messageText | safe" class="pre-wrap"></div>
+    <div *ngIf="data.invalidData">
+      <mat-nav-list>
+        <a mat-list-item *ngFor="let data of data.invalidData"> {{data}} Required.</a>
+     </mat-nav-list>
+    </div>
   </mat-dialog-content>
 </div>
 
