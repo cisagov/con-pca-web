@@ -491,10 +491,10 @@ export class TemplateManagerComponent implements OnInit {
     //height of the selected Template input and deceptioncalculator button div
     let selected_template_height = this.titleElement.nativeElement.offsetHeight;
     //height of the tabs
-    let tab_height = this.tabElement._tabHeader._elementRef.nativeElement
-      .clientHeight;
+    let tmpelement = this.tabElement._tabHeader._elementRef.nativeElement;
+    let tab_height = tmpelement && tmpelement.clientHeight || 300;
     //height of the space created between teh text area and the bottom of the tab structure
-    let mat_text_area_height = $('.mat-form-field-infix')[0].clientHeight;
+    let mat_text_area_height = $('.mat-form-field-infix')[0] && $('.mat-form-field-infix')[0].clientHeight || 300;
     //
     let save_button_row_height = 54;
     //Calculate the height allocated for the text areas, the text-area will use this directly while the editor will require assingment
@@ -509,8 +509,7 @@ export class TemplateManagerComponent implements OnInit {
 
 
     //Get the angular-editor toolbar height as it changes when the buttons wrap
-    let angular_editor_tool_bar_height = $('.angular-editor-toolbar')[0]
-      .clientHeight;
+    let angular_editor_tool_bar_height = $('.angular-editor-toolbar')[0] && $('.angular-editor-toolbar')[0].clientHeight || 300;
     //Set the editorConfig height to the text area height minus the toolbar height
     this.editorConfig['height'] =
       this.text_editor_height - angular_editor_tool_bar_height + 'px';
@@ -681,8 +680,11 @@ export class TemplateManagerComponent implements OnInit {
     this.sendingProfileSvc.sendTestEmail(email_for_test).subscribe((data: any) => {
       console.log(data);
       Swal.fire(data.message);
-
-      this.mailtester_iframe_url = this.cleanURL("https://www.mail-tester.com/barryhansen-"+this.getCleanJobName());
+      const iframesource =  email_for_test.email.split("@");
+      if(iframesource.length>1)
+        this.mailtester_iframe_url = this.cleanURL("https://www.mail-tester.com/"+iframesource[0]);
+      else
+        this.mailtester_iframe_url = this.cleanURL("https://www.mail-tester.com/barryhansen-"+this.getCleanJobName());
 
       },
     error => {

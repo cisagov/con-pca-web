@@ -361,6 +361,7 @@ export class LandingPagesManagerComponent implements OnInit {
       let text_area = $('.angular-editor-textarea').first();
       text_area.css('resize', 'none');
       text_area.css('margin-bottom', '22px');
+      console.log(this.angularEditorEle);
     }
 
     // Config setting for the angular-editor
