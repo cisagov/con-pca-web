@@ -85,7 +85,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
   text_editor_height2: number;
   iframe_height: number;
   text_area_bot_marg: number = 20; //based on the default text area padding on a mat textarea element
-
+  angular_editor_mode: String = "WYSIWYG"
 
   //Elements used to get reference sizes for styling
   @ViewChild('selectedTemplateTitle') titleElement: ElementRef;
@@ -105,7 +105,8 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
     private settingsService: SettingsService,
     public dialog: MatDialog,
     private domSanitizer : DomSanitizer,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private elRef: ElementRef,
   ) {
     //layoutSvc.setTitle('Edit Template');
     //this.setEmptyTemplateForm();
@@ -167,6 +168,15 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
     this.sendingProfileSvc.getAllProfiles().subscribe((data: any) => {
       this.sendingProfiles = data;
     });
+    
+  }
+
+  toggleEditorMode(event){
+    if($("#justifyLeft-").is(":disabled")){
+      this.angular_editor_mode = "WYSIWYG"
+    } else {
+      this.angular_editor_mode = "Text"
+    }
   }
 
   ngOnDestroy() {
@@ -179,6 +189,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     this.configAngularEditor();
     this.addInsertTagButtonIntoEditor();
+    $("#toggleEditorMode-").on('mousedown', this.toggleEditorMode.bind(this))
   }
 
   onValueChanges(): void {
@@ -352,6 +363,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/templates']);
   }
 
+
   /**
    *
    */
@@ -359,6 +371,11 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
     // mark all as touched to ensure formgroup validation checks all fields on new entry
     this.currentTemplateFormGroup.markAllAsTouched();
     if (this.currentTemplateFormGroup.valid) {
+      //check editor mode, change to wysiwg mode if in html text mode
+      if(this.angular_editor_mode == "Text"){
+        $("#toggleEditorMode-").trigger("click")
+        this.angular_editor_mode = "WYSIWYG"
+      }
       let templateToSave = this.getTemplateFromForm(
         this.currentTemplateFormGroup
       );
