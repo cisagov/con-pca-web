@@ -168,7 +168,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
     this.sendingProfileSvc.getAllProfiles().subscribe((data: any) => {
       this.sendingProfiles = data;
     });
-    
+
   }
 
   toggleEditorMode(event){
