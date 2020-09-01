@@ -28,6 +28,8 @@ import { SendingProfileService } from 'src/app/services/sending-profile.service'
 import { SettingsService } from 'src/app/services/settings.service';
 import { BehaviorSubject } from 'rxjs';
 import { isUndefined } from 'util';
+import { filterSendingProfiles } from '../../../../helper/utilities';
+
 
 @Component({
   selector: 'subscription-config-tab',
@@ -312,11 +314,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
    */
   loadSendingProfiles() {
     this.sendingProfileSvc.getAllProfiles().subscribe((data: any) => {
-    var filterData =  data.filter(function(d) {
-      const regex = /.*_[0-9]+.[0-9]+.[0-9]+.[0-9]+.*/g;
-      return !d.name.match(regex);
-    });
-    this.sendingProfiles = filterData;
+    this.sendingProfiles = filterSendingProfiles(data);
     });
   }
 
