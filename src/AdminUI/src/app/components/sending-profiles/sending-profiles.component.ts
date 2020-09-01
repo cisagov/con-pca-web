@@ -11,6 +11,7 @@ import { SendingProfileDetailComponent } from './sending-profile-detail.componen
 import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { MatSort } from '@angular/material/sort';
+import { filterSendingProfiles } from '../../helper/utilities';
 
 @Component({
   selector: 'app-sending-profiles',
@@ -47,23 +48,10 @@ export class SendingProfilesComponent implements OnInit {
     this.loading = true;
     this.sendingProfileSvc.getAllProfiles().subscribe((data: any) => {
       this.sendingProfilesData.data = data as SendingProfile[];
-      this.filterSendingProfiles();
+      this.sendingProfilesData.data = filterSendingProfiles(this.sendingProfilesData.data);
       this.sendingProfilesData.sort = this.sort;
       this.loading = false;
     });
-  }
-
-
-  /**
-   * Filters out auto generated sending profiles on the page display.
-   */
-  filterSendingProfiles(): void {
-    const sendingProfiles = this.sendingProfilesData.data;
-    var filterData =  sendingProfiles.filter(function(sendingProfile) {
-      const regex = /.*_[0-9]+.[0-9]+.[0-9]+.[0-9]+.*/g;
-      return !sendingProfile.name.match(regex);
-    });
-    this.sendingProfilesData.data = filterData;
   }
 
   /**

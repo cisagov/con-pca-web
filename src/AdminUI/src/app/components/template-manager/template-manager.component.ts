@@ -32,6 +32,8 @@ import { SendingProfileService } from 'src/app/services/sending-profile.service'
 import { TestEmail } from 'src/app/models/test-email.model';
 import { DomSanitizer, SafeResourceUrl, SafeUrl} from '@angular/platform-browser';
 import { Variable } from '@angular/compiler/src/render3/r3_ast';
+import { filterSendingProfiles } from '../../helper/utilities';
+
 @Component({
   selector: 'app-template-manager',
   styleUrls: ['./template-manager.component.scss'],
@@ -166,7 +168,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
       this.pagesList = data;
     });
     this.sendingProfileSvc.getAllProfiles().subscribe((data: any) => {
-      this.sendingProfiles = data;
+      this.sendingProfiles = filterSendingProfiles(data);
     });
 
   }
