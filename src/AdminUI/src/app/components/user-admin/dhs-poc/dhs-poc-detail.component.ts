@@ -74,18 +74,27 @@ export class DhsPocDetailComponent implements OnInit {
 
     if (this.contactForm.invalid) {
       const invalid = [];
-      for (const name in this.contactForm.controls) {
+      for (var name in this.contactForm.controls) {
         if (this.contactForm.controls[name].invalid) {
+          if (name == 'firstName') {
+            name = 'First Name';
+          } else if (name == 'lastName') {
+            name = 'Last Name';
+          } else if (name == 'email') {
+            name = 'Email';
+          }
           invalid.push(name);
-          this.contactForm.controls[name].setErrors({'incorrect': true});
+          //this.contactForm.controls[name].setErrors({'incorrect': true});
         }
       }
       this.dialog.open(AlertComponent, {
         data: {
-          title: 'Error',
-          messageText: 'Invalid form fields: ' + invalid,
+          title: 'Missing Required Information',
+          messageText: '',
+          invalidData: invalid,
         },
       });
+
     } else {
       const c = new Contact();
       c.dhs_contact_uuid = this.contact?.dhs_contact_uuid;
