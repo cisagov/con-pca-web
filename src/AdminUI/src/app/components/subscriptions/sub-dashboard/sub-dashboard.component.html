@@ -67,7 +67,7 @@
         <ul>
           <li *ngFor="let campaign of campaignsDetails">
             Deception Score: {{ campaign.template_details.deception_score }} -
-            Template Name: <a [routerLink]="['/templatemanager', campaign.template_details.template_uuid]">{{ campaign.template_details.name }}</a>
+            Template Subject: <a [routerLink]="['/templatemanager', campaign.template_details.template_uuid]">{{ campaign.template_details.subject }}</a>
           </li>
         </ul>
       </div>
