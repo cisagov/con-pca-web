@@ -19,7 +19,7 @@ export class SvgTimelineComponent implements OnInit {
 
   @ViewChildren('tick') ticks: ElementRef[];
 
-  items: any[] = [];
+  items: any[] = [{x: 0}];
 
   pixelWidth = 1000;
   lifespanSeconds: number;
@@ -50,12 +50,6 @@ export class SvgTimelineComponent implements OnInit {
         return;
       }
       this.sortEvents();
-
-      this.lifespanSeconds = this.timelineItems[
-        this.timelineItems.length - 1
-      ].date.diff(this.timelineItems[0].date, 'seconds');
-      this.firstDate = this.timelineItems[0].date;
-
       this.drawTimeline();
     }, 300);
   }
@@ -72,11 +66,20 @@ export class SvgTimelineComponent implements OnInit {
     }
   }
 
+  getConfigValues(){
+    this.lifespanSeconds = this.timelineItems[
+      this.timelineItems.length - 1
+    ].date.diff(this.timelineItems[0].date, 'seconds');
+    this.firstDate = this.timelineItems[0].date;
+    
+  }
   /**
    * Builds a collection of items that drive the
    * SVG template creation.
    */
   drawTimeline() {
+    this.getConfigValues()
+    this.items = []
     this.pixelWidth = this.el.nativeElement.offsetWidth;
 
     this.timelineItems.forEach((x) => {
