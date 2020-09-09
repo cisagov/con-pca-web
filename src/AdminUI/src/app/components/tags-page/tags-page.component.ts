@@ -84,6 +84,7 @@ export class TagsPageComponent implements OnInit, AfterViewInit {
     this.dialogRefConfirm.afterClosed().subscribe((result) => {
       if (result) {
         this.deleteTag(row);
+        this.router.navigate(['/tags']);
       }
       this.dialogRefConfirm = null;
     });

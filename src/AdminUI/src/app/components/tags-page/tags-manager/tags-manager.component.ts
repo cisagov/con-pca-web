@@ -83,10 +83,16 @@ export class TagsManagerComponent implements OnInit {
         Validators.required,
       ]),
       tagDescription: new FormControl(
-        tag.description
+        tag.description, [
+          Validators.required,
+        ]
       ),
-      tagDataSource: new FormControl(tag.data_source),
-      tagType: new FormControl(tag.tag_type),
+      tagDataSource: new FormControl(tag.data_source, [
+        Validators.required,
+      ]),
+      tagType: new FormControl(tag.tag_type, [
+        Validators.required,
+      ]),
     });
   }
 
@@ -106,27 +112,45 @@ export class TagsManagerComponent implements OnInit {
   }
 
   saveTags() {
-    let tag_to_save = this.getTagsModelFromForm(
-      this.tagFormGroup
-    );
-    if (this.tagsId) {
-      this.tagsSvc.updateTag(tag_to_save).subscribe(
-        (data: any) => {
-          this.router.navigate(['/tags']);
-        },
-        (error) => {
-          console.log(error);
-        }
+    if (this.tagFormGroup.valid) {
+      let tag_to_save = this.getTagsModelFromForm(
+        this.tagFormGroup
       );
+      if (this.tagsId) {
+        this.tagsSvc.updateTag(tag_to_save).subscribe(
+          (data: any) => {
+            this.router.navigate(['/tags']);
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+      } else {
+        this.tagsSvc.saveNewTag(tag_to_save).subscribe(
+          (data: any) => {
+            this.router.navigate(['/tags']);
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+      }
     } else {
-      this.tagsSvc.saveNewTag(tag_to_save).subscribe(
-        (data: any) => {
-          this.router.navigate(['/tags']);
-        },
-        (error) => {
-          console.log(error);
+      const invalid = [];
+      const controls = this.tagFormGroup.controls;
+      for (const name in controls) {
+        if (controls[name].invalid) {
+          let nameIng = 'Tag ' + name.replace(/tag/g,'');
+          invalid.push(nameIng);
         }
-      );
+      }
+      this.dialog.open(AlertComponent, {
+        data: {
+          title: 'Missing Required Information',
+          messageText: '',
+          invalidData: invalid,
+        },
+      });
     }
   }
 }
