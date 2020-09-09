@@ -25,7 +25,6 @@ export class AuthAppendInterceptor implements HttpInterceptor {
         const requestClone = httpRequest.clone({
           headers,
         });
-
         return next.handle(requestClone);
       })
     );
