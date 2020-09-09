@@ -46,7 +46,7 @@
           <button class="table-btn-icon" mat-flat-button color="primary">
             <mat-icon class="mat-icon table-btn-icon-size material-icons mat-icon-no-color" (click)="editTags(row)">edit</mat-icon>
           </button>
-          <button class="table-btn-icon" mat-flat-button color="warn" (click)="confirmDeleteTags(row)">
+          <button class="table-btn-icon" mat-flat-button color="warn" (click)="confirmDeleteTags(row)" *ngIf="row?.tag_type != 'gophish'">
             <mat-icon>delete</mat-icon>
           </button>
         </mat-cell>

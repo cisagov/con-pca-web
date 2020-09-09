@@ -80,7 +80,7 @@ export class TagsManagerComponent implements OnInit {
     this.tagFormGroup = new FormGroup({
       tagUUID: new FormControl(tag.tag_definition_uuid),
       tagName: new FormControl(tag.tag, [
-        Validators.required,
+        Validators.required,  Validators.pattern(/[<]+[%]+.+[%]+[>]/)
       ]),
       tagDescription: new FormControl(
         tag.description, [
@@ -123,6 +123,12 @@ export class TagsManagerComponent implements OnInit {
           },
           (error) => {
             console.log(error);
+            this.dialog.open(AlertComponent, {
+              data: {
+                title: 'Tag Error',
+                messageText: 'Could not Update Tag.',
+              },
+            });
           }
         );
       } else {
@@ -132,6 +138,12 @@ export class TagsManagerComponent implements OnInit {
           },
           (error) => {
             console.log(error);
+            this.dialog.open(AlertComponent, {
+              data: {
+                title: 'Tag Error',
+                messageText: 'Could not Create Tag.',
+              },
+            });
           }
         );
       }
