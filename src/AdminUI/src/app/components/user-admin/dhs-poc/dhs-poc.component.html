@@ -57,8 +57,10 @@
     </ng-container>
 
     <ng-container matColumnDef="select">
-      <mat-header-cell *matHeaderCellDef></mat-header-cell>
-      <mat-cell *matCellDef="let contact" class="text-right">
+      <mat-header-cell *matHeaderCellDef class="text-center">
+        Edit/Delete
+      </mat-header-cell>
+      <mat-cell *matCellDef="let contact" class="text-center">
         <button
           class="table-btn-icon"
           mat-flat-button
