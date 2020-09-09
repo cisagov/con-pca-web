@@ -71,7 +71,7 @@ export class SvgTimelineComponent implements OnInit {
       this.timelineItems.length - 1
     ].date.diff(this.timelineItems[0].date, 'seconds');
     this.firstDate = this.timelineItems[0].date;
-    
+
   }
   /**
    * Builds a collection of items that drive the
