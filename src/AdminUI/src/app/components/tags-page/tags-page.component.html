@@ -1,0 +1,60 @@
+<div class="container-fluid">
+  <div class="d-flex flex-row flex-grow-1">
+    <!-- SEARCH BAR -->
+    <mat-form-field class="d-flex flex-column w-100" appearance="outline">
+      <mat-label>Search</mat-label>
+      <input [(ngModel)]="search_input" (keyup)="filterTags($event.target.value)" matInput placeholder="Search" />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <!-- CREATE Tags -->
+    <div class="d-inline-flex flex-column ml-2">
+      <button mat-raised-button color="primary" routerLink="/tagsmanager">
+        New Tag
+      </button>
+    </div>
+  </div>
+  <div class="col p-0 w-100">
+    <div *ngIf="loading" style="text-align: center; padding-top: 2rem; padding-bottom: 2rem;">
+      <mat-spinner class="spinner" style="margin-left: auto; margin-right: auto;" diameter="50"></mat-spinner>
+    </div>
+
+    <mat-table [hidden]="loading" [dataSource]="tagsData" matSort>
+      <ng-container matColumnDef="tag">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Tag</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{ row.tag }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="description">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>description</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{ row.description }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="data_source">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>data_source</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{ row.data_source }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="tag_type">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>tag_type</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{ row.tag_type }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <mat-header-cell *matHeaderCellDef>Edit/Delete</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <button class="table-btn-icon" mat-flat-button color="primary">
+            <mat-icon class="mat-icon table-btn-icon-size material-icons mat-icon-no-color" (click)="editTags(row)">edit</mat-icon>
+          </button>
+          <button class="table-btn-icon" mat-flat-button color="warn" (click)="confirmDeleteTags(row)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row class="table-row cursor-pointer" *matRowDef="let row; columns: displayedColumns" (click)="editTags(row)"></mat-row>
+    </mat-table>
+  </div>
+
+</div>

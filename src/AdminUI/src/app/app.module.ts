@@ -31,6 +31,7 @@ import { DeceptionCalculatorService } from './services/deception-calculator.serv
 import { TemplateManagerComponent } from './components/template-manager/template-manager.component';
 import { TemplateManagerService } from './services/template-manager.service';
 import { RecommendationsManagerComponent } from './components/recommendations/recommendations-manager/recommendations-manager.component';
+import { TagsManagerComponent } from './components/tags-page/tags-manager/tags-manager.component';
 import { ListFilterPipe } from './pipes/list-filter.pipe';
 import { NullishCoalescePipe } from './pipes/nullish-coalesce.pipe';
 import { AutosizeModule } from 'node_modules/ngx-autosize';
@@ -43,6 +44,7 @@ import { ContactsComponent } from './components/contacts/contacts.component';
 import { DomainsComponent } from './components/domains/domains.component';
 import { TemplatesPageComponent } from './components/templates-page/templates-page.component';
 import { RecommendationsComponent } from './components/recommendations/recommendations.component';
+import { TagsPageComponent } from './components/tags-page/tags-page.component';
 import { UserAdminComponent } from './components/user-admin/user-admin.component';
 import { HelpFilesComponent } from './components/help-files/help-files.component';
 import { CustomerService } from './services/customer.service';
@@ -77,6 +79,7 @@ import { DhsPocDetailComponent } from './components/user-admin/dhs-poc/dhs-poc-d
 import { InputTrimDirective } from './helper/input-trim.directive';
 import { DatePipe } from '@angular/common';
 import { RecommendationsService } from './services/recommendations.service';
+import { TagService } from './services/tag.service';
 import { MonthlyComponent } from './components/reports/monthly/monthly.component';
 import { CycleComponent } from './components/reports/cycle/cycle.component';
 import { YearlyComponent } from './components/reports/yearly/yearly.component';
@@ -113,12 +116,14 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     DeceptionCalculatorComponent,
     TemplateManagerComponent,
     RecommendationsManagerComponent,
+    TagsManagerComponent,
     ListFilterPipe,
     NullishCoalescePipe,
     ContactsComponent,
     DomainsComponent,
     TemplatesPageComponent,
     RecommendationsComponent,
+    TagsPageComponent,
     UserAdminComponent,
     HelpFilesComponent,
     CustomersComponent,
@@ -177,6 +182,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     TemplateManagerService,
     LandingPageManagerService,
     RecommendationsService,
+    TagService,
     ThemeService,
     LayoutMainService,
     HttpClient,
