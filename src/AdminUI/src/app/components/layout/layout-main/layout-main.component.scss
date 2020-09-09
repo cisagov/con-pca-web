@@ -15,6 +15,7 @@
   right: 0;
   top: 60px;
   bottom: 60px;
+  height: calc(100% - 92px) // 92 = 60 (distance from bottom) + 32 (new footer bar size)
 }
 
 .drawer-form-container {
@@ -48,6 +49,7 @@
 }
 
 .docs-footer {
+  height: 32px;
   position: fixed;
   bottom: 0;
   left: 0;
