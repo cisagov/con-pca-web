@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
+import { SettingsService } from 'src/app/services/settings.service';
 
 @Component({
   selector: '',
@@ -7,9 +8,16 @@ import { LayoutMainService } from 'src/app/services/layout-main.service';
   styleUrls: ['./domains.component.scss'],
 })
 export class DomainsComponent implements OnInit {
-  constructor(layoutSvc: LayoutMainService) {
+  constructor(
+    layoutSvc: LayoutMainService,
+    private settingsService: SettingsService) {
     layoutSvc.setTitle('Domains');
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
+
+  redirectToDomainManagement(){
+    window.location.href = this.settingsService.settings.domainManagementURL;
+  }
 }
