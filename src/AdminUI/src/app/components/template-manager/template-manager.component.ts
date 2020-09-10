@@ -203,9 +203,6 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
         this.angular_editor_mode = "WYSIWYG"
       }
     }
-    console.log(event.currentTarget.outerText)
-    // 
-    console.log("Tab change")
   }
 
   onValueChanges(): void {
