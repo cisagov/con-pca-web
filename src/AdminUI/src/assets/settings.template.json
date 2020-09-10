@@ -1,4 +1,5 @@
 {
   "apiUrl": "${API_URL}",
-  "apiUrlHeadless": "${API_URL_HEADLESS}"
+  "apiUrlHeadless": "${API_URL_HEADLESS}",
+  "domainManagementURL": "${DOMAIN_MANAGEMENT_URL}"
 }
