@@ -64,7 +64,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
   matchTemplateHTML = new MyErrorStateMatcher();
 
   mailtester_iframe_url = this.cleanURL("");
-
+  currentTab = "HTML View"
 
   //RxJS Subscriptions
   subscriptions = Array<Subscription>();
@@ -173,6 +173,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
 
   }
 
+
   toggleEditorMode(event){
     if($("#justifyLeft-").is(":disabled")){
       this.angular_editor_mode = "WYSIWYG"
@@ -192,6 +193,16 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
     this.configAngularEditor();
     this.addInsertTagButtonIntoEditor();
     $("#toggleEditorMode-").on('mousedown', this.toggleEditorMode.bind(this))
+    $(".mat-tab-label").on('mousedown', this.matTabChange.bind(this))
+  }
+
+  matTabChange(event){
+    if(this.currentTab == "HTML View"){
+      if(this.angular_editor_mode == "Text"){        
+        $("#toggleEditorMode-").click()
+        this.angular_editor_mode = "WYSIWYG"
+      }
+    }
   }
 
   onValueChanges(): void {
@@ -226,7 +237,6 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
         this.templateId = t.template_uuid;
         this.retired = t.retired;
         this.retiredReason = t.retired_description;
-
         this.subscriptionSvc
           .getSubscriptionsByTemplate(t)
           .subscribe((x: PcaSubscription[]) => {
@@ -603,7 +613,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
     uploadUrl: this.image_upload_url,
     //uploadUrl: 'localhost:8080/server/page/upload-image',
     uploadWithCredentials: false,
-    sanitize: true,
+    sanitize: false,
     toolbarPosition: 'top',
     toolbarHiddenButtons: [
       ['bold', 'italic'],
