@@ -119,4 +119,10 @@ export class CustomerService {
     const url = `${this.settingsService.settings.apiUrl}/api/v1/sectorindustry/`;
     return this.http.get(url);
   }
+
+  public deleteCustomer(data: Customer) {
+    return this.http.delete(
+      `${this.settingsService.settings.apiUrl}/api/v1/customer/${data.customer_uuid}/`
+    );
+  }
 }
