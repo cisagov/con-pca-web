@@ -198,7 +198,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
 
   matTabChange(event){
     if(this.currentTab == "HTML View"){
-      if(this.angular_editor_mode == "Text"){        
+      if(this.angular_editor_mode == "Text"){
         $("#toggleEditorMode-").click()
         this.angular_editor_mode = "WYSIWYG"
       }
@@ -395,9 +395,13 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
       if (this.currentTemplateFormGroup.controls['templateUUID'].value) {
         this.templateManagerSvc.updateTemplate(templateToSave).then(
           (success) => {
-            this.router.navigate(['/templates']);
-            // let retTemplate = <Template>success
-            // this.updateTemplateInList(retTemplate)
+            console.log(success);
+            this.dialog.open(AlertComponent, {
+              data: {
+                title: 'Template Saved',
+                messageText: 'Your Template was Saved.',
+              },
+            });
           },
           (error) => {
             console.log(error);

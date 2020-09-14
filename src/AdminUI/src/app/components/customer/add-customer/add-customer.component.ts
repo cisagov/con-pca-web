@@ -21,6 +21,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { Subscription } from 'rxjs';
 import { isString } from 'util';
+import { AlertComponent } from '../../dialogs/alert/alert.component';
 
 @Component({
   selector: 'app-add-customer',
@@ -88,6 +89,8 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
   // Customer_uuid if not new
   customer_uuid: string;
   customer: Customer;
+  subscriptions = new MatTableDataSource<Subscription>();
+  hasSubs = false;
 
   sectorList;
   industryList;
@@ -137,6 +140,7 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
         } else {
           this.getSectorList();
           // Use preset empty form
+          this.hasSubs = true;
         }
       })
     );
@@ -150,6 +154,17 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
           this.setCustomerForm(this.customer);
           this.setContacts(this.customer.contact_list as Contact[]);
           this.getSectorList();
+          this.subscriptionSvc
+            .getSubscriptionsByCustomer(this.customer)
+            .subscribe((data: any[]) => {
+              this.subscriptions.data = data as Subscription[];
+              console.log(this.subscriptions.data.length);
+              if (this.subscriptions.data.length < 1) {
+                  this.hasSubs = false;
+              } else {
+                this.hasSubs = true;
+              }
+          });
         } else {
           this.orgError = 'Specified customer UUID not found';
         }
@@ -429,5 +444,22 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
 
   customerValid() {
     return this.customerFormGroup.valid && this.contacts.data.length > 0;
+  }
+
+  deleteCustomer() {
+    this.customerSvc.deleteCustomer(this.customer).subscribe(
+      (success) => {
+        this.dialog.open(AlertComponent, {
+          data: {
+            title: 'Customer Deleted',
+            messageText: 'Your Customer Was Deleted',
+          },
+        });
+        this.router.navigate(['/customers']);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 }
