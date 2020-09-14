@@ -19,6 +19,7 @@ export class TagsManagerComponent implements OnInit {
   tags: Tags;
   tagFormGroup: FormGroup;
   subscriptions = Array<Subscription>();
+  tagTypes: string[] = ['con-pca-literal', 'con-pca-eval']
 
   constructor(
     public tagsSvc: TagService,
@@ -141,7 +142,7 @@ export class TagsManagerComponent implements OnInit {
             this.dialog.open(AlertComponent, {
               data: {
                 title: 'Tag Error',
-                messageText: 'Could not Create Tag.',
+                messageText: 'Could not Create Tag. Make sure tags are in the format %<TAG_NAME%>',
               },
             });
           }
