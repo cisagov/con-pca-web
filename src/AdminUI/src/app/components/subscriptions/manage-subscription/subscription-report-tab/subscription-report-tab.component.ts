@@ -71,6 +71,7 @@ export class SubscriptionReportTab implements OnInit {
       this.subscription.subscription_uuid,
       this.selectedCycle.end_date,
       false,
+      this.selectedCycle.cycle_uuid,
     ]);
   }
 
@@ -94,7 +95,7 @@ export class SubscriptionReportTab implements OnInit {
 
   downloadMonthlyReport() {
     this.loading = true
-    this.subscriptionSvc.getMonthlyReport(this.subscription.subscription_uuid, this.selectedCycle.end_date).subscribe(blob => {
+    this.subscriptionSvc.getMonthlyReport(this.subscription.subscription_uuid, this.selectedCycle.end_date, this.selectedCycle.cycle_uuid).subscribe(blob => {
       this.downloadObject('subscription_status_report.pdf', blob);
       this.loading = false
     });
@@ -118,7 +119,7 @@ export class SubscriptionReportTab implements OnInit {
 
   sendMonthlyReport() {
     this.loading = true
-    this.subscriptionSvc.sendMonthlyReport(this.subscription.subscription_uuid, this.selectedCycle.end_date).subscribe(() => {
+    this.subscriptionSvc.sendMonthlyReport(this.subscription.subscription_uuid, this.selectedCycle.end_date, this.selectedCycle.cycle_uuid).subscribe(() => {
       console.log('Sending monthly report.');
       this.loading = false
     });

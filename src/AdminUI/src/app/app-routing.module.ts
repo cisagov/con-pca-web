@@ -39,6 +39,10 @@ const routes: Routes = [
         path: 'monthly/:id/:start_date/:isHeadless',
         component: MonthlyComponent,
       },
+      {
+        path: 'monthly/:id/:start_date/:isHeadless/:cycle_uuid',
+        component: MonthlyComponent,
+      },
       { path: 'cycle/:id/:start_date/:isHeadless', component: CycleComponent },
       {
         path: 'yearly/:id/:start_date/:isHeadless',

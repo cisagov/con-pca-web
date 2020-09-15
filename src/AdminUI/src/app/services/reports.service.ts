@@ -53,7 +53,8 @@ export class ReportsService {
   public getMonthlyReport(
     subscriptionUuid: string,
     date: Date,
-    isHeadless: any
+    isHeadless: any,
+    cycle_uuid: string = null
   ) {
     const m = moment(date);
     const urlRoot =
@@ -61,9 +62,15 @@ export class ReportsService {
         ? this.settingsService.settings.apiUrl
         : this.settingsService.settings.apiUrlHeadless;
 
-    const url =
+    
+    let url =
       urlRoot +
       `/reports/${subscriptionUuid}/monthly/${m.format(AppSettings.MOMENT_ISO_DATE_FORMAT)}/`;
+
+    if(cycle_uuid !== null){
+      url += `${cycle_uuid}/`
+    }
+
     return this.http.get(url);
   }
 }
