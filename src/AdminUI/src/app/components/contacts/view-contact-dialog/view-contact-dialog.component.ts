@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { CustomerService } from 'src/app/services/customer.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import {
@@ -9,6 +9,8 @@ import {
   Contact,
 } from 'src/app/models/customer.model';
 import { Subscription } from 'src/app/models/subscription.model';
+import { AlertComponent } from '../../dialogs/alert/alert.component';
+
 
 @Component({
   selector: 'app-view-contact-dialog',
@@ -38,6 +40,7 @@ export class ViewContactDialogComponent implements OnInit {
     public dialog_ref: MatDialogRef<ViewContactDialogComponent>,
     public customer_service: CustomerService,
     private subscription_service: SubscriptionService,
+    public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) data
   ) {
     this.data = data;
@@ -74,10 +77,34 @@ export class ViewContactDialogComponent implements OnInit {
   }
 
   onDeleteClick(): void {
+    // check if there are any sub with contact as primary, if so, dont delete
     const index = this.getContactIndex();
-    this.updateSubsContact(this.customer.contact_list[index], null);
-    this.removeContact();
-    this.saveContacts();
+
+    this.subscription_service
+    .getPrimaryContactSubscriptions(this.customer.customer_uuid, this.customer.contact_list[index])
+    .subscribe((subscriptions: any[]) => {
+      this.contactSubs = subscriptions as Subscription[];
+      if (this.contactSubs.length > 0) {
+        // this contact had subs, dont delete
+        const invalid = [];
+        for (const sub in this.contactSubs) {
+          invalid.push(this.contactSubs[sub].name + ' update');
+        }
+        this.dialog.open(AlertComponent, {
+          data: {
+            title: 'Cannot Delete Contact',
+            messageText: 'This Contact is currently the primary contact for the following subscriptions. Please update the subscriptions to a new contact before deletion.',
+            invalidData: invalid,
+          },
+        });
+      } else {
+        // free and clear, delete away
+        this.removeContact();
+        this.saveContacts();
+      }
+    });
+
+
     this.dialog_ref.close();
   }
 
