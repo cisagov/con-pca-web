@@ -152,6 +152,17 @@ export class SubscriptionService {
   }
 
   /**
+   * Gets all subscriptions for a given template.
+   * @param dhsContact
+   */
+  public getSubscriptionsByDnsContact(dhsContact: Contact) {
+    console.log(dhsContact.dhs_contact_uuid);
+    return this.http.get(
+      `${this.settingsService.settings.apiUrl}/api/v1/subscriptions/?dhs_contact=${dhsContact.dhs_contact_uuid}`
+    );
+  }
+
+  /**
    * Patches the subscription with the new DHS contact.
    */
   changeDhsContact(subscriptUuid: string, contactUuid: string) {
