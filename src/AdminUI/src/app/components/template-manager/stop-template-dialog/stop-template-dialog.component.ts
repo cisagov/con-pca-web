@@ -37,6 +37,7 @@ export class StopTemplateDialogComponent implements OnInit {
       .getSubscriptionsByTemplate(this.template)
       .subscribe((data: any[]) => {
         this.subscriptions = data as Subscription[];
+        this.subscriptions =  this.subscriptions.filter((subscription) => subscription.status === "In Progress");
       });
   }
 
@@ -54,6 +55,7 @@ export class StopTemplateDialogComponent implements OnInit {
       }
 
       this.dialogRefConfirm = null;
+      this.dialogRef.close();
     });
   }
 

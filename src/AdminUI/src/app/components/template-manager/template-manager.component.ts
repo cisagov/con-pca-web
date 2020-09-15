@@ -198,7 +198,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
 
   matTabChange(event){
     if(this.currentTab == "HTML View"){
-      if(this.angular_editor_mode == "Text"){        
+      if(this.angular_editor_mode == "Text"){
         $("#toggleEditorMode-").click()
         this.angular_editor_mode = "WYSIWYG"
       }
@@ -395,9 +395,13 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
       if (this.currentTemplateFormGroup.controls['templateUUID'].value) {
         this.templateManagerSvc.updateTemplate(templateToSave).then(
           (success) => {
-            this.router.navigate(['/templates']);
-            // let retTemplate = <Template>success
-            // this.updateTemplateInList(retTemplate)
+            console.log(success);
+            this.dialog.open(AlertComponent, {
+              data: {
+                title: 'Template Saved',
+                messageText: 'Your Template was Saved.',
+              },
+            });
           },
           (error) => {
             console.log(error);
@@ -511,13 +515,27 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
   }
 
   openStopTemplateDialog() {
+    // check if no subs, of not, then stop, if else, then no
     let template_to_stop = this.getTemplateFromForm(
       this.currentTemplateFormGroup
     );
-
-    this.dialog.open(StopTemplateDialogComponent, {
-      data: template_to_stop,
-    });
+    this.subscriptionSvc
+      .getSubscriptionsByTemplate(template_to_stop)
+      .subscribe((data: any[]) => {
+        data =  data.filter((subscription) => subscription.status === "In Progress");
+        if (data.length > 0) {
+          this.dialog.open(StopTemplateDialogComponent, {
+            data: template_to_stop,
+          });
+        } else {
+          this.dialog.open(AlertComponent, {
+            data: {
+              title: 'Stop Template',
+              messageText: 'There are no Subscriptions currently In Progress with this Template.',
+            },
+          });
+        }
+      });
   }
 
   //Event that fires everytime the template tab choice is changed
