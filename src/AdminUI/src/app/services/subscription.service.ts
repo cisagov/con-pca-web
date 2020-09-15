@@ -233,9 +233,10 @@ export class SubscriptionService {
     return this.http.delete(url);
   }
 
-  public getMonthlyReport(uuid: string, date): Observable<Blob> {
+  public getMonthlyReport(uuid: string, date, cycle_uuid: string = null): Observable<Blob> {
     const headers = new HttpHeaders().set('Accept', 'application/pdf');
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${uuid}/pdf/monthly/${date}/`;
+    let url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${uuid}/pdf/monthly/${date}/${cycle_uuid}/`;
+    
     return this.http.get(url, { headers: headers, responseType: 'blob' });
   }
 
@@ -251,8 +252,11 @@ export class SubscriptionService {
     return this.http.get(url, { headers: headers, responseType: 'blob' });
   }
 
-  public sendMonthlyReport(uuid: string, date) {
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${uuid}/email/monthly/${date}/`;
+  public sendMonthlyReport(uuid: string, date, cycle_uuid: string = null) {
+    let url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${uuid}/email/monthly/${date}/`;
+    if(cycle_uuid !== null){
+      url += `${cycle_uuid}/`
+    }
     return this.http.get(url);
   }
 
