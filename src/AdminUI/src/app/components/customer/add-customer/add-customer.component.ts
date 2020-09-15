@@ -90,7 +90,7 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
   customer_uuid: string;
   customer: Customer;
   subscriptions = new MatTableDataSource<Subscription>();
-  hasSubs = false;
+  hasSubs = true;
 
   sectorList;
   industryList;
