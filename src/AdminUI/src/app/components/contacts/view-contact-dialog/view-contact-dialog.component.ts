@@ -103,8 +103,6 @@ export class ViewContactDialogComponent implements OnInit {
         this.saveContacts();
       }
     });
-
-
     this.dialog_ref.close();
   }
 

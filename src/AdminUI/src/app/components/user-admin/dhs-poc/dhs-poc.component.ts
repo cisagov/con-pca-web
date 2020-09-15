@@ -64,16 +64,18 @@ export class DhsPocComponent implements OnInit {
    *
    */
   editContact(contact) {
-    const dialogConfig = new MatDialogConfig();
-    // dialogConfig.width = '60vw';
-    dialogConfig.data = {
-      contact,
-    };
-    const dialogRef = this.dialog.open(DhsPocDetailComponent, dialogConfig);
+    if(this.dialog.openDialogs.length==0){
+      const dialogConfig = new MatDialogConfig();
+      // dialogConfig.width = '60vw';
+      dialogConfig.data = {
+        contact,
+      };
+      const dialogRef = this.dialog.open(DhsPocDetailComponent, dialogConfig);
 
-    dialogRef.afterClosed().subscribe((value) => {
-      this.refresh();
-    });
+      dialogRef.afterClosed().subscribe((value) => {
+        this.refresh();
+      });
+    }
   }
 
   /**

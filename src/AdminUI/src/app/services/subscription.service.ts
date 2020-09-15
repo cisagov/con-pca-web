@@ -156,7 +156,6 @@ export class SubscriptionService {
    * @param dhsContact
    */
   public getSubscriptionsByDnsContact(dhsContact: Contact) {
-    console.log(dhsContact.dhs_contact_uuid);
     return this.http.get(
       `${this.settingsService.settings.apiUrl}/api/v1/subscriptions/?dhs_contact=${dhsContact.dhs_contact_uuid}`
     );

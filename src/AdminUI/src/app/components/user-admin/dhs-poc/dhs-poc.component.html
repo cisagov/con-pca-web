@@ -84,6 +84,7 @@
     <mat-row
       *matRowDef="let row; columns: displayedColumns"
       class="table-row cursor-pointer"
+      (click)="editContact(row)"
     ></mat-row>
   </mat-table>
   <div *ngIf="this.dhsContacts.data.length == 0" class="p-3 text-center">
