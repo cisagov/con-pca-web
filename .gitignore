@@ -15,4 +15,3 @@ src/AdminUI/node_modules
 src/AdminUI/node_modules/*
 src/AdminUI/dist
 src/.env
-src/AdminUI/package-lock.json
