@@ -471,6 +471,18 @@
 
     <div class="col-4 h-100 border-left" [formGroup]="currentTemplateFormGroup">
       <h2>Deception Calculations</h2>
+      <div class="d-flex flex-row">
+        <mat-form-field appearance="outline" class="flex-grow-1">
+          <mat-label>Final Deception Score TEST</mat-label>
+          <input
+            type="text"
+            trim="blur"
+            matInput
+            placeholder="DeceptionScore"
+            formControlName="final_deception_score"
+          />
+        </mat-form-field>
+      </div>
       <div class="d-flex flex-column overflow-auto deception_calc_content">
         <div class="">
           <mat-label class="mb-3">Appearance & Grammar</mat-label>
@@ -618,18 +630,7 @@
             <mat-checkbox formControlName="greed">Greed</mat-checkbox>
           </div>
         </div>
-        <div class="d-flex flex-row">
-          <mat-form-field appearance="outline" class="flex-grow-1">
-            <mat-label>Final Deception Score</mat-label>
-            <input
-              type="text"
-              trim="blur"
-              matInput
-              placeholder="DeceptionScore"
-              formControlName="final_deception_score"
-            />
-          </mat-form-field>
-        </div>
+        
       </div>
     </div>
   </div>

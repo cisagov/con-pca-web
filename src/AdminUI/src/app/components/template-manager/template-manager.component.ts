@@ -610,6 +610,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
       ($('.angular-editor-toolbar')[0] &&
         $('.angular-editor-toolbar')[0].clientHeight) ||
       300;
+    this.text_editor_height -= 50
     //Set the editorConfig height to the text area height minus the toolbar height
     this.editorConfig['height'] =
       this.text_editor_height - angular_editor_tool_bar_height + 'px';
