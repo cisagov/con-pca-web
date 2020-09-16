@@ -65,7 +65,7 @@
           class="table-btn-icon"
           mat-flat-button
           color="primary"
-          (click)="editContact(contact)"
+          (click)="openSelectedDialog(true, contact)"
         >
           <mat-icon class="table-btn-icon-size">edit</mat-icon>
         </button>
@@ -73,7 +73,7 @@
           class="table-btn-icon"
           mat-flat-button
           color="warn"
-          (click)="confirmDeleteContact(contact)"
+          (click)="openSelectedDialog(false, contact)"
         >
           <mat-icon class="table-btn-icon-size">delete</mat-icon>
         </button>
@@ -84,6 +84,7 @@
     <mat-row
       *matRowDef="let row; columns: displayedColumns"
       class="table-row cursor-pointer"
+      (click)="openSelectedDialog(true, row)"
     ></mat-row>
   </mat-table>
   <div *ngIf="this.dhsContacts.data.length == 0" class="p-3 text-center">
