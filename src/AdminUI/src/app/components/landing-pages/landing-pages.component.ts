@@ -13,7 +13,7 @@ import { Landing_Page } from 'src/app/models/landing-page.models';
   styleUrls: ['./landing-pages.component.scss']
 })
 export class LandingPagesComponent implements OnInit , AfterViewInit {
-        displayedColumns = ['name', 'template_type', 'created_by', 'select'];
+        displayedColumns = ['name', 'is_default_template', 'created_by', 'select'];
         landingPageData = new MatTableDataSource<Landing_Page>();
         search_input = '';
         @ViewChild(MatSort) sort: MatSort;
