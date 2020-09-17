@@ -276,7 +276,7 @@
               <th>Start Date - End Date</th>
               <th>Notes</th>
             </tr>
-            <tr *ngFor="let cycle of detail?.cycles">
+            <tr *ngFor="let cycle of detail?.cycles ">
               <td>{{ cycle.year }} {{ cycle.quarter }}</td>
               <td>
                 {{ cycle.start_date | date: "MMM d, yyyy" }} -
