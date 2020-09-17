@@ -52,6 +52,8 @@ export class YearlyComponent implements OnInit {
           (resp) => {
             this.detail = resp;
             console.log(this.detail)
+            this.detail.cycles = this.detail.cycles.sort((a,b) => (a.increment > b.increment) ? 1 : -1)
+            console.log(this.detail)
             this.renderReport();
           },
           (error) => {
