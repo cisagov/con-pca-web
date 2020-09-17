@@ -191,16 +191,13 @@
                   </mat-error>
                 </mat-form-field>
               </div>
-              
-              <mat-label class="h6 pl-1" >
+
+              <mat-label class="h6 pl-1">
                 From Address:
-                <span class="text-muted" style="font-size:85%">
-                
+                <span class="text-muted" style="font-size: 85%">
                   {{ fromDisplayName }} &lt;{{ fromSender }}@domain.com&gt;
                 </span>
-
               </mat-label>
-              
 
               <div class="d-flex flex-column pb-3 mt-3">
                 <mat-form-field appearance="outline">
@@ -471,9 +468,9 @@
 
     <div class="col-4 h-100 border-left" [formGroup]="currentTemplateFormGroup">
       <h2>Deception Calculations</h2>
-      <div class="d-flex flex-row">
+      <div class="d-flex flex-row pb-3">
         <mat-form-field appearance="outline" class="flex-grow-1">
-          <mat-label>Final Deception Score TEST</mat-label>
+          <mat-label>Final Deception Score</mat-label>
           <input
             type="text"
             trim="blur"
@@ -630,7 +627,6 @@
             <mat-checkbox formControlName="greed">Greed</mat-checkbox>
           </div>
         </div>
-        
       </div>
     </div>
   </div>
