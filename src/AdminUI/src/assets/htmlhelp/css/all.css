@@ -310,15 +310,15 @@ html {
 /*@import url( 'work-zone.css' );*/
 .m-pageContent__side__header
 {
-    background: #65a8eb;
+    background: #3c6f8e;
 }
 .m-pageContent__side__footer
 {
-    background: #65a8eb;
+    background: #3c6f8e;
 }
 .b-workZone {
     width: 100%;
-    background: #65a8eb url( '../i/blocks/work-zone/header-bg.png') 0 0px repeat-x;
+    background: #3c6f8e  0 0px repeat-x;
     overflow: hidden;
 }
 
@@ -2370,7 +2370,7 @@ div.index_page_title {
     font-family: Verdana, Arial, Helvetica, sans-serif;
     font-size: 20pt;
     text-decoration: none;
-    color: #65a8eb;
+    color: #3c6f8e;
     text-align: center;
     font-weight: bold;
     white-space: pre;
@@ -2391,7 +2391,7 @@ div.index_page {
     border-right: 0px;
     border-left: 0px;
     border-style: solid;
-    border-color: #65a8eb;
+    border-color: #3c6f8e;
     white-space: pre;
 }
 
@@ -2404,19 +2404,6 @@ a.anchor {
     border: 0px;
 }
 
-.keep-visible {
-    height: 100%;
-}
-
-body {
-    height: 100%;
-}
-
-.hiddenContent {
-    background-color: #ffffff;
-    width: 100%;
-    overflow: auto;
-}
 
 /*de_ctrl borderless styles*/
 div.de_ctrl {
@@ -2438,7 +2425,7 @@ div.de_ctrl > table {
 
 
 .b-workZone.m-workZone__withoutSideNav {
-    background: #65a8eb 0 0px repeat-x;
+    background: #3c6f8e 0 0px repeat-x;
 }
 
 .b-workZone.m-workZone__withoutSideNav .m-workZone__side__nav,
@@ -2670,7 +2657,6 @@ html[dir="rtl"] .b-pageLayout.b-pageLayout__sm .b-workZone.m-workZone__withoutSp
 
 .no-horizontal-scroll {
     overflow-x: hidden;
-    height: auto;
 }
 
 .b-workZone__overlay {
@@ -2710,9 +2696,6 @@ html[dir="rtl"] #workZone_nav.topmost .b-workZone__side__nav__dismiss {
     left: 0;
 }
 
-.b-pageLayout.b-pageLayout__xs.keep-visible {
-    height: auto;
-}
 
 .b-pageLayout.b-pageLayout__xs .m-article__headerSide__buttons {
     padding-left: 1px;
@@ -2743,3 +2726,5 @@ html[dir="rtl"] .b-pageLayout.b-pageLayout__xs .m-article__headerSide__buttons {
 html[dir="rtl"] .b-pageLayout.b-pageLayout__xs .m-workZone_seeAlso_itemContent {
     margin-right: 0;
 }
+
+
