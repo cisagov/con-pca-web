@@ -58,11 +58,11 @@
               Email Click Rate:
               {{ detail?.metrics?.number_of_clicked_emails }} ({{
                 detail?.metrics?.percent_of_clicked_emails | percent
-              }}%)<br />
+              }})<br />
               Reported Emails:
               {{ detail?.metrics?.number_of_reports_to_helpdesk }} ({{
                 detail?.metrics?.percent_report_rate | percent
-              }}%)<br />
+              }})<br />
             </div>
             <div id="preparedFor">
               Prepared for<br />
@@ -147,6 +147,13 @@
                         this cycle,
                         {{ detail?.metrics?.number_of_email_sent_overall }}
                         targets have had emails sent.
+                      </li>
+                      <li *ngIf="detail?.sanatized_indicators.length > 0">
+                        The most clicked template indicators for this cycle so far have been:
+                        <ul *ngFor="let indicator of detail?.sanatized_indicators">
+                          {{indicator.percent | percent:'1.1'}} {{indicator.name}} ({{indicator.level}}) : {{indicator.value}} clicks
+                          <!-- {{indicator.rank}} -->
+                        </ul>
                       </li>
                     </ul>
                   </div>

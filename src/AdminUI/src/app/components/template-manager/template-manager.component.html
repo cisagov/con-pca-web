@@ -1,30 +1,5 @@
 <div class="container-fluid" [style.height.px]="body_content_height">
   <div class="row h-100">
-    <!-- <div class="col-4 border-right h-100 p-3 flex-container flex-column">
-      <mat-form-field class="w-100 pb-3" appearance="outline">
-        <mat-label>Search</mat-label>
-        <input [(ngModel)]="search_input" matInput />
-      </mat-form-field>
-      <mat-list class="overflow-auto flex-1 template-list" appearnce="outline">
-        <h3 matSubheader>(Deception Score) : Template Name</h3>
-        <mat-list-item #templateList
-          *ngFor="
-            let template of template_list
-              | listfilter
-                : 'name,descriptive_words,deception_score'
-                : search_input
-          "
-        >
-          <button
-            mat-button
-            class="w-100 text-left"
-            (click)="selectTemplate(template.template_uuid)"
-          >
-            ({{ template.deception_score }}) : {{ template.name }}
-          </button>
-        </mat-list-item>
-      </mat-list>
-    </div> -->
     <div
       class="col-8 h-100 d-flex flex-column mt-2"
       [formGroup]="currentTemplateFormGroup"
@@ -64,19 +39,6 @@
             Template name may not contain only spaces
           </mat-error>
         </mat-form-field>
-        <!-- <button
-          [disabled]="
-            currentTemplateFormGroup.controls.templateUUID.value == null
-          "
-          [routerLink]="[
-            '/deceptioncalculator',
-            currentTemplateFormGroup.controls.templateUUID.value
-          ]"
-          mat-raised-button
-          color="primary"
-        >
-          Deception Calculator
-        </button> -->
       </div>
       <div class="d-flex">
         <mat-tab-group
@@ -84,7 +46,6 @@
           #tabs
           (selectedTabChange)="onTabChanged($event)"
         >
-          <!-- <mat-tab label="HTML View" class="mb-3"> -->
           <mat-tab>
             <ng-template mat-tab-label>
               <span
@@ -115,13 +76,9 @@
                 [style.height.px]="text_editor_height"
                 formControlName="templateHTML"
                 [config]="editorConfig"
-              ></angular-editor>{{ angularEditor.focus() }}
+              ></angular-editor>
             </div>
           </mat-tab>
-
-          <!-- <mat-tab label="Template Attributes"
-          [ngClass]="{'testing' : currentTemplateFormGroup.controls.templateFromAddress.hasError('required')}"
-          class="mb-3"> -->
 
           <mat-tab>
             <ng-template mat-tab-label>
@@ -143,7 +100,7 @@
               </span>
             </ng-template>
             <div class="p-3 flex-column" [style.height.px]="text_editor_height">
-              <div class="d-flex flex-column pb-3">
+              <div class="d-flex flex-column mb-3">
                 <mat-form-field appearance="outline">
                   <mat-label>Subject*</mat-label>
                   <input
@@ -174,38 +131,75 @@
                   </mat-error>
                 </mat-form-field>
               </div>
-              <div class="d-flex flex-column pb-3">
+              <div class="d-flex flex-row pb-1">
                 <mat-form-field appearance="outline">
-                  <mat-label>From Address*</mat-label>
+                  <mat-label>Display Name*</mat-label>
                   <input
                     type="text"
                     trim="blur"
                     matInput
-                    placeholder="Example@user.com"
-                    formControlName="templateFromAddress"
+                    placeholder="Display Name"
+                    formControlName="templateFromDisplayName"
                     [errorStateMatcher]="matchFromAddress"
                   />
                   <mat-error
                     *ngIf="
-                      currentTemplateFormGroup.controls.templateFromAddress.hasError(
+                      currentTemplateFormGroup.controls.templateFromDisplayName.hasError(
                         'required'
                       )
                     "
                   >
-                    From address <strong>required</strong>
+                    Display Name <strong>required</strong>
                   </mat-error>
                   <mat-error
                     *ngIf="
-                      currentTemplateFormGroup.controls.templateFromAddress.hasError(
+                      currentTemplateFormGroup.controls.templateFromDisplayName.hasError(
                         'whitespace'
                       )
                     "
                   >
-                    From address may not contain only spaces
+                    Display Name may not contain only spaces
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Sender*</mat-label>
+                  <input
+                    type="text"
+                    trim="blur"
+                    matInput
+                    placeholder="Sender"
+                    formControlName="templateFromSender"
+                    [errorStateMatcher]="matchFromAddress"
+                  />
+                  <mat-error
+                    *ngIf="
+                      currentTemplateFormGroup.controls.templateFromSender.hasError(
+                        'required'
+                      )
+                    "
+                  >
+                    Sender <strong>required</strong>
+                  </mat-error>
+                  <mat-error
+                    *ngIf="
+                      currentTemplateFormGroup.controls.templateFromSender.hasError(
+                        'whitespace'
+                      )
+                    "
+                  >
+                    Sender may not contain only spaces
                   </mat-error>
                 </mat-form-field>
               </div>
-              <div class="d-flex flex-column pb-3">
+
+              <mat-label class="h6 pl-1">
+                From Address:
+                <span class="text-muted" style="font-size: 85%">
+                  {{ fromDisplayName }} &lt;{{ fromSender }}@domain.com&gt;
+                </span>
+              </mat-label>
+
+              <div class="d-flex flex-column pb-3 mt-3">
                 <mat-form-field appearance="outline">
                   <mat-label>Description</mat-label>
                   <input
@@ -235,20 +229,24 @@
                 <mat-form-field appearance="outline" class="flex-grow-1">
                   <mat-label>Landing Page Selection</mat-label>
                   <mat-select formControlName="landingPage">
-                    <mat-option *ngFor="let page of pagesList" [value]="page.landing_page_uuid">{{page.name}}</mat-option>
+                    <mat-option
+                      *ngFor="let page of pagesList"
+                      [value]="page.landing_page_uuid"
+                      >{{ page.name }}</mat-option
+                    >
                   </mat-select>
                 </mat-form-field>
               </div>
               <div class="d-flex flex-column pb-1">
-                <button (click)="openLandingPageEditor()">Open Landing Pages Editor</button>
+                <button (click)="openLandingPageEditor()">
+                  Open Landing Pages Editor
+                </button>
               </div>
             </div>
           </mat-tab>
 
           <mat-tab>
-            <ng-template mat-tab-label>
-              Subscriptions
-            </ng-template>
+            <ng-template mat-tab-label> Subscriptions </ng-template>
             <div class="p-3 flex-column" [style.height.px]="text_editor_height">
               <mat-table
                 *ngIf="this.pcaSubscriptions.data.length > 0"
@@ -290,68 +288,108 @@
             </div>
           </mat-tab>
           <mat-tab>
-            <ng-template mat-tab-label>
-              Template Testing
-            </ng-template>
+            <ng-template mat-tab-label> Template Testing </ng-template>
             <mat-label class="h6">Sending Profile</mat-label>
             <div class="mb-4">
               <div class="text-muted" *ngIf="sendingProfiles.length > 0">
                 Select the sending profile that will be used
               </div>
-              <mat-form-field appearance="outline" *ngIf="sendingProfiles.length > 0">
+              <mat-form-field
+                appearance="outline"
+                *ngIf="sendingProfiles.length > 0"
+              >
                 <mat-label>Sending Profile</mat-label>
                 <mat-select formControlName="sendingProfile">
-                  <mat-option [value]='null'>--Select--</mat-option>
+                  <mat-option [value]="null">--Select--</mat-option>
                   <mat-option *ngFor="let sp of sendingProfiles" [value]="sp">
                     {{ sp.name }}</mat-option
                   >
                 </mat-select>
-                <mat-error *ngIf="submitted && f.sendingProfile.errors?.required"
-                class="invalid-feedback">
+                <mat-error
+                  *ngIf="submitted && f.sendingProfile.errors?.required"
+                  class="invalid-feedback"
+                >
                   Sending Profile required
                 </mat-error>
               </mat-form-field>
               <div class="error-color" *ngIf="sendingProfiles.length === 0">
-                A Sending Profile is required, but none are currently configured.
-                Create one or more Sending Profiles before proceeding.
+                A Sending Profile is required, but none are currently
+                configured. Create one or more Sending Profiles before
+                proceeding.
               </div>
             </div>
             <div class="text-left mt-3 mb-4">
               <mat-form-field appearance="outline">
                 <mat-label>Test Email</mat-label>
-                <input matInput id="testEmail" name="testEmail" class="mr-2 ml-3"
+                <input
+                  matInput
+                  id="testEmail"
+                  name="testEmail"
+                  class="mr-2 ml-3"
                   [(ngModel)]="testEmail"
-                  [ngModelOptions]="{standalone: true}"
-                  placeholder="Test Email" maxlength="100" email/>
+                  [ngModelOptions]="{ standalone: true }"
+                  placeholder="Test Email"
+                  maxlength="100"
+                  email
+                />
               </mat-form-field>
               <mat-form-field appearance="outline">
                 <mat-label>Test First Name</mat-label>
-                <input matInput id="firstName" name="firstName" class="mr-2 ml-3"
+                <input
+                  matInput
+                  id="firstName"
+                  name="firstName"
+                  class="mr-2 ml-3"
                   [(ngModel)]="firstName"
-                  [ngModelOptions]="{standalone: true}"
-                  placeholder="First Name" maxlength="100"/>
+                  [ngModelOptions]="{ standalone: true }"
+                  placeholder="First Name"
+                  maxlength="100"
+                />
               </mat-form-field>
               <mat-form-field appearance="outline">
                 <mat-label>Last Name</mat-label>
-                <input matInput id="lastName" name="lastName" class="mr-2 ml-3"
+                <input
+                  matInput
+                  id="lastName"
+                  name="lastName"
+                  class="mr-2 ml-3"
                   [(ngModel)]="lastName"
-                  [ngModelOptions]="{standalone: true}"
-                  placeholder="Last Name" maxlength="100"/>
+                  [ngModelOptions]="{ standalone: true }"
+                  placeholder="Last Name"
+                  maxlength="100"
+                />
               </mat-form-field>
               <mat-form-field appearance="outline">
                 <mat-label>Role</mat-label>
-                <input matInput id="role" name="role" class="mr-2 ml-3"
+                <input
+                  matInput
+                  id="role"
+                  name="role"
+                  class="mr-2 ml-3"
                   [(ngModel)]="role"
-                  [ngModelOptions]="{standalone: true}"
-                  placeholder="Role" maxlength="100"/>
+                  [ngModelOptions]="{ standalone: true }"
+                  placeholder="Role"
+                  maxlength="100"
+                />
               </mat-form-field>
 
-              <button mat-flat-button class="add-button" color="primary" (click)="onSendTestClick()">
+              <button
+                mat-flat-button
+                class="add-button"
+                color="primary"
+                (click)="onSendTestClick()"
+              >
                 Send Test Email
               </button>
             </div>
             <div class="flex-container flex-row">
-              <iframe class="mb-3" style="flex-grow: 2;" [src]="mailtester_iframe_url" title="Testing results" [style.height.px]="iframe_height"></iframe>
+              <iframe
+                class="mb-3"
+                style="flex-grow: 2"
+                [src]="mailtester_iframe_url"
+                title="Testing results"
+                [style.height.px]="iframe_height"
+              ></iframe>
             </div>
           </mat-tab>
         </mat-tab-group>
@@ -430,6 +468,18 @@
 
     <div class="col-4 h-100 border-left" [formGroup]="currentTemplateFormGroup">
       <h2>Deception Calculations</h2>
+      <div class="d-flex flex-row pb-3">
+        <mat-form-field appearance="outline" class="flex-grow-1">
+          <mat-label>Final Deception Score</mat-label>
+          <input
+            type="text"
+            trim="blur"
+            matInput
+            placeholder="DeceptionScore"
+            formControlName="final_deception_score"
+          />
+        </mat-form-field>
+      </div>
       <div class="d-flex flex-column overflow-auto deception_calc_content">
         <div class="">
           <mat-label class="mb-3">Appearance & Grammar</mat-label>
@@ -576,18 +626,6 @@
             >
             <mat-checkbox formControlName="greed">Greed</mat-checkbox>
           </div>
-        </div>
-        <div class="d-flex flex-row">
-          <mat-form-field appearance="outline" class="flex-grow-1">
-            <mat-label>Final Deception Score</mat-label>
-            <input
-              type="text"
-              trim="blur"
-              matInput
-              placeholder="DeceptionScore"
-              formControlName="final_deception_score"
-            />
-          </mat-form-field>
         </div>
       </div>
     </div>

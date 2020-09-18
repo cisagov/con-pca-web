@@ -56,6 +56,7 @@ export class CycleComponent implements OnInit {
         .subscribe(
           (resp) => {
             this.detail = resp;
+            this.detail.cycles = this.detail.cycles.sort((a,b) => (a.increment > b.increment) ? 1 : -1)
             this.renderReport();
           },
           (error) => {

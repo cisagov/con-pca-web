@@ -32,9 +32,9 @@
           <mat-cell *matCellDef="let row">{{ row.name }}</mat-cell>
         </ng-container>
         <!-- TEMPLATE TYPE -->
-        <ng-container matColumnDef="template_type">
-          <mat-header-cell *matHeaderCellDef mat-sort-header>Type</mat-header-cell>
-          <mat-cell *matCellDef="let row">{{ row.template_type }}</mat-cell>
+        <ng-container matColumnDef="is_default_template">
+          <mat-header-cell  *matHeaderCellDef mat-sort-header>Default Landing Page</mat-header-cell>
+          <mat-cell [ngClass]="'default-template_column '" *matCellDef="let row"><mat-icon style="margin-left:10%" *ngIf="row.is_default_template">check_circle</mat-icon></mat-cell>
         </ng-container>
         <!-- CREATED BY -->
         <ng-container matColumnDef="created_by">
@@ -47,8 +47,8 @@
           <mat-cell *matCellDef="let row"><i *ngIf="row.retired" class="fa fa-check"></i></mat-cell>
         </ng-container>
         <ng-container matColumnDef="select">
-          <mat-header-cell *matHeaderCellDef>Edit</mat-header-cell>
-          <mat-cell *matCellDef="let row">
+          <mat-header-cell [ngClass]="'edit-column'" *matHeaderCellDef>Edit</mat-header-cell>
+          <mat-cell [ngClass]="'edit-column'" *matCellDef="let row">
             <button class="table-btn-icon" mat-flat-button color="primary" (click)="editTemplate(row)">
               <mat-icon class="table-btn-icon-size">edit</mat-icon>
             </button>

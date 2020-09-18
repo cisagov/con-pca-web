@@ -152,6 +152,16 @@ export class SubscriptionService {
   }
 
   /**
+   * Gets all subscriptions for a given template.
+   * @param dhsContact
+   */
+  public getSubscriptionsByDnsContact(dhsContact: Contact) {
+    return this.http.get(
+      `${this.settingsService.settings.apiUrl}/api/v1/subscriptions/?dhs_contact=${dhsContact.dhs_contact_uuid}`
+    );
+  }
+
+  /**
    * Patches the subscription with the new DHS contact.
    */
   changeDhsContact(subscriptUuid: string, contactUuid: string) {
@@ -233,9 +243,10 @@ export class SubscriptionService {
     return this.http.delete(url);
   }
 
-  public getMonthlyReport(uuid: string, date): Observable<Blob> {
+  public getMonthlyReport(uuid: string, date, cycle_uuid: string = null): Observable<Blob> {
     const headers = new HttpHeaders().set('Accept', 'application/pdf');
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${uuid}/pdf/monthly/${date}/`;
+    let url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${uuid}/pdf/monthly/${date}/${cycle_uuid}/`;
+    
     return this.http.get(url, { headers: headers, responseType: 'blob' });
   }
 
@@ -251,8 +262,11 @@ export class SubscriptionService {
     return this.http.get(url, { headers: headers, responseType: 'blob' });
   }
 
-  public sendMonthlyReport(uuid: string, date) {
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${uuid}/email/monthly/${date}/`;
+  public sendMonthlyReport(uuid: string, date, cycle_uuid: string = null) {
+    let url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${uuid}/email/monthly/${date}/`;
+    if(cycle_uuid !== null){
+      url += `${cycle_uuid}/`
+    }
     return this.http.get(url);
   }
 
@@ -276,49 +290,7 @@ export class SubscriptionService {
     return this.http.post(url, data);
   }
   public getSusbcriptionStatusEmailsSent(subscription_uuid) {
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/cycleemailreported/${subscription_uuid}/`;
+    const url = `${this.settingsService.settings.apiUrl}/reports/subscription_report_emails_sent/${subscription_uuid}/`;
     return this.http.get(url);
-    // return [
-    //     {
-    //         "report_type": "Cycle Complete",
-    //         "sent": "2020-07-09T21:34:00.769Z",
-    //         "email_to": "bob@example.com",
-    //         "email_from": "fakesupport@gov.com",
-    //         "bcc": "steve@dhs.gov",
-    //         "manual": false,
-    //     },
-    //     {
-    //         "report_type": "Monthly Sent",
-    //         "sent": "2020-08-09T21:34:00.769Z",
-    //         "email_to": "bob@example.com",
-    //         "email_from": "fakesupport@gov.com",
-    //         "bcc": "steve@dhs.gov",
-    //         "manual": false,
-    //     },
-    //     {
-    //         "report_type": "Monthly Sent",
-    //         "sent": "2020-09-09T21:34:00.769Z",
-    //         "email_to": "bob@example.com",
-    //         "email_from": "fakesupport@gov.com",
-    //         "bcc": "steve@dhs.gov",
-    //         "manual": false,
-    //     },
-    //     {
-    //         "report_type": "Monthly Sent",
-    //         "sent": "2020-10-09T21:34:00.769Z",
-    //         "email_to": "bob@example.com",
-    //         "email_from": "fakesupport@gov.com",
-    //         "bcc": "steve@dhs.gov",
-    //         "manual": false,
-    //     },
-    //     {
-    //         "report_type": "Cycle Complete",
-    //         "sent": "2020-11-09T21:34:00.769Z",
-    //         "email_to": "bob@example.com",
-    //         "email_from": "fakesupport@gov.com",
-    //         "bcc": "steve@dhs.gov",
-    //         "manual": false,
-    //     }
-    //   ]
   }
 }

@@ -24,8 +24,6 @@ export class AuthAppendInterceptor implements HttpInterceptor {
           if(!httpRequest.url.toString().includes('imageupload')){
             headers.append('Content-Type', 'application/json')
           }
-          // .append('enctype','multipart/form-data');
-          
         const requestClone = httpRequest.clone({
           headers,
         });

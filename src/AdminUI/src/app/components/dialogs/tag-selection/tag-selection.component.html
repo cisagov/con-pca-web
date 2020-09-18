@@ -3,7 +3,7 @@
 <div style="max-height: 50vh; overflow: auto;">
   <table class="table-1">
     <tr
-      *ngFor="let t of templateManagerSvc.tags"
+      *ngFor="let t of tags"
       class="cursor-pointer"
       (click)="dialogRef.close(t.tag)"
     >

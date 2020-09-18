@@ -47,6 +47,9 @@ export class MonthlyComponent implements OnInit {
       this.subscriptionUuid = params.id;
       const isDate = new Date(params.start_date);
       const isHeadless = params.isHeadless;
+      let cycle_uuid = null
+      if(params.cycle_uuid)
+        cycle_uuid = params.cycle_uuid
 
       if (isDate.getTime()) {
         this.reportStartDate = isDate;
@@ -58,13 +61,20 @@ export class MonthlyComponent implements OnInit {
         .getMonthlyReport(
           this.subscriptionUuid,
           this.reportStartDate,
-          isHeadless
+          isHeadless,
+          cycle_uuid
         )
         .subscribe((resp) => {
           this.detail = resp;
+          this.sanatize_template_indicators()
           this.renderReport();
         });
     });
+  }
+  sanatize_template_indicators(){
+    let san_list = this.detail.subscription_stats.indicator_ranking.filter(item => item.value !== 0)
+    san_list = san_list.splice(0,5)
+    this.detail.sanatized_indicators = san_list
   }
 
   secondsToDay(input_seconds){

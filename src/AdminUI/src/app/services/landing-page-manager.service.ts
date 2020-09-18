@@ -27,10 +27,14 @@ export class LandingPageManagerService {
    * GET a list of all landingpages
    * @param retired
    */
-  getAlllandingpages(retired: boolean = false) {
+  getAlllandingpages(retired: boolean = false, with_default: boolean = false) {
     let url = `${this.settingsService.settings.apiUrl}/api/v1/landingpages/`;
+    let prependOperator = '?'
     if (retired) {
-      url = `${url}?retired=true`;
+      url = `${url}${prependOperator}retired=true`;
+      prependOperator = '&'
+    }if (with_default) {
+      url = `${url}${prependOperator}with_default=true`;
     }
     return this.http.get(url, headers);
   }

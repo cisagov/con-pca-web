@@ -41,6 +41,9 @@ export class TagsPageComponent implements OnInit, AfterViewInit {
       .getAllTags()
       .subscribe((data: any) => {
         this.tagsData.data = data as Tags[];
+        this.tagsData.data = this.tagsData.data.filter(
+          (tag) => tag.tag_type !== "gophish"
+        );
         this.tagsData.sort = this.sort;
         this.loading = false;
       });

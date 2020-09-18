@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { TemplateManagerService } from 'src/app/services/template-manager.service';
+import { Tags } from 'src/app/models/tags.model';
+import { TagService } from 'src/app/services/tag.service';
+
 
 @Component({
   selector: 'app-tag-selection',
@@ -12,15 +14,21 @@ export class TagSelectionComponent implements OnInit {
    * @param dialogRef
    * @param templateManagerSvc
    */
+  tags: Tags[];
+
   constructor(
     public dialogRef: MatDialogRef<TagSelectionComponent>,
-    public templateManagerSvc: TemplateManagerService
+    public tagService: TagService
   ) {}
 
   /**
    *
    */
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.tagService.getAllTags().subscribe((result: Tags[]) => {
+      this.tags = result;
+    });
+  }
 
   /**
    * Closes the dialog.
