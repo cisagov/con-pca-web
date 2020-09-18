@@ -11,8 +11,6 @@ const headers = {
 
 @Injectable()
 export class TemplateManagerService {
-  public tags: TagModel[];
-
   /**
    * Constructor.
    * @param http
@@ -20,12 +18,7 @@ export class TemplateManagerService {
   constructor(
     private http: HttpClient,
     private settingsService: SettingsService
-  ) {
-    // load the tags collection up front
-    this.getAllTags().subscribe((result: TagModel[]) => {
-      this.tags = result;
-    });
-  }
+  ) {}
 
   /**
    * GET a list of all templates
@@ -122,12 +115,5 @@ export class TemplateManagerService {
     return this.http.get(
       `${this.settingsService.settings.apiUrl}/api/v1/template/stop/${template.template_uuid}/`
     );
-  }
-
-  /**
-   * Gets a list of all known Tags
-   */
-  getAllTags() {
-    return this.http.get(`${this.settingsService.settings.apiUrl}/api/v1/tags`);
   }
 }
