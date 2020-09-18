@@ -33,7 +33,7 @@ de_search\0xu0033.json
 de_search\0xu0032.json
 de_search\0xu0031.json
 de_search\0xu0030.json
-Z:\CSET Development\User Guide Review\Con-PCA\Con-PCA help\de_search
+de_search
 js\drexplain.data.index.js
 de_style.css
 css\printed.css
@@ -53,18 +53,31 @@ i\blocks\search\loading.gif
 i\blocks\interface-icons\interface-icons-sprite.png
 i\blocks\interface-icons\interface-icons-sprite-8.png
 i\null.gif
-Z:\CSET Development\User Guide Review\Con-PCA\Con-PCA help\i\blocks\work-zone
-Z:\CSET Development\User Guide Review\Con-PCA\Con-PCA help\i\blocks\tree
-Z:\CSET Development\User Guide Review\Con-PCA\Con-PCA help\i\blocks\splitter
-Z:\CSET Development\User Guide Review\Con-PCA\Con-PCA help\i\blocks\search
-Z:\CSET Development\User Guide Review\Con-PCA\Con-PCA help\i\blocks\interface-icons
-Z:\CSET Development\User Guide Review\Con-PCA\Con-PCA help\i\blocks
-Z:\CSET Development\User Guide Review\Con-PCA\Con-PCA help\i
+i\blocks\work-zone
+i\blocks\tree
+i\blocks\splitter
+i\blocks\search
+i\blocks\interface-icons
+i\blocks
+i
 con_pca_revision_history.htm
 glossary.htm
-drex_user_admin_custom_2.png
+drex_aggregate_statistics_custom.png
+aggregate_statistics.htm
+drex_dhs_contacts_custom.png
+dhs_contacts.htm
 drex_user_admin_custom.png
 user_admin.htm
+drex_create_new_recommendation_custom.png
+create_new_recommendation.htm
+drex_recommendations_custom_3.png
+drex_recommendations_custom_2.png
+drex_recommendations_custom.png
+recommendations.htm
+drex_create_new_landing_page_custom.png
+create_new_landing_page.htm
+drex_landing_page_custom.png
+landing_page.htm
 drex_create_new_profile_custom.png
 create_new_profile.htm
 drex_sending_profiles_custom.png
@@ -82,13 +95,31 @@ drex_customers_custom_2.png
 drex_customers_custom.png
 customers.htm
 deception_calculator.htm
+drex_template_testing_custom.png
+template_testing.htm
+drex_subscriptions_2_custom.png
+subscriptions_2.htm
+drex_template_attributes_custom.png
+template_attributes.htm
 drex_create_new_template_custom_2.png
 drex_create_new_template_custom.png
 create_new_template.htm
 drex_templates_custom.png
 templates.htm
-drex_edit_subscription_custom_5.png
-drex_edit_subscription_custom_4.png
+drex_tasks_custom.png
+tasks.htm
+yearly_report.htm
+cycle_report.htm
+drex_monthly_report_custom.png
+monthly_report.htm
+drex_reporting_custom_2.png
+drex_reporting_custom.png
+reporting.htm
+drex_statistics_custom_4.png
+drex_statistics_custom_3.png
+drex_statistics_custom_2.png
+drex_statistics_custom.png
+statistics.htm
 drex_edit_subscription_custom_3.png
 drex_edit_subscription_custom_2.png
 drex_edit_subscription_custom.png
@@ -96,11 +127,8 @@ edit_subscription.htm
 drex_create_subscription_custom_2.png
 drex_create_subscription_custom.png
 create_subscription.htm
-drex_subscriptions_custom.png
-subscriptions.htm
-installation_procedure.htm
-system_requirements.htm
-system_basics.htm
+drex_subscriptions_1_custom.png
+subscriptions_1.htm
 drex_con_pca_workflow_custom.png
 con_pca_workflow.htm
 drex_overview_control_5.png
@@ -115,11 +143,12 @@ drex_overview_control_1.png
 drex_bullet_1.png
 drex_overview_screen.png
 overview.htm
+drex_introduction_custom.png
 introduction.htm
 introduction_to_con_pca.htm
 drex_header_custom.png
 drex_index_custom.png
 index.htm
-Z:\CSET Development\User Guide Review\Con-PCA\Con-PCA help\css
-Z:\CSET Development\User Guide Review\Con-PCA\Con-PCA help\js
+css
+js
 drex_file_list

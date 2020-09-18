@@ -41,13 +41,13 @@ a:visited ,*/
 .b-breadCrumbs__link:visited,
 .b-controlButtons__link,
 .b-controlButtons__link:visited {
-    color: #2184d0;
+    color: #3c6f8e;
     border-bottom-color: #8abbe1;
 }
 
 tr.topLinkRow a,
 tr.topLinkRow a:visited {
-    color: #2184d0;
+    color: #3c6f8e;
     border-bottom-color: #8abbe1;
     font-size: 8pt;
 }
@@ -59,7 +59,7 @@ h6.b-article__generatorCopyright {
 
 .b-breadCrumbs__link:hover,
 .b-controlButtons__link:hover {
-    color: #5db2f3;
+    color: #3c6f8e;
     border-bottom-color: #a8d2f3;
 }
 
@@ -310,15 +310,15 @@ html {
 /*@import url( 'work-zone.css' );*/
 .m-pageContent__side__header
 {
-    background: #65a8eb;
+    background: #3c6f8e;
 }
 .m-pageContent__side__footer
 {
-    background: #65a8eb;
+    background: #3c6f8e;
 }
 .b-workZone {
     width: 100%;
-    background: #65a8eb url( '../i/blocks/work-zone/header-bg.png') 0 0px repeat-x;
+    background: #3c6f8e 0 0px repeat-x;
     overflow: hidden;
 }
 
@@ -928,10 +928,10 @@ html[dir="rtl"] .m-search__workZone {
 }
 
 .m-search__workZone .m-button__hovered {
-    -webkit-box-shadow: 0px 1px 3px 0px #00a8ff;
-    -moz-box-shadow: 0px 1px 3px 0px #00a8ff;
-    -ms-box-shadow: 0px 1px 3px 0px #00a8ff;
-    box-shadow: 0px 1px 3px 0px #00a8ff;
+    -webkit-box-shadow: 0px 1px 3px 0px #3c6f8e;
+    -moz-box-shadow: 0px 1px 3px 0px #3c6f8e;
+    -ms-box-shadow: 0px 1px 3px 0px #3c6f8e;
+    box-shadow: 0px 1px 3px 0px #3c6f8e;
 }
 
 .m-search__tabs .m-search__side__submit {
@@ -2370,7 +2370,7 @@ div.index_page_title {
     font-family: Verdana, Arial, Helvetica, sans-serif;
     font-size: 20pt;
     text-decoration: none;
-    color: #65a8eb;
+    color: #3c6f8e;
     text-align: center;
     font-weight: bold;
     white-space: pre;
@@ -2391,7 +2391,7 @@ div.index_page {
     border-right: 0px;
     border-left: 0px;
     border-style: solid;
-    border-color: #65a8eb;
+    border-color: #3c6f8e;
     white-space: pre;
 }
 
@@ -2438,7 +2438,7 @@ div.de_ctrl > table {
 
 
 .b-workZone.m-workZone__withoutSideNav {
-    background: #65a8eb 0 0px repeat-x;
+    background: #3c6f8e 0 0px repeat-x;
 }
 
 .b-workZone.m-workZone__withoutSideNav .m-workZone__side__nav,
