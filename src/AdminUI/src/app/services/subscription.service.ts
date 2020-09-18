@@ -246,7 +246,7 @@ export class SubscriptionService {
   public getMonthlyReport(uuid: string, date, cycle_uuid: string = null): Observable<Blob> {
     const headers = new HttpHeaders().set('Accept', 'application/pdf');
     let url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${uuid}/pdf/monthly/${date}/${cycle_uuid}/`;
-    
+
     return this.http.get(url, { headers: headers, responseType: 'blob' });
   }
 
