@@ -146,7 +146,7 @@ export class SubscriptionReportTab implements OnInit {
       this.loading = false
     });
   }
-  
+
   updateReportList(subscription_uuid){
     this.subscriptionSvc.getSusbcriptionStatusEmailsSent(subscription_uuid).subscribe(
       (data: any) => {

@@ -62,7 +62,7 @@ export class ReportsService {
         ? this.settingsService.settings.apiUrl
         : this.settingsService.settings.apiUrlHeadless;
 
-    
+
     let url =
       urlRoot +
       `/reports/${subscriptionUuid}/monthly/${m.format(AppSettings.MOMENT_ISO_DATE_FORMAT)}/`;

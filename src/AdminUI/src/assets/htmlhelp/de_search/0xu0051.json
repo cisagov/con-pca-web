@@ -1,6 +1,5 @@
 [
-	{ "s": "QUALIFICATIONS", "p": [3] },
-	{ "s": "QUARTER", "p": [3] },
-	{ "s": "QUARTERLY", "p": [3] },
-	{ "s": "QUICKLY", "p": [14] }
+	{ "s": "QUARTER", "p": [11, 3] },
+	{ "s": "QUARTERLY", "p": [12, 3] },
+	{ "s": "QUICKLY", "p": [20] }
 ]

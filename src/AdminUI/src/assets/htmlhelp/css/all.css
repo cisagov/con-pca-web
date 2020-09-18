@@ -318,7 +318,7 @@ html {
 }
 .b-workZone {
     width: 100%;
-    background: #3c6f8e  0 0px repeat-x;
+    background: #3c6f8e url( '../i/blocks/work-zone/header-bg.png') 0 0px repeat-x;
     overflow: hidden;
 }
 
@@ -2726,5 +2726,3 @@ html[dir="rtl"] .b-pageLayout.b-pageLayout__xs .m-article__headerSide__buttons {
 html[dir="rtl"] .b-pageLayout.b-pageLayout__xs .m-workZone_seeAlso_itemContent {
     margin-right: 0;
 }
-
-
