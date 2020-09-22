@@ -71,6 +71,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
   // Body Form Variables
   templateId: string;
   retired: boolean;
+  okToDelete: boolean = false;
   retiredReason: string;
   currentTemplateFormGroup: FormGroup;
   matchSubject = new MyErrorStateMatcher();
@@ -265,6 +266,11 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
           .subscribe((x: PcaSubscription[]) => {
             this.pcaSubscriptions.data = x;
           });
+        if (this.retired) {
+          this.okToDelete = true;
+        } else {
+          this.okToDelete = false;
+        }
       },
       (error) => {}
     );
@@ -497,8 +503,12 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
       if (result) {
         this.templateManagerSvc.deleteTemplate(template_to_delete).then(
           (success) => {
-            // this.updateTemplateInList(<Template>success)
-            // this.setEmptyTemplateForm()
+            this.dialog.open(AlertComponent, {
+              data: {
+                title: 'Template Deleted',
+                messageText: 'Your Template Was Deleted',
+              },
+            });
             this.router.navigate(['/templates']);
           },
           (error) => {}
@@ -569,6 +579,25 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
           });
         }
       });
+  }
+
+  openDeleteTemplateDialog() {
+    // check if no subs, of not, then stop, if else, then no
+    // Prompt delete then confirm or cancel
+    let template_to_delete = this.getTemplateFromForm(
+      this.currentTemplateFormGroup
+    );
+    if (this.okToDelete && this.retired) {
+      this.deleteTemplate()
+    } else {
+      this.dialog.open(AlertComponent, {
+        data: {
+          title: 'Delete Template',
+          messageText:
+            'This Template but be stopped and retired before deleting.',
+        },
+      });
+    }
   }
 
   //Event that fires everytime the template tab choice is changed
