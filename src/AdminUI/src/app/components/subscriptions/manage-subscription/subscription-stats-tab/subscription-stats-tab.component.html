@@ -1,8 +1,6 @@
 <div class="w-100">
   <mat-card>
-    <mat-card-title>
-      Statistics
-    </mat-card-title>
+    <mat-card-title> Statistics </mat-card-title>
     Statistics Cycle:
 
     <div class="cycle-select-wrapper" *ngIf="subscription">
@@ -23,28 +21,24 @@
         </mat-select>
       </mat-form-field>
     </div>
-    <button
-            mat-raised-button
-            color="primary"
-            (click)="pageRefresh()"
-          >
-           Refresh
-           <mat-icon class="table-btn-icon-size">autorenew</mat-icon>
-          </button>
+    <button mat-raised-button color="primary" (click)="pageRefresh()">
+      Refresh
+      <mat-icon class="table-btn-icon-size">autorenew</mat-icon>
+    </button>
   </mat-card>
   <app-sub-dashboard></app-sub-dashboard>
 
   <mat-card>
     <div>
       <h4>Subscription Timeline</h4>
-      <div style="margin: 0 2rem 2rem 2rem;">
+      <div style="margin: 0 2rem 2rem 2rem">
         <app-svg-timeline [timelineItems]="timelineItems"></app-svg-timeline>
       </div>
     </div>
   </mat-card>
   <mat-card [formGroup]="reportedStatsForm">
     <mat-card-header>
-      <mat-card-title style="margin-left: -16px !important;">
+      <mat-card-title style="margin-left: -16px !important">
         Email Reporting Statistics
       </mat-card-title>
     </mat-card-header>
@@ -75,6 +69,9 @@
     <p *ngIf="hasOverrideValue">
       If a override value is provided, individual reports are disabled.
     </p>
+    <div class="text-muted">
+      <em>Format: email@example.com, MM/DD/YYYY HH:MM:SS a</em>
+    </div>
     <mat-form-field class="w-100 flex-grow-1" appearance="outline">
       <mat-label>Individual Report Records</mat-label>
       <textarea
