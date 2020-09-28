@@ -14,7 +14,13 @@ import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
   styleUrls: ['./tags-page.component.scss'],
 })
 export class TagsPageComponent implements OnInit, AfterViewInit {
-  displayedColumns = ['tag', 'description', 'data_source', 'tag_type', 'action'];
+  displayedColumns = [
+    'tag',
+    'description',
+    'data_source',
+    'tag_type',
+    'action',
+  ];
   tagsData = new MatTableDataSource<Tags>();
   search_input = '';
   @ViewChild(MatSort) sort: MatSort;
@@ -37,16 +43,11 @@ export class TagsPageComponent implements OnInit, AfterViewInit {
 
   refresh() {
     this.loading = true;
-    this.tagsSvc
-      .getAllTags()
-      .subscribe((data: any) => {
-        this.tagsData.data = data as Tags[];
-        this.tagsData.data = this.tagsData.data.filter(
-          (tag) => tag.tag_type !== "gophish"
-        );
-        this.tagsData.sort = this.sort;
-        this.loading = false;
-      });
+    this.tagsSvc.getAllTags().subscribe((data: any) => {
+      this.tagsData.data = data as Tags[];
+      this.tagsData.sort = this.sort;
+      this.loading = false;
+    });
   }
 
   ngAfterViewInit(): void {
@@ -55,13 +56,12 @@ export class TagsPageComponent implements OnInit, AfterViewInit {
 
   public filterTags = (value: string) => {
     this.tagsData.filter = value.trim().toLocaleLowerCase();
-  }
+  };
 
-  public editTags(tags: Tags) {
-    this.router.navigate([
-      '/tagsmanager',
-      tags.tag_definition_uuid,
-    ]);
+  public editTags(row: Tags) {
+    if (this.canEditDelete(row)) {
+      this.router.navigate(['/tagsmanager', row.tag_definition_uuid]);
+    }
   }
 
   /**
@@ -91,5 +91,15 @@ export class TagsPageComponent implements OnInit, AfterViewInit {
       }
       this.dialogRefConfirm = null;
     });
+  }
+
+  canEditDelete(row: Tags) {
+    if (row.tag_type === 'gophish') {
+      return false;
+    } else if (row.tag.startsWith('<%FAKER_')) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }
