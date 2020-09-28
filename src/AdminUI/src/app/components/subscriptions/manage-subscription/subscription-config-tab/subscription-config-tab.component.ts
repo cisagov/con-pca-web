@@ -30,7 +30,6 @@ import { BehaviorSubject } from 'rxjs';
 import { isUndefined } from 'util';
 import { filterSendingProfiles } from '../../../../helper/utilities';
 
-
 @Component({
   selector: 'subscription-config-tab',
   templateUrl: './subscription-config-tab.component.html',
@@ -69,10 +68,10 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
   launchSubmitted = false;
 
   angular_subs = [];
-  target_email_domain = new BehaviorSubject(null)
+  target_email_domain = new BehaviorSubject(null);
   validationErrors = {
-    "emailDoesntMatchDomain": ""
-  }
+    emailDoesntMatchDomain: '',
+  };
 
   /**
    *
@@ -93,7 +92,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
 
     this.route.params.subscribe((params) => {
       if (!params.id) {
-        layoutSvc.setTitle("New Subscription");
+        layoutSvc.setTitle('New Subscription');
       }
     });
   }
@@ -128,16 +127,17 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
           validators: Validators.required,
         }),
         targetDomain: new FormControl('', {
-          validators: [Validators.required,this.validDomain]
+          validators: [Validators.required, this.validDomain],
         }),
         csvText: new FormControl('', {
           validators: [
             Validators.required,
             this.invalidCsv,
-            this.domainListValidator(this.target_email_domain)
+            this.domainListValidator(this.target_email_domain),
           ],
           updateOn: 'blur',
         }),
+        staggerEmails: new FormControl(true, {}),
       },
       { updateOn: 'blur' }
     );
@@ -192,7 +192,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     this.angular_subs.push(
       this.f.csvText.valueChanges.subscribe((val) => {
         this.evaluateTargetList(false);
-        this.getValidationMessage()
+        this.getValidationMessage();
         this.persistChanges();
       })
     );
@@ -202,10 +202,15 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         //   this.f.targetDomain.setValue(null)
         //   val = null
         // }
-        this.subscription.target_domain = val
-        this.target_email_domain.next(val)
+        this.subscription.target_domain = val;
+        this.target_email_domain.next(val);
         this.f.csvText.updateValueAndValidity();
         this.persistChanges();
+      })
+    );
+    this.angular_subs.push(
+      this.f.staggerEmails.valueChanges.subscribe((val) => {
+        this.subscription.stagger_emails = val;
       })
     );
   }
@@ -255,10 +260,13 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     this.f.startDate.setValue(s.start_date);
     this.f.url.setValue(s.url);
     this.f.keywords.setValue(s.keywords);
-    this.f.csvText.setValue(this.formatTargetsToCSV(s.target_email_list_cached_copy));
+    this.f.csvText.setValue(
+      this.formatTargetsToCSV(s.target_email_list_cached_copy)
+    );
 
     this.f.sendingProfile.setValue(s.sending_profile_name);
-    this.f.targetDomain.setValue(s?.target_domain)
+    this.f.targetDomain.setValue(s?.target_domain);
+    this.f.staggerEmails.setValue(s.stagger_emails);
 
     this.enableDisableFields();
 
@@ -314,7 +322,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
    */
   loadSendingProfiles() {
     this.sendingProfileSvc.getAllProfiles().subscribe((data: any) => {
-    this.sendingProfiles = filterSendingProfiles(data);
+      this.sendingProfiles = filterSendingProfiles(data);
     });
   }
 
@@ -444,15 +452,15 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
       this.csvText = xyz;
       this.f.csvText.setValue(xyz);
     });
-    if(this.submitted){
+    if (this.submitted) {
       this.subscriptionSvc.changeTargetCache(this.subscription).subscribe();
     }
   }
 
-  targetsChanged(e: any){
+  targetsChanged(e: any) {
     this.csvText = e.target.value;
     this.f.csvText.setValue(e.target.value);
-    if(this.submitted){
+    if (this.submitted) {
       this.subscriptionSvc.changeTargetCache(this.subscription).subscribe();
     }
   }
@@ -600,6 +608,8 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     sub.target_domain = this.target_email_domain.value;
     sub.sending_profile_name = this.f.sendingProfile.value;
 
+    sub.stagger_emails = this.f.staggerEmails.value;
+
     // call service with everything needed to start the subscription
     this.subscriptionSvc.submitSubscription(sub).subscribe(
       (resp: any) => {
@@ -740,7 +750,6 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
   invalidCsv(control: FormControl) {
     const exprEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-
     const lines = control.value.split('\n');
     for (const line of lines) {
       const parts = line.split(',');
@@ -759,43 +768,43 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
       }
     }
 
-
     return null;
   }
   validDomain(control: FormControl) {
     const exprEmail = /^@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     // const lines = control.value.split('\n');
-    if(control.value){
+    if (control.value) {
       const parts = control.value.split(',');
-      for(const part of parts) {
-        let trimmedPart = part.trim()
+      for (const part of parts) {
+        let trimmedPart = part.trim();
         if (!exprEmail.test(trimmedPart.toLowerCase())) {
           return { invalidDomain: true };
         }
       }
 
-      let value = control.value
-      if(value == null){ return null}
+      let value = control.value;
+      if (value == null) {
+        return null;
+      }
     }
 
     return null;
   }
 
-
   domainListValidator(domain: BehaviorSubject<string>): ValidatorFn {
     return (control: AbstractControl): { [key: string]: boolean } | null => {
       const exprEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      let domain_targets = []
-      let BS_sub = domain.subscribe(val =>{
-        if(val){
-          let vals = val.split(',')
-          for(const value of vals){
-            domain_targets.push(value.trim())
+      let domain_targets = [];
+      let BS_sub = domain.subscribe((val) => {
+        if (val) {
+          let vals = val.split(',');
+          for (const value of vals) {
+            domain_targets.push(value.trim());
           }
         }
-      })
-      BS_sub.unsubscribe()
+      });
+      BS_sub.unsubscribe();
 
       const lines = control.value.split('\n');
       for (const line of lines) {
@@ -813,31 +822,28 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         if (!!parts[0] && !exprEmail.test(String(parts[0]).toLowerCase())) {
           return { invalidEmailFormat: true };
         }
-        if(domain_targets.length == 0){
-          return { noTargetDomain: true}
+        if (domain_targets.length == 0) {
+          return { noTargetDomain: true };
         }
-        let line_domain = parts[0].split('@')
-        if(line_domain.length != 2){
-          return { invalidEmailFormat:true  }
+        let line_domain = parts[0].split('@');
+        if (line_domain.length != 2) {
+          return { invalidEmailFormat: true };
         }
-        let val_not_found = true
-        for(const domain_target of domain_targets){
-          if(("@" + line_domain[1]) == domain_target){
-            val_not_found = false
+        let val_not_found = true;
+        for (const domain_target of domain_targets) {
+          if ('@' + line_domain[1] == domain_target) {
+            val_not_found = false;
           }
         }
 
-        if(val_not_found){
-          return { emailDoesntMatchDomain: parts[0] }
+        if (val_not_found) {
+          return { emailDoesntMatchDomain: parts[0] };
         }
-
       }
 
       return null;
-
     };
   }
-
 
   getValidationMessage() {
     // const errors = this.reportedStatsForm.controls[control].errors;
