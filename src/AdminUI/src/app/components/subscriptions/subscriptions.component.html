@@ -9,11 +9,7 @@
       </mat-form-field>
     </div>
     <div class="d-inline-flex flex-column ml-2">
-      <button
-        mat-raised-button
-        color="primary"
-        (click)="createSubscription()"
-      >
+      <button mat-raised-button color="primary" (click)="createSubscription()">
         New Subscription
       </button>
       <mat-slide-toggle
@@ -28,11 +24,11 @@
 
   <div
     *ngIf="loading"
-    style="text-align: center; padding-top: 2rem; padding-bottom: 2rem;"
+    style="text-align: center; padding-top: 2rem; padding-bottom: 2rem"
   >
     <mat-spinner
       class="spinner"
-      style="margin-left: auto; margin-right: auto;"
+      style="margin-left: auto; margin-right: auto"
       diameter="50"
     ></mat-spinner>
   </div>
@@ -41,13 +37,17 @@
   <mat-table [dataSource]="dataSource" [hidden]="loading" matSort>
     <!-- SUBSCRIPTION NAME -->
     <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Subscription Name</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >Subscription Name</mat-header-cell
+      >
       <mat-cell *matCellDef="let row"> {{ row.subscription.name }}</mat-cell>
     </ng-container>
 
     <!-- STATUS -->
     <ng-container matColumnDef="status">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >Status</mat-header-cell
+      >
       <mat-cell *matCellDef="let row">
         {{ row.subscription.status | titlecase }}</mat-cell
       >
@@ -55,7 +55,9 @@
 
     <!-- PRIMARY CONTACT -->
     <ng-container matColumnDef="primaryContact">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Primary Contact</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >Primary Contact</mat-header-cell
+      >
       <mat-cell *matCellDef="let row">
         {{
           row.subscription.primary_contact?.first_name || "No Primary Contact"
@@ -66,13 +68,17 @@
 
     <!-- CUSTOMER -->
     <ng-container matColumnDef="customerName">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Customer</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >Customer</mat-header-cell
+      >
       <mat-cell *matCellDef="let row">{{ row.customer.name }}</mat-cell>
     </ng-container>
 
     <!-- START DATE -->
     <ng-container matColumnDef="startDate">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Start Date</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >Start Date</mat-header-cell
+      >
       <mat-cell *matCellDef="let row">
         {{ row.subscription.start_date | date: dateFormat }}</mat-cell
       >
@@ -80,7 +86,9 @@
 
     <!-- LAST UDPATED DATE -->
     <ng-container matColumnDef="lastUpdated">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Last Updated</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >Last Updated</mat-header-cell
+      >
       <mat-cell *matCellDef="let row">
         {{ row.subscription.lub_timestamp | date: dateFormat }}</mat-cell
       >
@@ -93,7 +101,7 @@
     <!-- SELECT -->
     <ng-container matColumnDef="select">
       <mat-header-cell *matHeaderCellDef>Edit/Delete</mat-header-cell>
-      <mat-cell *matCellDef="let row">
+      <mat-cell *matCellDef="let row" (click)="$event.stopPropagation()">
         <button
           class="table-btn-icon"
           mat-flat-button

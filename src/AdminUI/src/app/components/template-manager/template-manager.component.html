@@ -439,6 +439,16 @@
           >
             Stop Template
           </button>
+          <button
+            id="stop-button"
+            class="d-flex"
+            mat-raised-button
+            color="warn"
+            (click)="openDeleteTemplateDialog()"
+            [disabled]="!okToDelete"
+          >
+            Delete Template
+          </button>
           <div class="ml-auto d-flex flex-row">
             <button
               id="save-button"
