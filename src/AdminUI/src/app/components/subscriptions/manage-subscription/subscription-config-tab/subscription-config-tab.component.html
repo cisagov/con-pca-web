@@ -30,7 +30,7 @@
               (click)="showCustomerDialog()"
             >
               Assign Customer
-              <i class="fa fa-search" style="font-size: 1rem;"></i>
+              <i class="fa fa-search" style="font-size: 1rem"></i>
             </button>
             <mat-error
               *ngIf="submitted && f.selectedCustomerUuid.errors?.required"
@@ -187,10 +187,10 @@
         </div>
       </div>
       <div class="mb-3">
-
         <mat-label class="h6">Target Email Domain</mat-label>
         <div class="text-muted">
-          Specify the domains that the target emails can be under. Provide a list of domains seperated by commas.
+          Specify the domains that the target emails can be under. Provide a
+          list of domains separated by commas.
         </div>
         <div class="text-muted">
           <em>Format: @domainOne.com, @domainTwo.com, @domainThree.com</em>
@@ -201,7 +201,7 @@
             formControlName="targetDomain"
             type="text"
             trim="blur"
-            [ngClass]="{ 'is-invalid': submitted  && f.targetDomain.errors }"
+            [ngClass]="{ 'is-invalid': submitted && f.targetDomain.errors }"
           />
           <mat-error
             *ngIf="f.targetDomain.errors?.required"
@@ -282,7 +282,7 @@
           At least 1 target must be defined
         </mat-error>
         <mat-error
-          *ngIf="submitted &&f.csvText.errors?.invalidTargetCsv"
+          *ngIf="submitted && f.csvText.errors?.invalidTargetCsv"
           class="invalid-feedback"
         >
           All target lines must have all parts
@@ -291,7 +291,8 @@
           *ngIf="f.csvText.errors?.emailDoesntMatchDomain"
           class="invalid-feedback"
         >
-          The email {{this.validationErrors.emailDoesntMatchDomain}} does not match any of the domain targets specified in the domain targets field
+          The email {{ this.validationErrors.emailDoesntMatchDomain }} does not
+          match any of the domain targets specified in the domain targets field
         </mat-error>
         <mat-error
           *ngIf="submitted && f.csvText.errors?.noTargetDomain"
@@ -301,8 +302,16 @@
         </mat-error>
       </mat-form-field>
       <div class="text-muted">
-        *Note while a subscription is actively running, changes to the email list will not take effect until the next 90 day cycle.
+        *Note while a subscription is actively running, changes to the email
+        list will not take effect until the next 90 day cycle.
       </div>
+
+      <div class="stagger-checkbox">
+        <mat-checkbox checked="true" formControlName="staggerEmails"
+          >Stagger Email Delivery</mat-checkbox
+        >
+      </div>
+
       <div class="text-right mt-3">
         <button
           type="submit"
@@ -350,7 +359,9 @@
           <button
             mat-raised-button
             *ngIf="
-              (subscription?.status == 'In Progress' || subscription?.status == 'Queued') && !subscription?.archived
+              (subscription?.status == 'In Progress' ||
+                subscription?.status == 'Queued') &&
+              !subscription?.archived
             "
             color="accent"
             (click)="stopSubscription()"

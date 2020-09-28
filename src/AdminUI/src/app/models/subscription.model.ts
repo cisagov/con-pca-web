@@ -31,7 +31,7 @@ export class CampaignTimelineItem {
 //     office_phone: string;
 // }
 
-export interface SubscriptionClicksModel { }
+export interface SubscriptionClicksModel {}
 
 export class Subscription {
   active: boolean;
@@ -56,6 +56,7 @@ export class Subscription {
   gophish_campaign_list: GoPhishCampaignModel[];
   sending_profile_name: string;
   target_domain: string;
+  stagger_emails: boolean;
 }
 
 /**
