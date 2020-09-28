@@ -610,8 +610,6 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
 
     sub.stagger_emails = this.f.staggerEmails.value;
 
-    console.log(this.subscription);
-
     // call service with everything needed to start the subscription
     this.subscriptionSvc.submitSubscription(sub).subscribe(
       (resp: any) => {
