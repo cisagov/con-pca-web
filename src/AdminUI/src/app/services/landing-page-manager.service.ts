@@ -10,8 +10,6 @@ const headers = {
 
 @Injectable()
 export class LandingPageManagerService {
-
-
   /**
    * Constructor.
    * @param http
@@ -29,11 +27,12 @@ export class LandingPageManagerService {
    */
   getAlllandingpages(retired: boolean = false, with_default: boolean = false) {
     let url = `${this.settingsService.settings.apiUrl}/api/v1/landingpages/`;
-    let prependOperator = '?'
+    let prependOperator = '?';
     if (retired) {
       url = `${url}${prependOperator}retired=true`;
-      prependOperator = '&'
-    }if (with_default) {
+      prependOperator = '&';
+    }
+    if (with_default) {
       url = `${url}${prependOperator}with_default=true`;
     }
     return this.http.get(url, headers);
@@ -46,7 +45,9 @@ export class LandingPageManagerService {
   getlandingpage(uuid: string) {
     return new Promise((resolve, reject) => {
       this.http
-        .get(`${this.settingsService.settings.apiUrl}/api/v1/landingpage/${uuid}`)
+        .get(
+          `${this.settingsService.settings.apiUrl}/api/v1/landingpage/${uuid}`
+        )
         .subscribe(
           (success) => {
             resolve(success);
@@ -124,4 +125,9 @@ export class LandingPageManagerService {
     );
   }
 
+  getLandingPageTemplates(landingPageUuid: string) {
+    return this.http.get(
+      `${this.settingsService.settings.apiUrl}/api/v1/templates/?landing_page_uuid=${landingPageUuid}`
+    );
+  }
 }
