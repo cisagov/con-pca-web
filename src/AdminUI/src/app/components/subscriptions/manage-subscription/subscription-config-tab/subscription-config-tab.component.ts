@@ -137,7 +137,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
           ],
           updateOn: 'blur',
         }),
-        staggerEmails: new FormControl('', {}),
+        staggerEmails: new FormControl(true, {}),
       },
       { updateOn: 'blur' }
     );
@@ -266,7 +266,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
 
     this.f.sendingProfile.setValue(s.sending_profile_name);
     this.f.targetDomain.setValue(s?.target_domain);
-    // this.f.staggerEmails.setValue(s.stagger_emails);
+    this.f.staggerEmails.setValue(s.stagger_emails);
 
     this.enableDisableFields();
 
