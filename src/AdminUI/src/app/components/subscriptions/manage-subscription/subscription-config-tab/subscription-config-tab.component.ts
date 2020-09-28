@@ -208,11 +208,11 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         this.persistChanges();
       })
     );
-    // this.angular_subs.push(
-    //   this.f.staggerEmails.valueChanges.subscribe((val) => {
-    //     this.subscription.stagger_emails = val;
-    //   })
-    // );
+    this.angular_subs.push(
+      this.f.staggerEmails.valueChanges.subscribe((val) => {
+        this.subscription.stagger_emails = val;
+      })
+    );
   }
 
   /**
