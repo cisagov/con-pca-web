@@ -71,7 +71,8 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
   // Body Form Variables
   templateId: string;
   retired: boolean;
-  okToDelete: boolean = false;
+  canDelete: boolean = false;
+  canStop: boolean = false;
   retiredReason: string;
   currentTemplateFormGroup: FormGroup;
   matchSubject = new MyErrorStateMatcher();
@@ -252,28 +253,22 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
   //Select a template based on template_uuid, returns the full template
   selectTemplate(template_uuid: string) {
     //Get template and call setTemplateForm to initialize a form group using the selected template
-    this.templateManagerSvc.getTemplate(template_uuid).then(
-      (success) => {
-        let t = <Template>success;
+    this.templateManagerSvc.getTemplate(template_uuid).then((success) => {
+      let t = <Template>success;
 
-        this.setTemplateForm(t);
-        this.testEmail = this.getRecommendedEmail();
-        this.templateId = t.template_uuid;
-        this.retired = t.retired;
-        this.retiredReason = t.retired_description;
-        this.subscriptionSvc
-          .getSubscriptionsByTemplate(t)
-          .subscribe((x: PcaSubscription[]) => {
-            this.pcaSubscriptions.data = x;
-          });
-        if (this.retired) {
-          this.okToDelete = true;
-        } else {
-          this.okToDelete = false;
-        }
-      },
-      (error) => {}
-    );
+      this.setTemplateForm(t);
+      this.testEmail = this.getRecommendedEmail();
+      this.templateId = t.template_uuid;
+      this.retired = t.retired;
+      this.retiredReason = t.retired_description;
+      this.subscriptionSvc
+        .getSubscriptionsByTemplate(t)
+        .subscribe((x: PcaSubscription[]) => {
+          this.pcaSubscriptions.data = x;
+          this.setCanDelete();
+          this.setCanStop();
+        });
+    });
   }
 
   //Create a formgroup using a Template as initial data
@@ -291,8 +286,6 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
       template.behavior = <any>{};
     }
 
-    console.log(template);
-    console.log(template.from_address);
     this.setTemplateFrom(template.from_address);
 
     this.currentTemplateFormGroup = new FormGroup({
@@ -429,20 +422,16 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
       );
       //PATCH - existing template update
       if (this.currentTemplateFormGroup.controls['templateUUID'].value) {
-        this.templateManagerSvc.updateTemplate(templateToSave).then(
-          (success) => {
-            console.log(success);
+        this.templateManagerSvc
+          .updateTemplate(templateToSave)
+          .then((success) => {
             this.dialog.open(AlertComponent, {
               data: {
                 title: 'Template Saved',
                 messageText: 'Your Template was Saved.',
               },
             });
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
+          });
         //POST - new template creation
       } else {
         this.templateManagerSvc.saveNewTemplate(templateToSave).subscribe(
@@ -457,7 +446,6 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
             this.router.navigate(['/templates']);
           },
           (error: any) => {
-            console.log(error);
             this.dialog.open(AlertComponent, {
               // Parse error here
               data: {
@@ -554,50 +542,14 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
     });
   }
 
-  openStopTemplateDialog() {
+  stopTemplate() {
     // check if no subs, of not, then stop, if else, then no
-    let template_to_stop = this.getTemplateFromForm(
+    let templateToStop = this.getTemplateFromForm(
       this.currentTemplateFormGroup
     );
-    this.subscriptionSvc
-      .getSubscriptionsByTemplate(template_to_stop)
-      .subscribe((data: any[]) => {
-        data = data.filter(
-          (subscription) => subscription.status === 'In Progress'
-        );
-        if (data.length > 0) {
-          this.dialog.open(StopTemplateDialogComponent, {
-            data: template_to_stop,
-          });
-        } else {
-          this.dialog.open(AlertComponent, {
-            data: {
-              title: 'Stop Template',
-              messageText:
-                'There are no Subscriptions currently In Progress with this Template.',
-            },
-          });
-        }
-      });
-  }
-
-  openDeleteTemplateDialog() {
-    // check if no subs, of not, then stop, if else, then no
-    // Prompt delete then confirm or cancel
-    let template_to_delete = this.getTemplateFromForm(
-      this.currentTemplateFormGroup
-    );
-    if (this.okToDelete && this.retired) {
-      this.deleteTemplate()
-    } else {
-      this.dialog.open(AlertComponent, {
-        data: {
-          title: 'Delete Template',
-          messageText:
-            'This Template but be stopped and retired before deleting.',
-        },
-      });
-    }
+    this.dialog.open(StopTemplateDialogComponent, {
+      data: templateToStop,
+    });
   }
 
   //Event that fires everytime the template tab choice is changed
@@ -639,7 +591,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
       ($('.angular-editor-toolbar')[0] &&
         $('.angular-editor-toolbar')[0].clientHeight) ||
       300;
-    this.text_editor_height -= 50
+    this.text_editor_height -= 50;
     //Set the editorConfig height to the text area height minus the toolbar height
     this.editorConfig['height'] =
       this.text_editor_height - angular_editor_tool_bar_height + 'px';
@@ -811,17 +763,17 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
 
     this.sendingProfileSvc.sendTestEmail(email_for_test).subscribe(
       (data: any) => {
-        console.log(data);
         Swal.fire(data.message);
         const iframesource = email_for_test.email.split('@');
-        if (iframesource.length > 1)
+        if (iframesource.length > 1) {
           this.mailtester_iframe_url = this.cleanURL(
             'https://www.mail-tester.com/' + iframesource[0]
           );
-        else
+        } else {
           this.mailtester_iframe_url = this.cleanURL(
             'https://www.mail-tester.com/barryhansen-' + this.getCleanJobName()
           );
+        }
       },
       (error) => {
         console.log(
@@ -874,5 +826,24 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
 
   getTemplateFrom() {
     return `${this.fromDisplayName} <${this.fromSender}@domain.com>`;
+  }
+
+  setCanDelete() {
+    if (this.pcaSubscriptions.data.length > 0) {
+      this.canDelete = false;
+    } else {
+      this.canDelete = true;
+    }
+  }
+
+  setCanStop() {
+    const data = this.pcaSubscriptions.data.filter(
+      (subscription) => subscription.status === 'In Progress'
+    );
+    if (data.length > 0) {
+      this.canStop = true;
+    } else {
+      this.canStop = false;
+    }
   }
 }

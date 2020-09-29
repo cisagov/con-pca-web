@@ -434,8 +434,8 @@
             class="d-flex"
             mat-raised-button
             color="warn"
-            (click)="openStopTemplateDialog()"
-            *ngIf="templateId"
+            (click)="stopTemplate()"
+            *ngIf="templateId && canStop"
           >
             Stop Template
           </button>
@@ -444,8 +444,8 @@
             class="d-flex"
             mat-raised-button
             color="warn"
-            (click)="openDeleteTemplateDialog()"
-            [disabled]="!okToDelete"
+            (click)="deleteTemplate()"
+            *ngIf="canDelete && templateId"
           >
             Delete Template
           </button>
