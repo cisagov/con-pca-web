@@ -51,3 +51,7 @@ down_prod:
 
 # target: redeploy = bring down, rebuild and redeploy all containers
 redeploy: down build up
+
+lint:
+	pre-commit autoupdate
+	pre-commit run --all-files
