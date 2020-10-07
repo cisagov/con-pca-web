@@ -25,9 +25,7 @@ import { SubscriptionConfigTab } from './components/subscriptions/manage-subscri
 import { SubscriptionStatsTab } from './components/subscriptions/manage-subscription/subscription-stats-tab/subscription-stats-tab.component';
 import { SubscriptionReportTab } from './components/subscriptions/manage-subscription/subscription-report-tab/subscription-report-tab.component';
 import { SubscriptionTasksTabComponent } from './components/subscriptions/manage-subscription/subscription-tasks-tab/subscription-tasks-tab.component';
-import { DeceptionCalculatorComponent } from './components/deception-calculator/deception-calculator.component';
 import { UserAuthService } from './services/user-auth.service';
-import { DeceptionCalculatorService } from './services/deception-calculator.service';
 import { TemplateManagerComponent } from './components/template-manager/template-manager.component';
 import { TemplateManagerService } from './services/template-manager.service';
 import { RecommendationsManagerComponent } from './components/recommendations/recommendations-manager/recommendations-manager.component';
@@ -90,7 +88,7 @@ import { ChartStatsByLevelComponent } from './components/charts/chart-stats-by-l
 import { ChartTimeIntervalsComponent } from './components/charts/chart-time-intervals/chart-time-intervals.component';
 import { YearlyPercentageTrendsComponent } from './components/charts/yearly-percentage-trends/yearly-percentage-trends.component';
 import { ChartTimeToFirstClickLevelsComponent } from './components/charts/chart-time-to-first-click-levels/chart-time-to-first-click-levels.component';
-import { YearlyClickRateVsReportRateComponent } from './components/charts/yearly-clickrate-vs-reportedrate/yearly-clickrate-vs-reportedrate.component'
+import { YearlyClickRateVsReportRateComponent } from './components/charts/yearly-clickrate-vs-reportedrate/yearly-clickrate-vs-reportedrate.component';
 
 import { LandingPagesComponent } from './components/landing-pages/landing-pages.component';
 import { LandingPageManagerService } from './services/landing-page-manager.service';
@@ -113,7 +111,6 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     SubscriptionReportTab,
     SubscriptionTasksTabComponent,
     SubscriptionStatsTab,
-    DeceptionCalculatorComponent,
     TemplateManagerComponent,
     RecommendationsManagerComponent,
     TagsManagerComponent,
@@ -159,7 +156,8 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     ChartTimeToFirstClickLevelsComponent,
     YearlyPercentageTrendsComponent,
     YearlyClickRateVsReportRateComponent,
-    LandingPagesComponent, LandingPagesManagerComponent,
+    LandingPagesComponent,
+    LandingPagesManagerComponent,
   ],
   imports: [
     BrowserModule,
@@ -177,7 +175,6 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
   ],
   providers: [
     SubscriptionService,
-    DeceptionCalculatorService,
     CustomerService,
     TemplateManagerService,
     LandingPageManagerService,

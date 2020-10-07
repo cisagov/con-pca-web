@@ -4,7 +4,6 @@ import { LayoutMainComponent } from './components/layout/layout-main/layout-main
 import { SubscriptionsComponent } from './components/subscriptions/subscriptions.component';
 import { ManageSubscriptionComponent } from './components/subscriptions/manage-subscription/manage-subscription.component';
 import { SubscriptionConfigTab } from './components/subscriptions/manage-subscription/subscription-config-tab/subscription-config-tab.component';
-import { DeceptionCalculatorComponent } from './components/deception-calculator/deception-calculator.component';
 import { TemplateManagerComponent } from './components/template-manager/template-manager.component';
 import { RecommendationsManagerComponent } from './components/recommendations/recommendations-manager/recommendations-manager.component';
 import { TagsManagerComponent } from './components/tags-page/tags-manager/tags-manager.component';
@@ -73,18 +72,6 @@ const routes: Routes = [
     component: LayoutMainComponent,
     canActivate: [AuthGuard],
     children: [{ path: ':id', component: ManageSubscriptionComponent }],
-  },
-  {
-    path: 'deceptioncalculator',
-    component: LayoutMainComponent,
-    canActivate: [AuthGuard],
-    children: [{ path: '', component: DeceptionCalculatorComponent }],
-  },
-  {
-    path: 'deceptioncalculator/:templateId',
-    component: LayoutMainComponent,
-    canActivate: [AuthGuard],
-    children: [{ path: '', component: DeceptionCalculatorComponent }],
   },
   {
     path: 'templatemanager',
