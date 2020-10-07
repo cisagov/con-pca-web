@@ -19,7 +19,7 @@ export class TagsPageComponent implements OnInit, AfterViewInit {
     'description',
     'data_source',
     'tag_type',
-    'action',
+    // 'action',
   ];
   tagsData = new MatTableDataSource<Tags>();
   search_input = '';

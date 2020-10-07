@@ -13,11 +13,11 @@
     </mat-form-field>
 
     <!-- CREATE Tags -->
-    <div class="d-inline-flex flex-column ml-2">
+    <!-- <div class="d-inline-flex flex-column ml-2">
       <button mat-raised-button color="primary" routerLink="/tagsmanager">
         New Tag
       </button>
-    </div>
+    </div> -->
   </div>
   <div class="col p-0 w-100">
     <div
@@ -87,9 +87,8 @@
 
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row
-        class="table-row cursor-pointer"
+        class="table-row"
         *matRowDef="let row; columns: displayedColumns"
-        (click)="editTags(row)"
       ></mat-row>
     </mat-table>
   </div>
