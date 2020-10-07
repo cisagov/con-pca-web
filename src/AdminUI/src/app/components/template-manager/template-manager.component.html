@@ -491,8 +491,9 @@
         </mat-form-field>
       </div>
       <div class="d-flex flex-column overflow-auto deception_calc_content">
+        <div class="h6 mt-2">Appearance</div>
         <div class="">
-          <mat-label class="mb-3">Appearance & Grammar</mat-label>
+          <mat-label class="mb-3">Grammar</mat-label>
           <mat-radio-group
             appearance="outline"
             class="row radio_selection_group"
@@ -510,17 +511,17 @@
           </mat-radio-group>
         </div>
         <div class="">
-          <mat-label class="mb-3">Link Domain</mat-label>
+          <mat-label class="mb-3">Link / Domain</mat-label>
           <mat-radio-group
             appearance="outline"
             class="row radio_selection_group"
             formControlName="link_domain"
           >
             <mat-radio-button [value]="0" radioGroup="linkRadioGroup"
-              >0 = Fake</mat-radio-button
+              >0 = Unrelated</mat-radio-button
             >
             <mat-radio-button [value]="1" radioGroup="linkRadioGroup"
-              >1 = Spoofed / Hidden</mat-radio-button
+              >1 = Related / Hidden / Spoofed</mat-radio-button
             >
           </mat-radio-group>
         </div>
@@ -539,18 +540,19 @@
             >
           </mat-radio-group>
         </div>
+        <div class="h6 mt-2">Sender</div>
         <div class="">
-          <mat-label class="mb-3">Sender External</mat-label>
+          <mat-label class="mb-3">External</mat-label>
           <mat-radio-group
             appearance="outline"
             class="row radio_selection_group"
             formControlName="external"
           >
             <mat-radio-button [value]="0" radioGroup="senderExternalRadioGroup"
-              >0 = Fake / NA</mat-radio-button
+              >0 = Not External / Unspecified</mat-radio-button
             >
             <mat-radio-button [value]="1" radioGroup="senderExternalRadioGroup"
-              >1 = Spoofed</mat-radio-button
+              >1 = Specified</mat-radio-button
             >
           </mat-radio-group>
         </div>
@@ -562,13 +564,13 @@
             formControlName="internal"
           >
             <mat-radio-button [value]="0" radioGroup="internalRadioGroup"
-              >0 = Fake / NA</mat-radio-button
+              >0 = Not Internal / Unspecified</mat-radio-button
             >
             <mat-radio-button [value]="1" radioGroup="internalRadioGroup"
-              >1 = Unknown Spoofed</mat-radio-button
+              >1 = Generic</mat-radio-button
             >
             <mat-radio-button [value]="2" radioGroup="internalRadioGroup"
-              >2 = Known Spoofed</mat-radio-button
+              >2 = Spoofed</mat-radio-button
             >
           </mat-radio-group>
         </div>
@@ -583,15 +585,16 @@
               >0 = None</mat-radio-button
             >
             <mat-radio-button [value]="1" radioGroup="authoritativeRadioGroup"
-              >1 = Corporate / Local</mat-radio-button
+              >1 = Peer</mat-radio-button
             >
             <mat-radio-button [value]="2" radioGroup="authoritativeRadioGroup"
-              >2 = Federal / State</mat-radio-button
+              >2 = Superior</mat-radio-button
             >
           </mat-radio-group>
         </div>
+        <div class="h6 mt-2">Relevancy</div>
         <div class="">
-          <mat-label class="mb-3">Relevancy Organization</mat-label>
+          <mat-label class="mb-3">Organization</mat-label>
           <mat-radio-group
             appearance="outline"
             class="row radio_selection_group"
@@ -625,7 +628,7 @@
           </mat-radio-group>
         </div>
         <div class="check-box-wrapper">
-          <mat-label class="mb-3">Behavior</mat-label>
+          <mat-label class="mb-3 h6">Behavior</mat-label>
           <div class="deception_checkboxes mt-2 ml-3">
             <mat-checkbox formControlName="fear">Fear </mat-checkbox>
             <mat-checkbox formControlName="curiosity"
