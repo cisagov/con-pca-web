@@ -388,10 +388,10 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
       public_news: formTemplate.public_news,
     };
     saveTemplate.behavior = {
-      curiosity: formTemplate.curiosity,
-      duty_obligation: formTemplate.duty_obligation,
-      fear: formTemplate.fear,
-      greed: formTemplate.greed,
+      curiosity: formTemplate.curiosity ? 1 : 0,
+      duty_obligation: formTemplate.duty_obligation ? 1 : 0,
+      fear: formTemplate.fear ? 1 : 0,
+      greed: formTemplate.greed ? 1 : 0,
     };
     saveTemplate.template_uuid = this.templateId;
     saveTemplate.deception_score = form.controls['final_deception_score'].value;
