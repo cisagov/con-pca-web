@@ -9,7 +9,6 @@ export class Recommendations {
   recommendations_uuid: string;
   name: string;
   description: string;
-  deception_level: number;
 
   // Deception Scores
   appearance: TemplateAppearanceModel;

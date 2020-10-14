@@ -95,9 +95,6 @@ export class RecommendationsManagerComponent implements OnInit {
       recommendationsName: new FormControl(recommendation.name, [
         Validators.required,
       ]),
-      recommendationsDeceptionLevel: new FormControl(
-        recommendation.deception_level
-      ),
       recommendationsDescription: new FormControl(recommendation.description),
       authoritative: new FormControl(recommendation.sender?.authoritative ?? 0),
       external: new FormControl(recommendation.sender?.external ?? 0),
@@ -143,10 +140,10 @@ export class RecommendationsManagerComponent implements OnInit {
       public_news: this.f.public_news.value,
     };
     saveRecommendations.behavior = {
-      curiosity: this.f.curiosity.value,
-      duty_obligation: this.f.duty_obligation.value,
-      fear: this.f.fear.value,
-      greed: this.f.greed.value,
+      curiosity: this.f.curiosity.value ? 1 : 0,
+      duty_obligation: this.f.duty_obligation.value ? 1 : 0,
+      fear: this.f.fear.value ? 1 : 0,
+      greed: this.f.greed.value ? 1 : 0,
     };
     saveRecommendations.recommendations_uuid = this.recommendationsId;
     return saveRecommendations;
