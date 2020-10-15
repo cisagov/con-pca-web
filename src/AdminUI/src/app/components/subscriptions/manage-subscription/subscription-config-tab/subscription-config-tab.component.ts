@@ -154,7 +154,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         this.loadPageForCreate(params);
       } else {
         this.subscriptionSvc.subBehaviorSubject.subscribe((data) => {
-          if ('gophish_campaign_list' in data) {
+          if ('campaigns' in data) {
             this.loadPageForEdit(data);
           }
         });

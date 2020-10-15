@@ -53,7 +53,7 @@ export class Subscription {
   url: string;
   target_email_list: Target[] = [];
   target_email_list_cached_copy: Target[] = [];
-  gophish_campaign_list: GoPhishCampaignModel[];
+  campaigns: GoPhishCampaignModel[];
   sending_profile_name: string;
   target_domain: string;
   stagger_emails: boolean;

@@ -98,7 +98,7 @@ export class SubscriptionStatsTab implements OnInit {
             }
           );
       }
-      if ('gophish_campaign_list' in data) {
+      if ('campaigns' in data) {
         this.buildSubscriptionTimeline(this.subscription);
         this.subscription = data;
         //@ts-ignore
@@ -346,7 +346,7 @@ export class SubscriptionStatsTab implements OnInit {
       date: moment(s.start_date),
     });
     // now extract a simple timeline based on campaign events
-    s.gophish_campaign_list.forEach((c: GoPhishCampaignModel) => {
+    s.campaigns.forEach((c: GoPhishCampaignModel) => {
       for (const t of c.timeline) {
         // ignore campaigns started on the subscription start date
         if (
