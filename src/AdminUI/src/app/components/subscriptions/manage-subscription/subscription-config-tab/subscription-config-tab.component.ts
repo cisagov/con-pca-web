@@ -42,6 +42,8 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
   subscribeForm: FormGroup;
   submitted = false;
 
+  processing = false;
+
   actionEDIT = 'edit';
   actionCREATE = 'create';
   action: string = this.actionEDIT;
@@ -496,6 +498,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
 
     this.dialogRefConfirm.afterClosed().subscribe((result) => {
       if (result) {
+        this.processing = true;
         this.subscription.target_email_list = this.subscription.target_email_list_cached_copy;
         // persist any changes before restart
         this.subscriptionSvc
@@ -508,6 +511,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
                 (resp: Subscription) => {
                   this.subscription = resp;
                   this.enableDisableFields();
+                  this.processing = false;
                   this.dialog.open(AlertComponent, {
                     data: {
                       title: '',
@@ -517,6 +521,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
                 },
                 (error) => {
                   this.submitted = false;
+                  this.processing = false;
                   this.dialog.open(AlertComponent, {
                     data: {
                       title: 'Error',
@@ -544,12 +549,14 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
 
     this.dialogRefConfirm.afterClosed().subscribe((result) => {
       if (result) {
+        this.processing = true;
         this.subscriptionSvc
           .stopSubscription(this.subscription.subscription_uuid)
           .subscribe(
             (resp: Subscription) => {
               this.subscription = resp;
               this.enableDisableFields();
+              this.processing = false;
               this.dialog.open(AlertComponent, {
                 data: {
                   title: '',
@@ -558,6 +565,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
               });
             },
             (error) => {
+              this.processing = false;
               this.dialog.open(AlertComponent, {
                 data: {
                   title: 'Error',

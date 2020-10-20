@@ -351,6 +351,7 @@
           <button
             mat-raised-button
             *ngIf="subscription?.status == 'stopped' && !subscription?.archived"
+            [disabled]="processing"
             color="primary"
             (click)="startSubscription()"
           >
@@ -365,6 +366,7 @@
             "
             color="accent"
             (click)="stopSubscription()"
+            [disabled]="processing"
           >
             Stop Subscription
           </button>
@@ -376,6 +378,7 @@
           >
             Unarchive Subscription
           </button>
+          <mat-progress-spinner *ngIf="processing" class="spinner mt-3" diameter="25" mode="indeterminate"></mat-progress-spinner>
         </div>
       </div>
     </div>
