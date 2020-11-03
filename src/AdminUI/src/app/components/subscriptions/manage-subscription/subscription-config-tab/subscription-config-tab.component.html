@@ -263,7 +263,8 @@
         <mat-label>Target Emails</mat-label>
         <textarea
           matInput
-          autosize
+          rows="10"
+          style="overf\low:scroll;"
           formControlName="csvText"
           [ngClass]="{ 'is-invalid': submitted && f.csvText.errors }"
           (change)="targetsChanged($event)"
