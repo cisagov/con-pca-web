@@ -500,6 +500,9 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
       if (result) {
         this.processing = true;
         this.subscription.target_email_list = this.subscription.target_email_list_cached_copy;
+        if (this.f.startDate.value.getHours() === 0) {
+          this.f.startDate.value.setHours(10);
+        }
         // persist any changes before restart
         this.subscriptionSvc
           .patchSubscription(this.subscription)
@@ -602,6 +605,10 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     sub.active = true;
 
     sub.lub_timestamp = new Date();
+
+    if (this.f.startDate.value.getHours() === 0) {
+      this.f.startDate.value.setHours(10);
+    }
     sub.start_date = this.f.startDate.value;
     sub.status = 'New Not Started';
 
@@ -620,6 +627,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     sub.stagger_emails = this.f.staggerEmails.value;
 
     // call service with everything needed to start the subscription
+    this.processing = true;
     this.subscriptionSvc.submitSubscription(sub).subscribe(
       (resp: any) => {
         this.dialog.open(AlertComponent, {
@@ -628,10 +636,11 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
             messageText: 'Your subscription was created as ' + resp.name,
           },
         });
-
+        this.processing = false;
         this.router.navigate(['subscriptions']);
       },
       (error) => {
+        this.processing = false;
         this.launchSubmitted = false;
         this.dialog.open(AlertComponent, {
           data: {
@@ -866,7 +875,4 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
       }
     });
   }
-  /**
-   *
-   */
 }
