@@ -254,7 +254,6 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
    * EDIT mode
    */
   loadPageForEdit(s: Subscription) {
-    const sub = this.subscriptionSvc.subscription;
     this.subscription = s as Subscription;
     this.subscriptionSvc.subscription = this.subscription;
     this.f.selectedCustomerUuid.setValue(s.subscription_uuid);
@@ -615,7 +614,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
       this.f.startDate.value.setHours(10);
     }
     sub.start_date = this.f.startDate.value;
-    sub.status = 'New Not Started';
+    sub.status = 'Queued';
 
     sub.url = this.f.url.value;
 

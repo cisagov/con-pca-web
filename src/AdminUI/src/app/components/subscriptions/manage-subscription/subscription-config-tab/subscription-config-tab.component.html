@@ -360,11 +360,7 @@
           </button>
           <button
             mat-raised-button
-            *ngIf="
-              (subscription?.status == 'In Progress' ||
-                subscription?.status == 'Queued') &&
-              !subscription?.archived
-            "
+            *ngIf="subscription?.status != 'stopped' && pageMode != 'CREATE'"
             color="accent"
             (click)="stopSubscription()"
             [disabled]="processing"
