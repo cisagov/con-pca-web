@@ -93,7 +93,9 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     this.subscriptionSvc.setSubBhaviorSubject(s);
 
     if (s.cycles) {
-      this.subscriptionSvc.setCycleBehaviorSubject(s['cycles'][0]);
+      // Need to use let here. Compiler raises an error if not.
+      let i = 0;
+      this.subscriptionSvc.setCycleBehaviorSubject(s.cycles[i]);
     }
 
     this.setPageTitle();
