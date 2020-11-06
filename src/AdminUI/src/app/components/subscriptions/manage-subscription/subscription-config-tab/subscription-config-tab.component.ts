@@ -140,6 +140,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
           updateOn: 'blur',
         }),
         staggerEmails: new FormControl(true, {}),
+        continuousSubscription: new FormControl(true, {}),
       },
       { updateOn: 'blur' }
     );
@@ -216,6 +217,12 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         this.persistChanges();
       })
     );
+    this.angular_subs.push(
+      this.f.continuousSubscription.valueChanges.subscribe((val) => {
+        this.subscription.continuous_subscription = val;
+        this.persistChanges();
+      })
+    );
   }
 
   /**
@@ -270,6 +277,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     this.f.sendingProfile.setValue(s.sending_profile_name);
     this.f.targetDomain.setValue(s?.target_domain);
     this.f.staggerEmails.setValue(s.stagger_emails);
+    this.f.continuousSubscription.setValue(s.continuous_subscription);
 
     this.enableDisableFields();
 
@@ -618,6 +626,8 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     sub.sending_profile_name = this.f.sendingProfile.value;
 
     sub.stagger_emails = this.f.staggerEmails.value;
+    sub.continuous_subscription = this.f.continuousSubscription.value;
+
 
     // call service with everything needed to start the subscription
     this.subscriptionSvc.submitSubscription(sub).subscribe(
