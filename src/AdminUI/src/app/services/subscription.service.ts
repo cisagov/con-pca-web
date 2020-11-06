@@ -129,15 +129,27 @@ export class SubscriptionService {
     );
   }
 
-  /**
-   * Sends information to the API to update a subscription
-   * @param subscription
-   */
   patchSubscription(subscription: Subscription) {
-    console.log(subscription);
+
+    // This should be the only data that needs patched
+    const data = {
+      archived: subscription.archived,
+      keywords: subscription.keywords,
+      primary_contact: subscription.primary_contact,
+      dhs_contact_uuid: subscription.dhs_contact_uuid,
+      start_date: subscription.start_date,
+      url: subscription.url,
+      target_email_list_cached_copy: subscription.target_email_list_cached_copy,
+      target_email_list: subscription.target_email_list,
+      sending_profile_name: subscription.sending_profile_name,
+      target_domain: subscription.target_domain,
+      stagger_emails: subscription.stagger_emails,
+      continuous_subscription: subscription.continuous_subscription
+    };
+
     return this.http.patch(
       `${this.settingsService.settings.apiUrl}/api/v1/subscription/${subscription.subscription_uuid}/`,
-      subscription
+      data
     );
   }
 

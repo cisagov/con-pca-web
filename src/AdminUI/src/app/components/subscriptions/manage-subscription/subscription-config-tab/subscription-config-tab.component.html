@@ -263,7 +263,8 @@
         <mat-label>Target Emails</mat-label>
         <textarea
           matInput
-          autosize
+          rows="10"
+          style="overflow:scroll;"
           formControlName="csvText"
           [ngClass]="{ 'is-invalid': submitted && f.csvText.errors }"
           (change)="targetsChanged($event)"
@@ -365,11 +366,7 @@
           </button>
           <button
             mat-raised-button
-            *ngIf="
-              (subscription?.status == 'In Progress' ||
-                subscription?.status == 'Queued') &&
-              !subscription?.archived
-            "
+            *ngIf="subscription?.status != 'stopped' && pageMode != 'CREATE'"
             color="accent"
             (click)="stopSubscription()"
             [disabled]="processing"
