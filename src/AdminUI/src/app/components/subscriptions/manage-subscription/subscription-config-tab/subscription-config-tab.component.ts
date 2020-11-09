@@ -513,8 +513,13 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
             this.subscriptionSvc
               .restartSubscription(this.subscription.subscription_uuid)
               .subscribe(
-                (resp: Subscription) => {
-                  this.subscription = resp;
+                () => {
+                  this.subscriptionSvc
+                    .getSubscription(this.subscription.subscription_uuid)
+                    .subscribe(
+                      (resp: Subscription) => {
+                    this.subscription = resp;
+                  });
                   this.enableDisableFields();
                   this.processing = false;
                   this.dialog.open(AlertComponent, {
@@ -558,8 +563,13 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         this.subscriptionSvc
           .stopSubscription(this.subscription.subscription_uuid)
           .subscribe(
-            (resp: Subscription) => {
-              this.subscription = resp;
+            () => {
+              this.subscriptionSvc
+                .getSubscription(this.subscription.subscription_uuid)
+                .subscribe(
+                  (resp: Subscription) => {
+                this.subscription = resp;
+              });
               this.enableDisableFields();
               this.processing = false;
               this.dialog.open(AlertComponent, {
