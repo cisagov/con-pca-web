@@ -123,9 +123,9 @@ export class SubscriptionService {
    * Restarts a subscription
    * @param uuid The uuid of the subscription to restart.
    */
-  restartSubscription(uuid: string) {
+  restartSubscription(uuid: string, continuousSubscription: boolean) {
     return this.http.get(
-      `${this.settingsService.settings.apiUrl}/api/v1/subscription/restart/${uuid}`
+      `${this.settingsService.settings.apiUrl}/api/v1/subscription/restart/${uuid}?continuous_subscription=${continuousSubscription}`
     );
   }
 
@@ -144,7 +144,8 @@ export class SubscriptionService {
       sending_profile_name: subscription.sending_profile_name,
       target_domain: subscription.target_domain,
       stagger_emails: subscription.stagger_emails,
-      continuous_subscription: subscription.continuous_subscription
+      continuous_subscription: subscription.continuous_subscription,
+      tasks: subscription.tasks
     };
 
     return this.http.patch(
@@ -211,9 +212,9 @@ export class SubscriptionService {
     );
   }
 
-  public startSubscription(subscription_uuid: string) {
+  public startSubscription(subscription_uuid: string, continuousSubscription: boolean) {
     return this.http.get(
-      `${this.settingsService.settings.apiUrl}/api/v1/subscription/restart/${subscription_uuid}/`
+      `${this.settingsService.settings.apiUrl}/api/v1/subscription/restart/${subscription_uuid}?continuous_subscription=${continuousSubscription}`
     );
   }
 

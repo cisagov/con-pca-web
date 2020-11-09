@@ -276,13 +276,28 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     this.f.sendingProfile.setValue(s.sending_profile_name);
     this.f.targetDomain.setValue(s?.target_domain);
     this.f.staggerEmails.setValue(s.stagger_emails);
-    this.f.continuousSubscription.setValue(s.continuous_subscription);
 
+    this.f.continuousSubscription.setValue(this.setContinuousSubscription(s.tasks));
     this.enableDisableFields();
 
     this.customerSvc.getCustomer(s.customer_uuid).subscribe((c: Customer) => {
       this.customer = c;
     });
+  }
+
+  /**
+   *
+   */
+  setContinuousSubscription(tasks: any[]) {
+    var filteredArray = tasks.filter((task) => {
+      return task.message_type === "start_new_cycle";
+    });
+    if (filteredArray.length < 1){
+      return false;
+    } else {
+      return true;
+    }
+
   }
 
   /**
@@ -519,7 +534,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
           .subscribe((x) => {
             // restart
             this.subscriptionSvc
-              .restartSubscription(this.subscription.subscription_uuid)
+              .restartSubscription(this.subscription.subscription_uuid, this.subscription.continuous_subscription)
               .subscribe(
                 (resp: Subscription) => {
                   this.subscription = resp;
