@@ -130,6 +130,7 @@ export class SubscriptionService {
   }
 
   patchSubscription(subscription: Subscription) {
+
     // This should be the only data that needs patched
     const data = {
       archived: subscription.archived,
@@ -142,7 +143,8 @@ export class SubscriptionService {
       target_email_list: subscription.target_email_list,
       sending_profile_name: subscription.sending_profile_name,
       target_domain: subscription.target_domain,
-      stagger_emails: subscription.stagger_emails
+      stagger_emails: subscription.stagger_emails,
+      continuous_subscription: subscription.continuous_subscription
     };
 
     return this.http.patch(
@@ -209,9 +211,9 @@ export class SubscriptionService {
     );
   }
 
-  public startSubscription(subscription_uuid: string) {
+  public startSubscription(subscription_uuid: string, continuousSubscription: boolean) {
     return this.http.get(
-      `${this.settingsService.settings.apiUrl}/api/v1/subscription/restart/${subscription_uuid}/`
+      `${this.settingsService.settings.apiUrl}/api/v1/subscription/restart/${subscription_uuid}?continuous_subscription=${continuousSubscription}`
     );
   }
 

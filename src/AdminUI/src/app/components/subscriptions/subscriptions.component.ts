@@ -57,6 +57,7 @@ export class SubscriptionsComponent implements OnInit {
 
   loading = false;
 
+  continuousSubscription = true;
 
   constructor(
     private subscriptionSvc: SubscriptionService,
@@ -154,14 +155,14 @@ export class SubscriptionsComponent implements OnInit {
   public startSubscription(row: any) {
     this.dialogRefConfirm = this.dialog.open(ConfirmComponent, { disableClose: false });
     this.dialogRefConfirm.componentInstance.confirmMessage =
-      `This will start subscription '${row.subscription.name}'.  Do you want to continue?`;
+      `This will start subscription '${row.subscription.name}'. Do you want to continue? Note: This will Enable Continuous Subscription cycles.`;
     this.dialogRefConfirm.componentInstance.title = 'Confirm Start';
 
 
     this.dialogRefConfirm.afterClosed().subscribe(result => {
       if (result) {
         this.setSpinner(row.subscription.subscription_uuid, true);
-        this.subscriptionSvc.startSubscription(row.subscription.subscription_uuid).subscribe((data: any) => {
+        this.subscriptionSvc.startSubscription(row.subscription.subscription_uuid, this.continuousSubscription).subscribe((data: any) => {
             this.setSpinner(row.subscription.subscription_uuid, false);
             this.refresh();
           });

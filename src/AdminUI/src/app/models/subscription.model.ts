@@ -57,6 +57,8 @@ export class Subscription {
   sending_profile_name: string;
   target_domain: string;
   stagger_emails: boolean;
+  continuous_subscription: boolean;
+
 }
 
 /**
