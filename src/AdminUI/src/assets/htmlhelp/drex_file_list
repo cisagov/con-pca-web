@@ -26,6 +26,7 @@ de_search\0xu0043.json
 de_search\0xu0042.json
 de_search\0xu0041.json
 de_search\0xu0039.json
+de_search\0xu0038.json
 de_search\0xu0036.json
 de_search\0xu0035.json
 de_search\0xu0034.json
@@ -68,6 +69,8 @@ drex_dhs_contacts_custom.png
 dhs_contacts.htm
 drex_user_admin_custom.png
 user_admin.htm
+drex_tags_custom.png
+tags.htm
 drex_create_new_recommendation_custom.png
 create_new_recommendation.htm
 drex_recommendations_custom_3.png
@@ -129,6 +132,8 @@ drex_create_subscription_custom.png
 create_subscription.htm
 drex_subscriptions_1_custom.png
 subscriptions_1.htm
+drex_con_pca_workflow_custom_3.png
+drex_con_pca_workflow_custom_2.png
 drex_con_pca_workflow_custom.png
 con_pca_workflow.htm
 drex_overview_control_5.png
