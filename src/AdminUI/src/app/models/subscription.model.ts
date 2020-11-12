@@ -37,7 +37,7 @@ export class Subscription {
   active: boolean;
   archived: boolean;
   customer_uuid: string;
-  cycles: [];
+  cycles: Cycle[];
   keywords: string;
   lub_timestamp: Date;
   manually_stopped: boolean;
@@ -86,4 +86,16 @@ export class Task {
   executed: boolean;
   executed_date: Date;
   error: string;
+}
+
+export class Cycle {
+  cycle_uuid: string;
+  start_date: Date;
+  end_date: Date;
+  active: boolean;
+  campaigns_in_cycle: string[];
+  phish_results: any[];
+  phish_results_dirty: boolean;
+  override_total_reported: Number;
+  total_targets: Number;
 }

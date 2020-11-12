@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Customer, Contact } from '../models/customer.model';
-import { Subscription } from '../models/subscription.model';
-import { CustomerService } from './customer.service';
+import { Cycle, Subscription } from '../models/subscription.model';
 import { Template } from '../models/template.model';
 import { SettingsService } from './settings.service';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { start } from 'repl';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +13,7 @@ export class SubscriptionService {
 
   subscription: Subscription;
   subBehaviorSubject = new BehaviorSubject<Subscription>(new Subscription());
-  cycleBehaviorSubject = new BehaviorSubject<any>({});
+  cycleBehaviorSubject = new BehaviorSubject<Cycle>(new Cycle());
   customer: Customer;
   customers: Array<Customer> = [];
   cameFromSubscription: boolean;
@@ -48,7 +46,7 @@ export class SubscriptionService {
     this.cycleBehaviorSubject.next(cycle);
   }
   public clearCycleBehaviorSubject() {
-    this.cycleBehaviorSubject = new BehaviorSubject<any>({});
+    this.cycleBehaviorSubject = new BehaviorSubject<Cycle>(new Cycle());
   }
 
   /**

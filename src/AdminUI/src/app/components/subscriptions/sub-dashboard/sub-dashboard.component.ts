@@ -2,6 +2,7 @@ import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { ChartsService } from 'src/app/services/charts.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { humanTiming } from 'src/app/helper/utilities';
+import { Cycle } from 'src/app/models/subscription.model';
 
 @Component({
   selector: 'app-sub-dashboard',
@@ -40,7 +41,7 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
   schemeSent = {
     domain: ['#336600', '#eeeeee'],
   };
-  selected_cycle = {};
+  selected_cycle: Cycle;
 
   temp_angular_subs = [];
 
@@ -62,17 +63,17 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
       this.subscriptionSvc.getSubBehaviorSubject().subscribe((data) => {
         if ('subscription_uuid' in data && !this.subscriptionUuid) {
           this.subscriptionUuid = data.subscription_uuid;
-          this.numberTemplatesInUse = data.templates_selected_uuid_list.length;
           this.dataAvailable = true;
           this.drawGraphs();
         }
       })
     );
     this.temp_angular_subs.push(
-      this.subscriptionSvc.getCycleBehaviorSubject().subscribe((data) => {
+      this.subscriptionSvc.getCycleBehaviorSubject().subscribe((data: Cycle) => {
         this.selected_cycle = data;
         if (Object.keys(data).length > 0) {
           this.cycle_selected = true;
+          this.numberTemplatesInUse = data.campaigns_in_cycle.length;
         }
         this.drawGraphs();
       })
@@ -125,7 +126,7 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
       this.chartsSvc
         .getStatisticsReport(
           this.subscriptionUuid,
-          this.selected_cycle['cycle_uuid']
+          this.selected_cycle.cycle_uuid
         )
         .subscribe((stats: any) => {
           this.chart.chartResults = this.chartsSvc.formatStatistics(stats);

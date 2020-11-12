@@ -6,6 +6,7 @@ import {
   Subscription,
   GoPhishCampaignModel,
   TimelineItem,
+  Cycle,
 } from 'src/app/models/subscription.model';
 import {
   FormGroup,
@@ -32,7 +33,7 @@ export class SubscriptionStatsTab implements OnInit {
 
   subscription: Subscription;
   subscription_uuid: string;
-  selectedCycle: any;
+  selectedCycle: Cycle;
   timelineItems: any[] = [];
   reportedStatsForm: FormGroup;
   invalidDateTimeObject: String;
@@ -104,13 +105,13 @@ export class SubscriptionStatsTab implements OnInit {
         //@ts-ignore
         let selectedCycleIndex = 0
         this.selectedCycle = this.subscription.cycles[selectedCycleIndex];
-        this.subscriptionSvc.setCycleBehaviorSubject(this.selectedCycle)
+        this.subscriptionSvc.setCycleBehaviorSubject(this.selectedCycle);
         this.setReportsForCycle(this.selectedCycle);
       }
     });
   }
 
-  setReportsForCycle(cycle = null) {
+  setReportsForCycle(cycle: Cycle = null) {
     if(!this.reportsData){
       return
     }
@@ -269,9 +270,9 @@ export class SubscriptionStatsTab implements OnInit {
   }
   saveReports(addRemoveList) {
     if (this.reportedStatsForm.valid) {
-      addRemoveList['start_date'] = this.selectedCycle['start_date'];
-      addRemoveList['end_date'] = this.selectedCycle['end_date'];
-      addRemoveList["cycle_uuid"] = this.selectedCycle["cycle_uuid"]
+      addRemoveList['start_date'] = this.selectedCycle.start_date;
+      addRemoveList['end_date'] = this.selectedCycle.end_date;
+      addRemoveList["cycle_uuid"] = this.selectedCycle.cycle_uuid;
       this.subscriptionSvc
         .postReportValuesForSubscription(addRemoveList, this.subscription_uuid)
         .subscribe(
