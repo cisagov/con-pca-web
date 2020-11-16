@@ -15,7 +15,7 @@
     "@swimlane/ngx-charts": "^14.0.0",
     "aws-amplify": "^3.0.18",
     "aws-amplify-angular": "^5.0.25",
-    "bootstrap": "^4.5.0",
+    "bootstrap": "^4.5.3",
     "codyhouse-framework": "^2.7.3",
     "font-awesome": "^4.7.0",
     "guid-typescript": "^1.0.9",
