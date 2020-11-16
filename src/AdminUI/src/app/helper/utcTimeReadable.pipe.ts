@@ -4,7 +4,7 @@ import { AppSettings } from 'src/app/AppSettings';
 
 @Pipe({ name: 'UTCtoReadableTime' })
 export class UTCtoReadableTime extends DatePipe implements PipeTransform {
-  transform(value: string): string {
+  transform(value: string, args?: any): any {
     return super.transform(new Date(value), AppSettings.DATE_FORMAT);
   }
 }

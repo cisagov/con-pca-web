@@ -7,7 +7,7 @@ services:
     image: pca-web-prod:1.0
     restart: unless-stopped
     ports:
-      - "4200:443"
+      - "4200:80"
     networks:
       - frontend
       - backend

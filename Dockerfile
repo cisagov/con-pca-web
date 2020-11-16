@@ -13,12 +13,6 @@ RUN npm install -g @angular/cli
 
 COPY ./src/AdminUI .
 
-RUN apt install openssl
-
-RUN mkdir /certs
-
-RUN openssl req -x509 -nodes -days 365 -subj "/C=CA/ST=ID/O=INL/CN=localhost" -newkey rsa:2048 -keyout /certs/server.key -out /certs/server.crt
-
 COPY ./etc/default.conf /etc/nginx/conf.d/default.conf
 COPY ./etc/mime.types /etc/nginx/mime.types
 
