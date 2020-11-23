@@ -14,7 +14,7 @@
     "@kolkov/angular-editor": "1.1.4",
     "@swimlane/ngx-charts": "^16.0.0",
     "aws-amplify": "^3.3.8",
-    "aws-amplify-angular": "^5.0.37",
+    "aws-amplify-angular": "^5.0.38",
     "bootstrap": "^4.5.3",
     "codyhouse-framework": "^2.8.1",
     "font-awesome": "^4.7.0",
