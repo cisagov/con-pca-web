@@ -462,7 +462,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
       const controls = this.currentTemplateFormGroup.controls;
       for (const name in controls) {
         if (controls[name].invalid) {
-          let nameIng = 'Tempalte ' + name.replace(/template/g, '');
+          let nameIng = 'Template ' + name.replace(/template/g, '');
           invalid.push(nameIng);
         }
       }
