@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { Tags } from 'src/app/models/tags.model';
 import { TagService } from 'src/app/services/tag.service';
 
@@ -8,31 +10,39 @@ import { TagService } from 'src/app/services/tag.service';
   selector: 'app-tag-selection',
   templateUrl: './tag-selection.component.html',
 })
-export class TagSelectionComponent implements OnInit {
-  /**
-   * Constructor.
-   * @param dialogRef
-   * @param templateManagerSvc
-   */
+export class TagSelectionComponent implements OnInit, AfterViewInit {
   tags: Tags[];
+
+  displayedColumns = [
+    'tag',
+    'description'
+  ];
+  tagsData = new MatTableDataSource<Tags>();
+  searchInput = '';
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor(
     public dialogRef: MatDialogRef<TagSelectionComponent>,
     public tagService: TagService
   ) {}
 
-  /**
-   *
-   */
   ngOnInit(): void {
     this.tagService.getAllTags().subscribe((result: Tags[]) => {
       this.tags = result;
+
+      this.tagsData.data = result;
+      this.tagsData.sort = this.sort;
     });
   }
 
-  /**
-   * Closes the dialog.
-   */
+  ngAfterViewInit(): void {
+    this.tagsData.sort = this.sort;
+  }
+
+  public filterTags = (value: string) => {
+    this.tagsData.filter = value.trim().toLocaleLowerCase();
+  }
+
   onCancelClick() {
     this.dialogRef.close();
   }
