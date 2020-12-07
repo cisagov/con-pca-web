@@ -10,7 +10,7 @@
     "@angular/platform-browser": "^11.0.0",
     "@angular/platform-browser-dynamic": "^11.0.0",
     "@angular/router": "^11.0.0",
-    "@aws-amplify/ui-angular": "^0.4.11",
+    "@aws-amplify/ui-angular": "^0.4.14",
     "@kolkov/angular-editor": "1.1.4",
     "@swimlane/ngx-charts": "^16.0.0",
     "aws-amplify": "^3.3.8",
