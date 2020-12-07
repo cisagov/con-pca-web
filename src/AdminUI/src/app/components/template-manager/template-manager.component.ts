@@ -654,8 +654,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
     sanitize: false,
     toolbarPosition: 'top',
     toolbarHiddenButtons: [
-      ['bold', 'italic'],
-      ['fontSize', 'insertVideo'],
+      ['insertVideo'],
     ],
   };
 

@@ -1,23 +1,42 @@
-<h3>Select a Tag to Insert</h3>
+<div style="width: 75vw">
+  <h3>Select a Tag to Insert</h3>
 
-<div style="max-height: 50vh; overflow: auto;">
-  <table class="table-1">
-    <tr
-      *ngFor="let t of tags"
-      class="cursor-pointer"
-      (click)="dialogRef.close(t.tag)"
-    >
-      <td>
-        {{ t.tag }}
-      </td>
-      <td>
-        {{ t.description }}
-      </td>
-    </tr>
-  </table>
-</div>
-<div class="mt-3 d-flex flex-row justify-content-end">
-  <button mat-flat-button color="basic" (click)="onCancelClick()">
-    Cancel
-  </button>
+  <mat-form-field class="d-flex flex-column w-100" appearance = "outline">
+    <mat-label>Search</mat-label>
+    <input
+      [(ngModel)]="searchInput"
+      (keyup)="filterTags($event.target.value)"
+      matInput
+      placeholder="Search"
+    />
+  </mat-form-field>
+
+  <div style="max-height: 50vh; overflow: auto;">
+    <div class="col p-0 w-100">
+      <mat-table [dataSource]="tagsData" matSort>
+        <ng-container matColumnDef="tag">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Tag</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{ row.tag }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="description">
+          <mat-header-cell *matHeaderCellDef mat-sort-header
+            >description</mat-header-cell
+          >
+          <mat-cell *matCellDef="let row">{{ row.description }}</mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row
+          class="table-row cursor-pointer"
+          *matRowDef="let row; columns: displayedColumns"
+          (click)="dialogRef.close(row.tag)"
+        ></mat-row>
+      </mat-table>
+    </div>
+  </div>
+  <div class="mt-3 d-flex flex-row justify-content-end">
+    <button mat-flat-button color="basic" (click)="onCancelClick()">
+      Cancel
+    </button>
+  </div>
 </div>
