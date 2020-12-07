@@ -393,8 +393,7 @@ export class LandingPagesManagerComponent implements OnInit {
     sanitize: true,
     toolbarPosition: 'top',
     toolbarHiddenButtons: [
-      ['bold', 'italic'],
-      ['fontSize', 'insertVideo'],
+      ['insertVideo'],
     ],
   };
 }
