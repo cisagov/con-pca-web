@@ -18,8 +18,6 @@ export class LandingPagesComponent implements OnInit , AfterViewInit {
         search_input = '';
         @ViewChild(MatSort) sort: MatSort;
 
-        showRetired: boolean = false;
-
         loading = true;
 
         constructor(
@@ -37,7 +35,7 @@ export class LandingPagesComponent implements OnInit , AfterViewInit {
         refresh() {
           this.loading = true;
           this.templateSvc
-            .getAlllandingpages(this.showRetired)
+            .getAlllandingpages()
             .subscribe((data: any) => {
               this.landingPageData.data = data as Landing_Page[];
               this.landingPageData.sort = this.sort;
@@ -55,14 +53,4 @@ export class LandingPagesComponent implements OnInit , AfterViewInit {
         public editTemplate(template: Landing_Page) {
           this.router.navigate(['/landingpagesmanager', template.landing_page_uuid]);
         }
-
-        onRetiredToggle() {
-          if (this.displayedColumns.includes('retired')) {
-            this.displayedColumns.pop();
-          } else {
-            this.displayedColumns.push('retired');
-          }
-          this.refresh();
-        }
-
 }

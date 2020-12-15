@@ -13,7 +13,7 @@
     </mat-form-field>
 
     <!-- CREATE TEMPLATE -->
-    <div class="d-inline-flex flex-column ml-2">
+    <div class="d-inline-flex flex-column ml-2 mt-2">
       <button
         mat-raised-button
         color="primary"
@@ -21,14 +21,6 @@
       >
         New Landing Page
       </button>
-
-      <mat-slide-toggle
-        class="mt-3 ml-1 mb-2"
-        [(ngModel)]="showRetired"
-        (change)="onRetiredToggle()"
-      >
-        Show Retired
-      </mat-slide-toggle>
     </div>
   </div>
 
@@ -70,15 +62,6 @@
           >Created By</mat-header-cell
         >
         <mat-cell *matCellDef="let row">{{ row.created_by }}</mat-cell>
-      </ng-container>
-      <!-- RETIRED -->
-      <ng-container matColumnDef="retired">
-        <mat-header-cell *matHeaderCellDef mat-sort-header
-          >Retired</mat-header-cell
-        >
-        <mat-cell *matCellDef="let row"
-          ><i *ngIf="row.retired" class="fa fa-check"></i
-        ></mat-cell>
       </ng-container>
       <ng-container matColumnDef="select">
         <mat-header-cell [ngClass]="'edit-column'" *matHeaderCellDef

@@ -183,7 +183,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
     );
 
     this.landingPageSvc
-      .getAlllandingpages(false, true)
+      .getAlllandingpages(true)
       .subscribe((data: any) => {
         this.pagesList = data;
       });
