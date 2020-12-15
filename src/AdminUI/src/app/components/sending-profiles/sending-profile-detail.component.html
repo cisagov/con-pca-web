@@ -3,7 +3,7 @@
 <form [formGroup]="profileForm">
   <div style="max-height: 70vh; overflow-y: auto; overflow-x: hidden;">
     <mat-form-field appearance="outline" class="w-100">
-      <mat-label>Name</mat-label>
+      <mat-label>Name*</mat-label>
       <input formControlName="name" matInput [ngClass]="{ 'is-invalid': submitted && f.name.errors }" />
       <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
         <div *ngIf="f.name.errors.required">Profile name is required</div>
@@ -16,7 +16,7 @@
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="w-100">
-      <mat-label>From</mat-label>
+      <mat-label>From*</mat-label>
       <input formControlName="from" matInput
        [ngClass]="{ 'is-invalid': submitted && f.from.errors }" />
       <div *ngIf="submitted && f.from.errors" class="invalid-feedback">
@@ -28,7 +28,7 @@
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="w-100">
-      <mat-label>Host</mat-label>
+      <mat-label>Host*</mat-label>
       <input formControlName="host" matInput [ngClass]="{ 'is-invalid': submitted && f.host.errors }" />
       <div *ngIf="submitted && f.host.errors" class="invalid-feedback">
         <div *ngIf="f.host.errors.required">Host is required</div>
