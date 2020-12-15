@@ -167,11 +167,6 @@ export class LandingPagesManagerComponent implements OnInit {
   //Get Template model from the form group
   getTemplateFromForm(form: FormGroup) {
     // form fields might not have the up-to-date content that the angular-editor has
-    form.controls['templateHTML'].setValue(
-      this.angularEditorEle.textArea.nativeElement.innerHTML
-    );
-
-    let formTemplate = new Landing_Page(form.value);
     let saveTemplate = new Landing_Page({
       landing_page_uuid: form.controls['landingPageUUID'].value,
       name: form.controls['templateName'].value,
