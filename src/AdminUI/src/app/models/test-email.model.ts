@@ -2,11 +2,11 @@
 //note that the template must be saved
 
 import { SendingProfile } from './sending-profile.model';
-import { GoPhishTemplate } from './template.model';
+import { Template } from './template.model';
 
 //before a test email can be sent
 export class TestEmail {
-    template: GoPhishTemplate;//template name to be used in the test
+    template: Template;
     first_name: string;
     last_name: string;
     email: string;

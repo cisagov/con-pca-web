@@ -747,7 +747,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
     }
 
     //need to go get the sending profile from gophish
-    let tmp_template = this.getGophishTemplateFromForm(
+    let tmp_template = this.getTemplateFromForm(
       this.currentTemplateFormGroup
     );
     let email_for_test: TestEmail = {
