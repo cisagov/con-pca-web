@@ -9,7 +9,6 @@ import { Subscription } from 'rxjs';
 import $ from 'jquery';
 import 'src/app/helper/csvToArray';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { StopTemplateDialogComponent } from '../template-manager/stop-template-dialog/stop-template-dialog.component';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
 import { AppSettings } from 'src/app/AppSettings';
@@ -44,6 +43,7 @@ export class LandingPagesManagerComponent implements OnInit {
   matchTemplateName = new MyErrorStateMatcher();
   matchTemplateHTML = new MyErrorStateMatcher();
   IsDefaultTemplate: boolean = false;
+  angular_editor_mode: String = 'WYSIWYG';
 
   //RxJS Subscriptions
   subscriptions = Array<Subscription>();
@@ -129,6 +129,7 @@ export class LandingPagesManagerComponent implements OnInit {
 
   ngAfterViewInit() {
     this.configAngularEditor();
+    $('#toggleEditorMode-').on('mousedown', this.toggleEditorMode.bind(this));
   }
 
   //Select a template based on template_uuid, returns the full template
@@ -167,10 +168,17 @@ export class LandingPagesManagerComponent implements OnInit {
   //Get Template model from the form group
   getTemplateFromForm(form: FormGroup) {
     // form fields might not have the up-to-date content that the angular-editor has
+    form.controls['templateHTML'].setValue(
+      this.angularEditorEle.textArea.nativeElement.innerHTML
+    );
+    let htmlValue = this.replaceEscapeSequence(
+      form.controls['templateHTML'].value
+    );
+
     let saveTemplate = new Landing_Page({
       landing_page_uuid: form.controls['landingPageUUID'].value,
       name: form.controls['templateName'].value,
-      html: form.controls['templateHTML'].value,
+      html: htmlValue,
       is_default_template: form.controls['IsDefaultTemplate'].value,
     });
     if (saveTemplate.is_default_template === undefined) {
@@ -179,6 +187,20 @@ export class LandingPagesManagerComponent implements OnInit {
 
     saveTemplate.landing_page_uuid = this.templateId;
     return saveTemplate;
+  }
+
+  replaceEscapeSequence(value: string) {
+    let rval = value.split('&lt;%').join('<%');
+    rval = rval.split('%&gt;').join('%>');
+    return rval;
+  }
+
+  toggleEditorMode(event) {
+    if ($('#justifyLeft-').is(':disabled')) {
+      this.angular_editor_mode = 'WYSIWYG';
+    } else {
+      this.angular_editor_mode = 'Text';
+    }
   }
 
   /**
@@ -195,6 +217,11 @@ export class LandingPagesManagerComponent implements OnInit {
     // mark all as touched to ensure formgroup validation checks all fields on new entry
     this.currentTemplateFormGroup.markAllAsTouched();
     if (this.currentTemplateFormGroup.valid) {
+      //check editor mode, change to wysiwg mode if in html text mode
+      if (this.angular_editor_mode == 'Text') {
+        $('#toggleEditorMode-').trigger('click');
+        this.angular_editor_mode = 'WYSIWYG';
+      }
       let templateToSave = this.getTemplateFromForm(
         this.currentTemplateFormGroup
       );
