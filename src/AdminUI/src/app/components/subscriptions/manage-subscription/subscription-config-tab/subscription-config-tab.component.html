@@ -286,7 +286,7 @@
           *ngIf="submitted && f.csvText.errors?.invalidTargetCsv"
           class="invalid-feedback"
         >
-          All target lines must have all parts
+          All target lines must have an email and contain only 4 parts.
         </mat-error>
         <mat-error
           *ngIf="f.csvText.errors?.emailDoesntMatchDomain"

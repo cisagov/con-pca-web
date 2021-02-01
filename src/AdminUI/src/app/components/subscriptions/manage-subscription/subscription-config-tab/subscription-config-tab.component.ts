@@ -800,10 +800,8 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         return { invalidTargetCsv: true };
       }
 
-      for (const part of parts) {
-        if (part.trim() === '') {
-          return { invalidTargetCsv: true };
-        }
+      if (parts[0].trim() === '') {
+        return { invalidTargetCsv: true };
       }
 
       if (!!parts[0] && !exprEmail.test(String(parts[0]).toLowerCase())) {
@@ -855,11 +853,8 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         if (parts.length !== 4) {
           return { invalidTargetCsv: true };
         }
-
-        for (const part of parts) {
-          if (part.trim() === '') {
-            return { invalidTargetCsv: true };
-          }
+        if (parts[0].trim() == '') {
+          return { invalidTargetCsv: true };
         }
 
         if (!!parts[0] && !exprEmail.test(String(parts[0]).toLowerCase())) {
