@@ -811,8 +811,8 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
       }
 
       // Generate Sender
-      const senderArray = fromAddress.split('@')[0].split('<');
-      this.fromSender = senderArray[senderArray.length - 1].trim();
+      const senderArray = fromAddress.split('@')[0].split(' ');
+      this.fromSender = senderArray[senderArray.length - 1].trim().replace('<', '');
       if (!this.fromSender) {
         this.fromSender = 'sender';
       }
