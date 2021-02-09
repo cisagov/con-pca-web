@@ -67,7 +67,7 @@
         </div>
         <div>
           <mat-form-field appearance="outline">
-            <mat-label>DHS Contact</mat-label>
+            <mat-label>CISA Contact</mat-label>
             <mat-select
               formControlName="dhsContact"
               (selectionChange)="changeDhsContact($event)"
@@ -84,7 +84,7 @@
               *ngIf="submitted && f.dhsContact.errors?.required"
               class="invalid-feedback"
             >
-              DHS contact must be selected
+              CISA contact must be selected
             </mat-error>
           </mat-form-field>
         </div>
