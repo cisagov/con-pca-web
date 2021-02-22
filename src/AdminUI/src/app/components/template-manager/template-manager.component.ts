@@ -10,7 +10,6 @@ import {
   FormControl,
   Validators,
   FormGroup,
-  RangeValueAccessor,
 } from '@angular/forms';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -23,7 +22,7 @@ import {
   GoPhishTemplate,
 } from 'src/app/models/template.model';
 import { Subscription as PcaSubscription } from 'src/app/models/subscription.model';
-import { from, Subscription } from 'rxjs';
+import {  Subscription } from 'rxjs';
 import $ from 'jquery';
 import 'src/app/helper/csvToArray';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -45,11 +44,9 @@ import { SendingProfileService } from 'src/app/services/sending-profile.service'
 import { TestEmail } from 'src/app/models/test-email.model';
 import {
   DomSanitizer,
-  SafeResourceUrl,
-  SafeUrl,
 } from '@angular/platform-browser';
-import { Variable } from '@angular/compiler/src/render3/r3_ast';
 import { filterSendingProfiles } from '../../helper/utilities';
+import { ImportTemplateDialogComponent } from './import-template-dialog/import-template-dialog.component';
 
 @Component({
   selector: 'app-template-manager',
@@ -852,5 +849,28 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
     } else {
       this.canStop = false;
     }
+  }
+
+  importEmail() {
+    const dialogRef = this.dialog.open(ImportTemplateDialogComponent, {
+      disableClose: false,
+      width: '80%'
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        if (this.angular_editor_mode === 'Text') {
+          $('#toggleEditorMode-').trigger('click');
+          this.angular_editor_mode = 'WYSIWYG';
+        }
+        this.currentTemplateFormGroup.patchValue({templateSubject: result.subject});
+        if (result.html) {
+          this.angularEditorEle.textArea.nativeElement.innerHTML = result.html;
+          this.editorConfig.placeholder = null;
+        } else if (result.text) {
+          this.angularEditorEle.textArea.nativeElement.innerText = result.text;
+          this.editorConfig.placeholder = null;
+        }
+      }
+    });
   }
 }

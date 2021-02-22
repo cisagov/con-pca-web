@@ -116,4 +116,13 @@ export class TemplateManagerService {
       `${this.settingsService.settings.apiUrl}/api/v1/template/stop/${template.template_uuid}/`
     );
   }
+
+  importEmail(content: string, convertLink: boolean) {
+    const url = `${this.settingsService.settings.apiUrl}/api/v1/templates/import/`;
+    const data = {
+      content,
+      convert_link: convertLink,
+    };
+    return this.http.post(url, data);
+  }
 }

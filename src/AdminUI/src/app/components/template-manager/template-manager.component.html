@@ -6,7 +6,7 @@
     >
       <div
         #selectedTemplateTitle
-        class="flex-container flex-row selected-template"
+        class="d-flex flex-row selected-template"
       >
         <mat-form-field
           class="w-100 selected_template_title"
@@ -39,6 +39,11 @@
             Template name may not contain only spaces
           </mat-error>
         </mat-form-field>
+        <div class="d-inline-flex flex-column mt-2 ml-1 mb-2">
+          <button mat-raised-button color="primary" (click)="importEmail()">
+          Import Email
+        </button></div>
+
       </div>
       <div class="d-flex">
         <mat-tab-group
