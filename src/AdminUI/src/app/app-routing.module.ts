@@ -28,6 +28,7 @@ import { AggregateStatsComponent } from './components/user-admin/aggregate-stats
 import { LandingPagesComponent } from './components/landing-pages/landing-pages.component';
 import { LandingPagesManagerComponent } from './components/landing-pages-manager/landing-pages-manager.component';
 import { LandingPageManagerService } from './services/landing-page-manager.service';
+import { UsersComponent } from './components/users/users.component';
 
 const routes: Routes = [
   {
@@ -205,6 +206,12 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     children: [{ path: '', component: TagsManagerComponent }],
   },
+  {
+    path: 'users',
+    component: LayoutMainComponent,
+    canActivate: [AuthGuard],
+    children: [{path: '', component: UsersComponent}]
+  }
 ];
 
 @NgModule({
