@@ -93,6 +93,7 @@ import { YearlyClickRateVsReportRateComponent } from './components/charts/yearly
 import { LandingPagesComponent } from './components/landing-pages/landing-pages.component';
 import { LandingPageManagerService } from './services/landing-page-manager.service';
 import { LandingPagesManagerComponent } from './components/landing-pages-manager/landing-pages-manager.component';
+import { UsersComponent } from './components/users/users.component';
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
   return () => settingsHttpService.initializeApp();
@@ -158,6 +159,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     YearlyClickRateVsReportRateComponent,
     LandingPagesComponent,
     LandingPagesManagerComponent,
+    UsersComponent,
   ],
   imports: [
     BrowserModule,
