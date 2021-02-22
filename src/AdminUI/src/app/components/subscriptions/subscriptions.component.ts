@@ -45,7 +45,6 @@ export class SubscriptionsComponent implements OnInit {
     'customerName',
     'startDate',
     'lastUpdated',
-    'select'
   ];
 
 
@@ -53,11 +52,8 @@ export class SubscriptionsComponent implements OnInit {
   showArchived = false;
 
   dateFormat = AppSettings.DATE_FORMAT;
-  spinnerMap = new Map<string, boolean>();
 
   loading = false;
-
-  continuousSubscription = true;
 
   constructor(
     private subscriptionSvc: SubscriptionService,
@@ -98,7 +94,6 @@ export class SubscriptionsComponent implements OnInit {
               };
               customerSubscriptions.push(customerSubscription);
             });
-          console.log(customerSubscriptions);
           this.dataSource.data = customerSubscriptions as ICustomerSubscription[];
           this.dataSource.sort = this.sort;
           });
@@ -135,55 +130,6 @@ export class SubscriptionsComponent implements OnInit {
     this.refresh();
   }
 
-  public stopSubscription(row: any) {
-    this.dialogRefConfirm = this.dialog.open(ConfirmComponent, { disableClose: false });
-    this.dialogRefConfirm.componentInstance.confirmMessage =
-      `This will stop subscription '${row.subscription.name}'.  Do you want to continue?`;
-    this.dialogRefConfirm.componentInstance.title = 'Confirm Stop';
-
-    this.dialogRefConfirm.afterClosed().subscribe(result => {
-      if (result) {
-        this.subscriptionSvc.stopSubscription(row.subscription.subscription_uuid).subscribe((data: any) => {
-            this.refresh();
-          });
-      }
-      this.dialogRefConfirm = null;
-    });
-  }
-
-
-  public startSubscription(row: any) {
-    this.dialogRefConfirm = this.dialog.open(ConfirmComponent, { disableClose: false });
-    this.dialogRefConfirm.componentInstance.confirmMessage =
-      `This will start subscription '${row.subscription.name}'. Do you want to continue? Note: This will Enable Continuous Subscription cycles.`;
-    this.dialogRefConfirm.componentInstance.title = 'Confirm Start';
-
-
-    this.dialogRefConfirm.afterClosed().subscribe(result => {
-      if (result) {
-        this.setSpinner(row.subscription.subscription_uuid, true);
-        this.subscriptionSvc.startSubscription(row.subscription.subscription_uuid, this.continuousSubscription).subscribe((data: any) => {
-            this.setSpinner(row.subscription.subscription_uuid, false);
-            this.refresh();
-          });
-      }
-
-      this.dialogRefConfirm = null;
-    });
-  }
-
-  public setSpinner(uuid: string, show: boolean) {
-    this.spinnerMap.set(uuid, show);
-  }
-
-
-  public checkSpinner(uuid: string) {
-    return this.spinnerMap.get(uuid);
-  }
-
-  public checkStopped(status: string) {
-    return status.toUpperCase() === 'STOPPED';
-  }
   public editSubscription(row) {
     this.router.navigate(['/view-subscription', row.subscription.subscription_uuid]);
   }
