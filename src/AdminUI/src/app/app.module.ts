@@ -94,6 +94,7 @@ import { LandingPagesComponent } from './components/landing-pages/landing-pages.
 import { LandingPageManagerService } from './services/landing-page-manager.service';
 import { LandingPagesManagerComponent } from './components/landing-pages-manager/landing-pages-manager.component';
 import { UsersComponent } from './components/users/users.component';
+import { ImportTemplateDialogComponent } from './components/template-manager/import-template-dialog/import-template-dialog.component';
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
   return () => settingsHttpService.initializeApp();
@@ -160,6 +161,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     LandingPagesComponent,
     LandingPagesManagerComponent,
     UsersComponent,
+    ImportTemplateDialogComponent,
   ],
   imports: [
     BrowserModule,
