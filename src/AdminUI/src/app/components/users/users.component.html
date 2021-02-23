@@ -3,7 +3,6 @@
       <mat-form-field class="w-100" appearance="outline">
         <mat-label>Search</mat-label>
         <input
-          [(ngModel)]="search_input"
           (keyup)="filterList($event.target.value)"
           matInput
           placeholder="Search"

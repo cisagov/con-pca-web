@@ -4,7 +4,6 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ReportsService } from 'src/app/services/reports.service';
 import { ActivatedRoute } from '@angular/router';
 import { ChartsService } from 'src/app/services/charts.service';
-import { isNumeric } from 'rxjs/util/isNumeric';
 
 @Component({
   selector: 'app-monthly',
@@ -143,7 +142,7 @@ export class MonthlyComponent implements OnInit {
     let output = '';
     const pieces = s.split(' ');
     for (let i = 0; i < pieces.length; i++) {
-      if (isNumeric(pieces[i]) && i > 0) {
+      if (typeof pieces[i] === 'number' && i > 0) {
         output += '<br>' + pieces[i];
       } else {
         output += ' ' + pieces[i];

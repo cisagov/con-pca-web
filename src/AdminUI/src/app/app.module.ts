@@ -14,7 +14,6 @@ import { MaterialModule } from './material.module';
 import { MatSortModule } from '@angular/material/sort';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AmplifyService } from 'aws-amplify-angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SubscriptionsComponent } from './components/subscriptions/subscriptions.component';
 import { LayoutBlankComponent } from './components/layout/layout-blank/layout-blank.component';
@@ -187,7 +186,6 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     ThemeService,
     LayoutMainService,
     HttpClient,
-    AmplifyService,
     UserAuthService,
     [DatePipe],
     { provide: MAT_DIALOG_DATA, useValue: [] },
