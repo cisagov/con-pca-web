@@ -36,7 +36,7 @@ export class DhsPocComponent implements OnInit {
     private subscriptionSvc: SubscriptionService,
     public dialog: MatDialog
   ) {
-    this.layoutSvc.setTitle('DHS Contacts');
+    this.layoutSvc.setTitle('CISA Contacts');
   }
 
   /**
@@ -105,7 +105,7 @@ export class DhsPocComponent implements OnInit {
           disableClose: false,
         });
         this.dialogRefConfirm.componentInstance.confirmMessage = `This will delete '${row.first_name} ${row.last_name}'.  Do you want to continue?`;
-        this.dialogRefConfirm.componentInstance.title = 'Confirm DHS Contact Delete';
+        this.dialogRefConfirm.componentInstance.title = 'Confirm CISA Contact Delete';
 
         this.dialogRefConfirm.afterClosed().subscribe((result) => {
           if (result) {
@@ -120,8 +120,8 @@ export class DhsPocComponent implements OnInit {
         }
           this.dialog.open(AlertComponent, {
             data: {
-              title: 'DHS Contact Deleted',
-              messageText: 'You Cannot Delete a DHS Contact that is currently assined to Subscriptions.',
+              title: 'CISA Contact Deleted',
+              messageText: 'You Cannot Delete a CISA Contact that is currently assined to Subscriptions.',
               invalidData: invalid,
             },
           });

@@ -112,7 +112,7 @@ export class DhsPocDetailComponent implements OnInit {
           this.dialog.open(AlertComponent, {
             data: {
               title: 'Created',
-              messageText: 'DHS Contact was created.',
+              messageText: 'CISA Contact was created.',
             },
           });
           this.dialogRef.close();
@@ -125,7 +125,7 @@ export class DhsPocDetailComponent implements OnInit {
           this.dialog.open(AlertComponent, {
             data: {
               title: 'Creation Error',
-              messageText: 'Could not Create New DHS Contact. Please Check the Form and try again.',
+              messageText: 'Could not Create New CISA Contact. Please Check the Form and try again.',
             },
           });
         }
