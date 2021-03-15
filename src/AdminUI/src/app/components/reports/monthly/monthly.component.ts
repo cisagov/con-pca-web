@@ -11,9 +11,7 @@ import { ChartsService } from 'src/app/services/charts.service';
   styleUrls: ['./monthly.component.scss'],
 })
 export class MonthlyComponent implements OnInit {
-  private routeSub: any;
   subscriptionUuid: string;
-  reportStartDate: Date;
   detail: any;
 
   avgTTFC: any;
@@ -28,9 +26,6 @@ export class MonthlyComponent implements OnInit {
     domain: ['#064875', '#fcbf10', '#007bc1'],
   };
 
-  /**
-   *
-   */
   constructor(
     public sanitizer: DomSanitizer,
     public reportsSvc: ReportsService,
@@ -38,34 +33,21 @@ export class MonthlyComponent implements OnInit {
     private route: ActivatedRoute
   ) {}
 
-  /**
-   *
-   */
   ngOnInit(): void {
-    this.routeSub = this.route.params.subscribe((params) => {
-      this.subscriptionUuid = params.id;
-      const isDate = new Date(params.start_date);
-      const isHeadless = params.isHeadless;
-      let cycle_uuid = null
-      if(params.cycle_uuid)
-        cycle_uuid = params.cycle_uuid
+    this.subscriptionUuid = this.route.snapshot.params.id;
 
-      if (isDate.getTime()) {
-        this.reportStartDate = isDate;
-      } else {
-        console.log('Invalid Date time provided, defaulting to now');
-        this.reportStartDate = new Date();
-      }
+    this.route.params.subscribe((params) => {
+      this.subscriptionUuid = params.id;
+      const cycle_uuid =  params.cycle_uuid;
       this.reportsSvc
         .getMonthlyReport(
           this.subscriptionUuid,
-          this.reportStartDate,
-          isHeadless,
-          cycle_uuid
+          cycle_uuid,
+          params.isHeadless,
         )
         .subscribe((resp) => {
           this.detail = resp;
-          this.sanatize_template_indicators()
+          this.sanatize_template_indicators();
           this.renderReport();
         });
     });
@@ -117,7 +99,7 @@ export class MonthlyComponent implements OnInit {
 
     // draw circles
     this.sentCircleSvg = drawSvgCircle(
-      this.detail.metrics.number_of_email_sent_overall,
+      this.detail.metrics.number_of_emails_sent_overall,
       this.detail.metrics.target_count
     );
     this.openedCircleSvg = drawSvgCircle(

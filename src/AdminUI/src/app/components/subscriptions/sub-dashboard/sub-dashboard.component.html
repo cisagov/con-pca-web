@@ -58,7 +58,6 @@
           <li>Sent: {{ aggregateCounts.sent.count }}</li>
           <li>Opened: {{ aggregateCounts.opened.count }}</li>
           <li>Clicked: {{ aggregateCounts.clicked.count }}</li>
-          <li>Submitted: {{ aggregateCounts.submitted.count }}</li>
           <li>Reported: {{ aggregateCounts.reported.count }}</li>
         </ul>
       </div>
@@ -66,8 +65,8 @@
         Template Deception Breakdown:
         <ul>
           <li *ngFor="let campaign of campaignsDetails">
-            Deception Score: {{ campaign.template_details.deception_score }} -
-            Template Subject: <a [routerLink]="['/templatemanager', campaign.template_details.template_uuid]">{{ campaign.template_details.subject }}</a>
+            Deception Score: {{ campaign.template.deception_score }} -
+            Template Subject: <a [routerLink]="['/templatemanager', campaign.template.template_uuid]">{{ campaign.template.subject }}</a>
           </li>
         </ul>
       </div>

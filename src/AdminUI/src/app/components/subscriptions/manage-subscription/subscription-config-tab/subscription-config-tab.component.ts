@@ -307,7 +307,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
   }
 
   /**
-   * Gets all known DHS contacts from the API.
+   * Gets all known CISA contacts from the API.
    */
   loadDhsContacts() {
     this.subscriptionSvc.getDhsContacts().subscribe((data: any) => {

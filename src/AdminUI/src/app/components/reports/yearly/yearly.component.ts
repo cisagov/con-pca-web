@@ -9,9 +9,7 @@ import { ReportsService } from 'src/app/services/reports.service';
   styleUrls: ['./yearly.component.scss'],
 })
 export class YearlyComponent implements OnInit {
-  private routeSub: any;
   subscriptionUuid: string;
-  reportStartDate: Date;
   detail: any;
 
   improvingTrend = false;
@@ -19,41 +17,27 @@ export class YearlyComponent implements OnInit {
 
   dateFormat = AppSettings.DATE_FORMAT;
 
-  /**
-   *
-   */
   constructor(
     public reportsSvc: ReportsService,
     private route: ActivatedRoute
   ) {}
 
-  /**
-   *
-   */
   ngOnInit(): void {
-    this.routeSub = this.route.params.subscribe((params) => {
+    this.route.params.subscribe((params) => {
       this.subscriptionUuid = params.id;
-      const isDate = new Date(params.start_date);
       const isHeadless = params.isHeadless;
+      const cycleUuid = params.cycle_uuid;
 
-      if (isDate.getTime()) {
-        this.reportStartDate = isDate;
-      } else {
-        console.log('Invalid Date time provided, defaulting to now');
-        this.reportStartDate = new Date();
-      }
       this.reportsSvc
         .getYearlyReport(
           this.subscriptionUuid,
-          this.reportStartDate,
+          cycleUuid,
           isHeadless
         )
         .subscribe(
           (resp) => {
             this.detail = resp;
-            console.log(this.detail)
-            this.detail.cycles = this.detail.cycles.sort((a,b) => (a.increment > b.increment) ? 1 : -1)
-            console.log(this.detail)
+            this.detail.cycles = this.detail.cycles.sort((a, b) => (a.increment > b.increment) ? 1 : -1);
             this.renderReport();
           },
           (error) => {
@@ -64,8 +48,5 @@ export class YearlyComponent implements OnInit {
     });
   }
 
-  /**
-   *
-   */
   renderReport() {}
 }

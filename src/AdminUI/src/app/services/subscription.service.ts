@@ -173,7 +173,7 @@ export class SubscriptionService {
   }
 
   /**
-   * Patches the subscription with the new DHS contact.
+   * Patches the subscription with the new CISA contact.
    */
   changeDhsContact(subscriptUuid: string, contactUuid: string) {
     const c = { dhs_contact_uuid: contactUuid };
@@ -224,7 +224,7 @@ export class SubscriptionService {
   }
 
   /**
-   * Returns a list of DHS contacts.
+   * Returns a list of CISA contacts.
    */
   public getDhsContacts() {
     const url = `${this.settingsService.settings.apiUrl}/api/v1/dhscontacts/`;
@@ -232,7 +232,7 @@ export class SubscriptionService {
   }
 
   /**
-   * Posts or patches a DHS contact.
+   * Posts or patches a CISA contact.
    */
   public saveDhsContact(c: Contact) {
     if (!!c.dhs_contact_uuid) {
@@ -247,47 +247,43 @@ export class SubscriptionService {
   }
 
   /**
-   * Deletes a DHS contact.
+   * Deletes a CISA contact.
    */
   public deleteDhsContact(c: Contact) {
     const url = `${this.settingsService.settings.apiUrl}/api/v1/dhscontact/${c.dhs_contact_uuid}/`;
     return this.http.delete(url);
   }
 
-  public getMonthlyReport(uuid: string, date, cycle_uuid: string = null): Observable<Blob> {
+  public getMonthlyReport(uuid: string, cycleUuid: string): Observable<Blob> {
     const headers = new HttpHeaders().set('Accept', 'application/pdf');
-    let url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${uuid}/pdf/monthly/${date}/${cycle_uuid}/`;
-
-    return this.http.get(url, { headers: headers, responseType: 'blob' });
+    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${uuid}/pdf/monthly/${cycleUuid}/`;
+    return this.http.get(url, { headers, responseType: 'blob' });
   }
 
-  public getCycleReport(uuid: string, date) {
+  public getCycleReport(uuid: string, cycleUuid: string) {
     const headers = new HttpHeaders().set('content-type', 'application/pdf');
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${uuid}/pdf/cycle/${date}/`;
-    return this.http.get(url, { headers: headers, responseType: 'blob' });
+    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${uuid}/pdf/cycle/${cycleUuid}/`;
+    return this.http.get(url, { headers, responseType: 'blob' });
   }
 
-  public getYearlyReport(uuid: string, date) {
+  public getYearlyReport(uuid: string, cycleUuid: string) {
     const headers = new HttpHeaders().set('content-type', 'application/pdf');
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${uuid}/pdf/yearly/${date}/`;
-    return this.http.get(url, { headers: headers, responseType: 'blob' });
+    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${uuid}/pdf/yearly/${cycleUuid}/`;
+    return this.http.get(url, { headers, responseType: 'blob' });
   }
 
-  public sendMonthlyReport(uuid: string, date, cycle_uuid: string = null) {
-    let url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${uuid}/email/monthly/${date}/`;
-    if(cycle_uuid !== null){
-      url += `${cycle_uuid}/`
-    }
+  public sendMonthlyReport(uuid: string, cycleUuid: string) {
+    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${uuid}/email/monthly/${cycleUuid}/`;
     return this.http.get(url);
   }
 
-  public sendCycleReport(uuid: string, date) {
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${uuid}/email/cycle/${date}/`;
+  public sendCycleReport(uuid: string, cycleUuid: string) {
+    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${uuid}/email/cycle/${cycleUuid}/`;
     return this.http.get(url);
   }
 
-  public sendYearlyReport(uuid: string, date) {
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${uuid}/email/yearly/${date}/`;
+  public sendYearlyReport(uuid: string, cycleUuid: string) {
+    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${uuid}/email/yearly/${cycleUuid}/`;
     return this.http.get(url);
   }
 
@@ -301,7 +297,7 @@ export class SubscriptionService {
     return this.http.post(url, data);
   }
   public getSusbcriptionStatusEmailsSent(subscription_uuid) {
-    const url = `${this.settingsService.settings.apiUrl}/reports/subscription_report_emails_sent/${subscription_uuid}/`;
+    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/subscription_report_emails_sent/${subscription_uuid}/`;
     return this.http.get(url);
   }
 }
