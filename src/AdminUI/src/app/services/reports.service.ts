@@ -1,8 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { SettingsService } from './settings.service';
-import * as moment from 'moment';
-import { AppSettings } from 'src/app/AppSettings';
 
 @Injectable({
   providedIn: 'root',
@@ -18,32 +16,26 @@ export class ReportsService {
    */
   public getYearlyReport(
     subscriptionUuid: string,
-    date: Date,
+    cycleUuid: string,
     isHeadless: any
   ) {
-    const m = moment(date);
     const urlRoot =
       isHeadless === 'false'
         ? this.settingsService.settings.apiUrl
         : this.settingsService.settings.apiUrlHeadless;
-    const url =
-      urlRoot +
-      `/reports/${subscriptionUuid}/yearly/${m.format(AppSettings.MOMENT_ISO_DATE_FORMAT)}/`;
+    const url = `${urlRoot}/api/v1/reports/${subscriptionUuid}/yearly/${cycleUuid}/`;
     return this.http.get(url);
   }
 
   /**
    * Returns a promise with the Cycle report for the specified subscription and date.
    */
-  public getCycleReport(subscriptionUuid: string, date: Date, isHeadless: any) {
-    const m = moment(date);
+  public getCycleReport(subscriptionUuid: string, cycleUuid: string, isHeadless: any) {
     const urlRoot =
       isHeadless === 'false'
         ? this.settingsService.settings.apiUrl
         : this.settingsService.settings.apiUrlHeadless;
-    const url =
-      urlRoot +
-      `/reports/${subscriptionUuid}/cycle/${m.format(AppSettings.MOMENT_ISO_DATE_FORMAT)}/`;
+    const url = `${urlRoot}/api/v1/reports/${subscriptionUuid}/cycle/${cycleUuid}/`;
     return this.http.get(url);
   }
 
@@ -52,25 +44,16 @@ export class ReportsService {
    */
   public getMonthlyReport(
     subscriptionUuid: string,
-    date: Date,
+    cycleUuid: string,
     isHeadless: any,
-    cycle_uuid: string = null
   ) {
-    const m = moment(date);
     const urlRoot =
       isHeadless === 'false'
         ? this.settingsService.settings.apiUrl
         : this.settingsService.settings.apiUrlHeadless;
 
 
-    let url =
-      urlRoot +
-      `/reports/${subscriptionUuid}/monthly/${m.format(AppSettings.MOMENT_ISO_DATE_FORMAT)}/`;
-
-    if(cycle_uuid !== null){
-      url += `${cycle_uuid}/`
-    }
-
+    const url = `${urlRoot}/api/v1/reports/${subscriptionUuid}/monthly/${cycleUuid}/`;
     return this.http.get(url);
   }
 }

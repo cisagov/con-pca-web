@@ -58,10 +58,10 @@ export class ChartTimeToFirstClickLevelsComponent implements OnInit, OnChanges {
     campaigns.forEach(c => {
       const targetLevel = firstClicks.find(x => x.name === c.deception_level.toString());
 
-      if (!!c.campaign_stats.clicked) {
-        if ((c.campaign_stats.clicked.minimum < targetLevel.value && targetLevel.value !== 0)
+      if (!!c.clicked) {
+        if ((c.clicked.minimum < targetLevel.value && targetLevel.value !== 0)
         || targetLevel.value === 0) {
-          targetLevel.value = c.campaign_stats.clicked.minimum;
+          targetLevel.value = c.clicked.minimum;
         }
       }
     });

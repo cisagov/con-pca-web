@@ -3,9 +3,7 @@ import { SubscriptionService } from 'src/app/services/subscription.service';
 import { Subscription } from 'src/app/models/subscription.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
-import { ReportsService } from 'src/app/services/reports.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { input } from 'aws-amplify';
+import {  Router } from '@angular/router';
 import { AlertComponent } from 'src/app/components/dialogs/alert/alert.component';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -29,27 +27,18 @@ export class SubscriptionReportTab implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.subscriptionSvc.subBehaviorSubject.subscribe((data) => {
+    this.subscriptionSvc.subBehaviorSubject.subscribe((data: any) => {
       if ('subscription_uuid' in data) {
         this.subscription = data;
         this.emailsSent.sort = this.sort;
-        //@ts-ignore
-        let selectedCycleIndex = 0;
+        const selectedCycleIndex = 0;
         this.selectedCycle = this.subscription.cycles[selectedCycleIndex];
-        if ('email_report_history' in data) {
-          //@ts-ignore
-          this.emailsSent.data = data.email_report_history;
-        }
+        this.emailsSent.data = data.email_report_history;
       }
     });
   }
 
-  refresh() {
-    // this.subscriptionSvc.getEmailsSentBySubId(this.subscription.subscription_uuid).subscribe((data: any[]) => {
-    //   this.emailsSent.data = data;
-    //   this.emailsSent.sort = this.sort;
-    // });
-  }
+  refresh() { }
 
   downloadObject(filename, blob) {
     const a = document.createElement('a');
@@ -60,20 +49,14 @@ export class SubscriptionReportTab implements OnInit {
     URL.revokeObjectURL(objectUrl);
   }
 
-  cycleChange(event) {
-    // console.log(
-    //   'cycle period changed, new Value ready for choosing the correct report'
-    // );
-    // console.log(event.value);
-  }
+  cycleChange(event) { }
 
   viewMonthlyReport() {
     this.router.navigate([
       '/reports/monthly',
       this.subscription.subscription_uuid,
-      this.selectedCycle.end_date,
-      false,
       this.selectedCycle.cycle_uuid,
+      false,
     ]);
   }
 
@@ -81,7 +64,7 @@ export class SubscriptionReportTab implements OnInit {
     this.router.navigate([
       '/reports/cycle',
       this.subscription.subscription_uuid,
-      this.selectedCycle.start_date,
+      this.selectedCycle.cycle_uuid,
       false,
     ]);
   }
@@ -90,7 +73,7 @@ export class SubscriptionReportTab implements OnInit {
     this.router.navigate([
       '/reports/yearly',
       this.subscription.subscription_uuid,
-      this.selectedCycle.start_date,
+      this.selectedCycle.cycle_uuid,
       false,
     ]);
   }
@@ -100,7 +83,6 @@ export class SubscriptionReportTab implements OnInit {
     this.subscriptionSvc
       .getMonthlyReport(
         this.subscription.subscription_uuid,
-        this.selectedCycle.end_date,
         this.selectedCycle.cycle_uuid
       )
       .subscribe(
@@ -119,7 +101,7 @@ export class SubscriptionReportTab implements OnInit {
     this.subscriptionSvc
       .getCycleReport(
         this.subscription.subscription_uuid,
-        this.selectedCycle.start_date
+        this.selectedCycle.cycle_uuid
       )
       .subscribe(
         (blob) => {
@@ -137,7 +119,7 @@ export class SubscriptionReportTab implements OnInit {
     this.subscriptionSvc
       .getYearlyReport(
         this.subscription.subscription_uuid,
-        this.selectedCycle.start_date
+        this.selectedCycle.cycle_uuid
       )
       .subscribe(
         (blob) => {
@@ -155,7 +137,6 @@ export class SubscriptionReportTab implements OnInit {
     this.subscriptionSvc
       .sendMonthlyReport(
         this.subscription.subscription_uuid,
-        this.selectedCycle.end_date,
         this.selectedCycle.cycle_uuid
       )
       .subscribe(
@@ -175,7 +156,7 @@ export class SubscriptionReportTab implements OnInit {
     this.subscriptionSvc
       .sendCycleReport(
         this.subscription.subscription_uuid,
-        this.selectedCycle.start_date
+        this.selectedCycle.cycle_uuid
       )
       .subscribe(
         (data: any) => {
@@ -194,7 +175,7 @@ export class SubscriptionReportTab implements OnInit {
     this.subscriptionSvc
       .sendYearlyReport(
         this.subscription.subscription_uuid,
-        this.selectedCycle.start_date
+        this.selectedCycle.cycle_uuid
       )
       .subscribe(
         (data: any) => {

@@ -22,7 +22,7 @@ export class ChartsService {
    * Gets the subscriptions's statistics
    */
   getStatisticsReport(subscriptionUuid: string, cycle_uuid: string) {
-    const url = `${this.settingsService.settings.apiUrl}/reports/${subscriptionUuid}/subscription-stats-page/${cycle_uuid}/`;
+    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${subscriptionUuid}/subscription-stats-page/${cycle_uuid}/`;
     return this.http.get(url);
   }
 
@@ -101,7 +101,7 @@ export class ChartsService {
   formatReportStatsForChart(reportResponse: any) {
     const stats = reportResponse.subscription_stats;
     const levels = ['low', 'mid', 'high'];
-    const groups = ['sent', 'opened', 'clicked', 'submitted', 'reported'];
+    const groups = ['sent', 'opened', 'clicked', 'reported'];
     const obj = [];
 
     groups.forEach((g) => {

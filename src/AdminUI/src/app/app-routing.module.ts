@@ -27,7 +27,6 @@ import { YearlyComponent } from './components/reports/yearly/yearly.component';
 import { AggregateStatsComponent } from './components/user-admin/aggregate-stats/aggregate-stats.component';
 import { LandingPagesComponent } from './components/landing-pages/landing-pages.component';
 import { LandingPagesManagerComponent } from './components/landing-pages-manager/landing-pages-manager.component';
-import { LandingPageManagerService } from './services/landing-page-manager.service';
 import { UsersComponent } from './components/users/users.component';
 
 const routes: Routes = [
@@ -35,22 +34,12 @@ const routes: Routes = [
     path: 'reports',
     component: LayoutBlankComponent,
     children: [
-      {
-        path: 'monthly/:id/:start_date/:isHeadless',
-        component: MonthlyComponent,
-      },
-      {
-        path: 'monthly/:id/:start_date/:isHeadless/:cycle_uuid',
-        component: MonthlyComponent,
-      },
-      { path: 'cycle/:id/:start_date/:isHeadless', component: CycleComponent },
-      {
-        path: 'yearly/:id/:start_date/:isHeadless',
-        component: YearlyComponent,
-      },
-      { path: 'monthly/:id/:start_date', component: MonthlyComponent },
-      { path: 'cycle/:id/:start_date', component: CycleComponent },
-      { path: 'yearly/:id/:start_date', component: YearlyComponent },
+      { path: 'monthly/:id/:cycle_uuid', component: MonthlyComponent },
+      { path: 'monthly/:id/:cycle_uuid/:isHeadless', component: MonthlyComponent },
+      { path: 'cycle/:id/:cycle_uuid', component: CycleComponent },
+      { path: 'cycle/:id/:cycle_uuid/:isHeadless', component: CycleComponent },
+      { path: 'yearly/:id/:cycle_uuid', component: YearlyComponent },
+      { path: 'yearly/:id/:cycle_uuid/:isHeadless', component: YearlyComponent, },
     ],
   },
   {

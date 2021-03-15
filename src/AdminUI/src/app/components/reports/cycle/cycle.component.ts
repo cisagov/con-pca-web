@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { NullishCoalescePipe } from 'src/app/pipes/nullish-coalesce.pipe';
 import { ReportsService } from 'src/app/services/reports.service';
 import { AppSettings } from 'src/app/AppSettings';
 import { ActivatedRoute } from '@angular/router';
@@ -12,9 +11,7 @@ import { listToText } from 'src/app/helper/utilities';
   styleUrls: ['./cycle.component.scss'],
 })
 export class CycleComponent implements OnInit {
-  private routeSub: any;
   subscriptionUuid: string;
-  reportStartDate: Date;
 
   detail: any;
   recommendations: any[] = [];
@@ -26,37 +23,24 @@ export class CycleComponent implements OnInit {
 
   dateFormat = AppSettings.DATE_FORMAT;
 
-
-  /**
-   *
-   */
   constructor(
     public reportsSvc: ReportsService,
     public chartsSvc: ChartsService,
     private route: ActivatedRoute
   ) { }
 
-  /**
-   *
-   */
   ngOnInit(): void {
-    this.routeSub = this.route.params.subscribe((params) => {
+    this.route.params.subscribe((params) => {
       this.subscriptionUuid = params.id;
-      const isDate = new Date(params.start_date);
       const isHeadless = params.isHeadless;
+      const cycleUuid = params.cycle_uuid;
 
-      if (isDate.getTime()) {
-        this.reportStartDate = isDate;
-      } else {
-        console.log('Invalid Date time provided, defaulting to now');
-        this.reportStartDate = new Date();
-      }
       this.reportsSvc
-        .getCycleReport(this.subscriptionUuid, this.reportStartDate, isHeadless)
+        .getCycleReport(this.subscriptionUuid, cycleUuid, isHeadless)
         .subscribe(
           (resp) => {
             this.detail = resp;
-            this.detail.cycles = this.detail.cycles.sort((a,b) => (a.increment > b.increment) ? 1 : -1)
+            this.detail.cycles = this.detail.cycles.sort((a, b) => (a.increment > b.increment) ? 1 : -1);
             this.renderReport();
           },
           (error) => {
@@ -68,9 +52,6 @@ export class CycleComponent implements OnInit {
     });
   }
 
-  /**
-   *
-   */
   renderReport() {
     if (!!this.detail?.recommendations) {
       this.recommendations = this.detail?.recommendations;
@@ -102,7 +83,7 @@ export class CycleComponent implements OnInit {
     for (let i = 0; i < this.detail.templates_by_group.length; i++) {
       const campaignGroup = this.detail.templates_by_group[i];
       campaignGroup.forEach(campaign => {
-        this.groupLevels[i].sentCount += campaign.campaign_stats.sent.count;
+        this.groupLevels[i].sentCount += campaign.sent.count;
         if (this.groupLevels[i].levels.indexOf(campaign.deception_level) < 0) {
           this.groupLevels[i].levels.push(campaign.deception_level);
         }

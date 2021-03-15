@@ -58,7 +58,17 @@ export class Subscription {
   target_domain: string;
   stagger_emails: boolean;
   continuous_subscription: boolean;
+  email_report_history: EmailHistory[] = [];
 
+}
+
+export class EmailHistory {
+  report_type: string;
+  sent: Date;
+  email_to: string;
+  email_from: string;
+  bcc: string;
+  manual: boolean;
 }
 
 /**
