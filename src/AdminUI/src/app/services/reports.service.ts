@@ -9,7 +9,7 @@ export class ReportsService {
   constructor(
     private http: HttpClient,
     private settingsService: SettingsService
-  ) { }
+  ) {}
 
   /**
    * Returns a promise with the Yearly report for the specified subscription and date.
@@ -30,7 +30,11 @@ export class ReportsService {
   /**
    * Returns a promise with the Cycle report for the specified subscription and date.
    */
-  public getCycleReport(subscriptionUuid: string, cycleUuid: string, isHeadless: any) {
+  public getCycleReport(
+    subscriptionUuid: string,
+    cycleUuid: string,
+    isHeadless: any
+  ) {
     const urlRoot =
       isHeadless === 'false'
         ? this.settingsService.settings.apiUrl
@@ -45,13 +49,12 @@ export class ReportsService {
   public getMonthlyReport(
     subscriptionUuid: string,
     cycleUuid: string,
-    isHeadless: any,
+    isHeadless: any
   ) {
     const urlRoot =
       isHeadless === 'false'
         ? this.settingsService.settings.apiUrl
         : this.settingsService.settings.apiUrlHeadless;
-
 
     const url = `${urlRoot}/api/v1/reports/${subscriptionUuid}/monthly/${cycleUuid}/`;
     return this.http.get(url);

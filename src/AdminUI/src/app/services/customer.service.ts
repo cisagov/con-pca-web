@@ -18,9 +18,9 @@ export class CustomerService {
 
   showCustomerInfo = false;
   selectedCustomer = '';
-  showCustomerInfoStatus: BehaviorSubject<boolean> = new BehaviorSubject<
-    boolean
-  >(this.showCustomerInfo);
+  showCustomerInfoStatus: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    this.showCustomerInfo
+  );
 
   setCustomerInfo(show: boolean) {
     this.showCustomerInfo = show;

@@ -6,7 +6,7 @@
   </mat-card-header> -->
   <mat-card-content>
     <div class="d-flex flex-column">
-      <div style="max-height: 200px; margin-bottom: 1rem;">
+      <div style="max-height: 200px; margin-bottom: 1rem">
         <h4>Statistics By Level</h4>
         <ngx-charts-bar-vertical-2d
           [results]="chart.chartResults"
@@ -27,7 +27,7 @@
         </ngx-charts-bar-vertical-2d>
       </div>
 
-      <div class="d-block mb-4 w-100" style="max-height: 100px;">
+      <div class="d-block mb-4 w-100" style="max-height: 100px">
         <h4>Number of Emails Sent</h4>
         <ngx-charts-bar-horizontal-stacked
           [results]="chartSent.chartResults"
@@ -65,8 +65,15 @@
         Template Deception Breakdown:
         <ul>
           <li *ngFor="let campaign of campaignsDetails">
-            Deception Score: {{ campaign.template.deception_score }} -
-            Template Subject: <a [routerLink]="['/templatemanager', campaign.template.template_uuid]">{{ campaign.template.subject }}</a>
+            Deception Score: {{ campaign.template.deception_score }} - Template
+            Subject:
+            <a
+              [routerLink]="[
+                '/templatemanager',
+                campaign.template.template_uuid
+              ]"
+              >{{ campaign.template.subject }}</a
+            >
           </li>
         </ul>
       </div>

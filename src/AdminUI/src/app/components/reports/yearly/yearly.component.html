@@ -122,7 +122,7 @@
 
 <title>Yearly Report</title>
 
-<div style="width: 8.5in;" class="p-5">
+<div style="width: 8.5in" class="p-5">
   <article id="cover">
     <div class="row">
       <div id="blueDateBox">
@@ -191,7 +191,7 @@
       <div id="cisa_logo">
         <img
           src="/assets/CISA_Logo.png"
-          style="width: 8rem;"
+          style="width: 8rem"
           alt="Cybersecurity & Infrastructure Security Agency Logo"
         />
       </div>
@@ -205,7 +205,7 @@
           <div id="centerCisaLogo">
             <img
               src="/assets/CISA_Logo.png"
-              style="width: 8rem;"
+              style="width: 8rem"
               alt="Cybersecurity & Infrastructure Security Agency Logo"
             />
           </div>
@@ -276,7 +276,7 @@
               <th>Start Date - End Date</th>
               <th>Notes</th>
             </tr>
-            <tr *ngFor="let cycle of detail?.cycles ">
+            <tr *ngFor="let cycle of detail?.cycles">
               <td>{{ cycle.year }} {{ cycle.quarter }}</td>
               <td>
                 {{ cycle.start_date | date: "MMM d, yyyy" }} -
@@ -355,7 +355,7 @@
         <table>
           <tr>
             <td colspan="2">
-              <div id="nationalAverageText" style="margin: auto;">
+              <div id="nationalAverageText" style="margin: auto">
                 <div id="nationalAverageBox">
                   {{ detail?.metrics.national_clicked_avg }}%
                 </div>
@@ -403,20 +403,24 @@
     </div>
     <div class="row">
       <div class="col-12">
-
         <div class="line-chart m-2">
           <h4>Percentage Trends</h4>
-          <div style="display: grid;" class="report-chart">
-            <yearly-percentage-trends *ngIf="detail" [data]="detail.percentage_trends_data"></yearly-percentage-trends>
+          <div style="display: grid" class="report-chart">
+            <yearly-percentage-trends
+              *ngIf="detail"
+              [data]="detail.percentage_trends_data"
+            ></yearly-percentage-trends>
           </div>
         </div>
         <div class="line-chart m-2">
           <h4>Click Rate vs. Reported Rate</h4>
-          <div style="display: grid;" class="report-chart">
-            <yearly-click-rate-vs-report-rate *ngIf="detail" [data]="detail.clickrate_vs_reportrate_data"></yearly-click-rate-vs-report-rate>
+          <div style="display: grid" class="report-chart">
+            <yearly-click-rate-vs-report-rate
+              *ngIf="detail"
+              [data]="detail.clickrate_vs_reportrate_data"
+            ></yearly-click-rate-vs-report-rate>
           </div>
         </div>
-
       </div>
     </div>
 
@@ -428,7 +432,7 @@
             <td>{{ detail?.metrics.shortest_time_to_report }}</td>
           </tr>
           <tr>
-            <th style="padding: 0 75px 0 0;">
+            <th style="padding: 0 75px 0 0">
               Median Time to open email from first sent:
             </th>
             <td>{{ detail?.metrics.median_time_to_open }}</td>
@@ -478,7 +482,6 @@
     </div>
   </article>
 
-
   <article id="pageFive">
     <div class="row">
       <div class="col-12">
@@ -526,25 +529,26 @@
       <div class="col-12">
         <h3>Closing</h3>
 
-      <div class="row mb-3">
-        <div class="col-12">
-          <h3 id="recommendationsTitle">Recommendations</h3>
-          <div id="recommendations">
-            <p>
-              Based on the assessment data, Vulnerability Managements recommends
-              implementing the following:
-            </p>
-            <p *ngFor="let rec of detail?.recommendations; let i = index">
-              <b>Recommendation {{ i + 1 }}:</b> {{ rec.name }}
-              <br>
-              {{rec.description}}
+        <div class="row mb-3">
+          <div class="col-12">
+            <h3 id="recommendationsTitle">Recommendations</h3>
+            <div id="recommendations">
+              <p>
+                Based on the assessment data, Vulnerability Managements
+                recommends implementing the following:
+              </p>
+              <p *ngFor="let rec of detail?.recommendations; let i = index">
+                <b>Recommendation {{ i + 1 }}:</b> {{ rec.name }}
+                <br />
+                {{ rec.description }}
+              </p>
 
-            <p *ngIf="detail?.recommendations?.length === 0">
-              (no recommendations found for the problem templates)
-            </p>
+              <p *ngIf="detail?.recommendations?.length === 0">
+                (no recommendations found for the problem templates)
+              </p>
+            </div>
           </div>
         </div>
-      </div>
       </div>
     </div>
 

@@ -64,31 +64,31 @@ export class DhsPocComponent implements OnInit {
   };
 
   openSelectedDialog(editSelected, row): void {
-    if(this.dialog.openDialogs.length==0 && !this.dialogOpen){
+    if (this.dialog.openDialogs.length == 0 && !this.dialogOpen) {
       this.dialogOpen = true;
-      if (editSelected){
+      if (editSelected) {
         this.editContact(row);
         this.dialogOpen = false;
-      } else{
+      } else {
         this.confirmDeleteContact(row);
       }
     }
-  };
+  }
 
   /**
    *
    */
   editContact(contact) {
-      const dialogConfig = new MatDialogConfig();
-      // dialogConfig.width = '60vw';
-      dialogConfig.data = {
-        contact,
-      };
-      const dialogRef = this.dialog.open(DhsPocDetailComponent, dialogConfig);
+    const dialogConfig = new MatDialogConfig();
+    // dialogConfig.width = '60vw';
+    dialogConfig.data = {
+      contact,
+    };
+    const dialogRef = this.dialog.open(DhsPocDetailComponent, dialogConfig);
 
-      dialogRef.afterClosed().subscribe((value) => {
-        this.refresh();
-      });
+    dialogRef.afterClosed().subscribe((value) => {
+      this.refresh();
+    });
   }
 
   /**
@@ -97,37 +97,39 @@ export class DhsPocComponent implements OnInit {
   confirmDeleteContact(row: any): void {
     // first check if there are any subs, if so, block, if not, delete.
     this.subscriptionSvc
-    .getSubscriptionsByDnsContact(row)
-    .subscribe((data: any[]) => {
-      let subscriptions = data as Subscription[];
-      if (subscriptions.length < 1) {
-        this.dialogRefConfirm = this.dialog.open(ConfirmComponent, {
-          disableClose: false,
-        });
-        this.dialogRefConfirm.componentInstance.confirmMessage = `This will delete '${row.first_name} ${row.last_name}'.  Do you want to continue?`;
-        this.dialogRefConfirm.componentInstance.title = 'Confirm CISA Contact Delete';
+      .getSubscriptionsByDnsContact(row)
+      .subscribe((data: any[]) => {
+        let subscriptions = data as Subscription[];
+        if (subscriptions.length < 1) {
+          this.dialogRefConfirm = this.dialog.open(ConfirmComponent, {
+            disableClose: false,
+          });
+          this.dialogRefConfirm.componentInstance.confirmMessage = `This will delete '${row.first_name} ${row.last_name}'.  Do you want to continue?`;
+          this.dialogRefConfirm.componentInstance.title =
+            'Confirm CISA Contact Delete';
 
-        this.dialogRefConfirm.afterClosed().subscribe((result) => {
-          if (result) {
-            this.deleteContact(row);
+          this.dialogRefConfirm.afterClosed().subscribe((result) => {
+            if (result) {
+              this.deleteContact(row);
+            }
+            this.dialogRefConfirm = null;
+          });
+        } else {
+          const invalid = [];
+          for (const sub in subscriptions) {
+            invalid.push(subscriptions[sub].name + ' update');
           }
-          this.dialogRefConfirm = null;
-        });
-      } else {
-        const invalid = [];
-        for (const sub in subscriptions) {
-          invalid.push(subscriptions[sub].name + ' update');
-        }
           this.dialog.open(AlertComponent, {
             data: {
               title: 'CISA Contact Deleted',
-              messageText: 'You Cannot Delete a CISA Contact that is currently assined to Subscriptions.',
+              messageText:
+                'You Cannot Delete a CISA Contact that is currently assined to Subscriptions.',
               invalidData: invalid,
             },
           });
-      }
-      this.dialogOpen = false;
-    });
+        }
+        this.dialogOpen = false;
+      });
   }
 
   /**

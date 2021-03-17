@@ -6,12 +6,13 @@ describe('LandingPagesComponent', () => {
   let component: LandingPagesComponent;
   let fixture: ComponentFixture<LandingPagesComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [ LandingPagesComponent ]
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [LandingPagesComponent],
+      }).compileComponents();
     })
-    .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LandingPagesComponent);

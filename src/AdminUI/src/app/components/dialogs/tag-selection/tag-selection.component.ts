@@ -5,7 +5,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Tags } from 'src/app/models/tags.model';
 import { TagService } from 'src/app/services/tag.service';
 
-
 @Component({
   selector: 'app-tag-selection',
   templateUrl: './tag-selection.component.html',
@@ -13,10 +12,7 @@ import { TagService } from 'src/app/services/tag.service';
 export class TagSelectionComponent implements OnInit, AfterViewInit {
   tags: Tags[];
 
-  displayedColumns = [
-    'tag',
-    'description'
-  ];
+  displayedColumns = ['tag', 'description'];
   tagsData = new MatTableDataSource<Tags>();
   searchInput = '';
   @ViewChild(MatSort) sort: MatSort;
@@ -41,7 +37,7 @@ export class TagSelectionComponent implements OnInit, AfterViewInit {
 
   public filterTags = (value: string) => {
     this.tagsData.filter = value.trim().toLocaleLowerCase();
-  }
+  };
 
   onCancelClick() {
     this.dialogRef.close();

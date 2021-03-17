@@ -8,7 +8,7 @@
             [formGroup]="tagFormGroup"
           >
             <div class="d-flex flex-row">
-              <mat-form-field appearance="outline" class="flex-grow-1 pb-3" >
+              <mat-form-field appearance="outline" class="flex-grow-1 pb-3">
                 <mat-label>Tag Name*</mat-label>
                 <input
                   type="text"
@@ -16,27 +16,27 @@
                   matInput
                   placeholder="Tag Name"
                   formControlName="tagName"
-                  (change)="tagFormGroup.patchValue({tagName: $event.target.value.toUpperCase()})"
+                  (change)="
+                    tagFormGroup.patchValue({
+                      tagName: $event.target.value.toUpperCase()
+                    })
+                  "
                 />
                 <mat-error
-                *ngIf="
-                tagFormGroup.controls.tagName.hasError(
-                  'required'
-                  )
-                  "> Tag name is <strong>required</strong>
+                  *ngIf="tagFormGroup.controls.tagName.hasError('required')"
+                >
+                  Tag name is <strong>required</strong>
                 </mat-error>
                 <mat-error
-                *ngIf="
-                tagFormGroup.controls.tagName.hasError(
-                  'whitespace'
-                  )
-                  "> Tag name may not contain only spaces
+                  *ngIf="tagFormGroup.controls.tagName.hasError('whitespace')"
+                >
+                  Tag name may not contain only spaces
                 </mat-error>
               </mat-form-field>
             </div>
 
             <div class="d-flex flex-row">
-              <mat-form-field appearance="outline" class="flex-grow-1 pb-3" >
+              <mat-form-field appearance="outline" class="flex-grow-1 pb-3">
                 <mat-label>Tag Data Source*</mat-label>
                 <input
                   type="text"
@@ -46,18 +46,18 @@
                   formControlName="tagDataSource"
                 />
                 <mat-error
-                *ngIf="
-                tagFormGroup.controls.tagDataSource.hasError(
-                  'required'
-                  )
-                  "> Tag Data Source is <strong>required</strong>
+                  *ngIf="
+                    tagFormGroup.controls.tagDataSource.hasError('required')
+                  "
+                >
+                  Tag Data Source is <strong>required</strong>
                 </mat-error>
                 <mat-error
-                *ngIf="
-                tagFormGroup.controls.tagDataSource.hasError(
-                  'whitespace'
-                  )
-                  "> Tag Data Source may not contain only spaces
+                  *ngIf="
+                    tagFormGroup.controls.tagDataSource.hasError('whitespace')
+                  "
+                >
+                  Tag Data Source may not contain only spaces
                 </mat-error>
               </mat-form-field>
             </div>
@@ -73,8 +73,6 @@
                 </mat-select>
               </mat-form-field>
             </div>
-
-
 
             <div class="d-flex flex-row">
               <mat-form-field appearance="outline" class="flex-grow-1">
@@ -108,7 +106,14 @@
             Save Tag
           </button>
         </div>
-        <button id="save-button-cancel" class="d-flex" mat-flat-button (click)="onCancelClick()">Cancel</button>
+        <button
+          id="save-button-cancel"
+          class="d-flex"
+          mat-flat-button
+          (click)="onCancelClick()"
+        >
+          Cancel
+        </button>
       </div>
     </div>
   </div>

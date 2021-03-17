@@ -4,20 +4,19 @@ import { humanTiming, secondsToHHMMSS } from 'src/app/helper/utilities';
 @Component({
   selector: 'app-chart-time-to-first-click-levels',
   templateUrl: './chart-time-to-first-click-levels.component.html',
-  styleUrls: ['./chart-time-to-first-click-levels.component.scss']
+  styleUrls: ['./chart-time-to-first-click-levels.component.scss'],
 })
 export class ChartTimeToFirstClickLevelsComponent implements OnInit, OnChanges {
-
   @Input()
   subscription: any;
 
   chart: any = {};
 
   scheme = {
-    domain: ['#1979A7']
+    domain: ['#1979A7'],
   };
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit(): void {
     this.chart.showXAxis = true;
@@ -51,16 +50,20 @@ export class ChartTimeToFirstClickLevelsComponent implements OnInit, OnChanges {
       { name: '3', value: 0 },
       { name: '4', value: 0 },
       { name: '5', value: 0 },
-      { name: '6', value: 0 }
+      { name: '6', value: 0 },
     ];
 
     const campaigns = reportResponse.subscription_stats.campaign_results;
-    campaigns.forEach(c => {
-      const targetLevel = firstClicks.find(x => x.name === c.deception_level.toString());
+    campaigns.forEach((c) => {
+      const targetLevel = firstClicks.find(
+        (x) => x.name === c.deception_level.toString()
+      );
 
       if (!!c.clicked) {
-        if ((c.clicked.minimum < targetLevel.value && targetLevel.value !== 0)
-        || targetLevel.value === 0) {
+        if (
+          (c.clicked.minimum < targetLevel.value && targetLevel.value !== 0) ||
+          targetLevel.value === 0
+        ) {
           targetLevel.value = c.clicked.minimum;
         }
       }

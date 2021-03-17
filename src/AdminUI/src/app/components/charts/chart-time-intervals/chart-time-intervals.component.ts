@@ -72,7 +72,9 @@ export class ChartTimeIntervalsComponent implements OnInit, OnChanges {
     intervals.forEach((i) => {
       obj.push({
         name: i.label,
-        value: reportResponse.subscription_stats["clicks_over_time"][i.attrib]*100 ?? 0,
+        value:
+          reportResponse.subscription_stats['clicks_over_time'][i.attrib] *
+            100 ?? 0,
       });
     });
 

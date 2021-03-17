@@ -264,7 +264,7 @@
         <textarea
           matInput
           rows="10"
-          style="overflow:scroll;"
+          style="overflow: scroll"
           formControlName="csvText"
           [ngClass]="{ 'is-invalid': submitted && f.csvText.errors }"
           (change)="targetsChanged($event)"
@@ -381,7 +381,12 @@
           >
             Unarchive Subscription
           </button>
-          <mat-progress-spinner *ngIf="processing" class="spinner mt-3" diameter="25" mode="indeterminate"></mat-progress-spinner>
+          <mat-progress-spinner
+            *ngIf="processing"
+            class="spinner mt-3"
+            diameter="25"
+            mode="indeterminate"
+          ></mat-progress-spinner>
         </div>
       </div>
     </div>

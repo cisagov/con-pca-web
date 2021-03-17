@@ -1,8 +1,6 @@
 <div>
   <mat-card>
-    <mat-card-title>
-      Reporting
-    </mat-card-title>
+    <mat-card-title> Reporting </mat-card-title>
     Reporting Cycle:
 
     <div class="cycle-select-wrapper" *ngIf="subscription">
@@ -27,8 +25,15 @@
   <mat-card>
     <mat-label class="h6">Reports</mat-label>
     <div class="mb-4">
-      <div *ngIf="loading" style="text-align: center; padding-top: 2rem; padding-bottom: 2rem;">
-        <mat-spinner class="spinner" style="margin-left: auto; margin-right: auto;" diameter="50"></mat-spinner>
+      <div
+        *ngIf="loading"
+        style="text-align: center; padding-top: 2rem; padding-bottom: 2rem"
+      >
+        <mat-spinner
+          class="spinner"
+          style="margin-left: auto; margin-right: auto"
+          diameter="50"
+        ></mat-spinner>
       </div>
       <div class="text-muted">View or send this subscription's reports</div>
       <button

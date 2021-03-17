@@ -1,5 +1,5 @@
 #!/bin/sh
-cd /app
+cd /app || exit
 echo "Substituting aws exports variables"
 envsubst < src/aws-exports.template.js > src/aws-exports.js
 

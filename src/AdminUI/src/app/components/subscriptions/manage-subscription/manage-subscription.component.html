@@ -1,4 +1,7 @@
-<mat-tab-group (selectedTabChange)="onTabChanged($event)" [selectedIndex]="selectedTabIndex">
+<mat-tab-group
+  (selectedTabChange)="onTabChanged($event)"
+  [selectedIndex]="selectedTabIndex"
+>
   <mat-tab label="Subscription Configuration">
     <subscription-config-tab></subscription-config-tab>
   </mat-tab>

@@ -3,7 +3,7 @@ import { SubscriptionService } from 'src/app/services/subscription.service';
 import { Subscription } from 'src/app/models/subscription.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
-import {  Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { AlertComponent } from 'src/app/components/dialogs/alert/alert.component';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -38,7 +38,7 @@ export class SubscriptionReportTab implements OnInit {
     });
   }
 
-  refresh() { }
+  refresh() {}
 
   downloadObject(filename, blob) {
     const a = document.createElement('a');
@@ -49,7 +49,7 @@ export class SubscriptionReportTab implements OnInit {
     URL.revokeObjectURL(objectUrl);
   }
 
-  cycleChange(event) { }
+  cycleChange(event) {}
 
   viewMonthlyReport() {
     this.router.navigate([

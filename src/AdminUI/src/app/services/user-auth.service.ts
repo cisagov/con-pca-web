@@ -11,9 +11,9 @@ import { switchMap } from 'rxjs/operators';
 })
 export class UserAuthService {
   currentAuthUser: any;
-  public currentAuthUserSubject: BehaviorSubject<string> = new BehaviorSubject<
-    string
-  >('Not Authorized');
+  public currentAuthUserSubject: BehaviorSubject<string> = new BehaviorSubject<string>(
+    'Not Authorized'
+  );
 
   constructor(private router: Router, private route: ActivatedRoute) {
     this.currentAuthUserSubject.subscribe((value) => {
@@ -22,9 +22,7 @@ export class UserAuthService {
   }
 
   // Handles amplify authentification notfications from Hub
-  handleAuthNotification(data) {
-
-  }
+  handleAuthNotification(data) {}
 
   signOut() {
     Auth.signOut();
@@ -75,11 +73,11 @@ export class UserAuthService {
     return this.currentAuthUserSubject;
   }
 
-
   getReportToken() {
     if (environment.authorize) {
       return new Promise((resolve, reject) => {
-        this.route.queryParamMap.toPromise()
+        this.route.queryParamMap
+          .toPromise()
           .then((success) => {
             resolve({
               idToken: success['reportToken'],
@@ -94,17 +92,17 @@ export class UserAuthService {
 
   getUserTokens() {
     if (environment.authorize) {
-
-      const reportTokenGlobal = (new URL(document.location.toString())).searchParams.get('reportToken');
+      const reportTokenGlobal = new URL(
+        document.location.toString()
+      ).searchParams.get('reportToken');
 
       if (reportTokenGlobal) {
         return new Promise((resolve, reject) => {
           resolve({
-            idToken: reportTokenGlobal
+            idToken: reportTokenGlobal,
           });
         });
-      }
-      else {
+      } else {
         return new Promise((resolve, reject) => {
           Auth.currentAuthenticatedUser()
             .then((success) => {

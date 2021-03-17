@@ -1,10 +1,13 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogRef,
+  MatDialog,
+} from '@angular/material/dialog';
 import { Contact } from 'src/app/models/customer.model';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AlertComponent } from '../../dialogs/alert/alert.component';
-
 
 @Component({
   selector: 'app-dhs-poc-detail',
@@ -94,7 +97,6 @@ export class DhsPocDetailComponent implements OnInit {
           invalidData: invalid,
         },
       });
-
     } else {
       const c = new Contact();
       c.dhs_contact_uuid = this.contact?.dhs_contact_uuid;
@@ -121,11 +123,12 @@ export class DhsPocDetailComponent implements OnInit {
           // Console log error
           console.log(error);
           // Set fields to invalid
-          this.contactForm.controls['email'].setErrors({'incorrect': true})
+          this.contactForm.controls['email'].setErrors({ incorrect: true });
           this.dialog.open(AlertComponent, {
             data: {
               title: 'Creation Error',
-              messageText: 'Could not Create New CISA Contact. Please Check the Form and try again.',
+              messageText:
+                'Could not Create New CISA Contact. Please Check the Form and try again.',
             },
           });
         }

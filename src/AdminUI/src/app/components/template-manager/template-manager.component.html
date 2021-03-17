@@ -4,10 +4,7 @@
       class="col-8 h-100 d-flex flex-column mt-2"
       [formGroup]="currentTemplateFormGroup"
     >
-      <div
-        #selectedTemplateTitle
-        class="d-flex flex-row selected-template"
-      >
+      <div #selectedTemplateTitle class="d-flex flex-row selected-template">
         <mat-form-field
           class="w-100 selected_template_title"
           appearance="outline"
@@ -41,9 +38,9 @@
         </mat-form-field>
         <div class="d-inline-flex flex-column mt-2 ml-1 mb-2">
           <button mat-raised-button color="primary" (click)="importEmail()">
-          Import Email
-        </button></div>
-
+            Import Email
+          </button>
+        </div>
       </div>
       <div class="d-flex">
         <mat-tab-group

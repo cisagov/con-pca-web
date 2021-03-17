@@ -6,12 +6,13 @@ describe('LandingPagesManagerComponent', () => {
   let component: LandingPagesManagerComponent;
   let fixture: ComponentFixture<LandingPagesManagerComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [ LandingPagesManagerComponent ]
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [LandingPagesManagerComponent],
+      }).compileComponents();
     })
-    .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LandingPagesManagerComponent);

@@ -5,8 +5,10 @@
     <div [innerHTML]="data.messageText | safe" class="pre-wrap"></div>
     <div *ngIf="data.invalidData">
       <mat-nav-list>
-        <a mat-list-item *ngFor="let data of data.invalidData"> {{data}} Required.</a>
-     </mat-nav-list>
+        <a mat-list-item *ngFor="let data of data.invalidData">
+          {{ data }} Required.</a
+        >
+      </mat-nav-list>
     </div>
   </mat-dialog-content>
 </div>

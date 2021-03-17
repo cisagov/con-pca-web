@@ -59,7 +59,6 @@ export class Subscription {
   stagger_emails: boolean;
   continuous_subscription: boolean;
   email_report_history: EmailHistory[] = [];
-
 }
 
 export class EmailHistory {

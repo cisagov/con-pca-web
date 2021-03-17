@@ -58,9 +58,14 @@ export class SubscriptionStatsTab implements OnInit {
   }
 
   pageRefresh(): void {
-    this.router.navigate(['/view-subscription', this.subscription.subscription_uuid], { queryParams: {
-      tab: 1
-    }});
+    this.router.navigate(
+      ['/view-subscription', this.subscription.subscription_uuid],
+      {
+        queryParams: {
+          tab: 1,
+        },
+      }
+    );
   }
 
   ngOnInit() {
@@ -103,7 +108,7 @@ export class SubscriptionStatsTab implements OnInit {
         this.buildSubscriptionTimeline(this.subscription);
         this.subscription = data;
         //@ts-ignore
-        let selectedCycleIndex = 0
+        let selectedCycleIndex = 0;
         this.selectedCycle = this.subscription.cycles[selectedCycleIndex];
         this.subscriptionSvc.setCycleBehaviorSubject(this.selectedCycle);
         this.setReportsForCycle(this.selectedCycle);
@@ -112,8 +117,8 @@ export class SubscriptionStatsTab implements OnInit {
   }
 
   setReportsForCycle(cycle: Cycle = null) {
-    if(!this.reportsData){
-      return
+    if (!this.reportsData) {
+      return;
     }
     let cycleReports = null;
     // find the correct cycle report data to use
@@ -127,7 +132,7 @@ export class SubscriptionStatsTab implements OnInit {
       // cycleReports = this.reportsData[0];
     }
     if (!cycleReports) {
-      this.activeCycleReports = []
+      this.activeCycleReports = [];
       return;
     }
 
@@ -272,7 +277,7 @@ export class SubscriptionStatsTab implements OnInit {
     if (this.reportedStatsForm.valid) {
       addRemoveList['start_date'] = this.selectedCycle.start_date;
       addRemoveList['end_date'] = this.selectedCycle.end_date;
-      addRemoveList["cycle_uuid"] = this.selectedCycle.cycle_uuid;
+      addRemoveList['cycle_uuid'] = this.selectedCycle.cycle_uuid;
       this.subscriptionSvc
         .postReportValuesForSubscription(addRemoveList, this.subscription_uuid)
         .subscribe(

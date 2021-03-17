@@ -6,11 +6,7 @@ import {
   ChangeDetectorRef,
   AfterViewInit,
 } from '@angular/core';
-import {
-  FormControl,
-  Validators,
-  FormGroup,
-} from '@angular/forms';
+import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MyErrorStateMatcher } from 'src/app/helper/ErrorStateMatcher';
@@ -22,7 +18,7 @@ import {
   GoPhishTemplate,
 } from 'src/app/models/template.model';
 import { Subscription as PcaSubscription } from 'src/app/models/subscription.model';
-import {  Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import $ from 'jquery';
 import 'src/app/helper/csvToArray';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -42,9 +38,7 @@ import Swal from 'sweetalert2';
 
 import { SendingProfileService } from 'src/app/services/sending-profile.service';
 import { TestEmail } from 'src/app/models/test-email.model';
-import {
-  DomSanitizer,
-} from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 import { filterSendingProfiles } from '../../helper/utilities';
 import { ImportTemplateDialogComponent } from './import-template-dialog/import-template-dialog.component';
 
@@ -179,11 +173,9 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
       })
     );
 
-    this.landingPageSvc
-      .getAlllandingpages(true)
-      .subscribe((data: any) => {
-        this.pagesList = data;
-      });
+    this.landingPageSvc.getAlllandingpages(true).subscribe((data: any) => {
+      this.pagesList = data;
+    });
     this.sendingProfileSvc.getAllProfiles().subscribe((data: any) => {
       this.sendingProfiles = filterSendingProfiles(data);
     });
@@ -419,9 +411,8 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
       );
       //PATCH - existing template update
       if (this.currentTemplateFormGroup.controls['templateUUID'].value) {
-        this.templateManagerSvc
-          .updateTemplate(templateToSave)
-          .then((success) => {
+        this.templateManagerSvc.updateTemplate(templateToSave).then(
+          (success) => {
             this.dialog.open(AlertComponent, {
               data: {
                 title: 'Template Saved',
@@ -429,14 +420,15 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
               },
             });
           },
-          (error)=>{
+          (error) => {
             this.dialog.open(AlertComponent, {
               data: {
                 title: 'Template Error',
                 messageText: error.error,
-              }
-            })
-          });
+              },
+            });
+          }
+        );
         //POST - new template creation
       } else {
         this.templateManagerSvc.saveNewTemplate(templateToSave).subscribe(
@@ -658,9 +650,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
     uploadWithCredentials: false,
     sanitize: false,
     toolbarPosition: 'top',
-    toolbarHiddenButtons: [
-      ['insertVideo'],
-    ],
+    toolbarHiddenButtons: [['insertVideo']],
   };
 
   /**
@@ -752,9 +742,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
     }
 
     //need to go get the sending profile from gophish
-    let tmp_template = this.getTemplateFromForm(
-      this.currentTemplateFormGroup
-    );
+    let tmp_template = this.getTemplateFromForm(this.currentTemplateFormGroup);
     let email_for_test: TestEmail = {
       template: tmp_template, //template name to be used in the test
       first_name: this.firstName,
@@ -817,7 +805,9 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
 
       // Generate Sender
       const senderArray = fromAddress.split('@')[0].split(' ');
-      this.fromSender = senderArray[senderArray.length - 1].trim().replace('<', '');
+      this.fromSender = senderArray[senderArray.length - 1]
+        .trim()
+        .replace('<', '');
       if (!this.fromSender) {
         this.fromSender = 'sender';
       }
@@ -854,7 +844,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
   importEmail() {
     const dialogRef = this.dialog.open(ImportTemplateDialogComponent, {
       disableClose: false,
-      width: '80%'
+      width: '80%',
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
@@ -862,7 +852,9 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
           $('#toggleEditorMode-').trigger('click');
           this.angular_editor_mode = 'WYSIWYG';
         }
-        this.currentTemplateFormGroup.patchValue({templateSubject: result.subject});
+        this.currentTemplateFormGroup.patchValue({
+          templateSubject: result.subject,
+        });
         if (result.html) {
           this.angularEditorEle.textArea.nativeElement.innerHTML = result.html;
           this.editorConfig.placeholder = null;

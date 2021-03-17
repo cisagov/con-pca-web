@@ -4,10 +4,21 @@ import {
   OnInit,
   Inject,
   ChangeDetectorRef,
-  ChangeDetectionStrategy, ViewChild
+  ChangeDetectionStrategy,
+  ViewChild,
 } from '@angular/core';
-import { FormControl, Validators, FormGroup, ValidatorFn, AbstractControl } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import {
+  FormControl,
+  Validators,
+  FormGroup,
+  ValidatorFn,
+  AbstractControl,
+} from '@angular/forms';
+import {
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+  MatDialog,
+} from '@angular/material/dialog';
 import { SendingProfileService } from 'src/app/services/sending-profile.service';
 import { SendingProfile } from 'src/app/models/sending-profile.model';
 import { MatSort } from '@angular/material/sort';
@@ -25,18 +36,14 @@ export class SendingProfileDetailComponent implements OnInit {
    * NEW or EDIT
    */
   mode = 'new';
-  testEmail = "";
+  testEmail = '';
 
   profileForm: FormGroup;
   profile: SendingProfile;
   id: number;
 
   @ViewChild(MatSort) sort: MatSort;
-  displayedColumns = [
-    'header',
-    'value',
-    'actions'
-  ];
+  displayedColumns = ['header', 'value', 'actions'];
 
   headerList: MatTableDataSource<CustomHeader> = new MatTableDataSource<CustomHeader>();
   submitted = false;
@@ -68,8 +75,12 @@ export class SendingProfileDetailComponent implements OnInit {
     this.profileForm = new FormGroup({
       name: new FormControl('', Validators.required),
       interfaceType: new FormControl(''),
-      from: new FormControl('', [Validators.required,
-         Validators.pattern("^\\s*([A-Za-z\\d\\s]+?)\\s*<([\\w.!#$%&’*+\\/=?^_`{|}~-]+@[\\w-]+(?:\\.[\\w-]+)+)>\\s*$|^\\s*([\\w.!#$%&’*+\\/=?^_`{|}~-]+@[\\w-]+(?:\\.[\\w-]+)+)\\s*$")]),
+      from: new FormControl('', [
+        Validators.required,
+        Validators.pattern(
+          '^\\s*([A-Za-z\\d\\s]+?)\\s*<([\\w.!#$%&’*+\\/=?^_`{|}~-]+@[\\w-]+(?:\\.[\\w-]+)+)>\\s*$|^\\s*([\\w.!#$%&’*+\\/=?^_`{|}~-]+@[\\w-]+(?:\\.[\\w-]+)+)\\s*$'
+        ),
+      ]),
       host: new FormControl('', Validators.required),
       username: new FormControl(''),
       password: new FormControl(''),
@@ -101,7 +112,7 @@ export class SendingProfileDetailComponent implements OnInit {
           this.headerList.sort = this.sort;
         },
         (err) => {
-          console.log("send profile error:");
+          console.log('send profile error:');
           console.log(err);
         }
       );
@@ -136,7 +147,9 @@ export class SendingProfileDetailComponent implements OnInit {
    * Deletes a custom email header from the internal list.
    */
   deleteHeader(headerToDelete: any) {
-    this.headerList.data = this.headerList.data.filter(x => x.header !== headerToDelete.header);
+    this.headerList.data = this.headerList.data.filter(
+      (x) => x.header !== headerToDelete.header
+    );
   }
 
   /**
@@ -171,7 +184,6 @@ export class SendingProfileDetailComponent implements OnInit {
           invalidData: invalid,
         },
       });
-
     }
   }
 
@@ -179,7 +191,7 @@ export class SendingProfileDetailComponent implements OnInit {
     return word.charAt(0).toUpperCase() + word.slice(1);
   }
 
-  save(){
+  save() {
     if (this.profileForm.invalid) {
       console.log(this.f.from.errors);
       return;
@@ -199,7 +211,7 @@ export class SendingProfileDetailComponent implements OnInit {
       for (const ch of this.headerList.data) {
         const h = {
           key: ch.header,
-          value: ch.value
+          value: ch.value,
         };
         sp.headers.push(h);
       }
@@ -218,41 +230,47 @@ export class SendingProfileDetailComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  onSendTestClick(){
+  onSendTestClick() {
     let sp: SendingProfile;
     sp = this.save();
     sp.from_address = this.getEmailFromBrackets(sp.from_address);
-    let email_for_test: TestEmail ={
+    let email_for_test: TestEmail = {
       template: {
         attachments: [],
         html: null,
         text: null,
         name: null,
-        subject: null
-      },//template name to be used in the test
-      first_name: "test",
-      last_name: "test",
+        subject: null,
+      }, //template name to be used in the test
+      first_name: 'test',
+      last_name: 'test',
       email: this.testEmail,
-      position: "tester",
-      url: "",
-      smtp: sp
+      position: 'tester',
+      url: '',
+      smtp: sp,
     };
 
-    this.sendingProfileSvc.sendTestEmail(email_for_test).subscribe((data: any) => {
-      console.log(data);
-      Swal.fire(data.message);
+    this.sendingProfileSvc.sendTestEmail(email_for_test).subscribe(
+      (data: any) => {
+        console.log(data);
+        Swal.fire(data.message);
       },
-    error => {
-        console.log('Error sending test email: ' + (<Error>error).name + (<Error>error).message);
+      (error) => {
+        console.log(
+          'Error sending test email: ' +
+            (<Error>error).name +
+            (<Error>error).message
+        );
         console.log(error);
-    });
+      }
+    );
   }
 
-  getEmailFromBrackets(email_with_brackets: string){
-    var regex = /.+\<(.+@.+)>/g
-    if(regex.test(email_with_brackets)){
+  getEmailFromBrackets(email_with_brackets: string) {
+    var regex = /.+\<(.+@.+)>/g;
+    if (regex.test(email_with_brackets)) {
       var match = regex.exec(email_with_brackets);
-      return(match[0]);
+      return match[0];
     }
     return email_with_brackets;
   }

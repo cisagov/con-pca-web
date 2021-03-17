@@ -38,13 +38,9 @@ export class MonthlyComponent implements OnInit {
 
     this.route.params.subscribe((params) => {
       this.subscriptionUuid = params.id;
-      const cycle_uuid =  params.cycle_uuid;
+      const cycle_uuid = params.cycle_uuid;
       this.reportsSvc
-        .getMonthlyReport(
-          this.subscriptionUuid,
-          cycle_uuid,
-          params.isHeadless,
-        )
+        .getMonthlyReport(this.subscriptionUuid, cycle_uuid, params.isHeadless)
         .subscribe((resp) => {
           this.detail = resp;
           this.sanatize_template_indicators();
@@ -52,35 +48,41 @@ export class MonthlyComponent implements OnInit {
         });
     });
   }
-  sanatize_template_indicators(){
-    let san_list = this.detail.subscription_stats.indicator_ranking.filter(item => item.value !== 0)
-    san_list = san_list.splice(0,5)
-    this.detail.sanatized_indicators = san_list
+  sanatize_template_indicators() {
+    let san_list = this.detail.subscription_stats.indicator_ranking.filter(
+      (item) => item.value !== 0
+    );
+    san_list = san_list.splice(0, 5);
+    this.detail.sanatized_indicators = san_list;
   }
 
-  secondsToDay(input_seconds){
-    let day = Math.floor(input_seconds / ( 24 * 3600 ))
-    input_seconds = input_seconds % ( 24 * 3600 )
-    let hour = Math.floor(input_seconds / 3600)
-    input_seconds = input_seconds % 3600
-    let minute = Math.floor(input_seconds / 60)
-    input_seconds =  input_seconds % 60
-    let seconds = Math.floor(input_seconds)
+  secondsToDay(input_seconds) {
+    let day = Math.floor(input_seconds / (24 * 3600));
+    input_seconds = input_seconds % (24 * 3600);
+    let hour = Math.floor(input_seconds / 3600);
+    input_seconds = input_seconds % 3600;
+    let minute = Math.floor(input_seconds / 60);
+    input_seconds = input_seconds % 60;
+    let seconds = Math.floor(input_seconds);
     return {
-      "day": day,
-      "hour": hour,
-      "minute": minute,
-      "seconds": seconds
-    }
+      day: day,
+      hour: hour,
+      minute: minute,
+      seconds: seconds,
+    };
   }
   /**
    *
    */
   renderReport() {
     // format the 'time to first X' text
-    this.avgTTFC = this.secondsToDay(this.detail.metrics.avg_time_to_first_click)
+    this.avgTTFC = this.secondsToDay(
+      this.detail.metrics.avg_time_to_first_click
+    );
     // this.avgTTFCFormatted = this.formatTTF(this.detail.metrics.avg_time_to_first_click);
-    this.avgTTFR = this.secondsToDay(this.detail.metrics.avg_time_to_first_report);
+    this.avgTTFR = this.secondsToDay(
+      this.detail.metrics.avg_time_to_first_report
+    );
 
     // build statistics by level chart
     this.chart.showXAxis = true;

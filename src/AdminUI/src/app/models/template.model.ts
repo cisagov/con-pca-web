@@ -8,8 +8,8 @@ export class TemplateShort {
   }
 }
 
-export class GoPhishTemplate{
-  attachments:[];
+export class GoPhishTemplate {
+  attachments: [];
   name: string;
   subject: string;
   html: string;

@@ -1,7 +1,7 @@
 <div style="width: 75vw">
   <h3>Select a Tag to Insert</h3>
 
-  <mat-form-field class="d-flex flex-column w-100" appearance = "outline">
+  <mat-form-field class="d-flex flex-column w-100" appearance="outline">
     <mat-label>Search</mat-label>
     <input
       [(ngModel)]="searchInput"
@@ -11,11 +11,13 @@
     />
   </mat-form-field>
 
-  <div style="max-height: 50vh; overflow: auto;">
+  <div style="max-height: 50vh; overflow: auto">
     <div class="col p-0 w-100">
       <mat-table [dataSource]="tagsData" matSort>
         <ng-container matColumnDef="tag">
-          <mat-header-cell *matHeaderCellDef mat-sort-header>Tag</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef mat-sort-header
+            >Tag</mat-header-cell
+          >
           <mat-cell *matCellDef="let row">{{ row.tag }}</mat-cell>
         </ng-container>
 

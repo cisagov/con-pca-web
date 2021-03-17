@@ -9,23 +9,15 @@ import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
-  styleUrls: ['./users.component.scss']
+  styleUrls: ['./users.component.scss'],
 })
 export class UsersComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
-  displayedColumns = [
-    'Username',
-    'UserStatus',
-    'UserCreateDate',
-    'delete'
-  ];
+  displayedColumns = ['Username', 'UserStatus', 'UserCreateDate', 'delete'];
   users = new MatTableDataSource<User>();
   loading = true;
 
-  constructor(
-    private userService: UserService,
-    public dialog: MatDialog
-  ) { }
+  constructor(private userService: UserService, public dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.getUsers();
@@ -79,5 +71,5 @@ export class UsersComponent implements OnInit {
 
   public filterList = (value: string) => {
     this.users.filter = value.trim().toLocaleLowerCase();
-  }
+  };
 }
