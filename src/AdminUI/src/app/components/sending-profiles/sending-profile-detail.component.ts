@@ -67,7 +67,7 @@ export class SendingProfileDetailComponent implements OnInit {
   ngOnInit(): void {
     this.profileForm = new FormGroup({
       name: new FormControl('', Validators.required),
-      interfaceType: new FormControl(''),
+      interfaceType: new FormControl({value: "SMTP", disabled: true}),
       from: new FormControl('', [Validators.required,
          Validators.pattern("^\\s*([A-Za-z\\d\\s]+?)\\s*<([\\w.!#$%&’*+\\/=?^_`{|}~-]+@[\\w-]+(?:\\.[\\w-]+)+)>\\s*$|^\\s*([\\w.!#$%&’*+\\/=?^_`{|}~-]+@[\\w-]+(?:\\.[\\w-]+)+)\\s*$")]),
       host: new FormControl('', Validators.required),
