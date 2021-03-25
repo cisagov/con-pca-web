@@ -73,7 +73,7 @@ export class ChartComplexityLevelComponent implements OnInit, OnChanges {
     });
 
     campaignResults.forEach((c) => {
-      const o = obj.find((x) => x.name === c.deception_level.toString());
+      const o = obj.find((x) => x.name === c.deception_score.toString());
 
       const uqr = o.series.find((x) => x.name === 'Unique Click Rate');
       if (uqr.value === 0) {
