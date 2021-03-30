@@ -231,6 +231,7 @@
                 <mat-form-field appearance="outline" class="flex-grow-1">
                   <mat-label>Landing Page Selection</mat-label>
                   <mat-select formControlName="landingPage">
+                    <mat-option [value]="0"></mat-option>
                     <mat-option
                       *ngFor="let page of pagesList"
                       [value]="page.landing_page_uuid"

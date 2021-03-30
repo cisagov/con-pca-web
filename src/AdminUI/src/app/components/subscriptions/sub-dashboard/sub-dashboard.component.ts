@@ -64,7 +64,6 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
         if ('subscription_uuid' in data && !this.subscriptionUuid) {
           this.subscriptionUuid = data.subscription_uuid;
           this.dataAvailable = true;
-          this.drawGraphs();
         }
       })
     );

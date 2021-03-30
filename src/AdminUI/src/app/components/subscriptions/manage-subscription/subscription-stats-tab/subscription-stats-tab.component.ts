@@ -104,7 +104,7 @@ export class SubscriptionStatsTab implements OnInit {
             }
           );
       }
-      if ('campaigns' in data) {
+      if ('cycles' in data) {
         this.buildSubscriptionTimeline(this.subscription);
         this.subscription = data;
         //@ts-ignore
@@ -352,31 +352,11 @@ export class SubscriptionStatsTab implements OnInit {
       date: moment(s.start_date),
     });
     // now extract a simple timeline based on campaign events
-    s.campaigns.forEach((c: GoPhishCampaignModel) => {
-      for (const t of c.timeline) {
-        // ignore campaigns started on the subscription start date
-        if (
-          t.message.toLowerCase() === 'campaign created' &&
-          isSameDate(t.time, s.start_date)
-        ) {
-          continue;
-        }
-
-        // ignore extra campaign starts we have already put into the list
-        if (
-          t.message.toLowerCase() === 'campaign created' &&
-          items.find((x) => isSameDate(x.date, t.time)) !== null
-        ) {
-          continue;
-        }
-
-        if (t.message.toLowerCase() === 'campaign created') {
-          items.push({
-            title: 'Cycle Start',
-            date: moment(t.time),
-          });
-        }
-      }
+    s.cycles.forEach((c: Cycle) => {
+      items.push({
+        title: 'Cycle Start',
+        date: moment(c.start_date),
+      });
     });
 
     // add an item for 'today'

@@ -155,7 +155,7 @@
               <th>Notes</th>
             </tr>
             <tr *ngFor="let cycle of detail?.cycles">
-              <td>{{ cycle.year }} {{ cycle.quarter }}</td>
+              <td>{{ cycle.quarter }}</td>
               <td>
                 {{ cycle.start_date | date: "MMM d, yyyy" }} -
                 {{ cycle.end_date | date: "MMM d, yyyy" }}
@@ -269,7 +269,7 @@
             <tr>
               <td># of emails (phishing attempts) sent overall</td>
               <td>
-                {{ detail?.metrics.number_of_email_sent_overall }} ({{
+                {{ detail?.metrics.number_of_emails_sent_overall }} ({{
                   detail?.metrics.emails_sent_over_target_count
                 }}
                 per user)
@@ -289,7 +289,7 @@
               <td># of phished users overall</td>
               <td>
                 {{ detail?.metrics.number_of_phished_users_overall }} ({{
-                  detail?.metrics.percent_of_submits
+                  detail?.metrics.percent_of_phished_users
                 }}% of target population)
               </td>
             </tr>
