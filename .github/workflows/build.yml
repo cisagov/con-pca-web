@@ -28,9 +28,9 @@ env:
   BUILDX_CACHE_DIR: ~/.cache/buildx
   IMAGE_NAME: cisagov/con-pca-web
   PIP_CACHE_DIR: ~/.cache/pip
-  # Disabled the following platforms as they have issues with node.
-  # linux/arm/v6,linux/s390x
-  PLATFORMS: "linux/amd64,linux/arm/v7,linux/arm64,linux/ppc64le"
+  # Disabled linux/arm/v6 due to the following error when installing npm.
+  # npm : Depends: nodejs (>= 6.11~) but it is not installable
+  PLATFORMS: "linux/amd64,linux/arm/v7,linux/arm64,linux/ppc64le,linux/s390x"
   PRE_COMMIT_CACHE_DIR: ~/.cache/pre-commit
 
 jobs:
