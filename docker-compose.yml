@@ -4,8 +4,8 @@ services:
   web:
     build:
       context: .
-    container_name: pca-web-prod
-    image: cisagov/pca-web-prod
+    container_name: pca-web
+    image: cisagov/pca-web
     restart: unless-stopped
     ports:
       - "4200:80"
