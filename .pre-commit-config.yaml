@@ -32,6 +32,7 @@ repos:
           - --autofix
       - id: requirements-txt-fixer
       - id: trailing-whitespace
+        exclude: src/AdminUI/src/assets/htmlhelp/
 
   # Text file hooks
   - repo: https://github.com/igorshubovych/markdownlint-cli
