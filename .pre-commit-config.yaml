@@ -17,7 +17,7 @@ repos:
       - id: detect-private-key
         exclude: src/secrets/privkey.pem
       - id: end-of-file-fixer
-        exclude: files/(issue|motd)
+        exclude: files/(issue|motd)|src/AdminUI/src/assets/htmlhelp/
       - id: mixed-line-ending
         args:
           - --fix=lf
@@ -26,6 +26,7 @@ repos:
       #     - --autofix
       - id: requirements-txt-fixer
       - id: trailing-whitespace
+        exclude: src/AdminUI/src/assets/htmlhelp/
   # - repo: https://github.com/igorshubovych/markdownlint-cli
   #   rev: v0.23.2
   #   hooks:
