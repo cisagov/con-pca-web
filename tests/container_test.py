@@ -1,5 +1,5 @@
 #!/usr/bin/env pytest -vs
-"""Tests for example container."""
+"""Tests for con-pca-web container."""
 
 # Standard Python Libraries
 import os
@@ -53,7 +53,7 @@ def test_container(main_container):
 
     # Assert version output is in the logs.
     assert (
-        f"Running Con-PCA Version {project_version}" in log_output
+        f"Running Con-PCA version {project_version}" in log_output
     ), f"Container version output to log does not match project version file {VERSION_FILE}"
 
     # Assert release Version Label

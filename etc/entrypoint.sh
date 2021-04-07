@@ -9,7 +9,7 @@ ng build --configuration production --output-path=/usr/share/nginx/html/
 echo "Substituting settings"
 envsubst < /usr/share/nginx/html/assets/settings.template.json > /usr/share/nginx/html/assets/settings.json
 
-echo "Running Con-PCA Version $VERSION"
+echo "Running Con-PCA version $VERSION"
 
 echo "Starting nginx"
 exec nginx -g 'daemon off;'
