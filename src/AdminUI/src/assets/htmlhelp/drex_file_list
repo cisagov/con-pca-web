@@ -65,10 +65,12 @@ con_pca_revision_history.htm
 glossary.htm
 drex_aggregate_statistics_custom.png
 aggregate_statistics.htm
-drex_dhs_contacts_custom.png
-dhs_contacts.htm
+drex_cisa_contacts_custom.png
+cisa_contacts.htm
 drex_user_admin_custom.png
 user_admin.htm
+drex_users_custom.png
+users.htm
 drex_tags_custom.png
 tags.htm
 drex_create_new_recommendation_custom.png
@@ -85,6 +87,7 @@ drex_create_new_profile_custom.png
 create_new_profile.htm
 drex_sending_profiles_custom.png
 sending_profiles.htm
+drex_domains_custom.png
 domains.htm
 create_new_contact.htm
 drex_contacts_custom_2.png
