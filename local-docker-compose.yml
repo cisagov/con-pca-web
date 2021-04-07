@@ -6,6 +6,7 @@ services:
       context: .
       dockerfile: local.Dockerfile
     container_name: pca-web
+    image: cisagov/pca-web-local
     restart: unless-stopped
     ports:
       - "4200:4200"

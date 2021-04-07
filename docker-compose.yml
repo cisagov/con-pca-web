@@ -3,6 +3,8 @@ version: "3.5"
 services:
   web:
     build:
+      args:
+        VERSION: "1.0.0"
       context: .
     container_name: pca-web
     image: cisagov/pca-web
