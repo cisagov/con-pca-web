@@ -1,26 +1,19 @@
 import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
-import {
-  MatDialog,
-  MatDialogConfig
-} from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { CustomerService } from 'src/app/services/customer.service';
-import {
-  Customer,
-  ICustomerContact
-} from 'src/app/models/customer.model';
+import { Customer, ICustomerContact } from 'src/app/models/customer.model';
 import { AddContactDialogComponent } from './add-contact-dialog/add-contact-dialog.component';
 import { ViewContactDialogComponent } from './view-contact-dialog/view-contact-dialog.component';
 import { MatSort } from '@angular/material/sort';
 import { Router } from '@angular/router';
 import { AlertComponent } from '../dialogs/alert/alert.component';
 
-
 @Component({
   selector: '',
   templateUrl: './contacts.component.html',
-  styleUrls: ['./contacts.component.scss']
+  styleUrls: ['./contacts.component.scss'],
 })
 export class ContactsComponent implements OnInit {
   dataSource: MatTableDataSource<ICustomerContact>;
@@ -33,14 +26,14 @@ export class ContactsComponent implements OnInit {
     'title',
     'customer_name',
     'active',
-    'select'
+    'select',
   ];
 
   constructor(
     private layoutSvc: LayoutMainService,
     public dialog: MatDialog,
     public customerService: CustomerService,
-    public router: Router,
+    public router: Router
   ) {
     layoutSvc.setTitle('Contacts');
   }
@@ -55,24 +48,24 @@ export class ContactsComponent implements OnInit {
     dialogConfig.data = {};
     const dialogRef = this.dialog.open(AddContactDialogComponent, dialogConfig);
 
-    dialogRef.afterClosed().subscribe(value => {
+    dialogRef.afterClosed().subscribe((value) => {
       this.refresh();
     });
   }
 
   openViewDialog(row: ICustomerContact): void {
-    if(this.dialog.openDialogs.length==0){
+    if (this.dialog.openDialogs.length == 0) {
       const dialogRef = this.dialog.open(ViewContactDialogComponent, {
-        data: row
+        data: row,
       });
-      dialogRef.afterClosed().subscribe(value => {
+      dialogRef.afterClosed().subscribe((value) => {
         this.refresh();
       });
-     }
+    }
   }
 
   createNewContact() {
-    console.log("clicked");
+    console.log('clicked');
     this.router.navigate(['/customers']);
     this.dialog.open(AlertComponent, {
       data: {

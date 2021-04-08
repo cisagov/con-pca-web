@@ -36,7 +36,7 @@ export class RecommendationsManagerComponent implements OnInit {
         //Use preset empty form
         layoutSvc.setTitle('New Recommendation');
       }
-    })
+    });
 
     this.setRecommendationsForm(new Recommendations());
   }
@@ -70,9 +70,8 @@ export class RecommendationsManagerComponent implements OnInit {
     });
   }
 
-
   onCancelClick() {
-        this.router.navigate(['/recommendations']);
+    this.router.navigate(['/recommendations']);
   }
 
   //Create a formgroup using a Template as initial data

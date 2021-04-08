@@ -160,11 +160,11 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
               this.subscriptions.data = data as Subscription[];
               console.log(this.subscriptions.data.length);
               if (this.subscriptions.data.length < 1) {
-                  this.hasSubs = false;
+                this.hasSubs = false;
               } else {
                 this.hasSubs = true;
               }
-          });
+            });
         } else {
           this.orgError = 'Specified customer UUID not found';
         }

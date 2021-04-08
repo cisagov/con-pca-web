@@ -45,7 +45,7 @@
         <mat-form-field
           appearance="outline"
           class="flex-grow-4"
-          style="padding-bottom: 10px;"
+          style="padding-bottom: 10px"
           [formGroup]="customerFormGroup"
         >
           <mat-label>Customer Identifier*</mat-label>
@@ -561,14 +561,14 @@
         </div>
       </div>
       <div class="d-flex flex-row flex-grow-1 justify-content-end">
-          <button
+        <button
           mat-raised-button
           color="warn"
-            [disabled]="hasSubs"
-            (click)="deleteCustomer()"
-          >
-            Delete Customer
-          </button>
+          [disabled]="hasSubs"
+          (click)="deleteCustomer()"
+        >
+          Delete Customer
+        </button>
         <div
           matTooltip="A customer must have all required fields filled, and at least one contact listed"
           matTooltipPosition="right"

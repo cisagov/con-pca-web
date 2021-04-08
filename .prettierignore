@@ -5,3 +5,6 @@
 # Already being linted by yamllint
 *.yaml
 *.yml
+
+# Ignore auto-generated htmlhelp
+src/AdminUI/src/assets/htmlhelp

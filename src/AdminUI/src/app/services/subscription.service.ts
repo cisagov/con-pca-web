@@ -10,7 +10,6 @@ import { Observable, BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class SubscriptionService {
-
   subscription: Subscription;
   subBehaviorSubject = new BehaviorSubject<Subscription>(new Subscription());
   cycleBehaviorSubject = new BehaviorSubject<Cycle>(new Cycle());
@@ -25,7 +24,7 @@ export class SubscriptionService {
   constructor(
     private http: HttpClient,
     private settingsService: SettingsService
-  ) { }
+  ) {}
 
   public getSubBehaviorSubject() {
     return this.subBehaviorSubject;
@@ -128,7 +127,6 @@ export class SubscriptionService {
   }
 
   patchSubscription(subscription: Subscription) {
-
     // This should be the only data that needs patched
     const data = {
       archived: subscription.archived,
@@ -142,7 +140,7 @@ export class SubscriptionService {
       sending_profile_name: subscription.sending_profile_name,
       target_domain: subscription.target_domain,
       stagger_emails: subscription.stagger_emails,
-      continuous_subscription: subscription.continuous_subscription
+      continuous_subscription: subscription.continuous_subscription,
     };
 
     return this.http.patch(
@@ -209,7 +207,10 @@ export class SubscriptionService {
     );
   }
 
-  public startSubscription(subscription_uuid: string, continuousSubscription: boolean) {
+  public startSubscription(
+    subscription_uuid: string,
+    continuousSubscription: boolean
+  ) {
     return this.http.get(
       `${this.settingsService.settings.apiUrl}/api/v1/subscription/restart/${subscription_uuid}?continuous_subscription=${continuousSubscription}`
     );

@@ -16,7 +16,7 @@ export class ChartsService {
   constructor(
     private http: HttpClient,
     private settingsService: SettingsService
-  ) { }
+  ) {}
 
   /**
    * Gets the subscriptions's statistics

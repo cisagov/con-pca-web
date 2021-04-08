@@ -10,14 +10,14 @@ import { SettingsService } from 'src/app/services/settings.service';
 export class DomainsComponent implements OnInit {
   constructor(
     layoutSvc: LayoutMainService,
-    private settingsService: SettingsService) {
+    private settingsService: SettingsService
+  ) {
     layoutSvc.setTitle('Domains');
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
-  redirectToDomainManagement(){
+  redirectToDomainManagement() {
     window.location.href = this.settingsService.settings.domainManagementURL;
   }
 }

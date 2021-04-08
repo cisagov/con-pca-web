@@ -51,7 +51,7 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
   constructor(
     public chartsSvc: ChartsService,
     private subscriptionSvc: SubscriptionService
-  ) { }
+  ) {}
 
   /**
    *
@@ -68,14 +68,16 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
       })
     );
     this.temp_angular_subs.push(
-      this.subscriptionSvc.getCycleBehaviorSubject().subscribe((data: Cycle) => {
-        this.selected_cycle = data;
-        if (Object.keys(data).length > 0) {
-          this.cycle_selected = true;
-          this.numberTemplatesInUse = data.campaigns_in_cycle.length;
-        }
-        this.drawGraphs();
-      })
+      this.subscriptionSvc
+        .getCycleBehaviorSubject()
+        .subscribe((data: Cycle) => {
+          this.selected_cycle = data;
+          if (Object.keys(data).length > 0) {
+            this.cycle_selected = true;
+            this.numberTemplatesInUse = data.campaigns_in_cycle.length;
+          }
+          this.drawGraphs();
+        })
     );
   }
   ngOnDestroy(): void {

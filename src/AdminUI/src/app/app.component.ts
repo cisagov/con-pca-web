@@ -25,5 +25,5 @@ export class AppComponent {
     return this.themeSvc.getStoredTheme();
   }
 
-  ngAfterViewInit(): void { }
+  ngAfterViewInit(): void {}
 }

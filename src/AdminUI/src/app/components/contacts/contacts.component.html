@@ -10,28 +10,43 @@
     </div>
 
     <div class="d-inline-flex flex-column ml-2">
-      <button class="btn-icon" mat-raised-button color="primary" (click)="createNewContact()">
+      <button
+        class="btn-icon"
+        mat-raised-button
+        color="primary"
+        (click)="createNewContact()"
+      >
         New Contact
       </button>
     </div>
   </div>
 
-  <div *ngIf="loading" style="text-align: center; padding-top: 2rem; padding-bottom: 2rem;">
-    <mat-spinner class="spinner" style="margin-left: auto; margin-right: auto;" diameter="50" ></mat-spinner>
+  <div
+    *ngIf="loading"
+    style="text-align: center; padding-top: 2rem; padding-bottom: 2rem"
+  >
+    <mat-spinner
+      class="spinner"
+      style="margin-left: auto; margin-right: auto"
+      diameter="50"
+    ></mat-spinner>
   </div>
 
   <!-- Contacts Table -->
   <mat-table [dataSource]="dataSource" [hidden]="loading" matSort>
-
     <!-- First Name Column -->
     <ng-container matColumnDef="first_name">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>First Name</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >First Name</mat-header-cell
+      >
       <mat-cell *matCellDef="let row"> {{ row.first_name }} </mat-cell>
     </ng-container>
 
     <!-- Last Name Column -->
     <ng-container matColumnDef="last_name">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Last Name</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >Last Name</mat-header-cell
+      >
       <mat-cell *matCellDef="let row"> {{ row.last_name }} </mat-cell>
     </ng-container>
 
@@ -43,38 +58,52 @@
 
     <!-- Company Name Column -->
     <ng-container matColumnDef="customer_name">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Company/Org Name</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >Company/Org Name</mat-header-cell
+      >
       <mat-cell *matCellDef="let row"> {{ row.customer_name }} </mat-cell>
     </ng-container>
 
     <!-- Primary Contact Column -->
     <ng-container matColumnDef="primary_contact">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Primary Contact</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >Primary Contact</mat-header-cell
+      >
       <mat-cell *matCellDef="let row"> {{ row.primary_contact }} </mat-cell>
     </ng-container>
 
     <!-- Office Phone Number Column -->
     <ng-container matColumnDef="office_phone">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Office Phone</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >Office Phone</mat-header-cell
+      >
       <mat-cell *matCellDef="let row"> {{ row.office_phone }} </mat-cell>
     </ng-container>
 
     <!-- Mobile Phone Number Column -->
     <ng-container matColumnDef="mobile_phone">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Mobile Phone</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >Mobile Phone</mat-header-cell
+      >
       <mat-cell *matCellDef="let row"> {{ row.mobile_phone }} </mat-cell>
     </ng-container>
 
     <!-- Active Column -->
     <ng-container matColumnDef="active">
-      <mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header>Active</mat-header-cell>
-      <mat-cell class="text-center" *matCellDef="let row"> <i *ngIf="row.active" class="fa fa-check"></i> </mat-cell>
+      <mat-header-cell *matHeaderCellDef class="text-center" mat-sort-header
+        >Active</mat-header-cell
+      >
+      <mat-cell class="text-center" *matCellDef="let row">
+        <i *ngIf="row.active" class="fa fa-check"></i>
+      </mat-cell>
     </ng-container>
 
     <!-- Action Column -->
     <ng-container matColumnDef="select">
-      <mat-header-cell *matHeaderCellDef class="text-center" >Edit</mat-header-cell>
-      <mat-cell *matCellDef="let row" class="text-center" >
+      <mat-header-cell *matHeaderCellDef class="text-center"
+        >Edit</mat-header-cell
+      >
+      <mat-cell *matCellDef="let row" class="text-center">
         <button
           class="table-btn-icon"
           mat-flat-button

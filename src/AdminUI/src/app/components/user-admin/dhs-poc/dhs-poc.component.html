@@ -21,27 +21,21 @@
     [dataSource]="dhsContacts"
   >
     <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef>
-        Contact Name
-      </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef> Contact Name </mat-header-cell>
       <mat-cell *matCellDef="let contact">
         {{ contact.first_name }} {{ contact.last_name }}
       </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="title">
-      <mat-header-cell *matHeaderCellDef>
-        Title
-      </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef> Title </mat-header-cell>
       <mat-cell *matCellDef="let contact">
         {{ contact.title }}
       </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="email">
-      <mat-header-cell *matHeaderCellDef>
-        Email
-      </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
       <mat-cell *matCellDef="let contact">
         {{ contact.email }}
       </mat-cell>

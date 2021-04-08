@@ -10,47 +10,45 @@ import { Landing_Page } from 'src/app/models/landing-page.models';
 @Component({
   selector: 'app-landing-pages',
   templateUrl: './landing-pages.component.html',
-  styleUrls: ['./landing-pages.component.scss']
+  styleUrls: ['./landing-pages.component.scss'],
 })
-export class LandingPagesComponent implements OnInit , AfterViewInit {
-        displayedColumns = ['name', 'is_default_template', 'created_by', 'select'];
-        landingPageData = new MatTableDataSource<Landing_Page>();
-        search_input = '';
-        @ViewChild(MatSort) sort: MatSort;
+export class LandingPagesComponent implements OnInit, AfterViewInit {
+  displayedColumns = ['name', 'is_default_template', 'created_by', 'select'];
+  landingPageData = new MatTableDataSource<Landing_Page>();
+  search_input = '';
+  @ViewChild(MatSort) sort: MatSort;
 
-        loading = true;
+  loading = true;
 
-        constructor(
-          private templateSvc: LandingPageManagerService,
-          private router: Router,
-          private layoutSvc: LayoutMainService
-        ) {
-          layoutSvc.setTitle('Landing Pages');
-        }
+  constructor(
+    private templateSvc: LandingPageManagerService,
+    private router: Router,
+    private layoutSvc: LayoutMainService
+  ) {
+    layoutSvc.setTitle('Landing Pages');
+  }
 
-        ngOnInit() {
-          this.refresh();
-        }
+  ngOnInit() {
+    this.refresh();
+  }
 
-        refresh() {
-          this.loading = true;
-          this.templateSvc
-            .getAlllandingpages()
-            .subscribe((data: any) => {
-              this.landingPageData.data = data as Landing_Page[];
-              this.landingPageData.sort = this.sort;
-              this.loading = false;
-            });
-        }
+  refresh() {
+    this.loading = true;
+    this.templateSvc.getAlllandingpages().subscribe((data: any) => {
+      this.landingPageData.data = data as Landing_Page[];
+      this.landingPageData.sort = this.sort;
+      this.loading = false;
+    });
+  }
 
-        ngAfterViewInit(): void {
-          this.landingPageData.sort = this.sort;
-        }
+  ngAfterViewInit(): void {
+    this.landingPageData.sort = this.sort;
+  }
 
-        public filterTemplates = (value: string) => {
-          this.landingPageData.filter = value.trim().toLocaleLowerCase();
-        };
-        public editTemplate(template: Landing_Page) {
-          this.router.navigate(['/landingpagesmanager', template.landing_page_uuid]);
-        }
+  public filterTemplates = (value: string) => {
+    this.landingPageData.filter = value.trim().toLocaleLowerCase();
+  };
+  public editTemplate(template: Landing_Page) {
+    this.router.navigate(['/landingpagesmanager', template.landing_page_uuid]);
+  }
 }

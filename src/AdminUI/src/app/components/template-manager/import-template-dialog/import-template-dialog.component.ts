@@ -5,7 +5,7 @@ import { TemplateManagerService } from 'src/app/services/template-manager.servic
 @Component({
   selector: 'app-import-template-dialog',
   templateUrl: './import-template-dialog.component.html',
-  styleUrls: ['./import-template-dialog.component.scss']
+  styleUrls: ['./import-template-dialog.component.scss'],
 })
 export class ImportTemplateDialogComponent implements OnInit {
   content = '';
@@ -13,11 +13,10 @@ export class ImportTemplateDialogComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<ImportTemplateDialogComponent>,
-    public templateSvc: TemplateManagerService,
-  ) { }
+    public templateSvc: TemplateManagerService
+  ) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   cancel(): void {
     this.dialogRef.close(false);

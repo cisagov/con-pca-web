@@ -1,17 +1,23 @@
-<div style="width: 8.5in;" class="p-5">
+<div style="width: 8.5in" class="p-5">
   <article id="cover">
     <div class="row">
       <div id="blueDateBox">
         <span class="year">{{
           detail?.target_cycle.start_date | date: "yyyy"
-        }}</span><br />
-        <span class="dateRange">{{ detail?.target_cycle.start_date | date: dateFormat }} -
-          {{ detail?.target_cycle.end_date | date: dateFormat }}</span>
+        }}</span
+        ><br />
+        <span class="dateRange"
+          >{{ detail?.target_cycle.start_date | date: dateFormat }} -
+          {{ detail?.target_cycle.end_date | date: dateFormat }}</span
+        >
       </div>
     </div>
     <div class="row">
       <div id="bluePhishLogo" class="col-12">
-        <img src="/assets/blue_phishlogo.png" alt="Continuous Phishing Campaign Assessment Logo" />
+        <img
+          src="/assets/blue_phishlogo.png"
+          alt="Continuous Phishing Campaign Assessment Logo"
+        />
       </div>
     </div>
     <div class="row">
@@ -25,7 +31,10 @@
     </div>
     <div class="row">
       <div id="blueHacker" class="col-12">
-        <img src="/assets/blue_hacker.png" alt="blue hacker image with code overlay" />
+        <img
+          src="/assets/blue_hacker.png"
+          alt="blue hacker image with code overlay"
+        />
       </div>
     </div>
     <div class="row">
@@ -58,8 +67,11 @@
         </div>
       </div>
       <div id="cisa_logo">
-        <img src="/assets/CISA_Logo.png" style="width: 8rem;"
-          alt="Cybersecurity & Infrastructure Security Agency Logo" />
+        <img
+          src="/assets/CISA_Logo.png"
+          style="width: 8rem"
+          alt="Cybersecurity & Infrastructure Security Agency Logo"
+        />
       </div>
     </div>
   </article>
@@ -69,8 +81,11 @@
       <div class="row">
         <div class="col-12">
           <div id="centerCisaLogo">
-            <img src="/assets/CISA_Logo.png" style="width: 8rem;"
-              alt="Cybersecurity & Infrastructure Security Agency Logo" />
+            <img
+              src="/assets/CISA_Logo.png"
+              style="width: 8rem"
+              alt="Cybersecurity & Infrastructure Security Agency Logo"
+            />
           </div>
         </div>
       </div>
@@ -176,8 +191,9 @@
               </ol>
               <p>
                 To track statistics on the reported email, that information must
-                be supplied to CISA in the required format or a reporting mailbox
-                must be available and advertised in the consuming organization.
+                be supplied to CISA in the required format or a reporting
+                mailbox must be available and advertised in the consuming
+                organization.
               </p>
               <p>
                 Most organizations will setup a reporting mailbox that employees
@@ -206,10 +222,10 @@
         <div class="col-12">
           <div class="executiveReportDetails">
             <p>
-              This report provides the results for the CISA
-              National Cybersecurity Assessments and Technical
-              Services - (Vulnerability Management) led Continuous Phishing
-              Campaign Assessment (CON-PCA) for
+              This report provides the results for the CISA National
+              Cybersecurity Assessments and Technical Services - (Vulnerability
+              Management) led Continuous Phishing Campaign Assessment (CON-PCA)
+              for
               {{ detail?.customer.full_name }}. The CON-PCA is a practical
               exercise intended to support and measure the effectiveness of
               security awareness training for information system users. The
@@ -354,12 +370,11 @@
             </p>
             <p *ngFor="let rec of detail?.recommendations; let i = index">
               <b>Recommendation {{ i + 1 }}:</b> {{ rec.name }}
-              <br>
-              {{rec.description}}
-
-            <p *ngIf="recommendations?.length === 0">
-              (no recommendations)
+              <br />
+              {{ rec.description }}
             </p>
+
+            <p *ngIf="recommendations?.length === 0">(no recommendations)</p>
           </div>
         </div>
       </div>
@@ -433,7 +448,7 @@
       <table>
         <tr>
           <td colspan="2">
-            <div id="nationalAverageText" style="margin: auto;">
+            <div id="nationalAverageText" style="margin: auto">
               <div id="nationalAverageBox">
                 {{ detail?.metrics.national_clicked_avg }}%
               </div>
@@ -486,7 +501,7 @@
             <td>{{ detail?.metrics.shortest_time_to_report }}</td>
           </tr>
           <tr>
-            <th style="padding: 0 75px 0 0;">
+            <th style="padding: 0 75px 0 0">
               Median Time to open email from first sent:
             </th>
             <td>{{ detail?.metrics.median_time_to_open }}</td>
@@ -539,34 +554,98 @@
       <div class="col-12">
         <div id="successOverview" class="needs-work">
           <h4>PHISHING SUCCESS OVERVIEW</h4>
-          <svg class="chart" height="210" aria-labelledby="title desc" role="img">
+          <svg
+            class="chart"
+            height="210"
+            aria-labelledby="title desc"
+            role="img"
+          >
             <title id="title">STATISTICS BY LEVEL</title>
             <desc id="units-achieved">
               0; 50; 100; 150; 200; 250; 300; 350; 400;
             </desc>
             <g class="measure-line">
-              <line x1="30" y1="15" x2="800" y2="15" style="stroke: #bad6e4; stroke-width: 2;" />
-              <line x1="30" y1="55" x2="800" y2="55" style="stroke: #bad6e4; stroke-width: 2;" />
-              <line x1="30" y1="95" x2="800" y2="95" style="stroke: #bad6e4; stroke-width: 2;" />
-              <line x1="40" y1="95" x2="790" y2="95" style="stroke: #fdc010; stroke-width: 3;" />
-              <circle cx="35" cy="95" style="fill: #fdc010;" r="5" />
-              <circle cx="795" cy="95" style="fill: #fdc010;" r="5" />
+              <line
+                x1="30"
+                y1="15"
+                x2="800"
+                y2="15"
+                style="stroke: #bad6e4; stroke-width: 2"
+              />
+              <line
+                x1="30"
+                y1="55"
+                x2="800"
+                y2="55"
+                style="stroke: #bad6e4; stroke-width: 2"
+              />
+              <line
+                x1="30"
+                y1="95"
+                x2="800"
+                y2="95"
+                style="stroke: #bad6e4; stroke-width: 2"
+              />
+              <line
+                x1="40"
+                y1="95"
+                x2="790"
+                y2="95"
+                style="stroke: #fdc010; stroke-width: 3"
+              />
+              <circle cx="35" cy="95" style="fill: #fdc010" r="5" />
+              <circle cx="795" cy="95" style="fill: #fdc010" r="5" />
               <text x="0" y="15" class="caption" dy=".35em">100</text>
               <text x="8" y="55" class="caption" dy=".35em">50</text>
               <text x="15" y="95" class="caption" dy=".35em">0</text>
             </g>
             <desc id="desc">Low; Moderate; High</desc>
             <g class="bar-legend">
-              <circle class="donut-ring" cx="100" cy="171" r="15" fill="transparent" stroke="#FDC010" stroke-width="1">
-              </circle>
-              <circle class="donut-ring" cx="250" cy="171" r="15" fill="transparent" stroke="#FDC010" stroke-width="1">
-              </circle>
-              <circle class="donut-ring" cx="400" cy="171" r="15" fill="transparent" stroke="#FDC010" stroke-width="1">
-              </circle>
-              <circle class="donut-ring" cx="550" cy="171" r="15" fill="transparent" stroke="#FDC010" stroke-width="1">
-              </circle>
-              <circle class="donut-ring" cx="700" cy="171" r="15" fill="transparent" stroke="#FDC010" stroke-width="1">
-              </circle>
+              <circle
+                class="donut-ring"
+                cx="100"
+                cy="171"
+                r="15"
+                fill="transparent"
+                stroke="#FDC010"
+                stroke-width="1"
+              ></circle>
+              <circle
+                class="donut-ring"
+                cx="250"
+                cy="171"
+                r="15"
+                fill="transparent"
+                stroke="#FDC010"
+                stroke-width="1"
+              ></circle>
+              <circle
+                class="donut-ring"
+                cx="400"
+                cy="171"
+                r="15"
+                fill="transparent"
+                stroke="#FDC010"
+                stroke-width="1"
+              ></circle>
+              <circle
+                class="donut-ring"
+                cx="550"
+                cy="171"
+                r="15"
+                fill="transparent"
+                stroke="#FDC010"
+                stroke-width="1"
+              ></circle>
+              <circle
+                class="donut-ring"
+                cx="700"
+                cy="171"
+                r="15"
+                fill="transparent"
+                stroke="#FDC010"
+                stroke-width="1"
+              ></circle>
               <text x="310" y="300" class="legend-caption" dy=".35em">
                 Low&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 Moderate&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; High
@@ -585,8 +664,11 @@
         </p>
         <div class="bar-chart m-2">
           <h4>Responses per Deception Level</h4>
-          <div style="display: grid;" class="report-chart">
-            <app-chart-stats-by-level *ngIf="detail" [subscription]="detail"></app-chart-stats-by-level>
+          <div style="display: grid" class="report-chart">
+            <app-chart-stats-by-level
+              *ngIf="detail"
+              [subscription]="detail"
+            ></app-chart-stats-by-level>
           </div>
         </div>
       </div>
@@ -615,7 +697,9 @@
               {{ detail?.metrics.total_users_targeted }} email addresses that
               {{ detail?.customer.full_name }} provided into three groups.
               <ng-container *ngFor="let g of groupLevels">
-                Group {{g?.groupNumber}} had {{g?.sentCount}} addresses{{g?.levelText}}.
+                Group {{ g?.groupNumber }} had {{ g?.sentCount }} addresses{{
+                  g?.levelText
+                }}.
               </ng-container>
               See Table 3 for descriptions of email levels 1 – 6.
             </p>
@@ -692,7 +776,9 @@
             <th>Description</th>
             <!-- <th>Displayed Link</th> -->
           </tr>
-          <tr *ngFor="let campaign of detail?.subscription_stats.campaign_results">
+          <tr
+            *ngFor="let campaign of detail?.subscription_stats.campaign_results"
+          >
             <td class="text-right pr-5">{{ campaign.deception_level }}</td>
             <td class="text-right pr-5">
               {{ campaign.template.deception_score }}
@@ -787,7 +873,9 @@
               Ratio
             </th>
           </tr>
-          <tr *ngFor="let campaign of detail?.subscription_stats.campaign_results">
+          <tr
+            *ngFor="let campaign of detail?.subscription_stats.campaign_results"
+          >
             <td class="text-right pr-5">{{ campaign.deception_level }}</td>
             <td>{{ campaign.template.name }}</td>
             <td class="text-right">
@@ -817,9 +905,13 @@
         </table>
 
         <div class="bar-chart m-2">
-          <h4>Unique User Click Rate vs. Report Rate per Level of Complexity</h4>
-          <div style="display: grid;" class="report-chart">
-            <app-chart-complexity-level [subscription]="detail"></app-chart-complexity-level>
+          <h4>
+            Unique User Click Rate vs. Report Rate per Level of Complexity
+          </h4>
+          <div style="display: grid" class="report-chart">
+            <app-chart-complexity-level
+              [subscription]="detail"
+            ></app-chart-complexity-level>
           </div>
         </div>
       </div>
@@ -876,9 +968,11 @@
       <div class="col-12">
         <p id="intervalGraphDetails">
           The figures below show the percentage of users who clicked during
-          certain time intervals in the first 24 hours of a campaign, and how quickly each complexity level
-          was clicked. Overall, {{clickPercentFirstHour}} percent of all clicks occurred within one hour
-          of receiving a phishing email. The median time to click was {{medianClickTime}} across all campaigns.
+          certain time intervals in the first 24 hours of a campaign, and how
+          quickly each complexity level was clicked. Overall,
+          {{ clickPercentFirstHour }} percent of all clicks occurred within one
+          hour of receiving a phishing email. The median time to click was
+          {{ medianClickTime }} across all campaigns.
         </p>
       </div>
     </div>
@@ -887,8 +981,12 @@
       <div class="col-12">
         <div class="timeIntervalGraph">
           <h4>Timeline of Unique User Clicks Across All Levels</h4>
-          <div style="display: grid;" class="report-chart">
-            <app-chart-time-intervals *ngIf="detail" [subscription]="detail" style="height: 30rem;">
+          <div style="display: grid" class="report-chart">
+            <app-chart-time-intervals
+              *ngIf="detail"
+              [subscription]="detail"
+              style="height: 30rem"
+            >
             </app-chart-time-intervals>
           </div>
         </div>
@@ -902,8 +1000,12 @@
         <div class="timeComplexityGraph" style="display: grid">
           <h4>Time to First Click per Level of Complexity</h4>
           <div style="display: grid">
-            <app-chart-time-to-first-click-levels *ngIf="detail" [subscription]="detail" class="report-chart"
-              style="height: 30rem;">
+            <app-chart-time-to-first-click-levels
+              *ngIf="detail"
+              [subscription]="detail"
+              class="report-chart"
+              style="height: 30rem"
+            >
             </app-chart-time-to-first-click-levels>
           </div>
         </div>
@@ -1058,14 +1160,15 @@
   </article>
 
   <div *ngFor="let group of detail?.templates_by_group; index as outer">
-    <article class="template_pages" *ngFor="let campaign of group; index as inner">
+    <article
+      class="template_pages"
+      *ngFor="let campaign of group; index as inner"
+    >
       <div class="row">
         <div class="col-12">
           <div *ngIf="inner === 0">
             <h3 *ngIf="outer + 1 === 1">
-              <div class="template-level-header">
-                Low Templates/Dumb Phish
-              </div>
+              <div class="template-level-header">Low Templates/Dumb Phish</div>
             </h3>
             <h3 *ngIf="outer + 1 === 2">
               <div class="template-level-header">
@@ -1092,27 +1195,19 @@
                 <tr>
                   <td>Total Sent:</td>
                   <td>
-                    {{
-                      campaign.sent?.count | nullishCoalesce: 0
-                    }}
+                    {{ campaign.sent?.count | nullishCoalesce: 0 }}
                   </td>
                 </tr>
                 <tr>
                   <td>Clicked:</td>
                   <td>
-                    {{
-                      campaign.clicked?.count
-                        | nullishCoalesce: 0
-                    }}
+                    {{ campaign.clicked?.count | nullishCoalesce: 0 }}
                   </td>
                 </tr>
                 <tr>
                   <td>Reported:</td>
                   <td>
-                    {{
-                      campaign.reported?.count
-                        | nullishCoalesce: 0
-                    }}
+                    {{ campaign.reported?.count | nullishCoalesce: 0 }}
                   </td>
                 </tr>
               </table>
@@ -1121,14 +1216,11 @@
               <div class="col-12">
                 <div class="template-body">
                   <b>Subject:</b>
-                  {{ campaign.template.subject | nullishCoalesce: "N/A"
-                  }}<br />
+                  {{ campaign.template.subject | nullishCoalesce: "N/A" }}<br />
                   <b>From:</b>
-                  {{
-                    campaign.template.from_address
-                      | nullishCoalesce: "N/A"
+                  {{ campaign.template.from_address | nullishCoalesce: "N/A"
                   }}<br />
-                  <b style="margin-bottom: 1rem;">Email Body:</b>
+                  <b style="margin-bottom: 1rem">Email Body:</b>
                   <div [innerHTML]="campaign.template.html | safe"></div>
                 </div>
               </div>

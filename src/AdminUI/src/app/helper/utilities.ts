@@ -40,7 +40,7 @@ export function humanTiming(seconds: number) {
     { s: 86400, label1: 'day', label: 'days' },
     { s: 3600, label1: 'hour', label: 'hours' },
     { s: 60, label1: 'minute', label: 'minutes' },
-    { s: 1, label1: 'second', label: 'seconds' }
+    { s: 1, label1: 'second', label: 'seconds' },
   ];
 
   let s = '';
@@ -48,7 +48,9 @@ export function humanTiming(seconds: number) {
     const numberOfUnits = Math.floor(seconds / token.s);
     seconds = seconds - token.s * numberOfUnits;
     if (numberOfUnits !== 0) {
-      s += `${numberOfUnits} ${numberOfUnits === 1 ? token.label1 : token.label}, `;
+      s += `${numberOfUnits} ${
+        numberOfUnits === 1 ? token.label1 : token.label
+      }, `;
     }
   }
 
@@ -62,7 +64,7 @@ export function secondsToHHMMSS(seconds: number) {
   const tokens = [
     { s: 3600, delim: ':' },
     { s: 60, delim: ':' },
-    { s: 1, delim: '' }
+    { s: 1, delim: '' },
   ];
 
   let s = '';

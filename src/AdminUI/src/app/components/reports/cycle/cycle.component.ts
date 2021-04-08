@@ -20,14 +20,13 @@ export class CycleComponent implements OnInit {
 
   groupLevels = [];
 
-
   dateFormat = AppSettings.DATE_FORMAT;
 
   constructor(
     public reportsSvc: ReportsService,
     public chartsSvc: ChartsService,
     private route: ActivatedRoute
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
@@ -40,7 +39,9 @@ export class CycleComponent implements OnInit {
         .subscribe(
           (resp) => {
             this.detail = resp;
-            this.detail.cycles = this.detail.cycles.sort((a, b) => (a.increment > b.increment) ? 1 : -1);
+            this.detail.cycles = this.detail.cycles.sort((a, b) =>
+              a.increment > b.increment ? 1 : -1
+            );
             this.renderReport();
           },
           (error) => {
@@ -59,9 +60,10 @@ export class CycleComponent implements OnInit {
 
     // percent of all clicks occurring in the first hour
     let pct = 0;
-    let one_hour_clicks = this.detail.subscription_stats.clicks_over_time.one_hour
-    if(one_hour_clicks){
-      one_hour_clicks = one_hour_clicks * 100
+    let one_hour_clicks = this.detail.subscription_stats.clicks_over_time
+      .one_hour;
+    if (one_hour_clicks) {
+      one_hour_clicks = one_hour_clicks * 100;
     }
     pct = Math.round(
       this.detail.subscription_stats.clicks_over_time.one_hour ?? 0
@@ -75,14 +77,29 @@ export class CycleComponent implements OnInit {
     this.medianClickTime = this.detail.metrics.median_time_to_first_click;
 
     // figure out sent counts and deception levels
-    this.groupLevels.push({ groupNumber: 1, sentCount: 0, levels: [], levelText: '' });
-    this.groupLevels.push({ groupNumber: 2, sentCount: 0, levels: [], levelText: '' });
-    this.groupLevels.push({ groupNumber: 3, sentCount: 0, levels: [], levelText: '' });
+    this.groupLevels.push({
+      groupNumber: 1,
+      sentCount: 0,
+      levels: [],
+      levelText: '',
+    });
+    this.groupLevels.push({
+      groupNumber: 2,
+      sentCount: 0,
+      levels: [],
+      levelText: '',
+    });
+    this.groupLevels.push({
+      groupNumber: 3,
+      sentCount: 0,
+      levels: [],
+      levelText: '',
+    });
 
     // paw through the JSON and populate the structure
     for (let i = 0; i < this.detail.templates_by_group.length; i++) {
       const campaignGroup = this.detail.templates_by_group[i];
-      campaignGroup.forEach(campaign => {
+      campaignGroup.forEach((campaign) => {
         this.groupLevels[i].sentCount += campaign.sent.count;
         if (this.groupLevels[i].levels.indexOf(campaign.deception_level) < 0) {
           this.groupLevels[i].levels.push(campaign.deception_level);
@@ -90,9 +107,12 @@ export class CycleComponent implements OnInit {
       });
     }
 
-    this.groupLevels.forEach(g => {
+    this.groupLevels.forEach((g) => {
       if (g.levels.length > 0) {
-        g.levelText = ' and received level' + (g.levels.length > 1 ? 's ' : ' ') + listToText(g.levels);
+        g.levelText =
+          ' and received level' +
+          (g.levels.length > 1 ? 's ' : ' ') +
+          listToText(g.levels);
       }
     });
   }

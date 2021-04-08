@@ -29,15 +29,13 @@ export class YearlyComponent implements OnInit {
       const cycleUuid = params.cycle_uuid;
 
       this.reportsSvc
-        .getYearlyReport(
-          this.subscriptionUuid,
-          cycleUuid,
-          isHeadless
-        )
+        .getYearlyReport(this.subscriptionUuid, cycleUuid, isHeadless)
         .subscribe(
           (resp) => {
             this.detail = resp;
-            this.detail.cycles = this.detail.cycles.sort((a, b) => (a.increment > b.increment) ? 1 : -1);
+            this.detail.cycles = this.detail.cycles.sort((a, b) =>
+              a.increment > b.increment ? 1 : -1
+            );
             this.renderReport();
           },
           (error) => {

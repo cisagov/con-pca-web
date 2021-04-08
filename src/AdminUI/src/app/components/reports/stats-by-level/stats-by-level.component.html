@@ -6,7 +6,7 @@
       [attr.y1]="l.y"
       x2="100%"
       [attr.y2]="chartHeight"
-      style="stroke: #bad6e4; stroke-width: 1;"
+      style="stroke: #bad6e4; stroke-width: 1"
     />
     <text
       *ngFor="let l of yScaleLines"
@@ -24,21 +24,21 @@
   >
     <g x="0">
       <rect
-        style="fill: #164a91;"
+        style="fill: #164a91"
         width="15"
         [attr.height]="group.lowN"
         [attr.x]="0"
         [attr.y]="chartHeight - group.lowN"
       ></rect>
       <rect
-        style="fill: #fdc010;"
+        style="fill: #fdc010"
         width="15"
         [attr.height]="group.moderateN"
         [attr.x]="20"
         [attr.y]="chartHeight - group.moderateN"
       ></rect>
       <rect
-        style="fill: #1979a7;"
+        style="fill: #1979a7"
         width="15"
         [attr.height]="group.highN"
         [attr.x]="40"

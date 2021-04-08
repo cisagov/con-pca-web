@@ -19,7 +19,7 @@ export class TagsManagerComponent implements OnInit {
   tags: Tags;
   tagFormGroup: FormGroup;
   subscriptions = Array<Subscription>();
-  tagTypes: string[] = ['con-pca-literal', 'con-pca-eval']
+  tagTypes: string[] = ['con-pca-literal', 'con-pca-eval'];
 
   constructor(
     public tagsSvc: TagService,
@@ -37,7 +37,7 @@ export class TagsManagerComponent implements OnInit {
         //Use preset empty form
         layoutSvc.setTitle('New Tag');
       }
-    })
+    });
 
     this.setTagsForm(new Tags());
   }
@@ -53,13 +53,11 @@ export class TagsManagerComponent implements OnInit {
     this.route.params.subscribe((params) => {
       this.tagsId = params['tagsId'];
       if (this.tagsId != undefined) {
-        this.tagsSvc
-          .getTag(this.tagsId)
-          .subscribe((tagsData: Tags) => {
-            this.tagsId = tagsData.tag_definition_uuid;
-            console.log(tagsData);
-            this.setTagsForm(tagsData);
-          })
+        this.tagsSvc.getTag(this.tagsId).subscribe((tagsData: Tags) => {
+          this.tagsId = tagsData.tag_definition_uuid;
+          console.log(tagsData);
+          this.setTagsForm(tagsData);
+        });
       }
     });
   }
@@ -70,30 +68,21 @@ export class TagsManagerComponent implements OnInit {
     });
   }
 
-
   onCancelClick() {
-        this.router.navigate(['/tags']);
+    this.router.navigate(['/tags']);
   }
 
   //Create a formgroup using a Tag as initial data
   setTagsForm(tag: Tags) {
-
     this.tagFormGroup = new FormGroup({
       tagUUID: new FormControl(tag.tag_definition_uuid),
       tagName: new FormControl(tag.tag, [
-        Validators.required,  Validators.pattern(/[<]+[%]+.+[%]+[>]/)
-      ]),
-      tagDescription: new FormControl(
-        tag.description, [
-          Validators.required,
-        ]
-      ),
-      tagDataSource: new FormControl(tag.data_source, [
         Validators.required,
+        Validators.pattern(/[<]+[%]+.+[%]+[>]/),
       ]),
-      tagType: new FormControl(tag.tag_type, [
-        Validators.required,
-      ]),
+      tagDescription: new FormControl(tag.description, [Validators.required]),
+      tagDataSource: new FormControl(tag.data_source, [Validators.required]),
+      tagType: new FormControl(tag.tag_type, [Validators.required]),
     });
   }
 
@@ -114,9 +103,7 @@ export class TagsManagerComponent implements OnInit {
 
   saveTags() {
     if (this.tagFormGroup.valid) {
-      let tag_to_save = this.getTagsModelFromForm(
-        this.tagFormGroup
-      );
+      let tag_to_save = this.getTagsModelFromForm(this.tagFormGroup);
       if (this.tagsId) {
         this.tagsSvc.updateTag(tag_to_save).subscribe(
           (data: any) => {
@@ -142,7 +129,8 @@ export class TagsManagerComponent implements OnInit {
             this.dialog.open(AlertComponent, {
               data: {
                 title: 'Tag Error',
-                messageText: 'Could not Create Tag. Make sure tags are in the format %<TAG_NAME%>',
+                messageText:
+                  'Could not Create Tag. Make sure tags are in the format %<TAG_NAME%>',
               },
             });
           }
@@ -153,7 +141,7 @@ export class TagsManagerComponent implements OnInit {
       const controls = this.tagFormGroup.controls;
       for (const name in controls) {
         if (controls[name].invalid) {
-          let nameIng = 'Tag ' + name.replace(/tag/g,'');
+          let nameIng = 'Tag ' + name.replace(/tag/g, '');
           invalid.push(nameIng);
         }
       }

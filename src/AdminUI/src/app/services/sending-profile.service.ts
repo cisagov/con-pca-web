@@ -8,7 +8,6 @@ import { TestEmail } from '../models/test-email.model';
   providedIn: 'root',
 })
 export class SendingProfileService {
-
   /**
    * Constructor.
    * @param http
@@ -64,6 +63,6 @@ export class SendingProfileService {
 
   sendTestEmail(sp: TestEmail) {
     let url = `${this.settingsService.settings.apiUrl}/api/v1/test_email/`;
-    return this.http.post(url,sp);
+    return this.http.post(url, sp);
   }
 }

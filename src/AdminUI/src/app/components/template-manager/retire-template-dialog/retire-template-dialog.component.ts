@@ -38,8 +38,8 @@ export class RetireTemplateDialogComponent implements OnInit {
   retire(): void {
     this.template.retired = true;
     this.template.retired_description = this.retiredDescription;
-    if (this.template.template_uuid == null){
-      let landingpage = this.template as unknown as Landing_Page;
+    if (this.template.template_uuid == null) {
+      let landingpage = (this.template as unknown) as Landing_Page;
       this.landingSvc.updatelandingpage(landingpage);
     } else {
       this.templateSvc.updateTemplate(this.template);

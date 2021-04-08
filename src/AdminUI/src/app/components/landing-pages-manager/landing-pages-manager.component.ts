@@ -414,8 +414,6 @@ export class LandingPagesManagerComponent implements OnInit {
     uploadWithCredentials: false,
     sanitize: true,
     toolbarPosition: 'top',
-    toolbarHiddenButtons: [
-      ['insertVideo'],
-    ],
+    toolbarHiddenButtons: [['insertVideo']],
   };
 }

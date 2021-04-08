@@ -285,7 +285,6 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     });
   }
 
-
   /**
    *
    */
@@ -525,10 +524,9 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
                 () => {
                   this.subscriptionSvc
                     .getSubscription(this.subscription.subscription_uuid)
-                    .subscribe(
-                      (resp: Subscription) => {
-                    this.subscription = resp;
-                  });
+                    .subscribe((resp: Subscription) => {
+                      this.subscription = resp;
+                    });
                   this.enableDisableFields();
                   this.processing = false;
                   this.dialog.open(AlertComponent, {
@@ -575,10 +573,9 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
             () => {
               this.subscriptionSvc
                 .getSubscription(this.subscription.subscription_uuid)
-                .subscribe(
-                  (resp: Subscription) => {
-                this.subscription = resp;
-              });
+                .subscribe((resp: Subscription) => {
+                  this.subscription = resp;
+                });
               this.enableDisableFields();
               this.processing = false;
               this.dialog.open(AlertComponent, {
@@ -649,7 +646,6 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
 
     sub.stagger_emails = this.f.staggerEmails.value;
     sub.continuous_subscription = this.f.continuousSubscription.value;
-
 
     // call service with everything needed to start the subscription
     this.processing = true;

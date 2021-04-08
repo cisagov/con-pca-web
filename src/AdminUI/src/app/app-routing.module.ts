@@ -35,11 +35,17 @@ const routes: Routes = [
     component: LayoutBlankComponent,
     children: [
       { path: 'monthly/:id/:cycle_uuid', component: MonthlyComponent },
-      { path: 'monthly/:id/:cycle_uuid/:isHeadless', component: MonthlyComponent },
+      {
+        path: 'monthly/:id/:cycle_uuid/:isHeadless',
+        component: MonthlyComponent,
+      },
       { path: 'cycle/:id/:cycle_uuid', component: CycleComponent },
       { path: 'cycle/:id/:cycle_uuid/:isHeadless', component: CycleComponent },
       { path: 'yearly/:id/:cycle_uuid', component: YearlyComponent },
-      { path: 'yearly/:id/:cycle_uuid/:isHeadless', component: YearlyComponent, },
+      {
+        path: 'yearly/:id/:cycle_uuid/:isHeadless',
+        component: YearlyComponent,
+      },
     ],
   },
   {
@@ -199,8 +205,8 @@ const routes: Routes = [
     path: 'users',
     component: LayoutMainComponent,
     canActivate: [AuthGuard],
-    children: [{path: '', component: UsersComponent}]
-  }
+    children: [{ path: '', component: UsersComponent }],
+  },
 ];
 
 @NgModule({

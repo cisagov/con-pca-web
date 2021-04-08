@@ -28,15 +28,15 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.router.routeReuseStrategy.shouldReuseRoute = function(){
+    this.router.routeReuseStrategy.shouldReuseRoute = function () {
       return false;
-  };
+    };
 
-  this.router.events.subscribe((evt) => {
+    this.router.events.subscribe((evt) => {
       if (evt instanceof NavigationEnd) {
-          this.router.navigated = false;
+        this.router.navigated = false;
       }
-  });
+    });
     this.routeSub = this.route.params.subscribe((params) => {
       if (!params.id) {
         //this.loadPageForCreate(params);

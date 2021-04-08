@@ -14,7 +14,6 @@ import { MatSort } from '@angular/material/sort';
   styleUrls: ['./customers.component.scss'],
 })
 export class CustomersComponent implements OnInit {
-
   @Input() insideDialog: boolean;
 
   @ViewChild(MatSort) sort: MatSort;

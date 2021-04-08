@@ -10,7 +10,7 @@ import { AppSettings } from 'src/app/AppSettings';
 import {
   MatDialog,
   MatDialogConfig,
-  MatDialogRef
+  MatDialogRef,
 } from '@angular/material/dialog';
 import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
 import { MatSort } from '@angular/material/sort';
@@ -32,7 +32,7 @@ interface ICustomerSubscription {
 @Component({
   selector: 'app-dashboard',
   templateUrl: './subscriptions.component.html',
-  styleUrls: ['./subscriptions.component.scss']
+  styleUrls: ['./subscriptions.component.scss'],
 })
 export class SubscriptionsComponent implements OnInit {
   public dataSource: MatTableDataSource<ICustomerSubscription>;
@@ -47,7 +47,6 @@ export class SubscriptionsComponent implements OnInit {
     'lastUpdated',
   ];
 
-
   dialogRefConfirm: MatDialogRef<ConfirmComponent>;
   showArchived = false;
 
@@ -60,7 +59,7 @@ export class SubscriptionsComponent implements OnInit {
     private customerSvc: CustomerService,
     private layoutSvc: LayoutMainService,
     public dialog: MatDialog,
-    private router: Router,
+    private router: Router
   ) {
     layoutSvc.setTitle('Subscriptions');
   }
@@ -78,25 +77,30 @@ export class SubscriptionsComponent implements OnInit {
       .getSubscriptions(this.showArchived)
       .subscribe((subscriptions: Subscription[]) => {
         this.customerSvc.getCustomers().subscribe((customers: Customer[]) => {
-            this.loading = false;
-            const customerSubscriptions: ICustomerSubscription[] = [];
-            subscriptions.map((s: Subscription) => {
-            const cc = customers.find(o => o.customer_uuid === s.customer_uuid);
-              const customerSubscription: ICustomerSubscription = {
+          this.loading = false;
+          const customerSubscriptions: ICustomerSubscription[] = [];
+          subscriptions.map((s: Subscription) => {
+            const cc = customers.find(
+              (o) => o.customer_uuid === s.customer_uuid
+            );
+            const customerSubscription: ICustomerSubscription = {
               customer: cc,
-                subscription: s,
+              subscription: s,
               name: s.name,
               status: s.status,
-              primaryContact: s.primary_contact.first_name + ' ' + s.primary_contact.last_name,
+              primaryContact:
+                s.primary_contact.first_name +
+                ' ' +
+                s.primary_contact.last_name,
               customerName: cc.name,
               startDate: s.start_date,
               lastUpdated: s.lub_timestamp,
-              };
-              customerSubscriptions.push(customerSubscription);
-            });
+            };
+            customerSubscriptions.push(customerSubscription);
+          });
           this.dataSource.data = customerSubscriptions as ICustomerSubscription[];
           this.dataSource.sort = this.sort;
-          });
+        });
       });
   }
 
@@ -131,10 +135,12 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   public editSubscription(row) {
-    this.router.navigate(['/view-subscription', row.subscription.subscription_uuid]);
+    this.router.navigate([
+      '/view-subscription',
+      row.subscription.subscription_uuid,
+    ]);
   }
   public createSubscription() {
     this.router.navigate(['/create-subscription']);
   }
-
 }

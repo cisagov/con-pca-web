@@ -48,7 +48,9 @@ export class SendingProfilesComponent implements OnInit {
     this.loading = true;
     this.sendingProfileSvc.getAllProfiles().subscribe((data: any) => {
       this.sendingProfilesData.data = data as SendingProfile[];
-      this.sendingProfilesData.data = filterSendingProfiles(this.sendingProfilesData.data);
+      this.sendingProfilesData.data = filterSendingProfiles(
+        this.sendingProfilesData.data
+      );
       this.sendingProfilesData.sort = this.sort;
       this.loading = false;
     });
@@ -59,8 +61,7 @@ export class SendingProfilesComponent implements OnInit {
    * @param row
    */
   confirmDeleteProfile(row: any): void {
-
-    if(this.dialog.openDialogs.length==0){
+    if (this.dialog.openDialogs.length == 0) {
       this.dialogRefConfirm = this.dialog.open(ConfirmComponent, {
         disableClose: false,
       });
@@ -73,7 +74,7 @@ export class SendingProfilesComponent implements OnInit {
         }
         this.dialogRefConfirm = null;
       });
-     }
+    }
   }
 
   /**
@@ -90,8 +91,7 @@ export class SendingProfilesComponent implements OnInit {
    * Open the detail dialog and pass the ID of the clicked row, or 0 if they clicked 'new'.
    */
   openProfileDialog(row: any): void {
-
-    if(this.dialog.openDialogs.length==0){
+    if (this.dialog.openDialogs.length == 0) {
       const dialogConfig = new MatDialogConfig();
       dialogConfig.width = '60vw';
       dialogConfig.data = {
@@ -105,6 +105,6 @@ export class SendingProfilesComponent implements OnInit {
       dialogRef.afterClosed().subscribe((value) => {
         this.refresh();
       });
-     }
+    }
   }
 }
