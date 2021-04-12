@@ -27,8 +27,8 @@ export class SubscriptionReportTab implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.subscriptionSvc.subBehaviorSubject.subscribe((data: any) => {
-      if ('subscription_uuid' in data) {
+    this.subscriptionSvc.subBehaviorSubject.subscribe((data: Subscription) => {
+      if ('subscription_uuid' in data && data.cycles) {
         this.subscription = data;
         this.emailsSent.sort = this.sort;
         const selectedCycleIndex = 0;

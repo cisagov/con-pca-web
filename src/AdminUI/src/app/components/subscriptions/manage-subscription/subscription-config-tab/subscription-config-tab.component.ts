@@ -157,9 +157,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         this.loadPageForCreate(params);
       } else {
         this.subscriptionSvc.subBehaviorSubject.subscribe((data) => {
-          if ('cycles' in data) {
-            this.loadPageForEdit(data);
-          }
+          this.loadPageForEdit(data);
         });
       }
     });
