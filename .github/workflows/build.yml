@@ -31,7 +31,7 @@ env:
   # Disabled linux/arm/v6 due to the following error when installing npm.
   # npm : Depends: nodejs (>= 6.11~) but it is not installable
 
-  # Disabled linux/arm/s390x due to the following error when installing angular.
+  # Disabled linux/s390x due to the following error when installing angular.
   #   if (npm.config.get('json')) {
   #                  ^
   #
