@@ -47,12 +47,8 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
   actionEDIT = 'edit';
   actionCREATE = 'create';
   action: string = this.actionEDIT;
-  timeRanges = [
-    'Minutes',
-    'Hours',
-    'Days'
-  ]
-  previousTimeUnit: string = "Minutes"
+  timeRanges = ['Minutes', 'Hours', 'Days'];
+  previousTimeUnit: string = 'Minutes';
 
   // CREATE or EDIT
   pageMode = 'CREATE';
@@ -145,7 +141,9 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
           ],
           updateOn: 'blur',
         }),
-        cycle_length_minutes: new FormControl(30, {validators: [Validators.required]}),
+        cycle_length_minutes: new FormControl(30, {
+          validators: [Validators.required],
+        }),
         timeUnit: new FormControl('Minutes'),
         displayTime: new FormControl(129600),
         staggerEmails: new FormControl(true, {}),
@@ -232,37 +230,60 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     );
     this.angular_subs.push(
       this.f.timeUnit.valueChanges.subscribe((val) => {
-        this.f.displayTime.setValue(this.convertTime(this.previousTimeUnit,val,this.f.displayTime.value))
+        this.f.displayTime.setValue(
+          this.convertTime(this.previousTimeUnit, val, this.f.displayTime.value)
+        );
         this.previousTimeUnit = val;
       })
-    )
+    );
     this.angular_subs.push(
       this.f.displayTime.valueChanges.subscribe((val) => {
         let valInRange = val;
-        if(this.previousTimeUnit,"Minutes",this.f.displayTime.value < 15){ valInRange = 15}
-        if(this.previousTimeUnit,"Minutes",this.f.displayTime.value > 518400){ valInRange = 518400}
-        console.log(valInRange)
-        this.f.displayTime.setValue(this.convertTime("Minutes",this.previousTimeUnit,valInRange),{emitEvent: false})
-        this.f.cycle_length_minutes.setValue(valInRange)
-        this.subscription.cycle_length_minutes = this.f.cycle_length_minutes.value
+        if ((this.previousTimeUnit, 'Minutes', this.f.displayTime.value < 15)) {
+          valInRange = 15;
+        }
+        if (
+          (this.previousTimeUnit, 'Minutes', this.f.displayTime.value > 518400)
+        ) {
+          valInRange = 518400;
+        }
+        console.log(valInRange);
+        this.f.displayTime.setValue(
+          this.convertTime('Minutes', this.previousTimeUnit, valInRange),
+          { emitEvent: false }
+        );
+        this.f.cycle_length_minutes.setValue(valInRange);
+        this.subscription.cycle_length_minutes = this.f.cycle_length_minutes.value;
       })
-    )
+    );
   }
 
-  convertTime(previousSpan,newSpan,val){
-    if(previousSpan == "Minutes"){
-      if(newSpan == "Hours") {return (val / 60)}
-      if(newSpan == "Days") {return (val / 1440)}
-     }
-     if(previousSpan == "Hours"){
-       if(newSpan == "Minutes") {return (val * 60)}
-       if(newSpan == "Days") {return (val / 24)}
+  convertTime(previousSpan, newSpan, val) {
+    if (previousSpan == 'Minutes') {
+      if (newSpan == 'Hours') {
+        return val / 60;
       }
-      if(previousSpan == "Days"){
-        if(newSpan == "Minutes") {return (val * 1440)}
-        if(newSpan == "Hours") {return (val * 24)}
-       }
-       return val
+      if (newSpan == 'Days') {
+        return val / 1440;
+      }
+    }
+    if (previousSpan == 'Hours') {
+      if (newSpan == 'Minutes') {
+        return val * 60;
+      }
+      if (newSpan == 'Days') {
+        return val / 24;
+      }
+    }
+    if (previousSpan == 'Days') {
+      if (newSpan == 'Minutes') {
+        return val * 1440;
+      }
+      if (newSpan == 'Hours') {
+        return val * 24;
+      }
+    }
+    return val;
   }
 
   /**
@@ -324,7 +345,6 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     this.customerSvc.getCustomer(s.customer_uuid).subscribe((c: Customer) => {
       this.customer = c;
     });
-    
   }
 
   /**
