@@ -238,7 +238,12 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     )
     this.angular_subs.push(
       this.f.displayTime.valueChanges.subscribe((val) => {
-        this.f.cycle_length_minutes.setValue(this.convertTime(this.previousTimeUnit,"Minutes",this.f.displayTime.value))
+        let valInRange = val;
+        if(this.previousTimeUnit,"Minutes",this.f.displayTime.value < 15){ valInRange = 15}
+        if(this.previousTimeUnit,"Minutes",this.f.displayTime.value > 518400){ valInRange = 518400}
+        console.log(valInRange)
+        this.f.displayTime.setValue(this.convertTime("Minutes",this.previousTimeUnit,valInRange),{emitEvent: false})
+        this.f.cycle_length_minutes.setValue(valInRange)
         this.subscription.cycle_length_minutes = this.f.cycle_length_minutes.value
       })
     )
