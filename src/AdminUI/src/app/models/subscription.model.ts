@@ -59,6 +59,7 @@ export class Subscription {
   stagger_emails: boolean;
   continuous_subscription: boolean;
   email_report_history: EmailHistory[] = [];
+  cycle_length_minutes: number;
 }
 
 export class EmailHistory {

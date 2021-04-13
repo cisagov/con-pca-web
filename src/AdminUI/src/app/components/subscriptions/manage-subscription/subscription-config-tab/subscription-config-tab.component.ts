@@ -47,6 +47,12 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
   actionEDIT = 'edit';
   actionCREATE = 'create';
   action: string = this.actionEDIT;
+  timeRanges = [
+    'Minutes',
+    'Hours',
+    'Days'
+  ]
+  previousTimeUnit: string = "Minutes"
 
   // CREATE or EDIT
   pageMode = 'CREATE';
@@ -139,6 +145,9 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
           ],
           updateOn: 'blur',
         }),
+        cycle_length_minutes: new FormControl(30, {validators: [Validators.required]}),
+        timeUnit: new FormControl('Minutes'),
+        displayTime: new FormControl(129600),
         staggerEmails: new FormControl(true, {}),
         continuousSubscription: new FormControl(true, {}),
       },
@@ -221,6 +230,34 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         this.persistChanges();
       })
     );
+    this.angular_subs.push(
+      this.f.timeUnit.valueChanges.subscribe((val) => {
+        this.f.displayTime.setValue(this.convertTime(this.previousTimeUnit,val,this.f.displayTime.value))
+        this.previousTimeUnit = val;
+      })
+    )
+    this.angular_subs.push(
+      this.f.displayTime.valueChanges.subscribe((val) => {
+        this.f.cycle_length_minutes.setValue(this.convertTime(this.previousTimeUnit,"Minutes",this.f.displayTime.value))
+        this.subscription.cycle_length_minutes = this.f.cycle_length_minutes.value
+      })
+    )
+  }
+
+  convertTime(previousSpan,newSpan,val){
+    if(previousSpan == "Minutes"){
+      if(newSpan == "Hours") {return (val / 60)}
+      if(newSpan == "Days") {return (val / 1440)}
+     }
+     if(previousSpan == "Hours"){
+       if(newSpan == "Minutes") {return (val * 60)}
+       if(newSpan == "Days") {return (val / 24)}
+      }
+      if(previousSpan == "Days"){
+        if(newSpan == "Minutes") {return (val * 1440)}
+        if(newSpan == "Hours") {return (val * 24)}
+       }
+       return val
   }
 
   /**
@@ -274,13 +311,15 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     this.f.sendingProfile.setValue(s.sending_profile_name);
     this.f.targetDomain.setValue(s?.target_domain);
     this.f.staggerEmails.setValue(s.stagger_emails);
-
+    this.f.cycle_length_minutes.setValue(s.cycle_length_minutes);
+    this.f.displayTime.setValue(s.cycle_length_minutes);
     this.f.continuousSubscription.setValue(s.continuous_subscription);
     this.enableDisableFields();
 
     this.customerSvc.getCustomer(s.customer_uuid).subscribe((c: Customer) => {
       this.customer = c;
     });
+    
   }
 
   /**
@@ -644,6 +683,8 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
 
     sub.stagger_emails = this.f.staggerEmails.value;
     sub.continuous_subscription = this.f.continuousSubscription.value;
+    let tempNum = this.f.cycle_length_minutes.value as number;
+    sub.cycle_length_minutes = tempNum as number;
 
     // call service with everything needed to start the subscription
     this.processing = true;
