@@ -231,28 +231,33 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     this.angular_subs.push(
       this.f.timeUnit.valueChanges.subscribe((val) => {
         this.f.displayTime.setValue(
-          this.convertTime(this.previousTimeUnit, val, this.f.displayTime.value)
+          this.convertTime(
+            this.previousTimeUnit,
+            val,
+            this.f.displayTime.value
+          ),
+          { emitEvent: false }
         );
         this.previousTimeUnit = val;
       })
     );
     this.angular_subs.push(
       this.f.displayTime.valueChanges.subscribe((val) => {
-        let valInRange = val;
-        if ((this.previousTimeUnit, 'Minutes', this.f.displayTime.value < 15)) {
-          valInRange = 15;
+        let convertedVal = this.convertTime(
+          this.previousTimeUnit,
+          'Minutes',
+          this.f.displayTime.value
+        );
+        if (convertedVal < 15) {
+          convertedVal = 15;
+        } else if (convertedVal > 518400) {
+          convertedVal = 518400;
         }
-        if (
-          (this.previousTimeUnit, 'Minutes', this.f.displayTime.value > 518400)
-        ) {
-          valInRange = 518400;
-        }
-        console.log(valInRange);
         this.f.displayTime.setValue(
-          this.convertTime('Minutes', this.previousTimeUnit, valInRange),
+          this.convertTime('Minutes', this.previousTimeUnit, convertedVal),
           { emitEvent: false }
         );
-        this.f.cycle_length_minutes.setValue(valInRange);
+        this.f.cycle_length_minutes.setValue(convertedVal);
         this.subscription.cycle_length_minutes = this.f.cycle_length_minutes.value;
       })
     );
@@ -708,8 +713,8 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
 
     sub.stagger_emails = this.f.staggerEmails.value;
     sub.continuous_subscription = this.f.continuousSubscription.value;
-    let tempNum = this.f.cycle_length_minutes.value as number;
-    sub.cycle_length_minutes = tempNum as number;
+    const cycleLength: number = +this.f.cycle_length_minutes.value;
+    sub.cycle_length_minutes = cycleLength;
 
     // call service with everything needed to start the subscription
     this.processing = true;
