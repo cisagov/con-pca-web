@@ -2,8 +2,8 @@
   <form [formGroup]="subscribeForm">
     <div class="d-flex flex-column mb-5">
       <h2>Customer/Organization</h2>
-      <div class="d-flex flex-row mb-4">
-        <div>
+      <div *ngIf="customer" class="d-flex flex-row mb-4">
+        <div >
           <mat-card
             *ngIf="!!customer.customer_uuid"
             class="mt-0 mr-3 mb-1 ml-0 customer-card"
