@@ -344,6 +344,9 @@
             Sending Profile required
           </mat-error>
         </mat-form-field>
+        <div class="error-color" *ngIf="!isValidConfig">
+          {{ validConfigMessage }}
+        </div>
         <div class="error-color" *ngIf="sendingProfiles.length === 0">
           A Sending Profile is required, but none are currently configured.
           Create one or more Sending Profiles before proceeding.
@@ -371,7 +374,7 @@
           type="submit"
           mat-raised-button
           color="primary"
-          [disabled]="launchSubmitted"
+          [disabled]="launchSubmitted || !isValidConfig"
           (click)="onSubmit()"
           *ngIf="pageMode == 'CREATE'"
         >
@@ -405,7 +408,7 @@
           <button
             mat-raised-button
             *ngIf="subscription?.status == 'stopped' && !subscription?.archived"
-            [disabled]="processing"
+            [disabled]="processing || !isValidConfig"
             color="primary"
             (click)="startSubscription()"
           >
