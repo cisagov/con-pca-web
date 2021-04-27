@@ -31,12 +31,15 @@ env:
   # Disabled linux/arm/v6 due to the following error when installing npm.
   # npm : Depends: nodejs (>= 6.11~) but it is not installable
 
+  # Disabled linux/arm/v7 due to the following error when running npm install.
+  # npm ERR! code ERR_SOCKET_TIMEOUT
+
   # Disabled linux/s390x due to the following error when installing angular.
   #   if (npm.config.get('json')) {
   #                  ^
   #
   # TypeError: Cannot read property 'get' of undefined
-  PLATFORMS: "linux/amd64,linux/arm/v7,linux/arm64,linux/ppc64le"
+  PLATFORMS: "linux/amd64,linux/arm64,linux/ppc64le"
   PRE_COMMIT_CACHE_DIR: ~/.cache/pre-commit
 
 jobs:
