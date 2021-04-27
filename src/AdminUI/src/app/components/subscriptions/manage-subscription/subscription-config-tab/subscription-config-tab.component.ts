@@ -27,7 +27,6 @@ import { ConfirmComponent } from '../../../dialogs/confirm/confirm.component';
 import { SendingProfileService } from 'src/app/services/sending-profile.service';
 import { SettingsService } from 'src/app/services/settings.service';
 import { BehaviorSubject } from 'rxjs';
-import { isUndefined } from 'util';
 import { filterSendingProfiles } from '../../../../helper/utilities';
 
 @Component({
@@ -49,6 +48,10 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
   action: string = this.actionEDIT;
   timeRanges = ['Minutes', 'Hours', 'Days'];
   previousTimeUnit: string = 'Minutes';
+
+  // Valid configuration
+  isValidConfig = true;
+  validConfigMessage = '';
 
   // CREATE or EDIT
   pageMode = 'CREATE';
@@ -141,7 +144,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
           ],
           updateOn: 'blur',
         }),
-        cycle_length_minutes: new FormControl(30, {
+        cycle_length_minutes: new FormControl(129600, {
           validators: [Validators.required],
         }),
         timeUnit: new FormControl('Minutes'),
@@ -202,6 +205,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         this.evaluateTargetList(false);
         this.getValidationMessage();
         this.persistChanges();
+        this.checkValid();
       })
     );
     this.angular_subs.push(
@@ -212,7 +216,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         // }
         this.subscription.target_domain = val;
         this.target_email_domain.next(val);
-        this.f.csvText.updateValueAndValidity();
+        this.f.csvText.updateValueAndValidity({ emitEvent: false });
         this.persistChanges();
       })
     );
@@ -259,6 +263,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         );
         this.f.cycle_length_minutes.setValue(convertedVal);
         this.subscription.cycle_length_minutes = this.f.cycle_length_minutes.value;
+        this.checkValid();
       })
     );
   }
@@ -336,14 +341,17 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     this.f.url.setValue(s.url);
     this.f.keywords.setValue(s.keywords);
     this.f.csvText.setValue(
-      this.formatTargetsToCSV(s.target_email_list_cached_copy)
+      this.formatTargetsToCSV(s.target_email_list_cached_copy),
+      { emitEvent: false }
     );
 
     this.f.sendingProfile.setValue(s.sending_profile_name);
     this.f.targetDomain.setValue(s?.target_domain);
     this.f.staggerEmails.setValue(s.stagger_emails);
-    this.f.cycle_length_minutes.setValue(s.cycle_length_minutes);
-    this.f.displayTime.setValue(s.cycle_length_minutes);
+    this.f.cycle_length_minutes.setValue(s.cycle_length_minutes, {
+      emitEvent: false,
+    });
+    this.f.displayTime.setValue(s.cycle_length_minutes, { emitEvent: false });
     this.f.continuousSubscription.setValue(s.continuous_subscription);
     this.enableDisableFields();
 
@@ -959,5 +967,19 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         });
       }
     });
+  }
+
+  checkValid() {
+    const cycleLength: number = +this.f.cycle_length_minutes.value;
+    const targetCount = this.f.csvText.value.trim().split('\n').length;
+    this.subscriptionSvc.checkValid(cycleLength, targetCount).subscribe(
+      () => {
+        this.isValidConfig = true;
+      },
+      (error) => {
+        this.isValidConfig = false;
+        this.validConfigMessage = error.error;
+      }
+    );
   }
 }
