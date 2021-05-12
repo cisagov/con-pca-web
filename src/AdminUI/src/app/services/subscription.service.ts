@@ -301,4 +301,13 @@ export class SubscriptionService {
     const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/subscription_report_emails_sent/${subscription_uuid}/`;
     return this.http.get(url);
   }
+
+  public checkValid(cycleLengthMinutes: number, targetCount: number) {
+    const url = `${this.settingsService.settings.apiUrl}/api/v1/subscriptions/valid/`;
+    const data = {
+      target_count: targetCount,
+      cycle_minutes: cycleLengthMinutes,
+    };
+    return this.http.post(url, data);
+  }
 }
