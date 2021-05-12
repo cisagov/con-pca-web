@@ -115,5 +115,28 @@ export class CycleComponent implements OnInit {
           listToText(g.levels);
       }
     });
+  }  
+  displayTime(seconds){
+    let days = Math.floor(seconds / 86400)
+    seconds = seconds - days * 86400
+    let hours = Math.floor(seconds / 3600)
+    seconds = seconds - hours * 3600
+    let minutes = Math.floor(seconds / 60)
+    seconds = seconds - minutes * 60
+    seconds = Math.floor(seconds)
+    let retVal ="n/a"
+    if(days > 0){
+      retVal = `Days: ${days}, Hours: ${hours}, Minutes: ${minutes}, Seconds: ${seconds}`
+    }
+    else if(hours > 0){
+      retVal = `Hours: ${hours}, Minutes: ${minutes}, Seconds: ${seconds}`
+    }
+    else if(minutes > 0){
+      retVal = `Minutes: ${minutes}, Seconds: ${seconds}`
+    }
+    else{
+      retVal = `Seconds: ${seconds}`
+    }
+    return retVal
   }
 }

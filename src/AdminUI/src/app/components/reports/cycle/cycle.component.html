@@ -504,15 +504,16 @@
             <th style="padding: 0 75px 0 0">
               Median Time to open email from first sent:
             </th>
-            <td>{{ detail?.metrics.median_time_to_open * 1000 | date: 'hh:mm:ss':'UTC' }}</td>
+            <td>{{displayTime(detail?.metrics.median_time_to_open)}}</td>
+            <!-- <td>{{ detail?.metrics.median_time_to_open * 1000 | date: 'hh:mm:ss':'UTC' }}</td> -->
           </tr>
           <tr>
             <th>Shortest Time to open email:</th>
-            <td>{{ detail?.metrics.shortest_time_to_open * 1000 | date: 'hh:mm:ss':'UTC' }}</td>
+            <td>{{displayTime(detail?.metrics.shortest_time_to_open)}}</td>
           </tr>
           <tr>
             <th>Longest Time to open email:</th>
-            <td>{{ detail?.metrics.longest_time_to_open * 1000 | date: 'hh:mm:ss':'UTC' }}</td>
+            <td>{{displayTime(detail?.metrics.longest_time_to_open)}}</td>
           </tr>
         </table>
       </div>
@@ -783,7 +784,7 @@
             <td class="text-right pr-5">
               {{ campaign.template.deception_score }}
             </td>
-            <td>{{ campaign.template.description }}</td>
+            <td>{{ campaign.template.name }}</td>
             <!-- <td><span class="needs-work">TEMPLATE DOMAIN NOT TRACKED</span></td> -->
           </tr>
         </table>
@@ -1037,9 +1038,9 @@
 
           <p>
             Con-PCA is a young service with limited but meaningful data made
-            available to {{ detail?.customer.full_name }}. VM hopes this data
-            will be actionable and allow {{ detail?.customer.full_name }} to
-            reduce some level of risk within their organization. As more PCAs
+            available to {{ detail?.customer.name }}. VM hopes this data
+            will be actionable and allow {{ detail?.customer.name }} to
+            reduce thier level of risk within their organization. As more PCAs
             are completed over time, statistical reporting will be enhanced and
             a non-attributable overview of phishing results will be collected as
             part of the VM annual service review.
