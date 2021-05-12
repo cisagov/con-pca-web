@@ -1,0 +1,74 @@
+<div class="modal-container">
+    <h1 mat-dialog-title>Favorite Animal</h1>
+    <div mat-dialog-content>
+    <!-- Dialog Here -->
+        <div class="section-container">
+            <div class="left-section">
+                <div class="template-selected-list">
+                    <div class="template-table-title">
+                        Selected
+                    </div>
+                    <mat-table class="template-mat-table" #selectedSort="matSort" [dataSource]="selectedList" matSort>
+                        <!-- Template Name -->
+                        <ng-container matColumnDef="name">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header
+                            >Template Name</mat-header-cell
+                          >
+                          <mat-cell *matCellDef="let row">{{ row.name }}</mat-cell>
+                        </ng-container>
+                  
+                        <!-- Deception Score -->
+                        <ng-container matColumnDef="deception_score">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header
+                            >Deception Score</mat-header-cell
+                          >                          
+                          <mat-cell *matCellDef="let row">{{ row.deception_score }}</mat-cell>
+                        </ng-container>
+                        
+                        <!-- Header Info -->
+                        <mat-header-row *matHeaderRowDef="displayedColumnsSelected"></mat-header-row>
+                        <mat-row
+                          class="table-row cursor-pointer"
+                          *matRowDef="let row; columns: displayedColumnsSelected"
+                          (click)="test()"
+                        ></mat-row>
+                    </mat-table>
+                </div>
+                <div class="template-available-list">
+                    <div class="template-table-title">
+                        Available
+                    </div>
+                    <mat-table class="template-mat-table" #availableSort="matSort" [dataSource]="selectedList" matSort>
+                        <!-- Template Name -->
+                        <ng-container matColumnDef="name">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header
+                            >Template Name</mat-header-cell
+                          >
+                          <mat-cell *matCellDef="let row">{{ row.name }}</mat-cell>
+                        </ng-container>
+                  
+                        <!-- Deception Score -->
+                        <ng-container matColumnDef="deception_score">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header
+                            >Approved</mat-header-cell
+                          >                          
+                          <mat-cell *matCellDef="let row">{{ row.deception_score }}</mat-cell>
+                        </ng-container>
+                        
+                        <!-- Header Info -->
+                        <mat-header-row *matHeaderRowDef="displayedColumnsAvailable"></mat-header-row>
+                        <mat-row
+                          class="table-row cursor-pointer"
+                          *matRowDef="let row; columns: displayedColumnsAvailable"
+                          (click)="test()"
+                        ></mat-row>
+                    </mat-table>
+                </div>
+            </div>
+            <div class="right-section">
+
+            </div>
+        </div>
+        <button (click)="test()">test</button>
+    </div>
+</div>

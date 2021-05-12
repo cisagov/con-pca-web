@@ -90,6 +90,7 @@
         </div>
       </div>
 
+
       <mat-label class="h6">Start Date</mat-label>
       <div class="mb-4">
         <mat-form-field appearance="outline">
@@ -119,6 +120,48 @@
         </mat-form-field>
       </div>
 
+
+      <!-- -------------- WORKING AREA START -------------- -->
+
+      <mat-label class="h6">Template Selection</mat-label>
+      <div class="template-selction-container">
+        <div class="template-selection-level-container">
+          <div class="tslc-title">Low</div>
+          <ul class="template-selected-list">
+            <li class="template-selction-row" *ngFor="let item of template_selection_low">{{item}}</li>
+          </ul>
+          <button
+           class="change-template-btn" 
+           (click)="changeTemplate('low')"
+           mat-raised-button
+           color="primary">Change Template</button>
+        </div>
+        <div class="template-selection-level-container">
+          <div class="tslc-title">Medium</div>
+          <ul class="template-selected-list">
+            <li class="template-selction-row" *ngFor="let item of template_selection_medium">{{item}}</li>
+          </ul>
+          <button
+           class="change-template-btn" 
+           (click)="changeTemplate('medium')"
+           mat-raised-button
+           color="primary">Change Template</button>
+        </div>
+        <div class="template-selection-level-container">
+          <div class="tslc-title">High</div>
+          <ul class="template-selected-list">
+            <li class="template-selction-row" *ngFor="let item of template_selection_high">{{item}}</li>
+          </ul>
+          <button
+           class="change-template-btn" 
+           (click)="changeTemplate('high')"
+           mat-raised-button
+           color="primary">Change Template</button>
+        </div>
+      </div>
+      <!-- -------------- WORKING AREA END   -------------- -->
+
+      <!--
       <mat-label class="h6">Customer Website</mat-label>
       <div class="text-muted">
         The customer's page will be analyzed to prioritize phishing emails
@@ -139,6 +182,7 @@
           Customer Website may not contain only spaces
         </mat-error>
       </mat-form-field>
+      -->
 
       <mat-label class="h6">Keywords</mat-label>
       <div class="text-muted">
@@ -160,7 +204,7 @@
           Keywords may not contain only spaces
         </mat-error>
       </mat-form-field>
-
+      
       <mat-label class="h6">Sending Profile</mat-label>
       <div class="mb-4">
         <div class="text-muted" *ngIf="sendingProfiles.length > 0">

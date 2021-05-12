@@ -28,6 +28,8 @@ import { SendingProfileService } from 'src/app/services/sending-profile.service'
 import { SettingsService } from 'src/app/services/settings.service';
 import { BehaviorSubject } from 'rxjs';
 import { filterSendingProfiles } from '../../../../helper/utilities';
+import { Template } from  'src/app/models/template.model'
+import { TemplateSelectDialogComponent } from 'src/app/components/subscriptions/manage-subscription/template-select-dialog/template-select-dialog.component'
 
 @Component({
   selector: 'subscription-config-tab',
@@ -79,6 +81,10 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
   validationErrors = {
     emailDoesntMatchDomain: '',
   };
+
+  template_selection_low = ['Item One','Item Two','Item Three']
+  template_selection_medium = ['Item Many asd asd asd asd asdasdaDASD ASDASD ASDDSADASDASD asd as d','Item Four','Item Five','Item Six']
+  template_selection_high  = ['Item Seven','Item Eight','Item Nine','Item Ten','Item Eleven','Item Seven','Item Eight','Item Nine','Item Ten','Item Eleven']
 
   /**
    *
@@ -554,7 +560,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
    * Tests the form for validity.
    */
   subValid() {
-    this.submitted = true;
+    //this.submitted = true;
 
     // stop here if form is invalid
     if (this.subscribeForm.invalid) {
@@ -981,5 +987,27 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         this.validConfigMessage = error.error;
       }
     );
+  }
+
+  changeTemplate(input){
+    let testListOne = Array<Template>();
+    testListOne.push(new Template({deception_score: 1, template_uuid:"2",name:"TemplateTwo"}))
+    testListOne.push(new Template({deception_score: 4, template_uuid:"1",name:"TemplateOne"}))
+    testListOne.push(new Template({deception_score: 7, template_uuid:"3",name:"TemplateThree"}))
+
+    let testListTwo = Array<Template>();
+    testListTwo.push(new Template({deception_score: 1, template_uuid:"4",name:"TemplateFour"}))
+    testListTwo.push(new Template({deception_score: 2, template_uuid:"5",name:"TemplateFive"}))
+    testListTwo.push(new Template({deception_score: 3, template_uuid:"6",name:"TemplateSix"}))
+
+    let testData = {
+      selected: testListOne,
+      available: testListTwo
+    }
+
+    console.log(input)
+    this.dialog.open(TemplateSelectDialogComponent,{
+      data: testData
+    })
   }
 }
