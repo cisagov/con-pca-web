@@ -25,6 +25,7 @@ import { CustomerDialogComponent } from '../../../dialogs/customer-dialog/custom
 import { AlertComponent } from '../../../dialogs/alert/alert.component';
 import { ConfirmComponent } from '../../../dialogs/confirm/confirm.component';
 import { SendingProfileService } from 'src/app/services/sending-profile.service';
+import { TemplateManagerService } from 'src/app/services/template-manager.service';
 import { SettingsService } from 'src/app/services/settings.service';
 import { BehaviorSubject } from 'rxjs';
 import { filterSendingProfiles } from '../../../../helper/utilities';
@@ -50,6 +51,16 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
   action: string = this.actionEDIT;
   timeRanges = ['Minutes', 'Hours', 'Days'];
   previousTimeUnit: string = 'Minutes';
+  templatesSelected = {
+    high: [],
+    moderate: [],
+    low: []
+  }
+  templatesAvailable = {
+    low: [],
+    moderate: [],
+    high: [],
+   }
 
   // Valid configuration
   isValidConfig = true;
@@ -82,10 +93,6 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     emailDoesntMatchDomain: '',
   };
 
-  template_selection_low = ['Item One','Item Two','Item Three']
-  template_selection_medium = ['Item Many asd asd asd asd asdasdaDASD ASDASD ASDDSADASDASD asd as d','Item Four','Item Five','Item Six']
-  template_selection_high  = ['Item Seven','Item Eight','Item Nine','Item Ten','Item Eleven','Item Seven','Item Eight','Item Nine','Item Ten','Item Eleven']
-
   /**
    *
    */
@@ -98,7 +105,8 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     public formBuilder: FormBuilder,
     private layoutSvc: LayoutMainService,
     public settingsService: SettingsService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private templateSvc: TemplateManagerService,
   ) {
     this.loadDhsContacts();
     this.loadSendingProfiles();
@@ -119,6 +127,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
    * INIT
    */
   ngOnInit(): void {
+    this.initTemplatesSelected()
     // build form
     this.subscribeForm = new FormGroup(
       {
@@ -332,6 +341,11 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     this.subscription = new Subscription();
     this.subscription.subscription_uuid = Guid.create().toString();
     this.enableDisableFields();
+    this.subscriptionSvc.getTemplatesSelected().subscribe((data) => {
+      this.templatesSelected = data as any;
+      this.getTemplates();
+      this.subscription.templates_selected = this.templatesSelected
+    })
   }
 
   /**
@@ -364,6 +378,8 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     this.customerSvc.getCustomer(s.customer_uuid).subscribe((c: Customer) => {
       this.customer = c;
     });
+
+    this.templatesSelected = s['templates_selected']
   }
 
   /**
@@ -587,6 +603,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     this.dialogRefConfirm.afterClosed().subscribe((result) => {
       if (result) {
         this.processing = true;
+        this.subscription.templates_selected = this.templatesSelected;
         this.subscription.target_email_list = this.subscription.target_email_list_cached_copy;
         if (typeof this.f.startDate.value === 'string') {
           this.f.startDate.setValue(new Date(this.f.startDate.value));
@@ -729,6 +746,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     sub.continuous_subscription = this.f.continuousSubscription.value;
     const cycleLength: number = +this.f.cycle_length_minutes.value;
     sub.cycle_length_minutes = cycleLength;
+    sub.templates_selected = this.templatesSelected;
 
     // call service with everything needed to start the subscription
     this.processing = true;
@@ -990,24 +1008,62 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
   }
 
   changeTemplate(input){
-    let testListOne = Array<Template>();
-    testListOne.push(new Template({deception_score: 1, template_uuid:"2",name:"TemplateTwo"}))
-    testListOne.push(new Template({deception_score: 4, template_uuid:"1",name:"TemplateOne"}))
-    testListOne.push(new Template({deception_score: 7, template_uuid:"3",name:"TemplateThree"}))
-
-    let testListTwo = Array<Template>();
-    testListTwo.push(new Template({deception_score: 1, template_uuid:"4",name:"TemplateFour"}))
-    testListTwo.push(new Template({deception_score: 2, template_uuid:"5",name:"TemplateFive"}))
-    testListTwo.push(new Template({deception_score: 3, template_uuid:"6",name:"TemplateSix"}))
-
-    let testData = {
-      selected: testListOne,
-      available: testListTwo
+    let templateData = {
+      selected: this.templatesSelected[input],
+      available: this.templatesAvailable[input],
+      decep_level: input,
     }
 
     console.log(input)
     this.dialog.open(TemplateSelectDialogComponent,{
-      data: testData
+      data: templateData
     })
+  }
+  getTemplates(){
+    let low = 2
+    let moderate = 4
+
+    this.templateSvc.getAllTemplates().subscribe(
+      (success) => {
+        let templates = success as Array<Template>
+        this.templatesAvailable['low'] = templates.filter(template => template.deception_score <= low)
+        this.templatesAvailable['moderate'] = templates.filter(template => template.deception_score <= moderate)
+        this.templatesAvailable['high'] = templates.filter(template => template.deception_score > moderate)
+
+        this.removeSelectedFromAvailable('low')
+        this.removeSelectedFromAvailable('moderate')
+        this.removeSelectedFromAvailable('high')
+
+        console.log(success)
+      },
+      (failure) => {}      
+
+    )
+  }
+  removeSelectedFromAvailable(level){
+    this.initTemplatesSelected();
+    console.log(this.templatesSelected)
+    this.templatesSelected[level].forEach(selec => {
+      for(var i = 0; i < this.templatesAvailable[level].length; i++){
+        if(this.templatesAvailable[level][i]['template_uuid'] == selec['template_uuid']){
+          this.templatesAvailable[level].splice(i,1)
+          i = this.templatesAvailable[level].length
+        }
+      }
+    });
+  }
+  initTemplatesSelected(){
+    if(!('low' in this.templatesSelected)){
+      // @ts-ignore
+      this.templatesSelected['low'] = []
+    }
+    if(!('moderate' in this.templatesSelected)){
+      // @ts-ignore
+      this.templatesSelected['moderate'] = []
+    }
+    if(!('high' in this.templatesSelected)){
+      // @ts-ignore
+      this.templatesSelected['high'] = []
+    }
   }
 }

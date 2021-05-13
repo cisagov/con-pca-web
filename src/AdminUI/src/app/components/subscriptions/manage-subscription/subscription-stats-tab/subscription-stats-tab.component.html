@@ -1,4 +1,4 @@
-<div class="w-100">
+<div *ngIf="subscription['cycles']" class="w-100">
   <mat-card>
     <mat-card-title> Statistics </mat-card-title>
     Statistics Cycle:
@@ -28,7 +28,7 @@
   </mat-card>
   <app-sub-dashboard></app-sub-dashboard>
 
-  <mat-card>
+  <mat-card *ngIf="display_timeline">
     <div>
       <h4>Subscription Timeline</h4>
       <div style="margin: 0 2rem 2rem 2rem">
@@ -113,5 +113,11 @@
         Cant not contain duplicate emails: {{ validationErrors.duplicateEmail }}
       </mat-error>
     </mat-form-field>
+  </mat-card>
+</div>
+<div *ngIf="!subscription['cycles']" class="w-100">
+  <mat-card>
+    <mat-card-title> Statistics </mat-card-title>
+    Statistics will be shown once a campaign has begun
   </mat-card>
 </div>
