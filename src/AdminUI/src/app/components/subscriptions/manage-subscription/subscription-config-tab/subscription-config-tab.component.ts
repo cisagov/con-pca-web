@@ -1017,7 +1017,9 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
       data: templateData,
     });
     dialogRef.afterClosed().subscribe(result => {
+
       this.subscription.templates_selected = this.templatesSelected;
+      console.log(this.subscription)
       this.subscriptionSvc
       .patchSubscription(this.subscription)
       .subscribe((x) => {})
