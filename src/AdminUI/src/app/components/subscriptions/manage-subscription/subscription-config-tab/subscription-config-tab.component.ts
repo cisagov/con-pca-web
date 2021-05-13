@@ -605,12 +605,6 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         this.processing = true;
         this.subscription.templates_selected = this.templatesSelected;
         this.subscription.target_email_list = this.subscription.target_email_list_cached_copy;
-        if (typeof this.f.startDate.value === 'string') {
-          this.f.startDate.setValue(new Date(this.f.startDate.value));
-        }
-        if (this.f.startDate.value.getHours() === 0) {
-          this.f.startDate.value.setHours(10);
-        }
         // persist any changes before restart
         this.subscriptionSvc
           .patchSubscription(this.subscription)
