@@ -134,11 +134,9 @@ export class SubscriptionService {
     // This should be the only data that needs patched
     const data = {
       archived: subscription.archived,
-      keywords: subscription.keywords,
       primary_contact: subscription.primary_contact,
       dhs_contact_uuid: subscription.dhs_contact_uuid,
       start_date: subscription.start_date,
-      url: subscription.url,
       target_email_list_cached_copy: subscription.target_email_list_cached_copy,
       target_email_list: subscription.target_email_list,
       sending_profile_name: subscription.sending_profile_name,
