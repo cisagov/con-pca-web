@@ -119,10 +119,13 @@
         </mat-form-field>
       </div>
 
-
-
-      <mat-label *ngIf="subscription.templates_selected" class="h6">Template Selection</mat-label>
-      <div *ngIf="subscription.templates_selected" class="template-selction-container">
+      <mat-label *ngIf="subscription.templates_selected" class="h6"
+        >Template Selection</mat-label
+      >
+      <div
+        *ngIf="subscription.templates_selected"
+        class="template-selction-container"
+      >
         <div class="template-selection-level-container">
           <div class="tslc-title">Low</div>
           <ul class="template-selected-list">
@@ -181,7 +184,7 @@
           </button>
         </div>
       </div>
-      
+
       <mat-label class="h6">Sending Profile</mat-label>
       <div class="mb-4">
         <div class="text-muted" *ngIf="sendingProfiles.length > 0">

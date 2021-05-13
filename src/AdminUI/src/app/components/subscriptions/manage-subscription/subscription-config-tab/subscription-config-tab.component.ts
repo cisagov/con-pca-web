@@ -342,7 +342,9 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     this.subscription.subscription_uuid = Guid.create().toString();
     this.enableDisableFields();
     this.subscriptionSvc.getTemplatesSelected().subscribe((data) => {
-      this.templatesSelected = this.initTemplatesSelected(this.templatesSelected);;
+      this.templatesSelected = this.initTemplatesSelected(
+        this.templatesSelected
+      );
       this.getTemplates();
       this.subscription.templates_selected = this.templatesSelected;
     });
@@ -352,7 +354,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
    * EDIT mode
    */
   loadPageForEdit(s: Subscription) {
-    console.log(s)
+    console.log(s);
     this.subscription = s as Subscription;
     this.subscriptionSvc.subscription = this.subscription;
     this.f.selectedCustomerUuid.setValue(s.subscription_uuid);
@@ -1009,9 +1011,9 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
       decep_level: input,
     };
 
-    this.dialog.open(TemplateSelectDialogComponent,{
-      data: templateData
-    })
+    this.dialog.open(TemplateSelectDialogComponent, {
+      data: templateData,
+    });
   }
   getTemplates() {
     let low = 2;
@@ -1039,30 +1041,33 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
       (failure) => {}
     );
   }
-  removeSelectedFromAvailable(level){
+  removeSelectedFromAvailable(level) {
     this.templatesSelected = this.initTemplatesSelected(this.templatesSelected);
-    this.templatesSelected[level].forEach(selec => {
-      for(var i = 0; i < this.templatesAvailable[level].length; i++){
-        if(this.templatesAvailable[level][i]['template_uuid'] == selec['template_uuid']){
-          this.templatesAvailable[level].splice(i,1)
-          i = this.templatesAvailable[level].length
+    this.templatesSelected[level].forEach((selec) => {
+      for (var i = 0; i < this.templatesAvailable[level].length; i++) {
+        if (
+          this.templatesAvailable[level][i]['template_uuid'] ==
+          selec['template_uuid']
+        ) {
+          this.templatesAvailable[level].splice(i, 1);
+          i = this.templatesAvailable[level].length;
         }
       }
     });
   }
-  initTemplatesSelected(data){
-    if(!('low' in data)){
+  initTemplatesSelected(data) {
+    if (!('low' in data)) {
       // @ts-ignore
-      data['low'] = []
+      data['low'] = [];
     }
-    if(!('moderate' in data)){
+    if (!('moderate' in data)) {
       // @ts-ignore
-      data['moderate'] = []
+      data['moderate'] = [];
     }
-    if(!('high' in data)){
+    if (!('high' in data)) {
       // @ts-ignore
-      data['high'] = []
+      data['high'] = [];
     }
-    return data
+    return data;
   }
 }
