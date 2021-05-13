@@ -357,6 +357,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
    */
   loadPageForEdit(s: Subscription) {
     this.subscription = s as Subscription;
+    this.getTemplates();
     this.subscriptionSvc.subscription = this.subscription;
     this.f.selectedCustomerUuid.setValue(s.subscription_uuid);
     this.f.primaryContact.setValue(s.primary_contact?.email);
