@@ -356,7 +356,6 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
    * EDIT mode
    */
   loadPageForEdit(s: Subscription) {
-    console.log(s);
     this.subscription = s as Subscription;
     this.subscriptionSvc.subscription = this.subscription;
     this.f.selectedCustomerUuid.setValue(s.subscription_uuid);
@@ -1023,7 +1022,6 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
 
     this.templateSvc.getAllTemplates().subscribe(
       (success) => {
-        console.log(success)
         let templates = success as Array<Template>;
         this.templatesAvailable['low'] = templates.filter(
           (template) => template.deception_score <= low
