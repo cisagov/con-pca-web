@@ -16,7 +16,11 @@ import {
 import { Router, ActivatedRoute } from '@angular/router';
 import { Customer, Contact } from 'src/app/models/customer.model';
 import { SubscriptionService } from 'src/app/services/subscription.service';
-import { Subscription, Target } from 'src/app/models/subscription.model';
+import {
+  Subscription,
+  Target,
+  TemplateSelected,
+} from 'src/app/models/subscription.model';
 import { Guid } from 'guid-typescript';
 import { CustomerService } from 'src/app/services/customer.service';
 import { XlsxToCsv } from 'src/app/helper/XlsxToCsv';
@@ -51,16 +55,8 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
   action: string = this.actionEDIT;
   timeRanges = ['Minutes', 'Hours', 'Days'];
   previousTimeUnit: string = 'Minutes';
-  templatesSelected = {
-    high: [],
-    moderate: [],
-    low: [],
-  };
-  templatesAvailable = {
-    low: [],
-    moderate: [],
-    high: [],
-  };
+  templatesSelected = new TemplateSelected();
+  templatesAvailable = new TemplateSelected();
 
   // Valid configuration
   isValidConfig = true;
@@ -335,27 +331,35 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
   /**
    * CREATE mode
    */
-  loadPageForCreate(params: any) {
+  async loadPageForCreate(params: any) {
     this.pageMode = 'CREATE';
     this.action = this.actionCREATE;
     this.subscription = new Subscription();
-    this.subscription.templates_selected = this.templatesSelected
+    this.subscription.templates_selected = this.templatesSelected;
     this.subscription.subscription_uuid = Guid.create().toString();
     this.enableDisableFields();
-    this.subscriptionSvc.getTemplatesSelected().subscribe((data) => {
-      this.templatesSelected = data as any;
-      this.templatesSelected = this.initTemplatesSelected(
-        this.templatesSelected
-      );
-      this.getTemplates();
-      this.subscription.templates_selected = this.templatesSelected;
-    });
+
+    //  Get Templates Selected
+    this.subscription.templates_selected = await this.subscriptionSvc.getTemplatesSelected();
+    this.templatesSelected.high = await this.templateSvc.getAllTemplates(
+      false,
+      this.subscription.templates_selected.high
+    );
+    this.templatesSelected.moderate = await this.templateSvc.getAllTemplates(
+      false,
+      this.subscription.templates_selected.moderate
+    );
+    this.templatesSelected.low = await this.templateSvc.getAllTemplates(
+      false,
+      this.subscription.templates_selected.low
+    );
+    this.getTemplates();
   }
 
   /**
    * EDIT mode
    */
-  loadPageForEdit(s: Subscription) {
+  async loadPageForEdit(s: Subscription) {
     this.subscription = s as Subscription;
     this.getTemplates();
     this.subscriptionSvc.subscription = this.subscription;
@@ -384,7 +388,18 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
       this.customer = c;
     });
 
-    this.templatesSelected = s['templates_selected'];
+    this.templatesSelected.high = await this.templateSvc.getAllTemplates(
+      false,
+      s.templates_selected.high
+    );
+    this.templatesSelected.moderate = await this.templateSvc.getAllTemplates(
+      false,
+      s.templates_selected.moderate
+    );
+    this.templatesSelected.low = await this.templateSvc.getAllTemplates(
+      false,
+      s.templates_selected.low
+    );
   }
 
   /**
@@ -608,7 +623,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     this.dialogRefConfirm.afterClosed().subscribe((result) => {
       if (result) {
         this.processing = true;
-        this.subscription.templates_selected = this.templatesSelected;
+        this.setTemplatesSelected();
         this.subscription.target_email_list = this.subscription.target_email_list_cached_copy;
         // persist any changes before restart
         this.subscriptionSvc
@@ -745,7 +760,8 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     sub.continuous_subscription = this.f.continuousSubscription.value;
     const cycleLength: number = +this.f.cycle_length_minutes.value;
     sub.cycle_length_minutes = cycleLength;
-    sub.templates_selected = this.templatesSelected;
+    this.setTemplatesSelected();
+    sub.templates_selected = this.subscription.templates_selected;
 
     // call service with everything needed to start the subscription
     this.processing = true;
@@ -1016,41 +1032,32 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     let dialogRef = this.dialog.open(TemplateSelectDialogComponent, {
       data: templateData,
     });
-    dialogRef.afterClosed().subscribe(result => {
-
-      this.subscription.templates_selected = this.templatesSelected;
-      console.log(this.subscription)
+    dialogRef.afterClosed().subscribe((result) => {
+      this.setTemplatesSelected();
       this.subscriptionSvc
-      .patchSubscription(this.subscription)
-      .subscribe((x) => {})
+        .patchSubscription(this.subscription)
+        .subscribe((x) => {});
     });
-    
   }
-  getTemplates() {
+  async getTemplates() {
     let low = 2;
     let moderate = 4;
 
-    this.templateSvc.getAllTemplates().subscribe(
-      (success) => {
-        let templates = success as Array<Template>;
-        this.templatesAvailable['low'] = templates.filter(
-          (template) => template.deception_score <= low
-        );
-        this.templatesAvailable['moderate'] = templates.filter(
-          (template) => template.deception_score <= moderate
-        );
-        this.templatesAvailable['high'] = templates.filter(
-          (template) => template.deception_score > moderate
-        );
-
-        this.removeSelectedFromAvailable('low');
-        this.removeSelectedFromAvailable('moderate');
-        this.removeSelectedFromAvailable('high');
-
-      },
-      (failure) => {}
+    let templates = await this.templateSvc.getAllTemplates();
+    this.templatesAvailable.low = templates.filter(
+      (template) => template.deception_score <= low
     );
+    this.templatesAvailable.moderate = templates.filter(
+      (template) => template.deception_score <= moderate
+    );
+    this.templatesAvailable.high = templates.filter(
+      (template) => template.deception_score > moderate
+    );
+    this.removeSelectedFromAvailable('low');
+    this.removeSelectedFromAvailable('moderate');
+    this.removeSelectedFromAvailable('high');
   }
+
   removeSelectedFromAvailable(level) {
     this.templatesSelected = this.initTemplatesSelected(this.templatesSelected);
     this.templatesSelected[level].forEach((selec) => {
@@ -1079,5 +1086,14 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
       data['high'] = [];
     }
     return data;
+  }
+
+  setTemplatesSelected() {
+    // Loop through keys in templatesSelected
+    Object.keys(this.templatesSelected).forEach((key: string) => {
+      this.subscription.templates_selected[key] = this.templatesSelected[
+        key
+      ].map((item: any) => item['template_uuid']);
+    });
   }
 }

@@ -24,7 +24,7 @@ export class TemplateManagerService {
    * GET a list of all templates
    * @param retired
    */
-  getAllTemplates(retired: boolean = false, templateUuids = []) {
+  async getAllTemplates(retired: boolean = false, templateUuids = []) {
     let url = `${this.settingsService.settings.apiUrl}/api/v1/templates/`;
     const parameters = [];
     if (retired) {
@@ -39,7 +39,7 @@ export class TemplateManagerService {
       url = `${url}?${parameters.join('&')}`;
     }
 
-    return this.http.get(url, headers);
+    return this.http.get<Template[]>(url, headers).toPromise();
   }
 
   /**

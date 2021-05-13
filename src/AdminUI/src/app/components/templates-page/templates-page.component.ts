@@ -39,15 +39,13 @@ export class TemplatesPageComponent implements OnInit, AfterViewInit {
     this.refresh();
   }
 
-  refresh() {
+  async refresh() {
     this.loading = true;
-    this.templateSvc
-      .getAllTemplates(this.showRetired)
-      .subscribe((data: any) => {
-        this.templatesData.data = data as Template[];
-        this.templatesData.sort = this.sort;
-        this.loading = false;
-      });
+    this.templatesData.data = await this.templateSvc.getAllTemplates(
+      this.showRetired
+    );
+    this.templatesData.sort = this.sort;
+    this.loading = false;
   }
 
   ngAfterViewInit(): void {
