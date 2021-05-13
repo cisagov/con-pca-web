@@ -609,7 +609,6 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
       if (result) {
         this.processing = true;
         this.subscription.templates_selected = this.templatesSelected;
-        console.log(this.subscription)
         this.subscription.target_email_list = this.subscription.target_email_list_cached_copy;
         // persist any changes before restart
         this.subscriptionSvc
@@ -1014,9 +1013,16 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
       decep_level: input,
     };
 
-    this.dialog.open(TemplateSelectDialogComponent, {
+    let dialogRef = this.dialog.open(TemplateSelectDialogComponent, {
       data: templateData,
     });
+    dialogRef.afterClosed().subscribe(result => {
+      this.subscription.templates_selected = this.templatesSelected;
+      this.subscriptionSvc
+      .patchSubscription(this.subscription)
+      .subscribe((x) => {})
+    });
+    
   }
   getTemplates() {
     let low = 2;
