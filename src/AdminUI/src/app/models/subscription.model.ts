@@ -38,7 +38,6 @@ export class Subscription {
   archived: boolean;
   customer_uuid: string;
   cycles: Cycle[];
-  keywords: string;
   lub_timestamp: Date;
   manually_stopped: boolean;
   name: string;
@@ -50,7 +49,6 @@ export class Subscription {
   subscription_uuid: string;
   tasks: Task[] = [];
   templates_selected_uuid_list: string[];
-  url: string;
   target_email_list: Target[] = [];
   target_email_list_cached_copy: Target[] = [];
   campaigns: GoPhishCampaignModel[];

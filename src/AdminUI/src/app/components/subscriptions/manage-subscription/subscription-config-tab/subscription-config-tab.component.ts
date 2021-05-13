@@ -139,8 +139,6 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         startDate: new FormControl(new Date(), {
           validators: Validators.required,
         }),
-        url: new FormControl('', {}),
-        keywords: new FormControl('', {}),
         sendingProfile: new FormControl('', {
           validators: Validators.required,
         }),
@@ -191,18 +189,6 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     this.angular_subs.push(
       this.f.startDate.valueChanges.subscribe((val) => {
         this.subscription.start_date = val;
-        this.persistChanges();
-      })
-    );
-    this.angular_subs.push(
-      this.f.url.valueChanges.subscribe((val) => {
-        this.subscription.url = val;
-        this.persistChanges();
-      })
-    );
-    this.angular_subs.push(
-      this.f.keywords.valueChanges.subscribe((val) => {
-        this.subscription.keywords = val;
         this.persistChanges();
       })
     );
@@ -367,8 +353,6 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     this.f.primaryContact.setValue(s.primary_contact?.email);
     this.f.dhsContact.setValue(s.dhs_contact_uuid);
     this.f.startDate.setValue(s.start_date);
-    this.f.url.setValue(s.url);
-    this.f.keywords.setValue(s.keywords);
     this.f.csvText.setValue(
       this.formatTargetsToCSV(s.target_email_list_cached_copy),
       { emitEvent: false }
@@ -744,11 +728,6 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     sub.start_date = this.f.startDate.value;
     sub.status = 'Queued';
 
-    sub.url = this.f.url.value;
-
-    // keywords
-    sub.keywords = this.f.keywords.value;
-
     // set the target list
     const csv = this.f.csvText.value;
     sub.target_email_list_cached_copy = this.buildTargetsFromCSV(csv);
@@ -797,15 +776,11 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     const status = this.subscription?.status?.toLowerCase();
     if (status === 'in progress') {
       this.f.startDate.disable();
-      this.f.url.disable();
-      this.f.keywords.disable();
       this.f.sendingProfile.disable();
       this.f.targetDomain.disable();
       //this.f.csvText.disable();
     } else {
       this.f.startDate.enable();
-      this.f.url.enable();
-      this.f.keywords.enable();
       this.f.sendingProfile.enable();
       this.f.targetDomain.enable();
       //this.f.csvText.enable();
