@@ -21,10 +21,11 @@ export class TemplateSelectDialogComponent {
   emptyList: MatTableDataSource<Template>;
   // @ViewChild('selectedSort') selectedSort: MatSort;
   // @ViewChild('availableSort') availableSort: MatSort;
-  
+
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: Object , 
-    public dialog: MatDialog) {
+    @Inject(MAT_DIALOG_DATA) public data: Object,
+    public dialog: MatDialog
+  ) {
     this.decep_level = data['decep_level'];
     this.selectedArray = data['selected'];
     this.availableArray = data['available'];
@@ -47,16 +48,15 @@ export class TemplateSelectDialogComponent {
   }
   ngOnInit(): void {}
 
-
-  remove(template){
-    if(this.selectedArray.length > 1){
-      for(var i = 0; i < this.selectedArray.length; i++){
-        if(this.selectedArray[i]['template_uuid'] == template.template_uuid){
-          this.availableArray.push(template)
-          this.selectedArray.splice(i,1)
-          i = this.selectedArray.length        
-          this.initMatTables()
-        }      
+  remove(template) {
+    if (this.selectedArray.length > 1) {
+      for (var i = 0; i < this.selectedArray.length; i++) {
+        if (this.selectedArray[i]['template_uuid'] == template.template_uuid) {
+          this.availableArray.push(template);
+          this.selectedArray.splice(i, 1);
+          i = this.selectedArray.length;
+          this.initMatTables();
+        }
       }
     } else {
       this.dialog.open(AlertComponent, {
