@@ -60,7 +60,7 @@ export class Subscription {
   continuous_subscription: boolean;
   email_report_history: EmailHistory[] = [];
   cycle_length_minutes: number;
-  templates_selected: any;
+  templates_selected: TemplateSelected;
 }
 
 export class EmailHistory {
@@ -109,4 +109,13 @@ export class Cycle {
   phish_results_dirty: boolean;
   override_total_reported: Number;
   total_targets: Number;
+}
+
+export class TemplateSelected {
+  // These are any arrays, because 2 options need covered
+  // ["uuid1", "uuid2"]
+  // [template1, template2]
+  high: any[] = [];
+  moderate: any[] = [];
+  low: any[] = [];
 }
