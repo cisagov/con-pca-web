@@ -122,8 +122,8 @@
 
 
 
-      <mat-label class="h6">Template Selection</mat-label>
-      <div class="template-selction-container">
+      <mat-label  class="h6">Template Selection</mat-label>
+      <div *ngIf="subscription.templates_selected" class="template-selction-container">
         <div class="template-selection-level-container">
           <div class="tslc-title">Low</div>
           <ul class="template-selected-list">
@@ -158,27 +158,6 @@
            color="primary">Change Template</button>
         </div>
       </div>
-
-      <mat-label class="h6">Keywords</mat-label>
-      <div class="text-muted">
-        Optionally enter words that describe the organization, separated by
-        commas. They will be used to select applicable templates.
-      </div>
-      <mat-form-field class="w-100" appearance="outline">
-        <mat-label>Applicability Word Tags</mat-label>
-        <textarea
-          matInput
-          trim="blur"
-          autosize
-          formControlName="keywords"
-        ></textarea>
-        <mat-error
-          *ngIf="submitted && f.keywords.errors?.whitespace"
-          class="invalid-feedback"
-        >
-          Keywords may not contain only spaces
-        </mat-error>
-      </mat-form-field>
       
       <mat-label class="h6">Sending Profile</mat-label>
       <div class="mb-4">

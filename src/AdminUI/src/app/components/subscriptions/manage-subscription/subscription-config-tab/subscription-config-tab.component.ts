@@ -127,7 +127,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
    * INIT
    */
   ngOnInit(): void {
-    this.initTemplatesSelected()
+    this.templatesSelected = this.initTemplatesSelected(this.templatesSelected);
     // build form
     this.subscribeForm = new FormGroup(
       {
@@ -342,7 +342,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     this.subscription.subscription_uuid = Guid.create().toString();
     this.enableDisableFields();
     this.subscriptionSvc.getTemplatesSelected().subscribe((data) => {
-      this.templatesSelected = data as any;
+      this.templatesSelected = this.initTemplatesSelected(this.templatesSelected);;
       this.getTemplates();
       this.subscription.templates_selected = this.templatesSelected
     })
@@ -352,6 +352,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
    * EDIT mode
    */
   loadPageForEdit(s: Subscription) {
+    console.log(s)
     this.subscription = s as Subscription;
     this.subscriptionSvc.subscription = this.subscription;
     this.f.selectedCustomerUuid.setValue(s.subscription_uuid);
@@ -1014,7 +1015,6 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
       decep_level: input,
     }
 
-    console.log(input)
     this.dialog.open(TemplateSelectDialogComponent,{
       data: templateData
     })
@@ -1041,7 +1041,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     )
   }
   removeSelectedFromAvailable(level){
-    this.initTemplatesSelected();
+    this.templatesSelected = this.initTemplatesSelected(this.templatesSelected);
     console.log(this.templatesSelected)
     this.templatesSelected[level].forEach(selec => {
       for(var i = 0; i < this.templatesAvailable[level].length; i++){
@@ -1052,18 +1052,19 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
       }
     });
   }
-  initTemplatesSelected(){
-    if(!('low' in this.templatesSelected)){
+  initTemplatesSelected(data){
+    if(!('low' in data)){
       // @ts-ignore
-      this.templatesSelected['low'] = []
+      data['low'] = []
     }
-    if(!('moderate' in this.templatesSelected)){
+    if(!('moderate' in data)){
       // @ts-ignore
-      this.templatesSelected['moderate'] = []
+      data['moderate'] = []
     }
-    if(!('high' in this.templatesSelected)){
+    if(!('high' in data)){
       // @ts-ignore
-      this.templatesSelected['high'] = []
+      data['high'] = []
     }
+    return data
   }
 }
