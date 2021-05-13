@@ -339,9 +339,11 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     this.pageMode = 'CREATE';
     this.action = this.actionCREATE;
     this.subscription = new Subscription();
+    this.subscription.templates_selected = this.templatesSelected
     this.subscription.subscription_uuid = Guid.create().toString();
     this.enableDisableFields();
     this.subscriptionSvc.getTemplatesSelected().subscribe((data) => {
+      this.templatesSelected = data as any;
       this.templatesSelected = this.initTemplatesSelected(
         this.templatesSelected
       );
@@ -1021,6 +1023,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
 
     this.templateSvc.getAllTemplates().subscribe(
       (success) => {
+        console.log(success)
         let templates = success as Array<Template>;
         this.templatesAvailable['low'] = templates.filter(
           (template) => template.deception_score <= low
@@ -1036,7 +1039,6 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         this.removeSelectedFromAvailable('moderate');
         this.removeSelectedFromAvailable('high');
 
-        console.log(success);
       },
       (failure) => {}
     );
