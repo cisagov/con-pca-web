@@ -372,11 +372,11 @@ export class SubscriptionStatsTab implements OnInit {
     });
 
     this.timelineItems = items;
-    let expectedtimelineItemCount = 5
-    if(this.timelineItems.length >= expectedtimelineItemCount){
-      this.display_timeline = true
+    let expectedtimelineItemCount = 5;
+    if (this.timelineItems.length >= expectedtimelineItemCount) {
+      this.display_timeline = true;
     }
-    console.log(this.display_timeline)
+    console.log(this.display_timeline);
   }
 
   invalidReportCsv(control: FormControl) {

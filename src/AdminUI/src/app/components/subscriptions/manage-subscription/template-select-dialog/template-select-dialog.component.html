@@ -1,157 +1,183 @@
 <div class="modal-container">
-    <h1 mat-dialog-title>Select {{decep_level | titlecase}} Tempalates</h1>
-    <div mat-dialog-content>
+  <h1 mat-dialog-title>Select {{ decep_level | titlecase }} Tempalates</h1>
+  <div mat-dialog-content>
     <!-- Dialog Here -->
-        <div class="section-container">
-            <div class="left-section">
-                <div class="template-selected-list">
-                    <div class="template-table-title">
-                        Selected
-                    </div>
-                    <mat-table class="header-table" [dataSource]="emptyList" >
-                      <!-- Template Name -->
-                      <ng-container matColumnDef="name">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header
-                          >Template Name</mat-header-cell
-                        >
-                        <mat-cell *matCellDef="let row">{{ row.name }}</mat-cell>
-                      </ng-container>
-                
-                      <!-- Deception Score -->
-                      <ng-container matColumnDef="deception_score">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header
-                          >Deception Score</mat-header-cell
-                        >                          
-                        <mat-cell class="score-cell" *matCellDef="let row">{{ row.deception_score }}</mat-cell>
-                      </ng-container>
+    <div class="section-container">
+      <div class="left-section">
+        <div class="template-selected-list">
+          <div class="template-table-title">Selected</div>
+          <mat-table class="header-table" [dataSource]="emptyList">
+            <!-- Template Name -->
+            <ng-container matColumnDef="name">
+              <mat-header-cell *matHeaderCellDef mat-sort-header
+                >Template Name</mat-header-cell
+              >
+              <mat-cell *matCellDef="let row">{{ row.name }}</mat-cell>
+            </ng-container>
 
-                      <!-- Remove -->
-                      <ng-container matColumnDef="remove">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header
-                          >Remove</mat-header-cell
-                        >                          
-                        <mat-cell *matCellDef="let row"><mat-icon class="cursor-pointer" (click)="remove(row)">remove_circle</mat-icon></mat-cell>
-                      </ng-container>
-                      
-                      <!-- Header Info -->
-                      <mat-header-row *matHeaderRowDef="displayedColumnsSelected"></mat-header-row>
-                      <mat-row
-                        class="table-row"
-                        (click)="display(row.html)"
-                        *matRowDef="let row; columns: displayedColumnsSelected"
-                      ></mat-row>
-                  </mat-table>
-                    <mat-table class="template-mat-table" [dataSource]="selectedList" >
-                        <!-- Template Name -->
-                        <ng-container matColumnDef="name">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header
-                            >Template Name</mat-header-cell
-                          >
-                          <mat-cell *matCellDef="let row">{{ row.name }}</mat-cell>
-                        </ng-container>
-                  
-                        <!-- Deception Score -->
-                        <ng-container matColumnDef="deception_score">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header
-                            >Deception Score</mat-header-cell
-                          >                          
-                          <mat-cell class="score-cell" *matCellDef="let row">{{ row.deception_score }}</mat-cell>
-                        </ng-container>
+            <!-- Deception Score -->
+            <ng-container matColumnDef="deception_score">
+              <mat-header-cell *matHeaderCellDef mat-sort-header
+                >Deception Score</mat-header-cell
+              >
+              <mat-cell class="score-cell" *matCellDef="let row">{{
+                row.deception_score
+              }}</mat-cell>
+            </ng-container>
 
-                        <!-- Remove -->
-                        <ng-container matColumnDef="remove">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header
-                            >Remove</mat-header-cell
-                          >                          
-                          <mat-cell *matCellDef="let row"><mat-icon class="cursor-pointer" (click)="remove(row)">remove_circle</mat-icon></mat-cell>
-                        </ng-container>
-                        
-                        <!-- Header Info -->
-                        <mat-header-row style="display: none;" *matHeaderRowDef="displayedColumnsSelected"></mat-header-row>
-                        <mat-row
-                          class="table-row"
-                          (click)="display(row.html)"
-                          *matRowDef="let row; columns: displayedColumnsSelected"
-                        ></mat-row>
-                    </mat-table>
-                </div>
-                <div class="template-available-list">
-                    <div class="template-table-title">
-                        Available
-                    </div>
-                    <mat-table class="header-table"  [dataSource]="emptyList" >
-                        <!-- Template Name -->
-                        <ng-container matColumnDef="name">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header
-                            >Template Name</mat-header-cell
-                          >
-                          <mat-cell *matCellDef="let row">{{ row.name }}</mat-cell>
-                        </ng-container>
-                  
-                        <!-- Deception Score -->
-                        <ng-container matColumnDef="deception_score">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header
-                            >Approved</mat-header-cell
-                          >                          
-                          <mat-cell *matCellDef="let row">{{ row.deception_score }}</mat-cell>
-                        </ng-container>
-                        <!-- Add -->
-                        <ng-container matColumnDef="add">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header
-                            >Remove</mat-header-cell
-                          >                          
-                          <mat-cell *matCellDef="let row"><mat-icon class="cursor-pointer" (click)="add(row)">add_circle</mat-icon></mat-cell>
-                        </ng-container>
-                        
-                        
-                        <!-- Header Info -->
-                        <mat-header-row *matHeaderRowDef="displayedColumnsAvailable"></mat-header-row>
-                        <mat-row
-                          class="table-row"
-                          (click)="display(row.html)"
-                          *matRowDef="let row; columns: displayedColumnsAvailable"
-                        ></mat-row>
-                    </mat-table>
-                    <mat-table class="template-mat-table"[dataSource]="avaiableList" >
-                        <!-- Template Name -->
-                        <ng-container matColumnDef="name">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header
-                            >Template Name</mat-header-cell
-                          >
-                          <mat-cell *matCellDef="let row">{{ row.name }}</mat-cell>
-                        </ng-container>
-                  
-                        <!-- Deception Score -->
-                        <ng-container matColumnDef="deception_score">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header
-                            >Approved</mat-header-cell
-                          >                          
-                          <mat-cell *matCellDef="let row">{{ row.deception_score }}</mat-cell>
-                        </ng-container>
-                        <!-- Add -->
-                        <ng-container matColumnDef="add">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header
-                            >Remove</mat-header-cell
-                          >                          
-                          <mat-cell *matCellDef="let row"><mat-icon class="cursor-pointer" (click)="add(row)">add_circle</mat-icon></mat-cell>
-                        </ng-container>
-                        
-                        
-                        <!-- Header Info -->
-                        <mat-header-row style="display: none;" *matHeaderRowDef="displayedColumnsAvailable"></mat-header-row>
-                        <mat-row
-                          class="table-row"
-                          (click)="display(row.html)"
-                          *matRowDef="let row; columns: displayedColumnsAvailable"
-                        ></mat-row>
-                    </mat-table>
-                </div>
-            </div>
-            <div class="right-section">
-              <div class="display-window" [innerHtml]="displayHTML">
+            <!-- Remove -->
+            <ng-container matColumnDef="remove">
+              <mat-header-cell *matHeaderCellDef mat-sort-header
+                >Remove</mat-header-cell
+              >
+              <mat-cell *matCellDef="let row"
+                ><mat-icon class="cursor-pointer" (click)="remove(row)"
+                  >remove_circle</mat-icon
+                ></mat-cell
+              >
+            </ng-container>
 
-              </div>
-            </div>
+            <!-- Header Info -->
+            <mat-header-row
+              *matHeaderRowDef="displayedColumnsSelected"
+            ></mat-header-row>
+            <mat-row
+              class="table-row"
+              (click)="display(row.html)"
+              *matRowDef="let row; columns: displayedColumnsSelected"
+            ></mat-row>
+          </mat-table>
+          <mat-table class="template-mat-table" [dataSource]="selectedList">
+            <!-- Template Name -->
+            <ng-container matColumnDef="name">
+              <mat-header-cell *matHeaderCellDef mat-sort-header
+                >Template Name</mat-header-cell
+              >
+              <mat-cell *matCellDef="let row">{{ row.name }}</mat-cell>
+            </ng-container>
+
+            <!-- Deception Score -->
+            <ng-container matColumnDef="deception_score">
+              <mat-header-cell *matHeaderCellDef mat-sort-header
+                >Deception Score</mat-header-cell
+              >
+              <mat-cell class="score-cell" *matCellDef="let row">{{
+                row.deception_score
+              }}</mat-cell>
+            </ng-container>
+
+            <!-- Remove -->
+            <ng-container matColumnDef="remove">
+              <mat-header-cell *matHeaderCellDef mat-sort-header
+                >Remove</mat-header-cell
+              >
+              <mat-cell *matCellDef="let row"
+                ><mat-icon class="cursor-pointer" (click)="remove(row)"
+                  >remove_circle</mat-icon
+                ></mat-cell
+              >
+            </ng-container>
+
+            <!-- Header Info -->
+            <mat-header-row
+              style="display: none"
+              *matHeaderRowDef="displayedColumnsSelected"
+            ></mat-header-row>
+            <mat-row
+              class="table-row"
+              (click)="display(row.html)"
+              *matRowDef="let row; columns: displayedColumnsSelected"
+            ></mat-row>
+          </mat-table>
         </div>
+        <div class="template-available-list">
+          <div class="template-table-title">Available</div>
+          <mat-table class="header-table" [dataSource]="emptyList">
+            <!-- Template Name -->
+            <ng-container matColumnDef="name">
+              <mat-header-cell *matHeaderCellDef mat-sort-header
+                >Template Name</mat-header-cell
+              >
+              <mat-cell *matCellDef="let row">{{ row.name }}</mat-cell>
+            </ng-container>
+
+            <!-- Deception Score -->
+            <ng-container matColumnDef="deception_score">
+              <mat-header-cell *matHeaderCellDef mat-sort-header
+                >Approved</mat-header-cell
+              >
+              <mat-cell *matCellDef="let row">{{
+                row.deception_score
+              }}</mat-cell>
+            </ng-container>
+            <!-- Add -->
+            <ng-container matColumnDef="add">
+              <mat-header-cell *matHeaderCellDef mat-sort-header
+                >Remove</mat-header-cell
+              >
+              <mat-cell *matCellDef="let row"
+                ><mat-icon class="cursor-pointer" (click)="add(row)"
+                  >add_circle</mat-icon
+                ></mat-cell
+              >
+            </ng-container>
+
+            <!-- Header Info -->
+            <mat-header-row
+              *matHeaderRowDef="displayedColumnsAvailable"
+            ></mat-header-row>
+            <mat-row
+              class="table-row"
+              (click)="display(row.html)"
+              *matRowDef="let row; columns: displayedColumnsAvailable"
+            ></mat-row>
+          </mat-table>
+          <mat-table class="template-mat-table" [dataSource]="avaiableList">
+            <!-- Template Name -->
+            <ng-container matColumnDef="name">
+              <mat-header-cell *matHeaderCellDef mat-sort-header
+                >Template Name</mat-header-cell
+              >
+              <mat-cell *matCellDef="let row">{{ row.name }}</mat-cell>
+            </ng-container>
+
+            <!-- Deception Score -->
+            <ng-container matColumnDef="deception_score">
+              <mat-header-cell *matHeaderCellDef mat-sort-header
+                >Approved</mat-header-cell
+              >
+              <mat-cell *matCellDef="let row">{{
+                row.deception_score
+              }}</mat-cell>
+            </ng-container>
+            <!-- Add -->
+            <ng-container matColumnDef="add">
+              <mat-header-cell *matHeaderCellDef mat-sort-header
+                >Remove</mat-header-cell
+              >
+              <mat-cell *matCellDef="let row"
+                ><mat-icon class="cursor-pointer" (click)="add(row)"
+                  >add_circle</mat-icon
+                ></mat-cell
+              >
+            </ng-container>
+
+            <!-- Header Info -->
+            <mat-header-row
+              style="display: none"
+              *matHeaderRowDef="displayedColumnsAvailable"
+            ></mat-header-row>
+            <mat-row
+              class="table-row"
+              (click)="display(row.html)"
+              *matRowDef="let row; columns: displayedColumnsAvailable"
+            ></mat-row>
+          </mat-table>
+        </div>
+      </div>
+      <div class="right-section">
+        <div class="display-window" [innerHtml]="displayHTML"></div>
+      </div>
     </div>
+  </div>
 </div>
