@@ -29,8 +29,8 @@ import { TemplateManagerService } from 'src/app/services/template-manager.servic
 import { SettingsService } from 'src/app/services/settings.service';
 import { BehaviorSubject } from 'rxjs';
 import { filterSendingProfiles } from '../../../../helper/utilities';
-import { Template } from  'src/app/models/template.model'
-import { TemplateSelectDialogComponent } from 'src/app/components/subscriptions/manage-subscription/template-select-dialog/template-select-dialog.component'
+import { Template } from 'src/app/models/template.model';
+import { TemplateSelectDialogComponent } from 'src/app/components/subscriptions/manage-subscription/template-select-dialog/template-select-dialog.component';
 
 @Component({
   selector: 'subscription-config-tab',
@@ -54,13 +54,13 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
   templatesSelected = {
     high: [],
     moderate: [],
-    low: []
-  }
+    low: [],
+  };
   templatesAvailable = {
     low: [],
     moderate: [],
     high: [],
-   }
+  };
 
   // Valid configuration
   isValidConfig = true;
@@ -106,7 +106,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     private layoutSvc: LayoutMainService,
     public settingsService: SettingsService,
     private route: ActivatedRoute,
-    private templateSvc: TemplateManagerService,
+    private templateSvc: TemplateManagerService
   ) {
     this.loadDhsContacts();
     this.loadSendingProfiles();
@@ -344,8 +344,8 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     this.subscriptionSvc.getTemplatesSelected().subscribe((data) => {
       this.templatesSelected = this.initTemplatesSelected(this.templatesSelected);;
       this.getTemplates();
-      this.subscription.templates_selected = this.templatesSelected
-    })
+      this.subscription.templates_selected = this.templatesSelected;
+    });
   }
 
   /**
@@ -380,7 +380,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
       this.customer = c;
     });
 
-    this.templatesSelected = s['templates_selected']
+    this.templatesSelected = s['templates_selected'];
   }
 
   /**
@@ -606,12 +606,6 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         this.processing = true;
         this.subscription.templates_selected = this.templatesSelected;
         this.subscription.target_email_list = this.subscription.target_email_list_cached_copy;
-        if (typeof this.f.startDate.value === 'string') {
-          this.f.startDate.setValue(new Date(this.f.startDate.value));
-        }
-        if (this.f.startDate.value.getHours() === 0) {
-          this.f.startDate.value.setHours(10);
-        }
         // persist any changes before restart
         this.subscriptionSvc
           .patchSubscription(this.subscription)
@@ -1008,41 +1002,45 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     );
   }
 
-  changeTemplate(input){
+  changeTemplate(input) {
     let templateData = {
       selected: this.templatesSelected[input],
       available: this.templatesAvailable[input],
       decep_level: input,
-    }
+    };
 
     this.dialog.open(TemplateSelectDialogComponent,{
       data: templateData
     })
   }
-  getTemplates(){
-    let low = 2
-    let moderate = 4
+  getTemplates() {
+    let low = 2;
+    let moderate = 4;
 
     this.templateSvc.getAllTemplates().subscribe(
       (success) => {
-        let templates = success as Array<Template>
-        this.templatesAvailable['low'] = templates.filter(template => template.deception_score <= low)
-        this.templatesAvailable['moderate'] = templates.filter(template => template.deception_score <= moderate)
-        this.templatesAvailable['high'] = templates.filter(template => template.deception_score > moderate)
+        let templates = success as Array<Template>;
+        this.templatesAvailable['low'] = templates.filter(
+          (template) => template.deception_score <= low
+        );
+        this.templatesAvailable['moderate'] = templates.filter(
+          (template) => template.deception_score <= moderate
+        );
+        this.templatesAvailable['high'] = templates.filter(
+          (template) => template.deception_score > moderate
+        );
 
-        this.removeSelectedFromAvailable('low')
-        this.removeSelectedFromAvailable('moderate')
-        this.removeSelectedFromAvailable('high')
+        this.removeSelectedFromAvailable('low');
+        this.removeSelectedFromAvailable('moderate');
+        this.removeSelectedFromAvailable('high');
 
-        console.log(success)
+        console.log(success);
       },
-      (failure) => {}      
-
-    )
+      (failure) => {}
+    );
   }
   removeSelectedFromAvailable(level){
     this.templatesSelected = this.initTemplatesSelected(this.templatesSelected);
-    console.log(this.templatesSelected)
     this.templatesSelected[level].forEach(selec => {
       for(var i = 0; i < this.templatesAvailable[level].length; i++){
         if(this.templatesAvailable[level][i]['template_uuid'] == selec['template_uuid']){

@@ -310,9 +310,8 @@ export class SubscriptionService {
     };
     return this.http.post(url, data);
   }
-  public getTemplatesSelected(){
+  public getTemplatesSelected() {
     const url = `${this.settingsService.settings.apiUrl}/api/v1/templates/select/`;
     return this.http.get(url);
-
   }
 }

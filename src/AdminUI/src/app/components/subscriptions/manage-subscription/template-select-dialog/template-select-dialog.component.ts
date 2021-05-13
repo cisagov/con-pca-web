@@ -1,49 +1,38 @@
-import {Component, Inject, ViewChild} from '@angular/core';
-import {MatDialog, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import { Template } from  'src/app/models/template.model'
+import { Component, Inject, ViewChild } from '@angular/core';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Template } from 'src/app/models/template.model';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-template-select-dialog',
   templateUrl: './template-select-dialog.component.html',
-  styleUrls: ['./template-select-dialog.component.scss']
+  styleUrls: ['./template-select-dialog.component.scss'],
 })
 export class TemplateSelectDialogComponent {
+  decep_level: '';
 
-  decep_level : ""
+  selectedArray: Array<Template>;
+  availableArray: Array<Template>;
 
-  selectedArray : Array<Template>
-  availableArray :  Array<Template>
-
-  selectedList : MatTableDataSource<Template>;
-  avaiableList : MatTableDataSource<Template>;
-  emptyList : MatTableDataSource<Template>;
+  selectedList: MatTableDataSource<Template>;
+  avaiableList: MatTableDataSource<Template>;
+  emptyList: MatTableDataSource<Template>;
   // @ViewChild('selectedSort') selectedSort: MatSort;
   // @ViewChild('availableSort') availableSort: MatSort;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: Object) {
-    this.decep_level = data['decep_level']
-    this.selectedArray = data['selected']
-    this.availableArray = data['available']     
-    this.initMatTables()
+    this.decep_level = data['decep_level'];
+    this.selectedArray = data['selected'];
+    this.availableArray = data['available'];
+    this.initMatTables();
   }
-  displayHTML = "";
+  displayHTML = '';
 
+  displayedColumnsSelected = ['name', 'deception_score', 'remove'];
+  displayedColumnsAvailable = ['name', 'deception_score', 'add'];
 
-  displayedColumnsSelected = [
-    'name',
-    'deception_score',
-    'remove'
-  ];
-  displayedColumnsAvailable = [
-    'name',
-    'deception_score',
-    'add'
-  ];
-
-
-  initMatTables(){
+  initMatTables() {
     this.selectedList = new MatTableDataSource<Template>(
       this.selectedArray as Template[]
     );
@@ -53,34 +42,33 @@ export class TemplateSelectDialogComponent {
     );
     // this.selectedList.sort = this.availableSort;
   }
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
-  remove(template){
-    for(var i = 0; i < this.selectedArray.length; i++){
-      if(this.selectedArray[i]['template_uuid'] == template.template_uuid){
-        this.availableArray.push(template)
-        this.selectedArray.splice(i,1)
-        i = this.selectedArray.length        
-        this.initMatTables()
-      }      
+  remove(template) {
+    for (var i = 0; i < this.selectedArray.length; i++) {
+      if (this.selectedArray[i]['template_uuid'] == template.template_uuid) {
+        this.availableArray.push(template);
+        this.selectedArray.splice(i, 1);
+        i = this.selectedArray.length;
+        this.initMatTables();
+      }
     }
   }
 
-  add(template){
-    for(var i = 0; i < this.availableArray.length; i++){
-      if(this.availableArray[i]['template_uuid'] == template.template_uuid){
-        this.selectedArray.push(template)
-        this.availableArray.splice(i,1)
-        i = this.availableArray.length        
-        this.initMatTables()
-      }      
-    }    
+  add(template) {
+    for (var i = 0; i < this.availableArray.length; i++) {
+      if (this.availableArray[i]['template_uuid'] == template.template_uuid) {
+        this.selectedArray.push(template);
+        this.availableArray.splice(i, 1);
+        i = this.availableArray.length;
+        this.initMatTables();
+      }
+    }
   }
 
-  test(){
-    console.log(this.data)
-    console.log("test from modal")
+  test() {
+    console.log(this.data);
+    console.log('test from modal');
   }
 
   public filterList = (value: string) => {
@@ -88,11 +76,10 @@ export class TemplateSelectDialogComponent {
     this.avaiableList.filter = value.trim().toLocaleLowerCase();
   };
 
-  display(html){
-    var re = "<%URL%>"
-    this.displayHTML = html.replace(re,"javascript:void(0)")
+  display(html) {
+    var re = '<%URL%>';
+    this.displayHTML = html.replace(re, 'javascript:void(0)');
 
-    console.log(html)
+    console.log(html);
   }
-
 }
