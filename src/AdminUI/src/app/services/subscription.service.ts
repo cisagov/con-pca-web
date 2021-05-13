@@ -141,6 +141,7 @@ export class SubscriptionService {
       target_domain: subscription.target_domain,
       stagger_emails: subscription.stagger_emails,
       continuous_subscription: subscription.continuous_subscription,
+      templates_selected: subscription.templates_selected,
     };
 
     return this.http.patch(

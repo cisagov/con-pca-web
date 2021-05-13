@@ -609,6 +609,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
       if (result) {
         this.processing = true;
         this.subscription.templates_selected = this.templatesSelected;
+        console.log(this.subscription)
         this.subscription.target_email_list = this.subscription.target_email_list_cached_copy;
         // persist any changes before restart
         this.subscriptionSvc
