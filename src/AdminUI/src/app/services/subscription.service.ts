@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Customer, Contact } from '../models/customer.model';
-import { Cycle, Subscription } from '../models/subscription.model';
+import {
+  Cycle,
+  Subscription,
+  TemplateSelected,
+} from '../models/subscription.model';
 import { Template } from '../models/template.model';
 import { SettingsService } from './settings.service';
 import { Observable, BehaviorSubject } from 'rxjs';
@@ -130,17 +134,16 @@ export class SubscriptionService {
     // This should be the only data that needs patched
     const data = {
       archived: subscription.archived,
-      keywords: subscription.keywords,
       primary_contact: subscription.primary_contact,
       dhs_contact_uuid: subscription.dhs_contact_uuid,
       start_date: subscription.start_date,
-      url: subscription.url,
       target_email_list_cached_copy: subscription.target_email_list_cached_copy,
       target_email_list: subscription.target_email_list,
       sending_profile_name: subscription.sending_profile_name,
       target_domain: subscription.target_domain,
       stagger_emails: subscription.stagger_emails,
       continuous_subscription: subscription.continuous_subscription,
+      templates_selected: subscription.templates_selected,
     };
 
     return this.http.patch(
@@ -309,5 +312,9 @@ export class SubscriptionService {
       cycle_minutes: cycleLengthMinutes,
     };
     return this.http.post(url, data);
+  }
+  public async getTemplatesSelected() {
+    const url = `${this.settingsService.settings.apiUrl}/api/v1/templates/select/`;
+    return this.http.get<TemplateSelected>(url).toPromise();
   }
 }

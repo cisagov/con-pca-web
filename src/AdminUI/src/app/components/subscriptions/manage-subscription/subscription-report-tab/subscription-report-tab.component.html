@@ -1,5 +1,6 @@
-<div>
-  <mat-card>
+<div *ngIf="subscription['cycles']">
+  testsetset
+  <mat-card *ngIf="subscription['cycles']">
     <mat-card-title> Reporting </mat-card-title>
     Reporting Cycle:
 
@@ -172,5 +173,11 @@
         ></mat-row>
       </mat-table>
     </div>
+  </mat-card>
+</div>
+<div *ngIf="!subscription['cycles']" class="w-100">
+  <mat-card>
+    <mat-card-title> Reporting </mat-card-title>
+    Reporting will be available once a campaign has begun.
   </mat-card>
 </div>

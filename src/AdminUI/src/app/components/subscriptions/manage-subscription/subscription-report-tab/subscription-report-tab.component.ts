@@ -24,7 +24,9 @@ export class SubscriptionReportTab implements OnInit {
     private subscriptionSvc: SubscriptionService,
     private router: Router,
     public dialog: MatDialog
-  ) {}
+  ) {
+    this.subscription = new Subscription();
+  }
 
   ngOnInit() {
     this.subscriptionSvc.subBehaviorSubject.subscribe((data: Subscription) => {

@@ -60,8 +60,8 @@ export class CycleComponent implements OnInit {
 
     // percent of all clicks occurring in the first hour
     let pct = 0;
-    let one_hour_clicks = this.detail.subscription_stats.clicks_over_time
-      .one_hour;
+    let one_hour_clicks =
+      this.detail.subscription_stats.clicks_over_time.one_hour;
     if (one_hour_clicks) {
       one_hour_clicks = one_hour_clicks * 100;
     }

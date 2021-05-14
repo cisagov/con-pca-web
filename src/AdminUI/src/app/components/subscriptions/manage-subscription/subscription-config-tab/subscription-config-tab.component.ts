@@ -16,7 +16,11 @@ import {
 import { Router, ActivatedRoute } from '@angular/router';
 import { Customer, Contact } from 'src/app/models/customer.model';
 import { SubscriptionService } from 'src/app/services/subscription.service';
-import { Subscription, Target } from 'src/app/models/subscription.model';
+import {
+  Subscription,
+  Target,
+  TemplateSelected,
+} from 'src/app/models/subscription.model';
 import { Guid } from 'guid-typescript';
 import { CustomerService } from 'src/app/services/customer.service';
 import { XlsxToCsv } from 'src/app/helper/XlsxToCsv';
@@ -25,9 +29,12 @@ import { CustomerDialogComponent } from '../../../dialogs/customer-dialog/custom
 import { AlertComponent } from '../../../dialogs/alert/alert.component';
 import { ConfirmComponent } from '../../../dialogs/confirm/confirm.component';
 import { SendingProfileService } from 'src/app/services/sending-profile.service';
+import { TemplateManagerService } from 'src/app/services/template-manager.service';
 import { SettingsService } from 'src/app/services/settings.service';
 import { BehaviorSubject } from 'rxjs';
 import { filterSendingProfiles } from '../../../../helper/utilities';
+import { Template } from 'src/app/models/template.model';
+import { TemplateSelectDialogComponent } from 'src/app/components/subscriptions/manage-subscription/template-select-dialog/template-select-dialog.component';
 
 @Component({
   selector: 'subscription-config-tab',
@@ -48,6 +55,8 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
   action: string = this.actionEDIT;
   timeRanges = ['Minutes', 'Hours', 'Days'];
   previousTimeUnit: string = 'Minutes';
+  templatesSelected = new TemplateSelected();
+  templatesAvailable = new TemplateSelected();
 
   // Valid configuration
   isValidConfig = true;
@@ -92,7 +101,8 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     public formBuilder: FormBuilder,
     private layoutSvc: LayoutMainService,
     public settingsService: SettingsService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private templateSvc: TemplateManagerService
   ) {
     this.loadDhsContacts();
     this.loadSendingProfiles();
@@ -113,6 +123,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
    * INIT
    */
   ngOnInit(): void {
+    this.templatesSelected = this.initTemplatesSelected(this.templatesSelected);
     // build form
     this.subscribeForm = new FormGroup(
       {
@@ -128,8 +139,6 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         startDate: new FormControl(new Date(), {
           validators: Validators.required,
         }),
-        url: new FormControl('', {}),
-        keywords: new FormControl('', {}),
         sendingProfile: new FormControl('', {
           validators: Validators.required,
         }),
@@ -180,18 +189,6 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     this.angular_subs.push(
       this.f.startDate.valueChanges.subscribe((val) => {
         this.subscription.start_date = val;
-        this.persistChanges();
-      })
-    );
-    this.angular_subs.push(
-      this.f.url.valueChanges.subscribe((val) => {
-        this.subscription.url = val;
-        this.persistChanges();
-      })
-    );
-    this.angular_subs.push(
-      this.f.keywords.valueChanges.subscribe((val) => {
-        this.subscription.keywords = val;
         this.persistChanges();
       })
     );
@@ -262,7 +259,8 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
           { emitEvent: false }
         );
         this.f.cycle_length_minutes.setValue(convertedVal);
-        this.subscription.cycle_length_minutes = this.f.cycle_length_minutes.value;
+        this.subscription.cycle_length_minutes =
+          this.f.cycle_length_minutes.value;
         this.checkValid();
       })
     );
@@ -320,26 +318,45 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
   /**
    * CREATE mode
    */
-  loadPageForCreate(params: any) {
+  async loadPageForCreate(params: any) {
     this.pageMode = 'CREATE';
     this.action = this.actionCREATE;
     this.subscription = new Subscription();
+    this.subscription.templates_selected = this.templatesSelected;
     this.subscription.subscription_uuid = Guid.create().toString();
     this.enableDisableFields();
+    this.getRandomTemplates();
+  }
+  async getRandomTemplates() {
+    //  Get Templates Selected
+    this.subscription.templates_selected =
+      await this.subscriptionSvc.getTemplatesSelected();
+    this.templatesSelected.high = await this.templateSvc.getAllTemplates(
+      false,
+      this.subscription.templates_selected.high
+    );
+    this.templatesSelected.moderate = await this.templateSvc.getAllTemplates(
+      false,
+      this.subscription.templates_selected.moderate
+    );
+    this.templatesSelected.low = await this.templateSvc.getAllTemplates(
+      false,
+      this.subscription.templates_selected.low
+    );
+    this.getTemplates();
   }
 
   /**
    * EDIT mode
    */
-  loadPageForEdit(s: Subscription) {
+  async loadPageForEdit(s: Subscription) {
     this.subscription = s as Subscription;
+    this.getTemplates();
     this.subscriptionSvc.subscription = this.subscription;
     this.f.selectedCustomerUuid.setValue(s.subscription_uuid);
     this.f.primaryContact.setValue(s.primary_contact?.email);
     this.f.dhsContact.setValue(s.dhs_contact_uuid);
     this.f.startDate.setValue(s.start_date);
-    this.f.url.setValue(s.url);
-    this.f.keywords.setValue(s.keywords);
     this.f.csvText.setValue(
       this.formatTargetsToCSV(s.target_email_list_cached_copy),
       { emitEvent: false }
@@ -358,6 +375,19 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     this.customerSvc.getCustomer(s.customer_uuid).subscribe((c: Customer) => {
       this.customer = c;
     });
+
+    this.templatesSelected.high = await this.templateSvc.getAllTemplates(
+      false,
+      s.templates_selected.high
+    );
+    this.templatesSelected.moderate = await this.templateSvc.getAllTemplates(
+      false,
+      s.templates_selected.moderate
+    );
+    this.templatesSelected.low = await this.templateSvc.getAllTemplates(
+      false,
+      s.templates_selected.low
+    );
   }
 
   /**
@@ -554,7 +584,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
    * Tests the form for validity.
    */
   subValid() {
-    this.submitted = true;
+    //this.submitted = true;
 
     // stop here if form is invalid
     if (this.subscribeForm.invalid) {
@@ -581,7 +611,9 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     this.dialogRefConfirm.afterClosed().subscribe((result) => {
       if (result) {
         this.processing = true;
-        this.subscription.target_email_list = this.subscription.target_email_list_cached_copy;
+        this.setTemplatesSelected();
+        this.subscription.target_email_list =
+          this.subscription.target_email_list_cached_copy;
         // persist any changes before restart
         this.subscriptionSvc
           .patchSubscription(this.subscription)
@@ -701,11 +733,6 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     sub.start_date = this.f.startDate.value;
     sub.status = 'Queued';
 
-    sub.url = this.f.url.value;
-
-    // keywords
-    sub.keywords = this.f.keywords.value;
-
     // set the target list
     const csv = this.f.csvText.value;
     sub.target_email_list_cached_copy = this.buildTargetsFromCSV(csv);
@@ -717,6 +744,8 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     sub.continuous_subscription = this.f.continuousSubscription.value;
     const cycleLength: number = +this.f.cycle_length_minutes.value;
     sub.cycle_length_minutes = cycleLength;
+    this.setTemplatesSelected();
+    sub.templates_selected = this.subscription.templates_selected;
 
     // call service with everything needed to start the subscription
     this.processing = true;
@@ -752,15 +781,11 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     const status = this.subscription?.status?.toLowerCase();
     if (status === 'in progress') {
       this.f.startDate.disable();
-      this.f.url.disable();
-      this.f.keywords.disable();
       this.f.sendingProfile.disable();
       this.f.targetDomain.disable();
       //this.f.csvText.disable();
     } else {
       this.f.startDate.enable();
-      this.f.url.enable();
-      this.f.keywords.enable();
       this.f.sendingProfile.enable();
       this.f.targetDomain.enable();
       //this.f.csvText.enable();
@@ -787,16 +812,15 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     );
 
     if (removeDupes) {
-      const uniqueArray: Target[] = this.subscription.target_email_list_cached_copy.filter(
-        (t1, index) => {
+      const uniqueArray: Target[] =
+        this.subscription.target_email_list_cached_copy.filter((t1, index) => {
           return (
             index ===
             this.subscription.target_email_list_cached_copy.findIndex((t2) => {
               return t2.email.toLowerCase() === t1.email.toLowerCase();
             })
           );
-        }
-      );
+        });
       this.subscription.target_email_list_cached_copy = uniqueArray;
     }
 
@@ -858,7 +882,8 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
    * A validator that requires the csv field to contain certain elements on each row
    */
   invalidCsv(control: FormControl) {
-    const exprEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const exprEmail =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     const lines = control.value.split('\n');
     for (const line of lines) {
@@ -879,7 +904,8 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     return null;
   }
   validDomain(control: FormControl) {
-    const exprEmail = /^@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const exprEmail =
+      /^@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     // const lines = control.value.split('\n');
     if (control.value) {
@@ -902,7 +928,8 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
 
   domainListValidator(domain: BehaviorSubject<string>): ValidatorFn {
     return (control: AbstractControl): { [key: string]: boolean } | null => {
-      const exprEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      const exprEmail =
+        /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       let domain_targets = [];
       let BS_sub = domain.subscribe((val) => {
         if (val) {
@@ -953,8 +980,8 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
   getValidationMessage() {
     // const errors = this.reportedStatsForm.controls[control].errors;
     Object.keys(this.subscribeForm.controls).forEach((key) => {
-      const controlErrors: ValidationErrors = this.subscribeForm.get(key)
-        .errors;
+      const controlErrors: ValidationErrors =
+        this.subscribeForm.get(key).errors;
       if (controlErrors != null) {
         Object.keys(controlErrors).forEach((element) => {
           this.validationErrors[element] = controlErrors[element];
@@ -975,5 +1002,100 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         this.validConfigMessage = error.error;
       }
     );
+  }
+
+  changeTemplate(input) {
+    let templateData = {
+      selected: this.templatesSelected[input],
+      available: this.templatesAvailable[input],
+      decep_level: input,
+    };
+
+    let dialogRef = this.dialog.open(TemplateSelectDialogComponent, {
+      data: templateData,
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      this.setTemplatesSelected();
+      this.subscriptionSvc
+        .patchSubscription(this.subscription)
+        .subscribe((x) => {});
+    });
+  }
+  async randomizeTemplates() {
+    let confirmMessage = {
+      title: 'Randomize Templates?',
+      confirmMessage:
+        'This will randomize the currently selected templates. This can not be undone',
+    };
+    let dialogRef = this.dialog.open(ConfirmComponent, {
+      data: confirmMessage,
+    });
+    dialogRef.afterClosed().subscribe(async (result) => {
+      if (result) {
+        await this.getRandomTemplates();
+        this.setTemplatesSelected();
+        this.subscriptionSvc
+          .patchSubscription(this.subscription)
+          .subscribe((x) => {});
+      }
+    });
+  }
+
+  async getTemplates() {
+    let low = 2;
+    let moderate = 4;
+
+    let templates = await this.templateSvc.getAllTemplates();
+    this.templatesAvailable.low = templates.filter(
+      (template) => template.deception_score <= low
+    );
+    this.templatesAvailable.moderate = templates.filter(
+      (template) => template.deception_score <= moderate
+    );
+    this.templatesAvailable.high = templates.filter(
+      (template) => template.deception_score > moderate
+    );
+    this.removeSelectedFromAvailable('low');
+    this.removeSelectedFromAvailable('moderate');
+    this.removeSelectedFromAvailable('high');
+  }
+
+  removeSelectedFromAvailable(level) {
+    this.templatesSelected = this.initTemplatesSelected(this.templatesSelected);
+    this.templatesSelected[level].forEach((selec) => {
+      for (var i = 0; i < this.templatesAvailable[level].length; i++) {
+        if (
+          this.templatesAvailable[level][i]['template_uuid'] ==
+          selec['template_uuid']
+        ) {
+          this.templatesAvailable[level].splice(i, 1);
+          i = this.templatesAvailable[level].length;
+        }
+      }
+    });
+  }
+  initTemplatesSelected(data) {
+    if (!('low' in data)) {
+      // @ts-ignore
+      data['low'] = [];
+    }
+    if (!('moderate' in data)) {
+      // @ts-ignore
+      data['moderate'] = [];
+    }
+    if (!('high' in data)) {
+      // @ts-ignore
+      data['high'] = [];
+    }
+    return data;
+  }
+
+  setTemplatesSelected() {
+    // Loop through keys in templatesSelected
+    Object.keys(this.templatesSelected).forEach((key: string) => {
+      this.subscription.templates_selected[key] = this.templatesSelected[
+        key
+      ].map((item: any) => item['template_uuid']);
+    });
   }
 }

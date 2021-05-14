@@ -24,12 +24,22 @@ export class TemplateManagerService {
    * GET a list of all templates
    * @param retired
    */
-  getAllTemplates(retired: boolean = false) {
+  async getAllTemplates(retired: boolean = false, templateUuids = []) {
     let url = `${this.settingsService.settings.apiUrl}/api/v1/templates/`;
+    const parameters = [];
     if (retired) {
-      url = `${url}?retired=true`;
+      parameters.push('retired=true');
     }
-    return this.http.get(url, headers);
+
+    if (templateUuids) {
+      parameters.push(`templates=${templateUuids.join(',')}`);
+    }
+
+    if (parameters) {
+      url = `${url}?${parameters.join('&')}`;
+    }
+
+    return this.http.get<Template[]>(url, headers).toPromise();
   }
 
   /**
