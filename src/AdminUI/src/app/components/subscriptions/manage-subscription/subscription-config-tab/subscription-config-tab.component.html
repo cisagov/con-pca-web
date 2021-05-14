@@ -120,7 +120,7 @@
       </div>
 
       <mat-label *ngIf="subscription.templates_selected" class="h6"
-        >Template Selection 
+        >Template Selection
         <!-- <button
           (click)="randomizeTemplates()"
           mat-raised-button
@@ -128,10 +128,13 @@
         >
           Randomize Templates
         </button> -->
-        <mat-icon (click)="randomizeTemplates()" 
-        matTooltip="Randomize Templates" class="randomize-button" >refresh</mat-icon>
-      </mat-label
-      >
+        <mat-icon
+          (click)="randomizeTemplates()"
+          matTooltip="Randomize Templates"
+          class="randomize-button"
+          >refresh</mat-icon
+        >
+      </mat-label>
       <div
         *ngIf="subscription.templates_selected"
         class="template-selction-container"
