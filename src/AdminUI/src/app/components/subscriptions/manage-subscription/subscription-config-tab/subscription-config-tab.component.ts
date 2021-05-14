@@ -1016,14 +1016,17 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         .subscribe((x) => {});
     });
   }
-  async randomizeTemplates(){
+  async randomizeTemplates() {
     let confirmMessage = {
-      title: "Randomize Templates?",
-      confirmMessage: "This will randomize the currently selected templates. This can not be undone"
-    }
-    let dialogRef = this.dialog.open(ConfirmComponent, {data: confirmMessage});
+      title: 'Randomize Templates?',
+      confirmMessage:
+        'This will randomize the currently selected templates. This can not be undone',
+    };
+    let dialogRef = this.dialog.open(ConfirmComponent, {
+      data: confirmMessage,
+    });
     dialogRef.afterClosed().subscribe(async (result) => {
-      if(result){
+      if (result) {
         await this.getRandomTemplates();
         this.setTemplatesSelected();
         this.subscriptionSvc
