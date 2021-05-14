@@ -259,7 +259,8 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
           { emitEvent: false }
         );
         this.f.cycle_length_minutes.setValue(convertedVal);
-        this.subscription.cycle_length_minutes = this.f.cycle_length_minutes.value;
+        this.subscription.cycle_length_minutes =
+          this.f.cycle_length_minutes.value;
         this.checkValid();
       })
     );
@@ -328,7 +329,8 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
   }
   async getRandomTemplates() {
     //  Get Templates Selected
-    this.subscription.templates_selected = await this.subscriptionSvc.getTemplatesSelected();
+    this.subscription.templates_selected =
+      await this.subscriptionSvc.getTemplatesSelected();
     this.templatesSelected.high = await this.templateSvc.getAllTemplates(
       false,
       this.subscription.templates_selected.high
@@ -610,7 +612,8 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
       if (result) {
         this.processing = true;
         this.setTemplatesSelected();
-        this.subscription.target_email_list = this.subscription.target_email_list_cached_copy;
+        this.subscription.target_email_list =
+          this.subscription.target_email_list_cached_copy;
         // persist any changes before restart
         this.subscriptionSvc
           .patchSubscription(this.subscription)
@@ -809,16 +812,15 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     );
 
     if (removeDupes) {
-      const uniqueArray: Target[] = this.subscription.target_email_list_cached_copy.filter(
-        (t1, index) => {
+      const uniqueArray: Target[] =
+        this.subscription.target_email_list_cached_copy.filter((t1, index) => {
           return (
             index ===
             this.subscription.target_email_list_cached_copy.findIndex((t2) => {
               return t2.email.toLowerCase() === t1.email.toLowerCase();
             })
           );
-        }
-      );
+        });
       this.subscription.target_email_list_cached_copy = uniqueArray;
     }
 
@@ -880,7 +882,8 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
    * A validator that requires the csv field to contain certain elements on each row
    */
   invalidCsv(control: FormControl) {
-    const exprEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const exprEmail =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     const lines = control.value.split('\n');
     for (const line of lines) {
@@ -901,7 +904,8 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     return null;
   }
   validDomain(control: FormControl) {
-    const exprEmail = /^@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const exprEmail =
+      /^@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     // const lines = control.value.split('\n');
     if (control.value) {
@@ -924,7 +928,8 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
 
   domainListValidator(domain: BehaviorSubject<string>): ValidatorFn {
     return (control: AbstractControl): { [key: string]: boolean } | null => {
-      const exprEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      const exprEmail =
+        /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       let domain_targets = [];
       let BS_sub = domain.subscribe((val) => {
         if (val) {
@@ -975,8 +980,8 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
   getValidationMessage() {
     // const errors = this.reportedStatsForm.controls[control].errors;
     Object.keys(this.subscribeForm.controls).forEach((key) => {
-      const controlErrors: ValidationErrors = this.subscribeForm.get(key)
-        .errors;
+      const controlErrors: ValidationErrors =
+        this.subscribeForm.get(key).errors;
       if (controlErrors != null) {
         Object.keys(controlErrors).forEach((element) => {
           this.validationErrors[element] = controlErrors[element];

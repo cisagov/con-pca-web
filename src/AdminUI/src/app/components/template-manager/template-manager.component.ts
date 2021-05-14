@@ -230,12 +230,10 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
         { emitEvent: false }
       );
 
-      this.fromSender = this.currentTemplateFormGroup.controls[
-        'templateFromSender'
-      ].value;
-      this.fromDisplayName = this.currentTemplateFormGroup.controls[
-        'templateFromDisplayName'
-      ].value;
+      this.fromSender =
+        this.currentTemplateFormGroup.controls['templateFromSender'].value;
+      this.fromDisplayName =
+        this.currentTemplateFormGroup.controls['templateFromDisplayName'].value;
     });
   }
 

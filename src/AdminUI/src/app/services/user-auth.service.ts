@@ -11,9 +11,8 @@ import { switchMap } from 'rxjs/operators';
 })
 export class UserAuthService {
   currentAuthUser: any;
-  public currentAuthUserSubject: BehaviorSubject<string> = new BehaviorSubject<string>(
-    'Not Authorized'
-  );
+  public currentAuthUserSubject: BehaviorSubject<string> =
+    new BehaviorSubject<string>('Not Authorized');
 
   constructor(private router: Router, private route: ActivatedRoute) {
     this.currentAuthUserSubject.subscribe((value) => {
