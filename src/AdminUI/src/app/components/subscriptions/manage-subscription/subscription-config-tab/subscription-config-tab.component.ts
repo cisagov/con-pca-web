@@ -1016,7 +1016,6 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         .subscribe((x) => {});
     });
   }
-<<<<<<< HEAD
   async randomizeTemplates(){
     let confirmMessage = {
       title: "Randomize Templates?",
@@ -1030,20 +1029,6 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         this.subscriptionSvc
           .patchSubscription(this.subscription)
           .subscribe((x) => {});
-=======
-  randomizeTemplates() {
-    let confirmMessage = {
-      title: 'Randomize Templates?',
-      confirmMessage:
-        'This will randomize the currently selected templates. This can not be undone',
-    };
-    let dialogRef = this.dialog.open(ConfirmComponent, {
-      data: confirmMessage,
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.getRandomTemplates();
->>>>>>> 4a6740409f064eda51feb57fb18c4fa5f40719aa
       }
     });
   }
