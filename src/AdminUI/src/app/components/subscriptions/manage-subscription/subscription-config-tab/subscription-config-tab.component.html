@@ -1,9 +1,9 @@
 <div [className]="pageMode == 'CREATE' ? 'inactive' : 'active_subscription'">
-  <form [formGroup]="subscribeForm">
+  <form *ngIf="subscription" [formGroup]="subscribeForm">
     <div class="d-flex flex-column mb-5">
       <h2>Customer/Organization</h2>
       <div *ngIf="customer" class="d-flex flex-row mb-4">
-        <div >
+        <div>
           <mat-card
             *ngIf="!!customer.customer_uuid"
             class="mt-0 mr-3 mb-1 ml-0 customer-card"
@@ -119,49 +119,86 @@
         </mat-form-field>
       </div>
 
-      <mat-label class="h6">Customer Website</mat-label>
-      <div class="text-muted">
-        The customer's page will be analyzed to prioritize phishing emails
-        relevant to their industry.
-      </div>
-      <mat-form-field class="w-100" appearance="outline">
-        <input
-          matInput
-          formControlName="url"
-          type="text"
-          trim="blur"
-          [ngClass]="{ 'is-invalid': submitted && f.url.errors }"
-        />
-        <mat-error
-          *ngIf="submitted && f.url.errors?.whitespace"
-          class="invalid-feedback"
+      <mat-label *ngIf="subscription.templates_selected" class="h6"
+        >Template Selection
+        <!-- <button
+          (click)="randomizeTemplates()"
+          mat-raised-button
+          color="primary"
         >
-          Customer Website may not contain only spaces
-        </mat-error>
-      </mat-form-field>
-
-      <mat-label class="h6">Keywords</mat-label>
-      <div class="text-muted">
-        Optionally enter words that describe the organization, separated by
-        commas. They will be used to select applicable templates.
-      </div>
-      <mat-form-field class="w-100" appearance="outline">
-        <mat-label>Applicability Word Tags</mat-label>
-        <textarea
-          matInput
-          trim="blur"
-          autosize
-          formControlName="keywords"
-        ></textarea>
-        <mat-error
-          *ngIf="submitted && f.keywords.errors?.whitespace"
-          class="invalid-feedback"
+          Randomize Templates
+        </button> -->
+        <mat-icon
+          (click)="randomizeTemplates()"
+          matTooltip="Randomize Templates"
+          class="randomize-button"
+          >refresh</mat-icon
         >
-          Keywords may not contain only spaces
-        </mat-error>
-      </mat-form-field>
+      </mat-label>
+      <div
+        *ngIf="subscription.templates_selected"
+        class="template-selction-container"
+      >
+        <div class="template-selection-level-container">
+          <div class="tslc-title">Low</div>
+          <ul class="template-selected-list">
+            <li
+              class="template-selction-row"
+              *ngFor="let item of templatesSelected['low']"
+            >
+              {{ item.name }}
+            </li>
+          </ul>
+          <button
+            class="change-template-btn"
+            (click)="changeTemplate('low')"
+            mat-raised-button
+            color="primary"
+          >
+            Change Template
+          </button>
+        </div>
+        <div class="template-selection-level-container">
+          <div class="tslc-title">Moderate</div>
+          <ul class="template-selected-list">
+            <li
+              class="template-selction-row"
+              *ngFor="let item of templatesSelected['moderate']"
+            >
+              {{ item.name }}
+            </li>
+          </ul>
+          <button
+            class="change-template-btn"
+            (click)="changeTemplate('moderate')"
+            mat-raised-button
+            color="primary"
+          >
+            Change Template
+          </button>
+        </div>
+        <div class="template-selection-level-container">
+          <div class="tslc-title">High</div>
+          <ul class="template-selected-list">
+            <li
+              class="template-selction-row"
+              *ngFor="let item of templatesSelected['high']"
+            >
+              {{ item.name }}
+            </li>
+          </ul>
+          <button
+            class="change-template-btn"
+            (click)="changeTemplate('high')"
+            mat-raised-button
+            color="primary"
+          >
+            Change Template
+          </button>
+        </div>
+      </div>
 
-      <mat-label class="h6">Sending Profile</mat-label>
+      <mat-label class="h6">Sending Profile </mat-label>
       <div class="mb-4">
         <div class="text-muted" *ngIf="sendingProfiles.length > 0">
           Select the sending profile that will be used

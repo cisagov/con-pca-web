@@ -24,7 +24,9 @@ export class SubscriptionReportTab implements OnInit {
     private subscriptionSvc: SubscriptionService,
     private router: Router,
     public dialog: MatDialog
-  ) {}
+  ) {
+    this.subscription = new Subscription();
+  }
 
   ngOnInit() {
     this.subscriptionSvc.subBehaviorSubject.subscribe((data: Subscription) => {
@@ -61,7 +63,7 @@ export class SubscriptionReportTab implements OnInit {
   }
 
   viewCycleReport() {
-    console.log(this.subscription)
+    console.log(this.subscription);
     this.router.navigate([
       '/reports/cycle',
       this.subscription.subscription_uuid,
@@ -212,6 +214,4 @@ export class SubscriptionReportTab implements OnInit {
         }
       );
   }
-
-
 }

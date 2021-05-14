@@ -1,0 +1,80 @@
+.left-section,
+.right-section {
+  display: flex;
+  // background-color: rgba(0,0,0,.2);
+  flex-basis: 100%;
+  min-height: 5em;
+}
+
+.left-section {
+  flex-direction: column;
+  height: 46em;
+}
+
+.right-section {
+  border: solid 1px green;
+  margin: 1em;
+  flex-direction: column;
+  margin-bottom: 8em;
+}
+.close-button {
+  display: flex;
+  align-self: flex-end;
+  margin-bottom: -3em;
+  margin-top: 1em;
+}
+
+.modal-container {
+  width: auto;
+}
+
+.section-container {
+  display: flex;
+  flex-direction: row;
+  width: 75vw;
+}
+
+.template-selected-list,
+.template-available-list {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 45%;
+  overflow: hidden;
+}
+.template-mat-table,
+.header-table {
+  width: 100%;
+}
+.template-mat-table {
+  border: red;
+  overflow: scroll;
+}
+.header-table {
+  width: 100%;
+  border: green;
+}
+
+.mat-column-deception_score {
+  flex: 0 0 20%;
+}
+.mat-column-deception_name {
+  flex: 0 0 80%;
+}
+.mat-column-add,
+.mat-column-remove {
+  flex: 0 0 15%;
+  margin: auto;
+}
+.template-table-title {
+  width: 5em;
+  display: flex;
+}
+.mat-dialog-container {
+  overflow: initial;
+}
+.score-cell {
+  text-align: center;
+}
+.display-window {
+  height: 100%;
+}

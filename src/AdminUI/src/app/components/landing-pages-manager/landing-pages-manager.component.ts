@@ -336,8 +336,8 @@ export class LandingPagesManagerComponent implements OnInit {
     //height of the selected Template input and deceptioncalculator button div
     let selected_template_height = this.titleElement.nativeElement.offsetHeight;
     //height of the tabs
-    let tab_height = this.tabElement._tabHeader._elementRef.nativeElement
-      .clientHeight;
+    let tab_height =
+      this.tabElement._tabHeader._elementRef.nativeElement.clientHeight;
     //height of the space created between teh text area and the bottom of the tab structure
     let mat_text_area_height = $('.mat-form-field-infix')[0].clientHeight;
     //

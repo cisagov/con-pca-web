@@ -45,7 +45,8 @@ export class SendingProfileDetailComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   displayedColumns = ['header', 'value', 'actions'];
 
-  headerList: MatTableDataSource<CustomHeader> = new MatTableDataSource<CustomHeader>();
+  headerList: MatTableDataSource<CustomHeader> =
+    new MatTableDataSource<CustomHeader>();
   submitted = false;
 
   /**

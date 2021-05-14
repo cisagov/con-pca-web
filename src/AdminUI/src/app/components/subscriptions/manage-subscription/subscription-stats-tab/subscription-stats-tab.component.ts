@@ -47,6 +47,7 @@ export class SubscriptionStatsTab implements OnInit {
     duplicateEmail: '',
   };
   reportListErrorLineNum = 0;
+  display_timeline = false;
 
   constructor(
     public subscriptionSvc: SubscriptionService,
@@ -169,9 +170,8 @@ export class SubscriptionStatsTab implements OnInit {
     this.reportedStatsForm.controls['reportedItems'].setValue(displayString);
   }
   formatCSVtoReports() {
-    let lines = this.reportedStatsForm.controls['reportedItems'].value.split(
-      '\n'
-    );
+    let lines =
+      this.reportedStatsForm.controls['reportedItems'].value.split('\n');
     let reportVals = [];
     let newDate = null;
     lines.forEach((element) => {
@@ -267,9 +267,8 @@ export class SubscriptionStatsTab implements OnInit {
     this.getValidationMessage();
     if (this.reportedStatsForm.valid) {
       let formatedReportInput = this.formatCSVtoReports();
-      let addRemoveLists = this.generateReportDiffernceList(
-        formatedReportInput
-      );
+      let addRemoveLists =
+        this.generateReportDiffernceList(formatedReportInput);
       this.saveReports(addRemoveLists);
     }
   }
@@ -371,10 +370,16 @@ export class SubscriptionStatsTab implements OnInit {
     });
 
     this.timelineItems = items;
+    let expectedtimelineItemCount = 5;
+    if (this.timelineItems.length >= expectedtimelineItemCount) {
+      this.display_timeline = true;
+    }
+    console.log(this.display_timeline);
   }
 
   invalidReportCsv(control: FormControl) {
-    const exprEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const exprEmail =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     if (control.value == '') {
       return null;
@@ -423,7 +428,8 @@ export class SubscriptionStatsTab implements OnInit {
   }
   reportListValidator(targetList: any[]): ValidatorFn {
     return (control: AbstractControl): { [key: string]: boolean } | null => {
-      const exprEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      const exprEmail =
+        /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
       if (control.value == '') {
         return null;
@@ -489,8 +495,8 @@ export class SubscriptionStatsTab implements OnInit {
     this.initValidationList();
     // const errors = this.reportedStatsForm.controls[control].errors;
     Object.keys(this.reportedStatsForm.controls).forEach((key) => {
-      const controlErrors: ValidationErrors = this.reportedStatsForm.get(key)
-        .errors;
+      const controlErrors: ValidationErrors =
+        this.reportedStatsForm.get(key).errors;
       if (controlErrors != null) {
         Object.keys(controlErrors).forEach((element) => {
           this.validationErrors[element] = controlErrors[element];

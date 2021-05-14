@@ -98,7 +98,8 @@ export class SubscriptionsComponent implements OnInit {
             };
             customerSubscriptions.push(customerSubscription);
           });
-          this.dataSource.data = customerSubscriptions as ICustomerSubscription[];
+          this.dataSource.data =
+            customerSubscriptions as ICustomerSubscription[];
           this.dataSource.sort = this.sort;
         });
       });

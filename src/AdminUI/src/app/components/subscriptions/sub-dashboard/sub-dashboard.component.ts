@@ -131,9 +131,8 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
         )
         .subscribe((stats: any) => {
           this.chart.chartResults = this.chartsSvc.formatStatistics(stats);
-          this.chartSent.chartResults = this.chartsSvc.getSentEmailNumbers(
-            stats
-          );
+          this.chartSent.chartResults =
+            this.chartsSvc.getSentEmailNumbers(stats);
 
           this.avgTTFC = stats.avg_time_to_first_click;
           if (!this.avgTTFC) {
