@@ -36,7 +36,6 @@ import { filterSendingProfiles } from '../../../../helper/utilities';
 import { Template } from 'src/app/models/template.model';
 import { TemplateSelectDialogComponent } from 'src/app/components/subscriptions/manage-subscription/template-select-dialog/template-select-dialog.component';
 
-
 @Component({
   selector: 'subscription-config-tab',
   templateUrl: './subscription-config-tab.component.html',
@@ -326,24 +325,23 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     this.subscription.subscription_uuid = Guid.create().toString();
     this.enableDisableFields();
     this.getRandomTemplates();
-
   }
-  async getRandomTemplates(){
-      //  Get Templates Selected
-      this.subscription.templates_selected = await this.subscriptionSvc.getTemplatesSelected();
-      this.templatesSelected.high = await this.templateSvc.getAllTemplates(
-        false,
-        this.subscription.templates_selected.high
-      );
-      this.templatesSelected.moderate = await this.templateSvc.getAllTemplates(
-        false,
-        this.subscription.templates_selected.moderate
-      );
-      this.templatesSelected.low = await this.templateSvc.getAllTemplates(
-        false,
-        this.subscription.templates_selected.low
-      );
-      this.getTemplates();
+  async getRandomTemplates() {
+    //  Get Templates Selected
+    this.subscription.templates_selected = await this.subscriptionSvc.getTemplatesSelected();
+    this.templatesSelected.high = await this.templateSvc.getAllTemplates(
+      false,
+      this.subscription.templates_selected.high
+    );
+    this.templatesSelected.moderate = await this.templateSvc.getAllTemplates(
+      false,
+      this.subscription.templates_selected.moderate
+    );
+    this.templatesSelected.low = await this.templateSvc.getAllTemplates(
+      false,
+      this.subscription.templates_selected.low
+    );
+    this.getTemplates();
   }
 
   /**
@@ -1018,6 +1016,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         .subscribe((x) => {});
     });
   }
+<<<<<<< HEAD
   async randomizeTemplates(){
     let confirmMessage = {
       title: "Randomize Templates?",
@@ -1031,13 +1030,27 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         this.subscriptionSvc
           .patchSubscription(this.subscription)
           .subscribe((x) => {});
+=======
+  randomizeTemplates() {
+    let confirmMessage = {
+      title: 'Randomize Templates?',
+      confirmMessage:
+        'This will randomize the currently selected templates. This can not be undone',
+    };
+    let dialogRef = this.dialog.open(ConfirmComponent, {
+      data: confirmMessage,
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.getRandomTemplates();
+>>>>>>> 4a6740409f064eda51feb57fb18c4fa5f40719aa
       }
     });
   }
 
   async getTemplates() {
     let low = 2;
-    let moderate = 4; 
+    let moderate = 4;
 
     let templates = await this.templateSvc.getAllTemplates();
     this.templatesAvailable.low = templates.filter(
