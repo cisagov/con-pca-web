@@ -435,18 +435,33 @@
             <th style="padding: 0 75px 0 0">
               Median Time to open email from first sent:
             </th>
-            <td>{{ detail?.metrics.median_time_to_open * 1000 | date: 'hh:mm:ss':'UTC' }}</td>
+            <td>
+              {{
+                detail?.metrics.median_time_to_open * 1000
+                  | date: "hh:mm:ss":"UTC"
+              }}
+            </td>
           </tr>
           <tr>
             <th><i>Geometric mean.</i></th>
           </tr>
           <tr>
             <th>Shortest Time to open email:</th>
-            <td>{{ detail?.metrics.shortest_time_to_open * 1000 | date: 'hh:mm:ss':'UTC' }}</td>
+            <td>
+              {{
+                detail?.metrics.shortest_time_to_open * 1000
+                  | date: "hh:mm:ss":"UTC"
+              }}
+            </td>
           </tr>
           <tr>
             <th>Longest Time to open email:</th>
-            <td>{{ detail?.metrics.longest_time_to_open * 1000 | date: 'hh:mm:ss':'UTC' }}</td>
+            <td>
+              {{
+                detail?.metrics.longest_time_to_open * 1000
+                  | date: "hh:mm:ss":"UTC"
+              }}
+            </td>
           </tr>
         </table>
       </div>
