@@ -158,7 +158,6 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         }),
         timeUnit: new FormControl('Minutes'),
         displayTime: new FormControl(129600),
-        staggerEmails: new FormControl(true, {}),
         continuousSubscription: new FormControl(true, {}),
       },
       { updateOn: 'blur' }
@@ -214,12 +213,6 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         this.subscription.target_domain = val;
         this.target_email_domain.next(val);
         this.f.csvText.updateValueAndValidity({ emitEvent: false });
-        this.persistChanges();
-      })
-    );
-    this.angular_subs.push(
-      this.f.staggerEmails.valueChanges.subscribe((val) => {
-        this.subscription.stagger_emails = val;
         this.persistChanges();
       })
     );
@@ -364,7 +357,6 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
 
     this.f.sendingProfile.setValue(s.sending_profile_name);
     this.f.targetDomain.setValue(s?.target_domain);
-    this.f.staggerEmails.setValue(s.stagger_emails);
     this.f.cycle_length_minutes.setValue(s.cycle_length_minutes, {
       emitEvent: false,
     });
@@ -740,7 +732,6 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     sub.target_domain = this.target_email_domain.value;
     sub.sending_profile_name = this.f.sendingProfile.value;
 
-    sub.stagger_emails = this.f.staggerEmails.value;
     sub.continuous_subscription = this.f.continuousSubscription.value;
     const cycleLength: number = +this.f.cycle_length_minutes.value;
     sub.cycle_length_minutes = cycleLength;
