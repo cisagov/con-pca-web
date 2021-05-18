@@ -141,7 +141,6 @@ export class SubscriptionService {
       target_email_list: subscription.target_email_list,
       sending_profile_name: subscription.sending_profile_name,
       target_domain: subscription.target_domain,
-      stagger_emails: subscription.stagger_emails,
       continuous_subscription: subscription.continuous_subscription,
       templates_selected: subscription.templates_selected,
     };
