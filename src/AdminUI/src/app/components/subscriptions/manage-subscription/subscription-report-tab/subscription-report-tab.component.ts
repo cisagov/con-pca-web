@@ -63,6 +63,7 @@ export class SubscriptionReportTab implements OnInit {
   }
 
   viewCycleReport() {
+    console.log(this.subscription);
     this.router.navigate([
       '/reports/cycle',
       this.subscription.subscription_uuid,

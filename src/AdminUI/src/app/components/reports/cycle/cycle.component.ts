@@ -61,12 +61,12 @@ export class CycleComponent implements OnInit {
     // percent of all clicks occurring in the first hour
     let pct = 0;
     let one_hour_clicks =
-      this.detail.subscription_stats.clicks_over_time.one_hour;
+      this.detail?.subscription_stats?.clicks_over_time.one_hour;
     if (one_hour_clicks) {
       one_hour_clicks = one_hour_clicks * 100;
     }
     pct = Math.round(
-      this.detail.subscription_stats.clicks_over_time.one_hour ?? 0
+      this.detail?.subscription_stats?.clicks_over_time.one_hour ?? 0
     );
     this.clickPercentFirstHour = pct.toString();
     if (pct > 0) {
@@ -74,7 +74,7 @@ export class CycleComponent implements OnInit {
     }
 
     // median time to click
-    this.medianClickTime = this.detail.metrics.median_time_to_first_click;
+    this.medianClickTime = this.detail?.metrics?.median_time_to_first_click;
 
     // figure out sent counts and deception levels
     this.groupLevels.push({
@@ -97,7 +97,7 @@ export class CycleComponent implements OnInit {
     });
 
     // paw through the JSON and populate the structure
-    for (let i = 0; i < this.detail.templates_by_group.length; i++) {
+    for (let i = 0; i < this.detail?.templates_by_group?.length; i++) {
       const campaignGroup = this.detail.templates_by_group[i];
       campaignGroup.forEach((campaign) => {
         this.groupLevels[i].sentCount += campaign.sent.count;
@@ -115,5 +115,25 @@ export class CycleComponent implements OnInit {
           listToText(g.levels);
       }
     });
+  }
+  displayTime(seconds) {
+    let days = Math.floor(seconds / 86400);
+    seconds = seconds - days * 86400;
+    let hours = Math.floor(seconds / 3600);
+    seconds = seconds - hours * 3600;
+    let minutes = Math.floor(seconds / 60);
+    seconds = seconds - minutes * 60;
+    seconds = Math.floor(seconds);
+    let retVal = 'n/a';
+    if (days > 0) {
+      retVal = `Days: ${days}, Hours: ${hours}, Minutes: ${minutes}, Seconds: ${seconds}`;
+    } else if (hours > 0) {
+      retVal = `Hours: ${hours}, Minutes: ${minutes}, Seconds: ${seconds}`;
+    } else if (minutes > 0) {
+      retVal = `Minutes: ${minutes}, Seconds: ${seconds}`;
+    } else {
+      retVal = `Seconds: ${seconds}`;
+    }
+    return retVal;
   }
 }
