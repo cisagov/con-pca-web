@@ -1,18 +1,15 @@
-FROM nginx:1.19
+FROM node:16-alpine
 
+# Set working directory
 WORKDIR /app
 
 # Install build requirements
-RUN apt update -y
-RUN apt install npm -y
 RUN npm install -g npm@latest
 RUN npm install -g @angular/cli
 
-# Install packages
+# Install Packages
 COPY ./src/AdminUI/package*.json ./
-ENV NODE_OPTIONS="--max-old-space-size=8192"
-RUN npm install --loglevel=error
-ENV PATH /app/node_modules/.bin:$PATH
+RUN npm install
 
 # Copy source
 COPY ./src/AdminUI .
@@ -20,5 +17,5 @@ COPY ./src/AdminUI .
 # Build angular
 RUN ng build
 
-# Run angular
+# Serve
 CMD ng serve --host 0.0.0.0 --disable-host-check
