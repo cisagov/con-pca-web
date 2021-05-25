@@ -38,7 +38,6 @@
             }
           },
           "options": {
-            "aot": true,
             "assets": [
               "src/favicon.ico",
               "src/assets"
@@ -54,7 +53,13 @@
               "./node_modules/font-awesome/css/font-awesome.css",
               "src/styles.scss"
             ],
-            "tsConfig": "tsconfig.app.json"
+            "tsConfig": "tsconfig.app.json",
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           }
         },
         "e2e": {
