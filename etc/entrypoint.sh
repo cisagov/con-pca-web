@@ -1,7 +1,5 @@
 #!/bin/bash
 cd /app || exit
-echo "Substituting aws exports variables"
-envsubst < src/aws-exports.template.js > src/aws-exports.js
 
 # Update node to latest version for ng build to work
 # Only a temporary solution until we can support multi-stage builds

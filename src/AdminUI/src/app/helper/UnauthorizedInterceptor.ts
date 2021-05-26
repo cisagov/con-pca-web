@@ -5,15 +5,15 @@ import {
   HttpEvent,
   HttpInterceptor,
 } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from './../../environments/environment';
 
-import { UserAuthService } from '../services/user-auth.service';
+import { LoginService } from '../services/login.service';
 
 @Injectable()
 export class UnauthorizedInterceptor implements HttpInterceptor {
-  constructor(private userAuthSvc: UserAuthService) {}
+  constructor(private loginSvc: LoginService) {}
 
   intercept(
     request: HttpRequest<any>,
@@ -23,13 +23,14 @@ export class UnauthorizedInterceptor implements HttpInterceptor {
       return next.handle(request).pipe(
         catchError((err) => {
           if (err.status === 401) {
-            // auto logout if 401 response returned from api
-            this.userAuthSvc.signOut();
-            location.reload(true);
+            this.loginSvc.logout();
           }
 
-          const error = err.error.message || err.statusText;
-          return throwError(error);
+          if (!this.loginSvc.isLoggedIn()) {
+            this.loginSvc.logout();
+          }
+
+          return next.handle(request);
         })
       );
     } else {

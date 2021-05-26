@@ -3,7 +3,6 @@ import {
   OnInit,
   Input,
   OnDestroy,
-  Inject,
   ChangeDetectionStrategy,
 } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
@@ -12,15 +11,10 @@ import { SubscriptionService } from 'src/app/services/subscription.service';
 import { Contact, Customer } from 'src/app/models/customer.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CustomerService } from 'src/app/services/customer.service';
-import {
-  MatDialog,
-  MAT_DIALOG_DATA,
-  MatDialogRef,
-} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { Subscription } from 'rxjs';
-import { isString } from 'util';
 import { AlertComponent } from '../../dialogs/alert/alert.component';
 
 @Component({

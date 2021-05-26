@@ -1,7 +1,5 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { ThemeService } from '../app/services/theme.service';
-import { Hub } from 'aws-amplify';
-import { UserAuthService } from './services/user-auth.service';
 
 @Component({
   selector: 'app-root',
@@ -11,19 +9,9 @@ import { UserAuthService } from './services/user-auth.service';
 export class AppComponent {
   title = 'AdminUI';
 
-  constructor(
-    private themeSvc: ThemeService,
-    private userAuthSvc: UserAuthService
-  ) {
-    // Listen for any auth changes from amplifyy and handle
-    Hub.listen('auth', (data) => {
-      this.userAuthSvc.handleAuthNotification(data);
-    });
-  }
+  constructor(private themeSvc: ThemeService) {}
 
   getTheme() {
     return this.themeSvc.getStoredTheme();
   }
-
-  ngAfterViewInit(): void {}
 }

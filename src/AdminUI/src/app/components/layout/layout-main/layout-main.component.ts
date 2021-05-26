@@ -11,6 +11,7 @@ import { ThemeService } from '../../../services/theme.service';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { UserAuthService } from '../../../services/user-auth.service';
 import { Location } from '@angular/common';
+import { LoginService } from 'src/app/services/login.service';
 
 @Component({
   selector: 'app-layout-main',
@@ -26,6 +27,7 @@ export class LayoutMainComponent implements OnInit {
     private themeSvc: ThemeService,
     public layoutSvc: LayoutMainService,
     private userAuthSvc: UserAuthService,
+    private loginSvc: LoginService,
     public overlayContainer: OverlayContainer,
     public location: Location
   ) {
@@ -33,9 +35,7 @@ export class LayoutMainComponent implements OnInit {
     if (this.isDark) {
       overlayContainer.getContainerElement().classList.add('theme-alternate');
     }
-    this.userAuthSvc.getUserNameBehaviorSubject().subscribe((value) => {
-      this.currentUserName = value;
-    });
+    this.currentUserName = this.userAuthSvc.currentAuthUser;
   }
 
   @ViewChild('drawer', { static: false })
@@ -67,7 +67,7 @@ export class LayoutMainComponent implements OnInit {
   }
 
   logOut() {
-    this.userAuthSvc.signOut();
+    this.loginSvc.logout();
   }
 
   ngOnInit(): void {}
