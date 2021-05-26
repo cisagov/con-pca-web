@@ -16,6 +16,8 @@ import { CustomersComponent } from './components/customers/customers.component';
 import { AddCustomerComponent } from './components/customer/add-customer/add-customer.component';
 import { SendingProfilesComponent } from './components/sending-profiles/sending-profiles.component';
 import { AuthGuard } from './guards/auth.guard';
+import { LoginComponent } from 'src/app/components/login/login.component';
+import { RegisterUserComponent } from 'src/app/components/register/register-user.component';
 import { DhsPocComponent } from './components/user-admin/dhs-poc/dhs-poc.component';
 import { HelpFilesComponent } from './components/help-files/help-files.component';
 import { RecommendationsComponent } from './components/recommendations/recommendations.component';
@@ -86,6 +88,14 @@ const routes: Routes = [
     component: LayoutMainComponent,
     canActivate: [AuthGuard],
     children: [{ path: '', component: TemplatesPageComponent }],
+  },
+  {
+    path: 'login',
+    component: LayoutBlankComponent,
+    children: [
+      { path: '', component: LoginComponent },
+      { path: 'registeruser', component: RegisterUserComponent },
+    ],
   },
   {
     path: 'contacts',

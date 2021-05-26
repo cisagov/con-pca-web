@@ -96,6 +96,9 @@ import { ImportTemplateDialogComponent } from './components/template-manager/imp
 import { TemplateSelectDialogComponent } from './components/subscriptions/manage-subscription/template-select-dialog/template-select-dialog.component';
 import { RegisterUserComponent } from 'src/app/components/register/register-user.component';
 import { LoginComponent } from 'src/app/components/login/login.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { LoginService } from 'src/app/services/login.service'
+
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
   return () => settingsHttpService.initializeApp();
@@ -176,6 +179,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     MaterialModule,
     MatSortModule,
     FormsModule,
+    FontAwesomeModule,
     ReactiveFormsModule,
     AutosizeModule,
     HttpClientModule,
@@ -192,6 +196,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     LayoutMainService,
     HttpClient,
     UserAuthService,
+    LoginService,
     [DatePipe],
     { provide: MAT_DIALOG_DATA, useValue: [] },
     {

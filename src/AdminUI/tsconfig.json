@@ -14,10 +14,15 @@
       "es2018",
       "dom"
     ],
-    "module": "esnext",
+    "module": "es2020",
     "moduleResolution": "node",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
-    "target": "es5"
+    "target": "es2015",
+    "paths": {
+      "crypto": [
+        "./node_modules/crypto-js"
+      ]
+    }
   }
 }

@@ -64,7 +64,6 @@ export class RegisterUserComponent implements OnInit {
     password: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required, Validators.email]),
     confirmPassword: new FormControl('', [Validators.required]),
-    application_id: new FormControl('', [Validators.required]),
   });
 
   error: string;
