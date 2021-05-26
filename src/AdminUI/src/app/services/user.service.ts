@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { SettingsService } from './settings.service';
 import { Observable } from 'rxjs';
 import { share } from 'rxjs/operators';
-import {RegisterUser } from 'src/app/models/registered-user.model'
+import { RegisterUser } from 'src/app/models/registered-user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -40,9 +40,8 @@ export class UserService {
     return 'Hello';
   }
 
-
   postCreateUser(user: RegisterUser): Observable<any> {
-    const url = `${this.settingsService.settings.apiUrl}/api/auth/register`;
+    const url = `${this.settingsService.settings.apiUrl}/auth/register`;
     return this.http.post(url, user).pipe(share());
   }
 }

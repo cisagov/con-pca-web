@@ -29,12 +29,12 @@ export class LoginService {
   }
 
   public postLogin(login: Login): Observable<any> {
-    const url = `${this.settingsService.settings.apiUrl}/api/auth/signin/`;
+    const url = `${this.settingsService.settings.apiUrl}/auth/login/`;
     return this.http.post(url, login);
   }
 
   public refreshToken() {
-    const url = `${this.settingsService.settings.apiUrl}/api/auth/refreshtoken/`;
+    const url = `${this.settingsService.settings.apiUrl}/auth/refresh/`;
     return this.http.post(url, {
       refeshToken: this.cookieSvc.get('dm-auth-refresh-token'),
       username: localStorage.getItem('username'),

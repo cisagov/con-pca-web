@@ -42,11 +42,16 @@
               "src/favicon.ico",
               "src/assets"
             ],
+            "buildOptimizer": false,
+            "extractLicenses": false,
             "index": "src/index.html",
             "main": "src/main.ts",
+            "namedChunks": true,
+            "optimization": false,
             "outputPath": "dist/AdminUI",
             "polyfills": "src/polyfills.ts",
             "scripts": [],
+            "sourceMap": true,
             "styles": [
               "./node_modules/bootstrap/dist/css/bootstrap.min.css",
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
@@ -54,12 +59,7 @@
               "src/styles.scss"
             ],
             "tsConfig": "tsconfig.app.json",
-            "vendorChunk": true,
-            "extractLicenses": false,
-            "buildOptimizer": false,
-            "sourceMap": true,
-            "optimization": false,
-            "namedChunks": true
+            "vendorChunk": true
           }
         },
         "e2e": {

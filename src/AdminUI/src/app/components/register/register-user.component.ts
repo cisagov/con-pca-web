@@ -74,8 +74,7 @@ export class RegisterUserComponent implements OnInit {
     public userSvc: UserService
   ) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   submit() {
     if (this.userFormGroup.valid) {
@@ -163,5 +162,4 @@ export class RegisterUserComponent implements OnInit {
     }
     return false;
   }
-
 }

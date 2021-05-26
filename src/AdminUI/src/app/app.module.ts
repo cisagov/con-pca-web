@@ -97,8 +97,7 @@ import { TemplateSelectDialogComponent } from './components/subscriptions/manage
 import { RegisterUserComponent } from 'src/app/components/register/register-user.component';
 import { LoginComponent } from 'src/app/components/login/login.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { LoginService } from 'src/app/services/login.service'
-
+import { LoginService } from 'src/app/services/login.service';
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
   return () => settingsHttpService.initializeApp();

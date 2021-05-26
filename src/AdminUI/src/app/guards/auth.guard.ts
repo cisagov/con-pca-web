@@ -10,15 +10,13 @@ import { LoginService } from 'src/app/services/login.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {
-  constructor(
-    private userAuthSvc: LoginService, 
-    private router: Router) {}
+  constructor(private userAuthSvc: LoginService, private router: Router) {}
 
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
-    console.log("test")
+    console.log('test');
     if (this.userAuthSvc.isLoggedIn()) {
       return true;
     }
