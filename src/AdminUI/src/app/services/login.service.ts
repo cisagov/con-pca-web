@@ -4,10 +4,9 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import jwt_decode from 'jwt-decode';
-import { share } from 'rxjs/operators';
 import { CookieService } from 'ngx-cookie-service';
 
-//Third party imports
+// Third party imports
 import * as moment from 'moment';
 
 // Local Service Imports
@@ -19,6 +18,8 @@ import { Login } from 'src/app/models/login.model';
 @Injectable()
 export class LoginService {
   apiUrl: string;
+  refreshTokenTimeout = null;
+
   constructor(
     private http: HttpClient,
     private router: Router,
@@ -36,7 +37,7 @@ export class LoginService {
   public refreshToken() {
     const url = `${this.settingsService.settings.apiUrl}/auth/refresh/`;
     return this.http.post(url, {
-      refreshToken: this.cookieSvc.get('dm-auth-refresh-token'),
+      refreshToken: this.cookieSvc.get('con-pca-auth-refresh-token'),
       username: localStorage.getItem('username'),
     });
   }
@@ -46,7 +47,7 @@ export class LoginService {
     localStorage.removeItem('expires_at');
     localStorage.removeItem('username');
     localStorage.removeItem('isAdmin');
-    this.cookieSvc.delete('dm-auth-refresh-token');
+    this.cookieSvc.delete('con-pca-auth-refresh-token');
     if (
       this.router.url !== '/login/registeruser' &&
       this.router.url !== '/login'
@@ -61,7 +62,7 @@ export class LoginService {
     localStorage.setItem('expires_at', authResult.expires_at);
     localStorage.setItem('username', authResult.username);
     localStorage.setItem('isAdmin', 'false');
-    this.cookieSvc.set('dm-auth-refresh-token', authResult.refresh_token);
+    this.cookieSvc.set('con-pca-auth-refresh-token', authResult.refresh_token);
     this.startRefreshTokenTimer();
     try {
       const jwt = jwt_decode(authResult.id_token);
@@ -103,18 +104,14 @@ export class LoginService {
   }
 
   public getTimeTillExpire() {
-    //Returns time to expire in minutes
-    let expire = new Date(localStorage.getItem('expires_at')).getTime();
-    var offSet = new Date().getTimezoneOffset() * 60000;
-    var now = Date.now() + offSet;
-    let minutesToExpire = (expire - now) / 60000;
-
-    return minutesToExpire;
+    // Returns time to expire in minutes
+    const expire = new Date(localStorage.getItem('expires_at')).getTime();
+    const offSet = new Date().getTimezoneOffset() * 60000;
+    const now = Date.now() + offSet;
+    return (expire - now) / 60000;
   }
 
   // helper methods
-  private refreshTokenTimeout = null;
-
   public checkTimer() {
     if (this.refreshTokenTimeout) {
       // refresh timer is active, do nothing
@@ -125,10 +122,10 @@ export class LoginService {
 
   private startRefreshTokenTimer() {
     // How long before expiration the refresh should occur in minutes
-    let refreshAt = 5;
+    const refreshAt = 5;
     let timeout = Math.floor((this.getTimeTillExpire() - refreshAt) * 60000);
     if (timeout <= 0) {
-      timeout = 5000; //if timeout is negative, set to five seconds
+      timeout = 5000; // if timeout is negative, set to five seconds
     }
     this.refreshTokenTimeout = setTimeout(
       () =>
