@@ -41,7 +41,7 @@ export class UserService {
   }
 
   postCreateUser(user: RegisterUser): Observable<any> {
-    const url = `${this.settingsService.settings.apiUrl}/auth/register`;
+    const url = `${this.settingsService.settings.apiUrl}/auth/register/`;
     return this.http.post(url, user).pipe(share());
   }
 }

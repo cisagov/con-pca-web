@@ -17,7 +17,7 @@
                   formControlName="firstname"
                   autocomplete="off"
                   [errorStateMatcher]="matcherusername"
-                  [(ngModel)]="model.FirstName"
+                  [(ngModel)]="model.firstname"
                 />
                 <mat-icon matPrefix style="margin-right: 10px">face</mat-icon>
                 <mat-error *ngIf="userFormGroup.controls.firstname.invalid">
@@ -37,7 +37,7 @@
                   formControlName="lastname"
                   autocomplete="off"
                   [errorStateMatcher]="matcherusername"
-                  [(ngModel)]="model.LastName"
+                  [(ngModel)]="model.lastname"
                 />
                 <mat-icon matPrefix style="margin-right: 10px">face</mat-icon>
                 <mat-error *ngIf="userFormGroup.controls.lastname.invalid">
@@ -56,7 +56,7 @@
                   formControlName="email"
                   autocomplete="off"
                   [errorStateMatcher]="matchemail"
-                  [(ngModel)]="model.Email"
+                  [(ngModel)]="model.email"
                 />
                 <mat-icon matPrefix style="margin-right: 10px">mail</mat-icon>
                 <mat-error
@@ -80,7 +80,7 @@
                   formControlName="password"
                   autocomplete="off"
                   [errorStateMatcher]="matcherpassword"
-                  [(ngModel)]="model.Password"
+                  [(ngModel)]="model.password"
                 />
                 <mat-icon matPrefix style="margin-right: 10px">lock</mat-icon>
                 <mat-error

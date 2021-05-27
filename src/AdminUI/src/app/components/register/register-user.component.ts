@@ -45,7 +45,6 @@ export class RegisterUserComponent implements OnInit {
   faBan = faBan;
   faCheck = faCheck;
 
-  application_list = [];
   minNumberOfChar = 8;
   matcherusername = new MyErrorStateMatcher();
   matcherpassword = new MyErrorStateMatcher();
@@ -78,11 +77,11 @@ export class RegisterUserComponent implements OnInit {
 
   submit() {
     if (this.userFormGroup.valid) {
-      this.model.Username = `${this.model.FirstName.toLowerCase()}.${this.model.LastName.toLowerCase()}`;
+      this.model.username = `${this.model.firstname.toLowerCase()}.${this.model.lastname.toLowerCase()}`;
       this.userSvc.postCreateUser(this.model).subscribe(
         (data) => {
           this.snackBar.open(
-            `User created successfully (${this.model.Username}), your account is awaiting admin approval`,
+            `User created successfully (${this.model.username}), your account is awaiting admin approval`,
             'close',
             {
               duration: 0,
