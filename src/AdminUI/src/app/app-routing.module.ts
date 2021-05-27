@@ -30,6 +30,7 @@ import { AggregateStatsComponent } from './components/user-admin/aggregate-stats
 import { LandingPagesComponent } from './components/landing-pages/landing-pages.component';
 import { LandingPagesManagerComponent } from './components/landing-pages-manager/landing-pages-manager.component';
 import { UsersComponent } from './components/users/users.component';
+import { LayoutLoginComponent } from './components/layout/layout-login/layout-login.component';
 
 const routes: Routes = [
   {
@@ -91,7 +92,7 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    component: LayoutBlankComponent,
+    component: LayoutLoginComponent,
     children: [
       { path: '', component: LoginComponent },
       { path: 'registeruser', component: RegisterUserComponent },

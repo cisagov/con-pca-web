@@ -98,6 +98,7 @@ import { RegisterUserComponent } from 'src/app/components/register/register-user
 import { LoginComponent } from 'src/app/components/login/login.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LoginService } from 'src/app/services/login.service';
+import { LayoutLoginComponent } from './components/layout/layout-login/layout-login.component';
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
   return () => settingsHttpService.initializeApp();
@@ -168,6 +169,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     TemplateSelectDialogComponent,
     RegisterUserComponent,
     LoginComponent,
+    LayoutLoginComponent,
   ],
   imports: [
     BrowserModule,
