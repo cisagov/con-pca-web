@@ -16,16 +16,34 @@ export class AuthAppendInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     this.loginSvc.checkTimer();
-    const idToken = localStorage.getItem('id_token');
+    const idToken = this.getUserToken();
+    const reportToken = this.getReportToken();
 
     if (idToken) {
       const cloned = httpRequest.clone({
         headers: httpRequest.headers.set('Authorization', 'Bearer ' + idToken),
       });
-
+      return next.handle(cloned);
+    } else if (reportToken) {
+      const cloned = httpRequest.clone({
+        headers: httpRequest.headers.set(
+          'Authorization',
+          'Bearer ' + reportToken
+        ),
+      });
       return next.handle(cloned);
     } else {
       return next.handle(httpRequest);
     }
+  }
+
+  getUserToken() {
+    return localStorage.getItem('id_token');
+  }
+
+  getReportToken() {
+    return new URL(document.location.toString()).searchParams.get(
+      'reportToken'
+    );
   }
 }

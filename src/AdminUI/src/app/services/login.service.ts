@@ -117,7 +117,7 @@ export class LoginService {
 
   public checkTimer() {
     if (this.refreshTokenTimeout) {
-      //refresh timer is active, do nothing
+      // refresh timer is active, do nothing
     } else {
       this.startRefreshTokenTimer();
     }
