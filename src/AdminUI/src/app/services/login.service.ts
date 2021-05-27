@@ -36,7 +36,7 @@ export class LoginService {
   public refreshToken() {
     const url = `${this.settingsService.settings.apiUrl}/auth/refresh/`;
     return this.http.post(url, {
-      refeshToken: this.cookieSvc.get('dm-auth-refresh-token'),
+      refreshToken: this.cookieSvc.get('dm-auth-refresh-token'),
       username: localStorage.getItem('username'),
     });
   }
