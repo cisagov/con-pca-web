@@ -22,7 +22,7 @@ export class UnauthorizedInterceptor implements HttpInterceptor {
     if (environment.authorize) {
       return next.handle(request).pipe(
         catchError((err) => {
-          if (err.status === 401) {
+          if (err.status === 401 || err.status === 403) {
             this.loginSvc.logout();
           }
 
