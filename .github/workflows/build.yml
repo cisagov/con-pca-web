@@ -39,7 +39,11 @@ env:
   #                  ^
   #
   # TypeError: Cannot read property 'get' of undefined
-  PLATFORMS: "linux/amd64,linux/arm64,linux/ppc64le"
+
+  # Disabled linux/ppc64le due to the following error when building angular.
+  # An error occurred during the build:
+  # Error: NGCC failed.
+  PLATFORMS: "linux/amd64,linux/arm64"
   PRE_COMMIT_CACHE_DIR: ~/.cache/pre-commit
 
 jobs:
