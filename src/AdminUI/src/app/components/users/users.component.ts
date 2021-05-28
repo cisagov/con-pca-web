@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { User } from 'src/app/models/user.model';
+import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { UserService } from 'src/app/services/user.service';
 import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
 
@@ -17,7 +18,13 @@ export class UsersComponent implements OnInit {
   users = new MatTableDataSource<User>();
   loading = true;
 
-  constructor(private userService: UserService, public dialog: MatDialog) {}
+  constructor(
+    private userService: UserService,
+    public dialog: MatDialog,
+    private layoutSvc: LayoutMainService
+  ) {
+    layoutSvc.setTitle('Users');
+  }
 
   ngOnInit(): void {
     this.getUsers();

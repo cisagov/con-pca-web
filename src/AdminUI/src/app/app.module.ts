@@ -88,13 +88,17 @@ import { ChartTimeIntervalsComponent } from './components/charts/chart-time-inte
 import { YearlyPercentageTrendsComponent } from './components/charts/yearly-percentage-trends/yearly-percentage-trends.component';
 import { ChartTimeToFirstClickLevelsComponent } from './components/charts/chart-time-to-first-click-levels/chart-time-to-first-click-levels.component';
 import { YearlyClickRateVsReportRateComponent } from './components/charts/yearly-clickrate-vs-reportedrate/yearly-clickrate-vs-reportedrate.component';
-
 import { LandingPagesComponent } from './components/landing-pages/landing-pages.component';
 import { LandingPageManagerService } from './services/landing-page-manager.service';
 import { LandingPagesManagerComponent } from './components/landing-pages-manager/landing-pages-manager.component';
 import { UsersComponent } from './components/users/users.component';
 import { ImportTemplateDialogComponent } from './components/template-manager/import-template-dialog/import-template-dialog.component';
 import { TemplateSelectDialogComponent } from './components/subscriptions/manage-subscription/template-select-dialog/template-select-dialog.component';
+import { RegisterUserComponent } from 'src/app/components/register/register-user.component';
+import { LoginComponent } from 'src/app/components/login/login.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { LoginService } from 'src/app/services/login.service';
+import { LayoutLoginComponent } from './components/layout/layout-login/layout-login.component';
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
   return () => settingsHttpService.initializeApp();
@@ -163,6 +167,9 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     UsersComponent,
     ImportTemplateDialogComponent,
     TemplateSelectDialogComponent,
+    RegisterUserComponent,
+    LoginComponent,
+    LayoutLoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -173,6 +180,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     MaterialModule,
     MatSortModule,
     FormsModule,
+    FontAwesomeModule,
     ReactiveFormsModule,
     AutosizeModule,
     HttpClientModule,
@@ -189,6 +197,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     LayoutMainService,
     HttpClient,
     UserAuthService,
+    LoginService,
     [DatePipe],
     { provide: MAT_DIALOG_DATA, useValue: [] },
     {

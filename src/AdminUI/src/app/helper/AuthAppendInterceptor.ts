@@ -5,36 +5,45 @@ import {
   HttpRequest,
   HttpHandler,
 } from '@angular/common/http';
-import { UserAuthService } from '../services/user-auth.service';
 import { Observable, from } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
-import {
-  ActivatedRouteSnapshot,
-  ActivatedRoute,
-  Router,
-} from '@angular/router';
+import { LoginService } from '../services/login.service';
 
 @Injectable()
 export class AuthAppendInterceptor implements HttpInterceptor {
-  constructor(private userAuthSvc: UserAuthService, private router: Router) {}
+  constructor(private loginSvc: LoginService) {}
   intercept(
     httpRequest: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    return from(this.userAuthSvc.getUserTokens()).pipe(
-      switchMap((token) => {
-        const headers = httpRequest.headers.set(
+    this.loginSvc.checkTimer();
+    const idToken = this.getUserToken();
+    const reportToken = this.getReportToken();
+
+    if (idToken) {
+      const cloned = httpRequest.clone({
+        headers: httpRequest.headers.set('Authorization', 'Bearer ' + idToken),
+      });
+      return next.handle(cloned);
+    } else if (reportToken) {
+      const cloned = httpRequest.clone({
+        headers: httpRequest.headers.set(
           'Authorization',
-          'Bearer ' + token['idToken']
-        );
-        if (!httpRequest.url.toString().includes('imageupload')) {
-          headers.append('Content-Type', 'application/json');
-        }
-        const requestClone = httpRequest.clone({
-          headers,
-        });
-        return next.handle(requestClone);
-      })
+          'Bearer ' + reportToken
+        ),
+      });
+      return next.handle(cloned);
+    } else {
+      return next.handle(httpRequest);
+    }
+  }
+
+  getUserToken() {
+    return localStorage.getItem('id_token');
+  }
+
+  getReportToken() {
+    return new URL(document.location.toString()).searchParams.get(
+      'reportToken'
     );
   }
 }

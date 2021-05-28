@@ -19,7 +19,11 @@ build:
 
 # target: app logs - Runs angular logs in the terminal
 logs:
-	 docker attach --sig-proxy=false pca-web
+	 docker logs pca-web
+
+# target: attach = attach to target container
+attach:
+	docker attach --sig-proxy=false pca-web
 
 # target: up - Run local web server.
 up:

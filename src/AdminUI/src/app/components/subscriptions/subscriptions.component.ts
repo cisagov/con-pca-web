@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { Subscription } from 'src/app/models/subscription.model';
@@ -7,14 +7,9 @@ import { Customer } from 'src/app/models/customer.model';
 import { Router } from '@angular/router';
 import { CustomerService } from 'src/app/services/customer.service';
 import { AppSettings } from 'src/app/AppSettings';
-import {
-  MatDialog,
-  MatDialogConfig,
-  MatDialogRef,
-} from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
 import { MatSort } from '@angular/material/sort';
-import { constants } from 'buffer';
 
 interface ICustomerSubscription {
   customer: Customer;

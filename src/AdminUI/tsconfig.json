@@ -11,13 +11,18 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "lib": [
-      "es2018",
+      "es2020",
       "dom"
     ],
-    "module": "esnext",
+    "module": "es2020",
     "moduleResolution": "node",
     "outDir": "./dist/out-tsc",
+    "paths": {
+      "crypto": [
+        "./node_modules/crypto-js"
+      ]
+    },
     "sourceMap": true,
-    "target": "es5"
+    "target": "es2020"
   }
 }

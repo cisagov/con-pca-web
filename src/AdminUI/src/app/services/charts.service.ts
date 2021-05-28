@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { SettingsService } from './settings.service';
-import { report } from 'process';
 import { toTitleCase } from 'src/app/helper/utilities';
-import { AppSettings } from '../AppSettings';
-import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root',
