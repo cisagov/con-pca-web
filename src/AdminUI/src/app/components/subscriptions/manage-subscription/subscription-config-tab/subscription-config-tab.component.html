@@ -119,6 +119,18 @@
         </mat-form-field>
       </div>
 
+      <div *ngIf="pageMode != 'CREATE'">
+        <mat-label class="h6">Subscription Info</mat-label>
+        <div class="mb-4">
+          <table class="table" style="max-width: 33rem">
+            <tr>
+              <td>CISA-PHISH Header Value</td>
+              <td class="text-right">{{ subscription.subscription_uuid }}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
       <mat-label *ngIf="subscription.templates_selected" class="h6"
         >Template Selection
         <!-- <button
