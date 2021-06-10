@@ -57,6 +57,7 @@ export class Subscription {
   continuous_subscription: boolean;
   email_report_history: EmailHistory[] = [];
   cycle_length_minutes: number;
+  reporting_length_minutes:number;
   templates_selected: TemplateSelected;
 }
 

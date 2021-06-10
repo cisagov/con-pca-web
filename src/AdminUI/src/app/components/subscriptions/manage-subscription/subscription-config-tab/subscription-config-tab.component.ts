@@ -54,7 +54,8 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
   actionCREATE = 'create';
   action: string = this.actionEDIT;
   timeRanges = ['Minutes', 'Hours', 'Days'];
-  previousTimeUnit: string = 'Minutes';
+  subscriptionPreviousTimeUnit: string = 'Minutes';
+  reportingPeriodPreviousTimeUnit: string = 'Minutes';
   templatesSelected = new TemplateSelected();
   templatesAvailable = new TemplateSelected();
 
@@ -156,8 +157,13 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         cycle_length_minutes: new FormControl(129600, {
           validators: [Validators.required],
         }),
-        timeUnit: new FormControl('Minutes'),
-        displayTime: new FormControl(129600),
+        subTimeUnit: new FormControl('Minutes'),
+        subDisplayTime: new FormControl(129600),
+        reporting_length_minutes: new FormControl(129600, {
+          validators: [Validators.required],
+        }),
+        reportingTimeUnit: new FormControl('Minutes'),
+        reportingDisplayTime: new FormControl(129600),
         continuousSubscription: new FormControl(true, {}),
       },
       { updateOn: 'blur' }
@@ -223,37 +229,73 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
       })
     );
     this.angular_subs.push(
-      this.f.timeUnit.valueChanges.subscribe((val) => {
-        this.f.displayTime.setValue(
+      this.f.subTimeUnit.valueChanges.subscribe((val) => {
+        this.f.subDisplayTime.setValue(
           this.convertTime(
-            this.previousTimeUnit,
+            this.subscriptionPreviousTimeUnit,
             val,
-            this.f.displayTime.value
+            this.f.subDisplayTime.value
           ),
           { emitEvent: false }
         );
-        this.previousTimeUnit = val;
+        this.subscriptionPreviousTimeUnit = val;
       })
     );
     this.angular_subs.push(
-      this.f.displayTime.valueChanges.subscribe((val) => {
+      this.f.subDisplayTime.valueChanges.subscribe((val) => {
         let convertedVal = this.convertTime(
-          this.previousTimeUnit,
+          this.subscriptionPreviousTimeUnit,
           'Minutes',
-          this.f.displayTime.value
+          this.f.subDisplayTime.value
         );
         if (convertedVal < 15) {
           convertedVal = 15;
         } else if (convertedVal > 518400) {
           convertedVal = 518400;
         }
-        this.f.displayTime.setValue(
-          this.convertTime('Minutes', this.previousTimeUnit, convertedVal),
+        this.f.subDisplayTime.setValue(
+          this.convertTime('Minutes', this.subscriptionPreviousTimeUnit, convertedVal),
           { emitEvent: false }
         );
         this.f.cycle_length_minutes.setValue(convertedVal);
         this.subscription.cycle_length_minutes =
           this.f.cycle_length_minutes.value;
+        this.checkValid();
+      })
+    );
+    
+    this.angular_subs.push(
+      this.f.reportingTimeUnit.valueChanges.subscribe((val) => {
+        this.f.reportingDisplayTime.setValue(
+          this.convertTime(
+            this.reportingPeriodPreviousTimeUnit,
+            val,
+            this.f.reportingDisplayTime.value
+          ),
+          { emitEvent: false }
+        );
+        this.reportingPeriodPreviousTimeUnit = val;
+      })
+    );
+    this.angular_subs.push(
+      this.f.reportingDisplayTime.valueChanges.subscribe((val) => {
+        let convertedVal = this.convertTime(
+          this.reportingPeriodPreviousTimeUnit,
+          'Minutes',
+          this.f.reportingDisplayTime.value
+        );
+        if (convertedVal < 15) {
+          convertedVal = 15;
+        } else if (convertedVal > 518400) {
+          convertedVal = 518400;
+        }
+        this.f.reportingDisplayTime.setValue(
+          this.convertTime('Minutes', this.reportingPeriodPreviousTimeUnit, convertedVal),
+          { emitEvent: false }
+        );
+        this.f.reporting_length_minutes.setValue(convertedVal);
+        this.subscription.reporting_length_minutes =
+          this.f.reporting_length_minutes.value;
         this.checkValid();
       })
     );
@@ -360,7 +402,11 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     this.f.cycle_length_minutes.setValue(s.cycle_length_minutes, {
       emitEvent: false,
     });
-    this.f.displayTime.setValue(s.cycle_length_minutes, { emitEvent: false });
+    let reportingLengthMinutes = s.reporting_length_minutes ? s.reporting_length_minutes : 129600 
+    this.f.reporting_length_minutes.setValue(reportingLengthMinutes, {
+      emitEvent: false,
+    });
+    this.f.subDisplayTime.setValue(s.cycle_length_minutes, { emitEvent: false });
     this.f.continuousSubscription.setValue(s.continuous_subscription);
     this.enableDisableFields();
 
@@ -734,7 +780,9 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
 
     sub.continuous_subscription = this.f.continuousSubscription.value;
     const cycleLength: number = +this.f.cycle_length_minutes.value;
+    const reportingLength: number = +this.f.reporting_length_minutes.value;
     sub.cycle_length_minutes = cycleLength;
+    sub.reporting_length_minutes = reportingLength;
     this.setTemplatesSelected();
     sub.templates_selected = this.subscription.templates_selected;
 
