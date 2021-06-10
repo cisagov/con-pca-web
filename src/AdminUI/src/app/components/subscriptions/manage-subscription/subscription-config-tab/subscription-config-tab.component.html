@@ -125,7 +125,9 @@
           <table class="table" style="max-width: 33rem">
             <tr>
               <td>CISA-PHISH Header Value</td>
-              <td class="text-right">{{ subscription.subscription_uuid }}</td>
+              <td class="text-right" style="color: grey; cursor: default">
+                {{ subscription.subscription_uuid }}
+              </td>
             </tr>
           </table>
         </div>
@@ -421,7 +423,7 @@
           (click)="onSubmit()"
           *ngIf="pageMode == 'CREATE'"
         >
-          Create and Launch Subscription
+          Create Subscription
         </button>
       </div>
 
@@ -450,21 +452,25 @@
         <div class="startButton">
           <button
             mat-raised-button
-            *ngIf="subscription?.status == 'stopped' && !subscription?.archived"
-            [disabled]="processing || !isValidConfig"
-            color="primary"
-            (click)="startSubscription()"
-          >
-            Start Subscription
-          </button>
-          <button
-            mat-raised-button
             *ngIf="subscription?.status != 'stopped' && pageMode != 'CREATE'"
             color="accent"
             (click)="stopSubscription()"
             [disabled]="processing"
           >
             Stop Subscription
+          </button>
+          <button
+            mat-raised-button
+            *ngIf="
+              (subscription?.status == 'stopped' ||
+                subscription?.status == 'created') &&
+              !subscription?.archived
+            "
+            [disabled]="processing || !isValidConfig"
+            color="primary"
+            (click)="startSubscription()"
+          >
+            Launch Subscription
           </button>
           <button
             mat-raised-button
