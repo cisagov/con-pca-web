@@ -254,7 +254,11 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
           convertedVal = 518400;
         }
         this.f.subDisplayTime.setValue(
-          this.convertTime('Minutes', this.subscriptionPreviousTimeUnit, convertedVal),
+          this.convertTime(
+            'Minutes',
+            this.subscriptionPreviousTimeUnit,
+            convertedVal
+          ),
           { emitEvent: false }
         );
         this.f.cycle_length_minutes.setValue(convertedVal);
@@ -263,7 +267,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         this.checkValid();
       })
     );
-    
+
     this.angular_subs.push(
       this.f.reportingTimeUnit.valueChanges.subscribe((val) => {
         this.f.reportingDisplayTime.setValue(
@@ -290,7 +294,11 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
           convertedVal = 518400;
         }
         this.f.reportingDisplayTime.setValue(
-          this.convertTime('Minutes', this.reportingPeriodPreviousTimeUnit, convertedVal),
+          this.convertTime(
+            'Minutes',
+            this.reportingPeriodPreviousTimeUnit,
+            convertedVal
+          ),
           { emitEvent: false }
         );
         this.f.reporting_length_minutes.setValue(convertedVal);
@@ -402,11 +410,15 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     this.f.cycle_length_minutes.setValue(s.cycle_length_minutes, {
       emitEvent: false,
     });
-    let reportingLengthMinutes = s.reporting_length_minutes ? s.reporting_length_minutes : 129600 
+    let reportingLengthMinutes = s.reporting_length_minutes
+      ? s.reporting_length_minutes
+      : 129600;
     this.f.reporting_length_minutes.setValue(reportingLengthMinutes, {
       emitEvent: false,
     });
-    this.f.subDisplayTime.setValue(s.cycle_length_minutes, { emitEvent: false });
+    this.f.subDisplayTime.setValue(s.cycle_length_minutes, {
+      emitEvent: false,
+    });
     this.f.continuousSubscription.setValue(s.continuous_subscription);
     this.enableDisableFields();
 
