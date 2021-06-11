@@ -265,6 +265,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         this.subscription.cycle_length_minutes =
           this.f.cycle_length_minutes.value;
         this.checkValid();
+        this.persistChanges();
       })
     );
 
@@ -305,6 +306,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         this.subscription.report_length_minutes =
           this.f.report_length_minutes.value;
         this.checkValid();
+        this.persistChanges();
       })
     );
   }
@@ -414,6 +416,9 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
       emitEvent: false,
     });
     this.f.subDisplayTime.setValue(s.cycle_length_minutes, {
+      emitEvent: false,
+    });
+    this.f.reportDisplayTime.setValue(s.report_length_minutes, {
       emitEvent: false,
     });
     this.f.continuousSubscription.setValue(s.continuous_subscription);
