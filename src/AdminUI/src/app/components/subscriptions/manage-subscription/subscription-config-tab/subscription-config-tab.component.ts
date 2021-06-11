@@ -159,7 +159,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         }),
         subTimeUnit: new FormControl('Minutes'),
         subDisplayTime: new FormControl(129600),
-        report_length_minutes: new FormControl(43200, {
+        report_frequency_minutes: new FormControl(43200, {
           validators: [Validators.required],
         }),
         reportTimeUnit: new FormControl('Minutes'),
@@ -302,9 +302,9 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
           ),
           { emitEvent: false }
         );
-        this.f.report_length_minutes.setValue(convertedVal);
-        this.subscription.report_length_minutes =
-          this.f.report_length_minutes.value;
+        this.f.report_frequency_minutes.setValue(convertedVal);
+        this.subscription.report_frequency_minutes =
+          this.f.report_frequency_minutes.value;
         this.checkValid();
         this.persistChanges();
       })
@@ -412,13 +412,13 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     this.f.cycle_length_minutes.setValue(s.cycle_length_minutes, {
       emitEvent: false,
     });
-    this.f.report_length_minutes.setValue(s.report_length_minutes, {
+    this.f.report_frequency_minutes.setValue(s.report_frequency_minutes, {
       emitEvent: false,
     });
     this.f.subDisplayTime.setValue(s.cycle_length_minutes, {
       emitEvent: false,
     });
-    this.f.reportDisplayTime.setValue(s.report_length_minutes, {
+    this.f.reportDisplayTime.setValue(s.report_frequency_minutes, {
       emitEvent: false,
     });
     this.f.continuousSubscription.setValue(s.continuous_subscription);
@@ -794,9 +794,9 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
 
     sub.continuous_subscription = this.f.continuousSubscription.value;
     const cycleLength: number = +this.f.cycle_length_minutes.value;
-    const reportLength: number = +this.f.report_length_minutes.value;
+    const reportLength: number = +this.f.report_frequency_minutes.value;
     sub.cycle_length_minutes = cycleLength;
-    sub.report_length_minutes = reportLength;
+    sub.report_frequency_minutes = reportLength;
     this.setTemplatesSelected();
     sub.templates_selected = this.subscription.templates_selected;
 
