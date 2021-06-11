@@ -403,29 +403,30 @@
           Create one or more Sending Profiles before proceeding.
         </div>
       </div>
-      <mat-label class="h6">Reporting Period</mat-label>
+      <mat-label class="h6">Status Report Frequency</mat-label>
       <div class="mb-4">
         <div class="text-muted" *ngIf="sendingProfiles.length > 0">
-          How often a report is sent out to the customer and CISA contact for
-          this subscription. (Must be between 15 minutes and 360 days)
+          The frequency at which the status report is sent out to the customer
+          and CISA contact for this subscription. (Must be between 15 minutes
+          and 360 days)
         </div>
         <mat-form-field appearance="outline">
           <mat-label>Time</mat-label>
           <input
             matInput
-            formControlName="reportingDisplayTime"
+            formControlName="reportDisplayTime"
             type="text"
             trim="blur"
             [ngClass]="{ 'is-invalid': submitted }"
           />
           <mat-error
-            *ngIf="f.reportingDisplayTime.errors?.required"
+            *ngIf="f.reportDisplayTime.errors?.required"
             class="invalid-feedback"
           >
             Run time is a required field
           </mat-error>
           <mat-error
-            *ngIf="f.reportingDisplayTime.errors?.outOfRange"
+            *ngIf="f.reportDisplayTime.errors?.outOfRange"
             class="invalid-feedback"
           >
             Must be between 15 minutes and 360 days
@@ -433,7 +434,7 @@
         </mat-form-field>
         <mat-form-field appearance="outline" *ngIf="sendingProfiles.length > 0">
           <mat-label>Time Units</mat-label>
-          <mat-select formControlName="reportingTimeUnit">
+          <mat-select formControlName="reportTimeUnit">
             <mat-option *ngFor="let time of timeRanges" [value]="time">
               {{ time }}</mat-option
             >

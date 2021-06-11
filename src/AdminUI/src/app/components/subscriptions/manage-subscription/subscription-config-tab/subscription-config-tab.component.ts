@@ -54,8 +54,8 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
   actionCREATE = 'create';
   action: string = this.actionEDIT;
   timeRanges = ['Minutes', 'Hours', 'Days'];
-  subscriptionPreviousTimeUnit: string = 'Minutes';
-  reportingPeriodPreviousTimeUnit: string = 'Minutes';
+  subscriptionPreviousTimeUnit = 'Minutes';
+  reportPeriodPreviousTimeUnit = 'Minutes';
   templatesSelected = new TemplateSelected();
   templatesAvailable = new TemplateSelected();
 
@@ -159,11 +159,11 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         }),
         subTimeUnit: new FormControl('Minutes'),
         subDisplayTime: new FormControl(129600),
-        reporting_length_minutes: new FormControl(43200, {
+        report_length_minutes: new FormControl(43200, {
           validators: [Validators.required],
         }),
-        reportingTimeUnit: new FormControl('Minutes'),
-        reportingDisplayTime: new FormControl(43200),
+        reportTimeUnit: new FormControl('Minutes'),
+        reportDisplayTime: new FormControl(43200),
         continuousSubscription: new FormControl(true, {}),
       },
       { updateOn: 'blur' }
@@ -269,41 +269,41 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     );
 
     this.angular_subs.push(
-      this.f.reportingTimeUnit.valueChanges.subscribe((val) => {
-        this.f.reportingDisplayTime.setValue(
+      this.f.reportTimeUnit.valueChanges.subscribe((val) => {
+        this.f.reportDisplayTime.setValue(
           this.convertTime(
-            this.reportingPeriodPreviousTimeUnit,
+            this.reportPeriodPreviousTimeUnit,
             val,
-            this.f.reportingDisplayTime.value
+            this.f.reportDisplayTime.value
           ),
           { emitEvent: false }
         );
-        this.reportingPeriodPreviousTimeUnit = val;
+        this.reportPeriodPreviousTimeUnit = val;
       })
     );
     this.angular_subs.push(
-      this.f.reportingDisplayTime.valueChanges.subscribe((val) => {
+      this.f.reportDisplayTime.valueChanges.subscribe((val) => {
         let convertedVal = this.convertTime(
-          this.reportingPeriodPreviousTimeUnit,
+          this.reportPeriodPreviousTimeUnit,
           'Minutes',
-          this.f.reportingDisplayTime.value
+          this.f.reportDisplayTime.value
         );
         if (convertedVal < 15) {
           convertedVal = 15;
         } else if (convertedVal > 518400) {
           convertedVal = 518400;
         }
-        this.f.reportingDisplayTime.setValue(
+        this.f.reportDisplayTime.setValue(
           this.convertTime(
             'Minutes',
-            this.reportingPeriodPreviousTimeUnit,
+            this.reportPeriodPreviousTimeUnit,
             convertedVal
           ),
           { emitEvent: false }
         );
-        this.f.reporting_length_minutes.setValue(convertedVal);
-        this.subscription.reporting_length_minutes =
-          this.f.reporting_length_minutes.value;
+        this.f.report_length_minutes.setValue(convertedVal);
+        this.subscription.report_length_minutes =
+          this.f.report_length_minutes.value;
         this.checkValid();
       })
     );
@@ -410,10 +410,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     this.f.cycle_length_minutes.setValue(s.cycle_length_minutes, {
       emitEvent: false,
     });
-    let reportingLengthMinutes = s.reporting_length_minutes
-      ? s.reporting_length_minutes
-      : 129600;
-    this.f.reporting_length_minutes.setValue(reportingLengthMinutes, {
+    this.f.report_length_minutes.setValue(s.report_length_minutes, {
       emitEvent: false,
     });
     this.f.subDisplayTime.setValue(s.cycle_length_minutes, {
@@ -792,9 +789,9 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
 
     sub.continuous_subscription = this.f.continuousSubscription.value;
     const cycleLength: number = +this.f.cycle_length_minutes.value;
-    const reportingLength: number = +this.f.reporting_length_minutes.value;
+    const reportLength: number = +this.f.report_length_minutes.value;
     sub.cycle_length_minutes = cycleLength;
-    sub.reporting_length_minutes = reportingLength;
+    sub.report_length_minutes = reportLength;
     this.setTemplatesSelected();
     sub.templates_selected = this.subscription.templates_selected;
 
