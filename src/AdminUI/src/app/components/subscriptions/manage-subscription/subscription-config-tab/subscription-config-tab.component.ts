@@ -159,11 +159,11 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         }),
         subTimeUnit: new FormControl('Minutes'),
         subDisplayTime: new FormControl(129600),
-        reporting_length_minutes: new FormControl(129600, {
+        reporting_length_minutes: new FormControl(43200, {
           validators: [Validators.required],
         }),
         reportingTimeUnit: new FormControl('Minutes'),
-        reportingDisplayTime: new FormControl(129600),
+        reportingDisplayTime: new FormControl(43200),
         continuousSubscription: new FormControl(true, {}),
       },
       { updateOn: 'blur' }
