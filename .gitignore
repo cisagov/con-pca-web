@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .env
 .idea/
 .mypy_cache
@@ -12,3 +13,17 @@ src/.env
 src/AdminUI/dist
 src/AdminUI/node_modules
 src/AdminUI/node_modules/*
+=======
+# This file specifies intentionally untracked files that Git should ignore.
+# Files already tracked by Git are not affected.
+# See: https://git-scm.com/docs/gitignore
+
+## Docker ##
+Dockerfile-x
+
+## Python ##
+__pycache__
+.mypy_cache
+.pytest_cache
+.python-version
+>>>>>>> b1949f9b301eef109150dfcb1febfa376e3997d8

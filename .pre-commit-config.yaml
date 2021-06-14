@@ -5,7 +5,7 @@ default_language_version:
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v3.4.0
+    rev: v4.0.1
     hooks:
       - id: check-case-conflict
       - id: check-executables-have-shebangs
@@ -81,8 +81,13 @@ repos:
       - id: bandit
         name: bandit (everything else)
         exclude: tests
+<<<<<<< HEAD
   - repo: https://github.com/python/black
     rev: 21.5b1
+=======
+  - repo: https://github.com/psf/black
+    rev: 21.5b2
+>>>>>>> b1949f9b301eef109150dfcb1febfa376e3997d8
     hooks:
       - id: black
   - repo: https://gitlab.com/pycqa/flake8
@@ -100,7 +105,11 @@ repos:
     hooks:
       - id: mypy
   - repo: https://github.com/asottile/pyupgrade
+<<<<<<< HEAD
     rev: v2.15.0
+=======
+    rev: v2.19.1
+>>>>>>> b1949f9b301eef109150dfcb1febfa376e3997d8
     hooks:
       - id: pyupgrade
 
