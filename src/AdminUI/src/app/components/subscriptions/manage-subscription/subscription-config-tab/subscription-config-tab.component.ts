@@ -657,8 +657,8 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     this.dialogRefConfirm = this.dialog.open(ConfirmComponent, {
       disableClose: false,
     });
-    this.dialogRefConfirm.componentInstance.confirmMessage = `Are you sure you want to restart ${this.subscription.name}?`;
-    this.dialogRefConfirm.componentInstance.title = 'Confirm Restart';
+    this.dialogRefConfirm.componentInstance.confirmMessage = `Are you sure you want to launch ${this.subscription.name}?`;
+    this.dialogRefConfirm.componentInstance.title = 'Confirm Launch';
 
     this.dialogRefConfirm.afterClosed().subscribe((result) => {
       if (result) {
@@ -685,7 +685,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
                   this.dialog.open(AlertComponent, {
                     data: {
                       title: '',
-                      messageText: `Subscription ${this.subscription.name} was restarted.`,
+                      messageText: `Subscription ${this.subscription.name} was launched.`,
                     },
                   });
                 },
@@ -696,7 +696,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
                     data: {
                       title: 'Error',
                       messageText:
-                        'An error occurred restarting the subscription: ' +
+                        'An error occurred launching the subscription: ' +
                         error.error,
                     },
                   });

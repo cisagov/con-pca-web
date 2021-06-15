@@ -135,13 +135,6 @@
 
       <mat-label *ngIf="subscription.templates_selected" class="h6"
         >Template Selection
-        <!-- <button
-          (click)="randomizeTemplates()"
-          mat-raised-button
-          color="primary"
-        >
-          Randomize Templates
-        </button> -->
         <mat-icon
           (click)="randomizeTemplates()"
           matTooltip="Randomize Templates"
@@ -388,19 +381,9 @@
               {{ time }}</mat-option
             >
           </mat-select>
-          <mat-error
-            *ngIf="submitted && f.sendingProfile.errors?.required"
-            class="invalid-feedback"
-          >
-            Sending Profile required
-          </mat-error>
         </mat-form-field>
         <div class="error-color" *ngIf="!isValidConfig">
           {{ validConfigMessage }}
-        </div>
-        <div class="error-color" *ngIf="sendingProfiles.length === 0">
-          A Sending Profile is required, but none are currently configured.
-          Create one or more Sending Profiles before proceeding.
         </div>
       </div>
       <mat-label class="h6">Status Report Frequency</mat-label>
@@ -420,12 +403,6 @@
             [ngClass]="{ 'is-invalid': submitted }"
           />
           <mat-error
-            *ngIf="f.reportDisplayTime.errors?.required"
-            class="invalid-feedback"
-          >
-            Run time is a required field
-          </mat-error>
-          <mat-error
             *ngIf="f.reportDisplayTime.errors?.outOfRange"
             class="invalid-feedback"
           >
@@ -439,20 +416,7 @@
               {{ time }}</mat-option
             >
           </mat-select>
-          <!-- <mat-error
-            *ngIf="submitted && f.sendingProfile.errors?.required"
-            class="invalid-feedback"
-          >
-            Sending Profile required
-          </mat-error> -->
         </mat-form-field>
-        <div class="error-color" *ngIf="!isValidConfig">
-          {{ validConfigMessage }}
-        </div>
-        <div class="error-color" *ngIf="sendingProfiles.length === 0">
-          A Sending Profile is required, but none are currently configured.
-          Create one or more Sending Profiles before proceeding.
-        </div>
       </div>
       <div class="text-muted">
         *Note while a subscription is actively running, changes to the email
