@@ -71,7 +71,9 @@ export class CustomersComponent implements OnInit {
    *
    */
   private refresh(): void {
-    this.layout_service.setTitle('Customers');
+    if (!this.insideDialog) {
+      this.layout_service.setTitle('Customers');
+    }
     this.loading = true;
     this.customerSvc.getCustomers().subscribe((data: any) => {
       this.customersData.data = data as Customer[];

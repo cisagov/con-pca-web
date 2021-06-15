@@ -33,8 +33,8 @@ import { TemplateManagerService } from 'src/app/services/template-manager.servic
 import { SettingsService } from 'src/app/services/settings.service';
 import { BehaviorSubject } from 'rxjs';
 import { filterSendingProfiles } from '../../../../helper/utilities';
-import { Template } from 'src/app/models/template.model';
 import { TemplateSelectDialogComponent } from 'src/app/components/subscriptions/manage-subscription/template-select-dialog/template-select-dialog.component';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
   selector: 'subscription-config-tab',
@@ -61,6 +61,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
 
   // Valid configuration
   isValidConfig = true;
+  ignoreConfigError = false;
   validConfigMessage = '';
 
   // CREATE or EDIT
@@ -164,7 +165,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         }),
         reportTimeUnit: new FormControl('Minutes'),
         reportDisplayTime: new FormControl(43200),
-        continuousSubscription: new FormControl(true, {}),
+        continuousSubscription: new FormControl(false, {}),
       },
       { updateOn: 'blur' }
     );
@@ -1055,6 +1056,10 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         this.validConfigMessage = error.error;
       }
     );
+  }
+
+  setIgnoreConfigError(event: MatCheckboxChange) {
+    this.ignoreConfigError = event.checked;
   }
 
   changeTemplate(input) {
