@@ -33,7 +33,7 @@
               <i class="fa fa-search" style="font-size: 1rem"></i>
             </button>
             <mat-error
-              *ngIf="submitted && f.selectedCustomerUuid.errors?.required"
+              *ngIf="f.selectedCustomerUuid.errors?.required"
               class="invalid-feedback"
             >
               A Customer must be selected
@@ -58,7 +58,7 @@
               >
             </mat-select>
             <mat-error
-              *ngIf="submitted && f.primaryContact.errors?.required"
+              *ngIf="f.primaryContact.errors?.required"
               class="invalid-feedback"
             >
               A primary contact must be selected
@@ -81,7 +81,7 @@
               >
             </mat-select>
             <mat-error
-              *ngIf="submitted && f.dhsContact.errors?.required"
+              *ngIf="f.dhsContact.errors?.required"
               class="invalid-feedback"
             >
               CISA contact must be selected
@@ -105,13 +105,13 @@
           ></mat-datepicker-toggle>
           <mat-datepicker #picker [startAt]="startAt"></mat-datepicker>
           <mat-error
-            *ngIf="submitted && f.startDate.errors?.required"
+            *ngIf="f.startDate.errors?.required"
             class="invalid-feedback"
           >
             Start Date is required
           </mat-error>
           <mat-error
-            *ngIf="submitted && f.startDate.errors?.matDatepickerMin"
+            *ngIf="f.startDate.errors?.matDatepickerMin"
             class="invalid-feedback"
           >
             Start Date cannot be in the past
@@ -219,7 +219,7 @@
             >
           </mat-select>
           <mat-error
-            *ngIf="submitted && f.sendingProfile.errors?.required"
+            *ngIf="f.sendingProfile.errors?.required"
             class="invalid-feedback"
           >
             Sending Profile required
@@ -245,7 +245,7 @@
             formControlName="targetDomain"
             type="text"
             trim="blur"
-            [ngClass]="{ 'is-invalid': submitted && f.targetDomain.errors }"
+            [ngClass]="{ 'is-invalid': f.targetDomain.errors }"
           />
           <mat-error
             *ngIf="f.targetDomain.errors?.required"
@@ -310,7 +310,7 @@
           rows="10"
           style="overflow: scroll"
           formControlName="csvText"
-          [ngClass]="{ 'is-invalid': submitted && f.csvText.errors }"
+          [ngClass]="{ 'is-invalid': f.csvText.errors }"
           (change)="targetsChanged($event)"
         >
         </textarea>
@@ -320,14 +320,11 @@
         >
           One or more email addresses are invalid
         </mat-error>
-        <mat-error
-          *ngIf="submitted && f.csvText.errors?.required"
-          class="invalid-feedback"
-        >
+        <mat-error *ngIf="f.csvText.errors?.required" class="invalid-feedback">
           At least 1 target must be defined
         </mat-error>
         <mat-error
-          *ngIf="submitted && f.csvText.errors?.invalidTargetCsv"
+          *ngIf="f.csvText.errors?.invalidTargetCsv"
           class="invalid-feedback"
         >
           All target lines must have an email and contain only 4 parts.
@@ -340,7 +337,7 @@
           match any of the domain targets specified in the domain targets field
         </mat-error>
         <mat-error
-          *ngIf="submitted && f.csvText.errors?.noTargetDomain"
+          *ngIf="f.csvText.errors?.noTargetDomain"
           class="invalid-feedback"
         >
           A Target Email Domain must be specified
@@ -359,7 +356,6 @@
             formControlName="subDisplayTime"
             type="text"
             trim="blur"
-            [ngClass]="{ 'is-invalid': submitted }"
           />
           <mat-error
             *ngIf="f.subDisplayTime.errors?.required"
@@ -407,7 +403,6 @@
             formControlName="reportDisplayTime"
             type="text"
             trim="blur"
-            [ngClass]="{ 'is-invalid': submitted }"
           />
           <mat-error
             *ngIf="f.reportDisplayTime.errors?.outOfRange"
@@ -435,81 +430,76 @@
           >Continuous Subscription Cycles</mat-checkbox
         >
       </div>
-
-      <div class="text-right mt-3">
-        <button
-          type="submit"
-          mat-raised-button
-          color="primary"
-          [disabled]="launchSubmitted || (!isValidConfig && !ignoreConfigError)"
-          (click)="onSubmit()"
-          *ngIf="pageMode == 'CREATE'"
-        >
-          Create Subscription
-        </button>
-      </div>
-
-      <div class="d-flex flex-row justify-content-between">
+      <div class="d-flex flex-row-reverse justify-content-between">
         <div class="d-flex flex-row">
-          <div>
-            <delete-subscription
-              *ngIf="pageMode != 'CREATE'"
-              [subscription]="subscription"
-            >
-            </delete-subscription>
-          </div>
-          <div>
-            <button
-              mat-raised-button
-              *ngIf="
-                subscription?.status == 'stopped' && !subscription?.archived
-              "
-              color="accent"
-              (click)="archiveSubscription()"
-            >
-              Archive Subscription
-            </button>
-          </div>
-        </div>
-        <div class="startButton">
+          <!-- DROP DOWN MENU BUTTON -->
           <button
             mat-raised-button
-            *ngIf="subscription?.status != 'stopped' && pageMode != 'CREATE'"
             color="accent"
-            (click)="stopSubscription()"
-            [disabled]="processing"
+            [matMenuTriggerFor]="menu"
+            *ngIf="pageMode === 'EDIT'"
           >
-            Stop Subscription
+            Actions<mat-icon>arrow_drop_up</mat-icon>
           </button>
+          <mat-menu xPosition="before" yPosition="above" #menu="matMenu">
+            <button
+              mat-menu-item
+              (click)="startSubscription()"
+              *ngIf="
+                (subscription?.status == 'stopped' ||
+                  subscription?.status == 'created') &&
+                !subscription?.archived
+              "
+            >
+              <mat-icon color="primary">play_arrow</mat-icon>Launch
+            </button>
+            <button
+              mat-menu-item
+              (click)="stopSubscription()"
+              *ngIf="subscription?.status != 'stopped'"
+            >
+              <mat-icon color="accent">stop</mat-icon>Stop
+            </button>
+            <delete-subscription
+              [subscription]="subscription"
+            ></delete-subscription>
+            <button
+              mat-menu-item
+              (click)="archiveSubscription()"
+              *ngIf="
+                subscription?.status === 'stopped' && !subscription?.archived
+              "
+            >
+              <mat-icon>archive</mat-icon>Archive
+            </button>
+            <button
+              mat-menu-item
+              (click)="unarchiveSubscription()"
+              *ngIf="subscription?.archived"
+            >
+              <mat-icon>unarchive</mat-icon>Unarchive Subscription
+            </button>
+          </mat-menu>
+          <!-- START/CREATE BUTTON -->
           <button
+            type="submit"
             mat-raised-button
-            *ngIf="
-              (subscription?.status == 'stopped' ||
-                subscription?.status == 'created') &&
-              !subscription?.archived
-            "
-            [disabled]="processing || (!isValidConfig && !ignoreConfigError)"
             color="primary"
-            (click)="startSubscription()"
+            [disabled]="!isValidConfig && !ignoreConfigError"
+            (click)="save()"
           >
-            Launch Subscription
+            <div *ngIf="pageMode === 'CREATE'">Create Subscription</div>
+            <div *ngIf="pageMode === 'EDIT'">Save Subscription</div>
           </button>
-          <button
-            mat-raised-button
-            *ngIf="subscription?.archived"
-            color="primary"
-            (click)="unarchiveSubscription()"
-          >
-            Unarchive Subscription
-          </button>
-          <mat-progress-spinner
-            *ngIf="processing"
-            class="spinner mt-3"
-            diameter="25"
-            mode="indeterminate"
-          ></mat-progress-spinner>
         </div>
       </div>
+
+      <mat-progress-spinner
+        *ngIf="processing"
+        class="spinner mt-3"
+        diameter="25"
+        mode="indeterminate"
+      ></mat-progress-spinner>
     </div>
   </form>
 </div>

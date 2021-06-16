@@ -1,14 +1,8 @@
 <button
   id="delete-subscription"
-  mat-raised-button
-  color="warn"
+  mat-menu-item
   (click)="openDialog()"
-  [disabled]="subscription?.status != 'stopped'"
-  [attr.title]="
-    subscription?.status != 'stopped'
-      ? 'Subscription must be stopped before deleting'
-      : ''
-  "
+  *ngIf="subscription?.status === 'stopped'"
 >
-  Delete Subscription
+  <mat-icon color="warn">delete</mat-icon>Delete
 </button>
