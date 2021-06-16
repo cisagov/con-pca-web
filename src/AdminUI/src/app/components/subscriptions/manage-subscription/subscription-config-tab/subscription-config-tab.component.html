@@ -382,8 +382,15 @@
             >
           </mat-select>
         </mat-form-field>
-        <div class="error-color" *ngIf="!isValidConfig">
+        <div class="error-color mb-3" *ngIf="!isValidConfig">
           {{ validConfigMessage }}
+        </div>
+        <div class="error-color" *ngIf="!isValidConfig">
+          <mat-checkbox (change)="setIgnoreConfigError($event)">
+            I understand that this configuration does not fall within
+            recommended email sending guidelines, but would like to continue
+            anyway.
+          </mat-checkbox>
         </div>
       </div>
       <mat-label class="h6">Status Report Frequency</mat-label>
@@ -434,7 +441,7 @@
           type="submit"
           mat-raised-button
           color="primary"
-          [disabled]="launchSubmitted || !isValidConfig"
+          [disabled]="launchSubmitted || (!isValidConfig && !ignoreConfigError)"
           (click)="onSubmit()"
           *ngIf="pageMode == 'CREATE'"
         >
@@ -481,7 +488,7 @@
                 subscription?.status == 'created') &&
               !subscription?.archived
             "
-            [disabled]="processing || !isValidConfig"
+            [disabled]="processing || (!isValidConfig && !ignoreConfigError)"
             color="primary"
             (click)="startSubscription()"
           >
