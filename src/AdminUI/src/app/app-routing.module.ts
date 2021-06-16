@@ -31,6 +31,7 @@ import { LandingPagesComponent } from './components/landing-pages/landing-pages.
 import { LandingPagesManagerComponent } from './components/landing-pages-manager/landing-pages-manager.component';
 import { UsersComponent } from './components/users/users.component';
 import { LayoutLoginComponent } from './components/layout/layout-login/layout-login.component';
+import { UnsavedChangesGuard } from './guards/unsaved-changes.guard';
 
 const routes: Routes = [
   {
@@ -70,7 +71,13 @@ const routes: Routes = [
     path: 'view-subscription',
     component: LayoutMainComponent,
     canActivate: [AuthGuard],
-    children: [{ path: ':id', component: ManageSubscriptionComponent }],
+    children: [
+      {
+        path: ':id',
+        component: ManageSubscriptionComponent,
+        canDeactivate: [UnsavedChangesGuard],
+      },
+    ],
   },
   {
     path: 'templatemanager',

@@ -1,17 +1,22 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { Subscription } from 'src/app/models/subscription.model';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { AlertComponent } from '../../dialogs/alert/alert.component';
 import { MatDialog } from '@angular/material/dialog';
+import { CanComponentDeactivate } from 'src/app/guards/unsaved-changes.guard';
+import { SubscriptionConfigTab } from './subscription-config-tab/subscription-config-tab.component';
 
 @Component({
   selector: 'app-manage-subscription',
   templateUrl: './manage-subscription.component.html',
   styleUrls: ['./manage-subscription.component.scss'],
 })
-export class ManageSubscriptionComponent implements OnInit, OnDestroy {
+export class ManageSubscriptionComponent
+  implements OnInit, OnDestroy, CanComponentDeactivate
+{
+  @ViewChild(SubscriptionConfigTab) configTab: SubscriptionConfigTab;
   private routeSub: any;
   subscription: Subscription;
 
@@ -51,6 +56,10 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
         });
       }
     });
+  }
+
+  public canDeactivate(): Promise<boolean> {
+    return this.configTab.canDeactivate();
   }
 
   onTabChanged(event) {
