@@ -251,7 +251,7 @@
             *ngIf="f.targetDomain.errors?.required"
             class="invalid-feedback"
           >
-            Target Eamil Domain is a a required field
+            Target Email Domain is a a required field
           </mat-error>
           <mat-error
             *ngIf="f.targetDomain.errors?.invalidDomain"
@@ -324,25 +324,38 @@
           At least 1 target must be defined
         </mat-error>
         <mat-error
-          *ngIf="f.csvText.errors?.invalidTargetCsv"
+          *ngIf="
+            f.csvText.errors?.invalidTargetCsv && !f.csvText.errors?.required
+          "
           class="invalid-feedback"
         >
           All target lines must have an email and contain only 4 parts.
         </mat-error>
         <mat-error
-          *ngIf="f.csvText.errors?.emailDoesntMatchDomain"
+          *ngIf="
+            f.csvText.errors?.emailDoesntMatchDomain &&
+            !f.csvText.errors?.required
+          "
           class="invalid-feedback"
         >
           The email {{ this.validationErrors.emailDoesntMatchDomain }} does not
           match any of the domain targets specified in the domain targets field
         </mat-error>
         <mat-error
-          *ngIf="f.csvText.errors?.noTargetDomain"
+          *ngIf="
+            f.csvText.errors?.noTargetDomain && !f.csvText.errors?.required
+          "
           class="invalid-feedback"
         >
           A Target Email Domain must be specified
         </mat-error>
       </mat-form-field>
+      <div class="text-muted mb-3">
+        <em
+          >Target Count:
+          {{ subscription.target_email_list_cached_copy.length }}</em
+        >
+      </div>
       <mat-label class="h6">Subscription Run Length</mat-label>
       <div class="mb-4">
         <div class="text-muted" *ngIf="sendingProfiles.length > 0">
