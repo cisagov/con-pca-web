@@ -898,7 +898,7 @@ export class SubscriptionConfigTab
   public buildTargetsFromCSV(csv: string): Target[] {
     const targetList: Target[] = [];
     if (!csv) {
-      return;
+      return [];
     }
 
     const lines = csv.trim().split('\n');
