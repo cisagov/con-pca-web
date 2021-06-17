@@ -751,9 +751,6 @@ export class SubscriptionConfigTab
     if (typeof this.f.startDate.value === 'string') {
       this.f.startDate.setValue(new Date(this.f.startDate.value));
     }
-    if (this.f.startDate.value.getHours() === 0) {
-      this.f.startDate.value.setHours(10);
-    }
     sub.start_date = this.f.startDate.value;
     sub.status = 'Queued';
 
