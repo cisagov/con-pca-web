@@ -312,4 +312,10 @@ export class SubscriptionService {
     const url = `${this.settingsService.settings.apiUrl}/api/v1/templates/select/`;
     return this.http.get<TemplateSelected>(url).toPromise();
   }
+
+  public getSubscriptionJSON(subscription_uuid) {
+    const headers = new HttpHeaders().set('content-type', 'application/json');
+    const url = `${this.settingsService.settings.apiUrl}/api/v1/subscription/downloadjson/${subscription_uuid}/`;
+    return this.http.get(url, { headers, responseType: 'blob' });
+  }
 }
