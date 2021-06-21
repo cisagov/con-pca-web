@@ -249,6 +249,7 @@ export class SendingProfileDetailComponent implements OnInit {
       position: 'tester',
       url: '',
       smtp: sp,
+      customer_uuid: null,
     };
 
     this.sendingProfileSvc.sendTestEmail(email_for_test).subscribe(
