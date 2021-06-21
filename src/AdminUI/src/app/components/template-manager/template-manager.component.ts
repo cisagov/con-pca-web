@@ -41,6 +41,8 @@ import { TestEmail } from 'src/app/models/test-email.model';
 import { DomSanitizer } from '@angular/platform-browser';
 import { filterSendingProfiles } from '../../helper/utilities';
 import { ImportTemplateDialogComponent } from './import-template-dialog/import-template-dialog.component';
+import { CustomerService } from 'src/app/services/customer.service';
+import { Customer } from 'src/app/models/customer.model';
 
 @Component({
   selector: 'app-template-manager',
@@ -54,6 +56,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
 
   // Full template list variables
   sendingProfiles = [];
+  customers = [];
   testEmail = '';
   firstName = '';
   lastName = '';
@@ -111,6 +114,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
     private subscriptionSvc: SubscriptionService,
     private landingPageSvc: LandingPageManagerService,
     public sendingProfileSvc: SendingProfileService,
+    public customerSvc: CustomerService,
     private route: ActivatedRoute,
     private router: Router,
     private settingsService: SettingsService,
@@ -178,6 +182,9 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
     });
     this.sendingProfileSvc.getAllProfiles().subscribe((data: any) => {
       this.sendingProfiles = filterSendingProfiles(data);
+    });
+    this.customerSvc.getCustomers().subscribe((data: Customer[]) => {
+      this.customers = data;
     });
   }
 
@@ -285,6 +292,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
       templateFromSender: new FormControl(this.fromSender),
       templateFromAddress: new FormControl(template.from_address),
       sendingProfile: new FormControl(''),
+      customer: new FormControl(''),
       templateSubject: new FormControl(template.subject, [Validators.required]),
       templateText: new FormControl(template.text),
       templateHTML: new FormControl(template.html, [Validators.required]),
@@ -725,20 +733,6 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
   onSendTestClick() {
     this.submitted = true;
 
-    const sp: SendingProfile = this.f.sendingProfile.value;
-    if (!sp) {
-      Swal.fire('sending profile to test email is required');
-      return;
-    }
-    if (sp == null) {
-      Swal.fire('sending profile to test email is required');
-      return;
-    }
-    if (sp == undefined) {
-      Swal.fire('sending profile to test email is required');
-      return;
-    }
-
     //need to go get the sending profile from gophish
     let tmp_template = this.getTemplateFromForm(this.currentTemplateFormGroup);
     let email_for_test: TestEmail = {
@@ -748,7 +742,8 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
       email: this.testEmail,
       position: this.role,
       url: '',
-      smtp: sp,
+      smtp: this.f.sendingProfile.value,
+      customer_uuid: this.f.customer.value,
     };
 
     this.sendingProfileSvc.sendTestEmail(email_for_test).subscribe(

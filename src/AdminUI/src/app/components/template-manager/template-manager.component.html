@@ -321,6 +321,34 @@
                 proceeding.
               </div>
             </div>
+            <mat-label class="h6">Customer</mat-label>
+            <div class="mb-4">
+              <div class="text-muted" *ngIf="customers.length > 0">
+                Select the customer that will be used in generating tags.
+              </div>
+              <mat-form-field appearance="outline" *ngIf="customers.length > 0">
+                <mat-label>Customer</mat-label>
+                <mat-select formControlName="customer">
+                  <mat-option [value]="null">--Select--</mat-option>
+                  <mat-option
+                    *ngFor="let c of customers"
+                    [value]="c.customer_uuid"
+                  >
+                    {{ c.name }}</mat-option
+                  >
+                </mat-select>
+                <mat-error
+                  *ngIf="submitted && f.customer.errors?.required"
+                  class="invalid-feedback"
+                >
+                  Customer required
+                </mat-error>
+              </mat-form-field>
+              <div class="error-color" *ngIf="customers.length === 0">
+                A customer is required, but none are currently configured.
+                Create one or more customers before proceeding.
+              </div>
+            </div>
             <div class="text-left mt-3 mb-4">
               <mat-form-field appearance="outline">
                 <mat-label>Test Email</mat-label>
