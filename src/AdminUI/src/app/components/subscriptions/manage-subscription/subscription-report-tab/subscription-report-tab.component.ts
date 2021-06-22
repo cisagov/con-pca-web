@@ -214,4 +214,24 @@ export class SubscriptionReportTab implements OnInit {
         }
       );
   }
+  downloadSubscriptionData() {
+    this.subscriptionSvc
+      .getSubscriptionJSON(this.subscription.subscription_uuid)
+      .subscribe(
+        (blob) => {
+          this.downloadObject(
+            `${this.subscription.name}_subscription_data.json`,
+            blob
+          );
+        },
+        (error) => {
+          this.dialog.open(AlertComponent, {
+            data: {
+              title: 'Error',
+              messageText: `An error occured downloading the subscription JSON data. Check logs for more detail.`,
+            },
+          });
+        }
+      );
+  }
 }
