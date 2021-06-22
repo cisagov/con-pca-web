@@ -215,12 +215,10 @@ export class SubscriptionReportTab implements OnInit {
       );
   }
   downloadSubscriptionData() {
-    console.log(this.subscription);
     this.subscriptionSvc
       .getSubscriptionJSON(this.subscription.subscription_uuid)
       .subscribe(
         (blob) => {
-          console.log(blob);
           this.downloadObject(
             `${this.subscription.name}_subscription_data.json`,
             blob

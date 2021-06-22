@@ -83,7 +83,6 @@ export class TemplatesPageComponent implements OnInit, AfterViewInit {
     if (confirm('Download all templates?')) {
       this.templateSvc.getTemplatesJSON(this.showRetired).subscribe(
         (blob) => {
-          console.log(blob);
           this.downloadObject(`template_data.json`, blob);
         },
         (error) => {
