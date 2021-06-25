@@ -66,7 +66,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
   templateId: string;
   retired: boolean;
   canDelete: boolean = false;
-  deleteTooltip: string = ""
+  deleteTooltip: string = '';
   canStop: boolean = false;
   retiredReason: string;
   currentTemplateFormGroup: FormGroup;
@@ -522,7 +522,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
       if (result.retired) {
         this.retired = result.retired;
         this.retiredReason = result.description;
-        this.setCanDelete()
+        this.setCanDelete();
       }
     });
   }
@@ -820,10 +820,11 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
   setCanDelete() {
     if (this.pcaSubscriptions.data.length > 0) {
       this.canDelete = false;
-      this.deleteTooltip = "Can not delete templates associated with a subscription"
+      this.deleteTooltip =
+        'Can not delete templates associated with a subscription';
     } else {
       this.canDelete = true;
-      this.deleteTooltip = "Delete the template"
+      this.deleteTooltip = 'Delete the template';
     }
   }
 
