@@ -436,9 +436,7 @@
         >
           New Template
         </button> -->
-        <!-- <button id="delete-button" class="d-flex" mat-raised-button color="warn" (click)="deleteTemplate()" *ngIf=templateId>
-          Delete Template
-        </button> -->
+
         <div class="flex-container flex-row save_container pb-3">
           <button
             id="retire-button"
@@ -470,16 +468,21 @@
           >
             Stop Template
           </button>
-          <button
-            id="stop-button"
-            class="d-flex"
-            mat-raised-button
-            color="warn"
-            (click)="deleteTemplate()"
-            *ngIf="canDelete && templateId"
+          <div
+          [matTooltip]="deleteTooltip"
           >
-            Delete Template
-          </button>
+            <button
+              id="stop-button"
+              class="d-flex"
+              mat-raised-button
+              [disabled]="!canDelete"
+              color="warn"
+              (click)="deleteTemplate()"
+              *ngIf="retired && templateId"
+            >
+              Delete Template
+            </button>
+          </div>
           <div class="ml-auto d-flex flex-row">
             <button
               id="save-button"

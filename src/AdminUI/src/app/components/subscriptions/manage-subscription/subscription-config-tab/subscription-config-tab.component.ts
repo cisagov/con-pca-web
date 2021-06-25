@@ -619,6 +619,7 @@ export class SubscriptionConfigTab
   subValid() {
     // stop here if form is invalid
     if (this.subscribeForm.invalid) {
+      console.log(this.subscribeForm)
       return false;
     }
 
@@ -736,9 +737,12 @@ export class SubscriptionConfigTab
    * Submits the form to create or save a Subscription.
    */
   save() {
+    console.log("test")
     if (!this.subValid()) {
+      console.log("test1")
       return;
     }
+    console.log("test2")
 
     const sub = this.subscriptionSvc.subscription;
 
