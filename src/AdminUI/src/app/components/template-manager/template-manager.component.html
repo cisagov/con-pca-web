@@ -228,10 +228,21 @@
                 </mat-form-field>
               </div>
               <div class="d-flex flex-column pb-3">
+                <mat-form-field appearance="outline" class="flex-grow-1 mb-2">
+                  <mat-label>Sending Profile Selection</mat-label>
+                  <mat-select formControlName="templateSendingProfile">
+                    <mat-option [value]="null"></mat-option>
+                    <mat-option
+                      *ngFor="let sp of sendingProfiles"
+                      [value]="sp.id"
+                      >{{ sp.name }}</mat-option
+                    >
+                  </mat-select>
+                </mat-form-field>
                 <mat-form-field appearance="outline" class="flex-grow-1">
                   <mat-label>Landing Page Selection</mat-label>
                   <mat-select formControlName="landingPage">
-                    <mat-option [value]="0"></mat-option>
+                    <mat-option [value]="null"></mat-option>
                     <mat-option
                       *ngFor="let page of pagesList"
                       [value]="page.landing_page_uuid"
