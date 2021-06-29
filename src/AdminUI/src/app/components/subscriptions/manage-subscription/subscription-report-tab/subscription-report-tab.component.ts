@@ -19,6 +19,7 @@ export class SubscriptionReportTab implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   displayedColumns = ['report', 'sent', 'to', 'from', 'bcc', 'manual'];
   loading = false;
+  includeNonhuman = false;
 
   constructor(
     private subscriptionSvc: SubscriptionService,
@@ -53,141 +54,52 @@ export class SubscriptionReportTab implements OnInit {
 
   cycleChange(event) {}
 
-  viewMonthlyReport() {
+  viewReport(reportType: string) {
     this.router.navigate([
-      '/reports/monthly',
+      `/reports/${reportType}`,
       this.subscription.subscription_uuid,
       this.selectedCycle.cycle_uuid,
       false,
+      this.includeNonhuman,
     ]);
   }
 
-  viewCycleReport() {
-    console.log(this.subscription);
-    this.router.navigate([
-      '/reports/cycle',
-      this.subscription.subscription_uuid,
-      this.selectedCycle.cycle_uuid,
-      false,
-    ]);
-  }
-
-  viewYearlyReport() {
-    this.router.navigate([
-      '/reports/yearly',
-      this.subscription.subscription_uuid,
-      this.selectedCycle.cycle_uuid,
-      false,
-    ]);
-  }
-
-  downloadMonthlyReport() {
+  downloadReport(reportType: string) {
     this.loading = true;
     this.subscriptionSvc
-      .getMonthlyReport(
+      .downloadReport(
         this.subscription.subscription_uuid,
-        this.selectedCycle.cycle_uuid
+        this.selectedCycle.cycle_uuid,
+        reportType,
+        this.includeNonhuman
       )
       .subscribe(
         (blob) => {
-          this.downloadObject('subscription_status_report.pdf', blob);
+          this.downloadObject(`subscription_${reportType}_report.pdf`, blob);
           this.loading = false;
         },
         (error) => {
-          this.popupReportError(error, 'downloading', 'monthly');
+          this.popupReportError(error, 'downloading', reportType);
         }
       );
   }
 
-  downloadCycleReport() {
+  sendReport(reportType: string) {
     this.loading = true;
     this.subscriptionSvc
-      .getCycleReport(
+      .sendReport(
         this.subscription.subscription_uuid,
-        this.selectedCycle.cycle_uuid
-      )
-      .subscribe(
-        (blob) => {
-          this.downloadObject('subscription_cycle_report.pdf', blob);
-          this.loading = false;
-        },
-        (error) => {
-          this.popupReportError(error, 'downloading', 'cycle');
-        }
-      );
-  }
-
-  downloadYearlyReport() {
-    this.loading = true;
-    this.subscriptionSvc
-      .getYearlyReport(
-        this.subscription.subscription_uuid,
-        this.selectedCycle.cycle_uuid
-      )
-      .subscribe(
-        (blob) => {
-          this.downloadObject('subscription_yearly_report.pdf', blob);
-          this.loading = false;
-        },
-        (error) => {
-          this.popupReportError(error, 'downloading', 'yearly');
-        }
-      );
-  }
-
-  sendMonthlyReport() {
-    this.loading = true;
-    this.subscriptionSvc
-      .sendMonthlyReport(
-        this.subscription.subscription_uuid,
-        this.selectedCycle.cycle_uuid
+        this.selectedCycle.cycle_uuid,
+        reportType,
+        this.includeNonhuman
       )
       .subscribe(
         (data: any) => {
-          console.log('Sending monthly report.');
           this.loading = false;
           this.updateReportList(data.subscription_uuid);
         },
         (error) => {
-          this.popupReportError(error, 'sending', 'monthly');
-        }
-      );
-  }
-
-  sendCycleReport() {
-    this.loading = true;
-    this.subscriptionSvc
-      .sendCycleReport(
-        this.subscription.subscription_uuid,
-        this.selectedCycle.cycle_uuid
-      )
-      .subscribe(
-        (data: any) => {
-          console.log('Sending cycle report.');
-          this.updateReportList(data.subscription_uuid);
-          this.loading = false;
-        },
-        (error) => {
-          this.popupReportError(error, 'sending', 'cycle');
-        }
-      );
-  }
-
-  sendYearlyReport() {
-    this.loading = true;
-    this.subscriptionSvc
-      .sendYearlyReport(
-        this.subscription.subscription_uuid,
-        this.selectedCycle.cycle_uuid
-      )
-      .subscribe(
-        (data: any) => {
-          console.log('Sending yearly report.');
-          this.updateReportList(data.subscription_uuid);
-          this.loading = false;
-        },
-        (error) => {
-          this.popupReportError(error, 'sending', 'yearly');
+          this.popupReportError(error, 'sending', reportType);
         }
       );
   }

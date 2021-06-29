@@ -127,7 +127,8 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
       this.chartsSvc
         .getStatisticsReport(
           this.subscriptionUuid,
-          this.selected_cycle.cycle_uuid
+          this.selected_cycle.cycle_uuid,
+          this.selected_cycle.nonhuman
         )
         .subscribe((stats: any) => {
           this.chart.chartResults = this.chartsSvc.formatStatistics(stats);

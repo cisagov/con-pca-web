@@ -11,52 +11,21 @@ export class ReportsService {
     private settingsService: SettingsService
   ) {}
 
-  /**
-   * Returns a promise with the Yearly report for the specified subscription and date.
-   */
-  public getYearlyReport(
+  public getReport(
     subscriptionUuid: string,
     cycleUuid: string,
-    isHeadless: any
+    reportType: string,
+    nonhuman = false,
+    isHeadless = 'false'
   ) {
-    const urlRoot =
+    const apiUrl =
       isHeadless === 'false'
         ? this.settingsService.settings.apiUrl
         : this.settingsService.settings.apiUrlHeadless;
-    const url = `${urlRoot}/api/v1/reports/${subscriptionUuid}/yearly/${cycleUuid}/`;
-    return this.http.get(url);
-  }
-
-  /**
-   * Returns a promise with the Cycle report for the specified subscription and date.
-   */
-  public getCycleReport(
-    subscriptionUuid: string,
-    cycleUuid: string,
-    isHeadless: any
-  ) {
-    const urlRoot =
-      isHeadless === 'false'
-        ? this.settingsService.settings.apiUrl
-        : this.settingsService.settings.apiUrlHeadless;
-    const url = `${urlRoot}/api/v1/reports/${subscriptionUuid}/cycle/${cycleUuid}/`;
-    return this.http.get(url);
-  }
-
-  /**
-   * Returns a promise with the Monthly report for the specified subscription and date.
-   */
-  public getMonthlyReport(
-    subscriptionUuid: string,
-    cycleUuid: string,
-    isHeadless: any
-  ) {
-    const urlRoot =
-      isHeadless === 'false'
-        ? this.settingsService.settings.apiUrl
-        : this.settingsService.settings.apiUrlHeadless;
-
-    const url = `${urlRoot}/api/v1/reports/${subscriptionUuid}/monthly/${cycleUuid}/`;
+    let url = `${apiUrl}/api/v1/reports/${subscriptionUuid}/${reportType}/${cycleUuid}/`;
+    if (nonhuman) {
+      url += `?nonhuman=${nonhuman}`;
+    }
     return this.http.get(url);
   }
 }

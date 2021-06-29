@@ -25,6 +25,11 @@
       Refresh
       <mat-icon class="table-btn-icon-size">autorenew</mat-icon>
     </button>
+
+    <div class="flex flex-row">
+      Include Non-Human Interactions:
+      <mat-slide-toggle (change)="showNonHuman($event)"></mat-slide-toggle>
+    </div>
   </mat-card>
   <app-sub-dashboard></app-sub-dashboard>
 
