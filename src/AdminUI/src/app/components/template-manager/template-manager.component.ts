@@ -33,7 +33,6 @@ import { RetireTemplateDialogComponent } from './retire-template-dialog/retire-t
 import { AlertComponent } from '../dialogs/alert/alert.component';
 import { LandingPageManagerService } from 'src/app/services/landing-page-manager.service';
 import { Landing_Page } from 'src/app/models/landing-page.models';
-import { SendingProfile } from 'src/app/models/sending-profile.model';
 import Swal from 'sweetalert2';
 
 import { SendingProfileService } from 'src/app/services/sending-profile.service';
@@ -120,9 +119,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
     private router: Router,
     private settingsService: SettingsService,
     public dialog: MatDialog,
-    private domSanitizer: DomSanitizer,
-    private cdr: ChangeDetectorRef,
-    private elRef: ElementRef
+    private domSanitizer: DomSanitizer
   ) {
     //layoutSvc.setTitle('Edit Template');
     //this.setEmptyTemplateForm();
@@ -282,7 +279,6 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
     }
 
     this.setTemplateFrom(template.from_address);
-
     this.currentTemplateFormGroup = new FormGroup({
       templateUUID: new FormControl(template.template_uuid),
       templateName: new FormControl(template.name, [Validators.required]),
@@ -298,6 +294,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
       templateText: new FormControl(template.text),
       templateHTML: new FormControl(template.html, [Validators.required]),
       landingPage: new FormControl(template.landing_page_uuid),
+      templateSendingProfile: new FormControl(template.sending_profile_id),
       authoritative: new FormControl(template.sender?.authoritative ?? 0),
       external: new FormControl(template.sender?.external ?? 0),
       internal: new FormControl(template.sender?.internal ?? 0),
@@ -361,6 +358,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
       template_uuid: form.controls['templateUUID'].value,
       name: form.controls['templateName'].value,
       landing_page_uuid: form.controls['landingPage'].value,
+      sending_profile_id: form.controls['templateSendingProfile'].value,
       deception_score: form.controls['templateDeceptionScore'].value,
       descriptive_words: form.controls['templateDescriptiveWords'].value,
       description: form.controls['templateDescription'].value,
