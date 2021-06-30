@@ -38,9 +38,14 @@ export class MonthlyComponent implements OnInit {
 
     this.route.params.subscribe((params) => {
       this.subscriptionUuid = params.id;
-      const cycle_uuid = params.cycle_uuid;
       this.reportsSvc
-        .getMonthlyReport(this.subscriptionUuid, cycle_uuid, params.isHeadless)
+        .getReport(
+          this.subscriptionUuid,
+          params.cycle_uuid,
+          'monthly',
+          params.nonhuman,
+          params.isHeadless
+        )
         .subscribe((resp) => {
           this.detail = resp;
           this.sanatize_template_indicators();

@@ -38,16 +38,16 @@ const routes: Routes = [
     path: 'reports',
     component: LayoutBlankComponent,
     children: [
-      { path: 'monthly/:id/:cycle_uuid', component: MonthlyComponent },
       {
-        path: 'monthly/:id/:cycle_uuid/:isHeadless',
+        path: 'monthly/:id/:cycle_uuid/:isHeadless/:nonhuman',
         component: MonthlyComponent,
       },
-      { path: 'cycle/:id/:cycle_uuid', component: CycleComponent },
-      { path: 'cycle/:id/:cycle_uuid/:isHeadless', component: CycleComponent },
-      { path: 'yearly/:id/:cycle_uuid', component: YearlyComponent },
       {
-        path: 'yearly/:id/:cycle_uuid/:isHeadless',
+        path: 'cycle/:id/:cycle_uuid/:isHeadless/:nonhuman',
+        component: CycleComponent,
+      },
+      {
+        path: 'yearly/:id/:cycle_uuid/:isHeadless/:nonhuman',
         component: YearlyComponent,
       },
     ],

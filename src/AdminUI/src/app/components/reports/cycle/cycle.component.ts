@@ -31,11 +31,14 @@ export class CycleComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.subscriptionUuid = params.id;
-      const isHeadless = params.isHeadless;
-      const cycleUuid = params.cycle_uuid;
-
       this.reportsSvc
-        .getCycleReport(this.subscriptionUuid, cycleUuid, isHeadless)
+        .getReport(
+          this.subscriptionUuid,
+          params.cycle_uuid,
+          'cycle',
+          params.nonhuman,
+          params.isHeadless
+        )
         .subscribe(
           (resp) => {
             this.detail = resp;
