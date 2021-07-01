@@ -1093,7 +1093,8 @@ export class SubscriptionConfigTab
       (template) => template.deception_score <= low
     );
     this.templatesAvailable.moderate = templates.filter(
-      (template) => template.deception_score <= moderate
+      (template) =>
+        template.deception_score <= moderate && template.deception_score > low
     );
     this.templatesAvailable.high = templates.filter(
       (template) => template.deception_score > moderate
