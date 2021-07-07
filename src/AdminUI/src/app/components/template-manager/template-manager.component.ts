@@ -448,11 +448,12 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
             this.router.navigate(['/templates']);
           },
           (error: any) => {
+            console.log(error)
             this.dialog.open(AlertComponent, {
               // Parse error here
               data: {
-                title: 'Template Error',
-                messageText: error.error,
+                title: `Template Error - ${error.statusText}`,
+                messageText: error.error.error,
               },
             });
           }
