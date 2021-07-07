@@ -35,6 +35,7 @@ export class TemplateSelectDialogComponent {
   templateName = '';
   templateSubject = '';
   templateFromName = '';
+  templateSelected : Boolean = false;
 
   displayedColumnsSelected = ['name', 'deception_score', 'remove'];
   displayedColumnsAvailable = ['name', 'deception_score', 'add'];
@@ -93,6 +94,7 @@ export class TemplateSelectDialogComponent {
   };
 
   display(template: Template) {
+    this.templateSelected = true
     console.log(template);
     var re = '<%URL%>';
     this.displayHTML = template.html.replace(re, 'javascript:void(0)');

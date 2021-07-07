@@ -156,7 +156,11 @@
         </div>
       </div>
       <div class="right-section">
-        <div class="template-information">
+
+        <div *ngIf="!templateSelected" class="template-information">
+          Please click a template to view a preview of it
+        </div>
+        <div *ngIf="templateSelected" class="template-information">
           <div>
             <mat-label class="h6">Template Name</mat-label>
             <div>
