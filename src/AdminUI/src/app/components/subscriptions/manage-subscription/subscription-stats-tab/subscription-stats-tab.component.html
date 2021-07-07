@@ -16,7 +16,9 @@
         >
           <mat-option *ngFor="let c of subscription.cycles" [value]="c">
             {{ c.start_date | UTCtoReadableTime }} -
-            {{ c.end_date | UTCtoReadableTime }}</mat-option
+            {{ c.end_date | UTCtoReadableTime }} ({{
+              c.total_targets
+            }})</mat-option
           >
         </mat-select>
       </mat-form-field>
