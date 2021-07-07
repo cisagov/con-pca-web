@@ -48,7 +48,7 @@ export class TemplatesPageComponent implements OnInit, AfterViewInit {
       this.showRetired
     );
     this.templatesData.sort = this.sort;
-    const sortState: Sort = {active: 'deception_score', direction: 'asc'};
+    const sortState: Sort = { active: 'deception_score', direction: 'asc' };
     this.sort.active = sortState.active;
     this.sort.direction = sortState.direction;
     this.sort.sortChange.emit(sortState);

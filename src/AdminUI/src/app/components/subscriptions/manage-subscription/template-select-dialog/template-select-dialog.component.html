@@ -1,6 +1,6 @@
 <div class="modal-container">
   <h1 mat-dialog-title>Select {{ decep_level | titlecase }} Tempalates</h1>
-  <div mat-dialog-content style="overflow:visible">
+  <div mat-dialog-content style="overflow: visible">
     <!-- Dialog Here -->
     <div class="section-container">
       <div class="left-section">
@@ -160,28 +160,28 @@
           <div>
             <mat-label class="h6">Template Name</mat-label>
             <div>
-              {{templateName}}
+              {{ templateName }}
             </div>
           </div>
           <div>
             <mat-label class="h6">Subject</mat-label>
             <div>
-              {{templateSubject}}
+              {{ templateSubject }}
             </div>
           </div>
           <div>
             <mat-label class="h6">From Address</mat-label>
             <div>
-              {{templateFromName}}
+              {{ templateFromName }}
             </div>
           </div>
-          <hr>
+          <hr />
           <div class="display-window" [innerHtml]="displayHTML"></div>
         </div>
       </div>
       <div class="close-button">
         <button
-          style="bottom:2em"
+          style="bottom: 2em"
           mat-button
           color="primary"
           [mat-dialog-close]="true"
