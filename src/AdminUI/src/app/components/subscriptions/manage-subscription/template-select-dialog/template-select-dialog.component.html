@@ -1,6 +1,6 @@
 <div class="modal-container">
   <h1 mat-dialog-title>Select {{ decep_level | titlecase }} Tempalates</h1>
-  <div mat-dialog-content>
+  <div mat-dialog-content style="overflow:visible">
     <!-- Dialog Here -->
     <div class="section-container">
       <div class="left-section">
@@ -39,7 +39,7 @@
             ></mat-header-row>
             <mat-row
               class="table-row"
-              (click)="display(row.html)"
+              (click)="display(row)"
               *matRowDef="let row; columns: displayedColumnsSelected"
             ></mat-row>
           </mat-table>
@@ -77,7 +77,7 @@
             ></mat-header-row>
             <mat-row
               class="table-row"
-              (click)="display(row.html)"
+              (click)="display(row)"
               *matRowDef="let row; columns: displayedColumnsSelected"
             ></mat-row>
           </mat-table>
@@ -114,7 +114,7 @@
             ></mat-header-row>
             <mat-row
               class="table-row"
-              (click)="display(row.html)"
+              (click)="display(row)"
               *matRowDef="let row; columns: displayedColumnsAvailable"
             ></mat-row>
           </mat-table>
@@ -149,24 +149,46 @@
             ></mat-header-row>
             <mat-row
               class="table-row"
-              (click)="display(row.html)"
+              (click)="display(row)"
               *matRowDef="let row; columns: displayedColumnsAvailable"
             ></mat-row>
           </mat-table>
         </div>
       </div>
       <div class="right-section">
-        <div class="display-window" [innerHtml]="displayHTML"></div>
-        <div class="close-button">
-          <button
-            mat-button
-            color="primary"
-            [mat-dialog-close]="true"
-            cdkFocusInitial
-          >
-            Save
-          </button>
+        <div class="template-information">
+          <div>
+            <mat-label class="h6">Template Name</mat-label>
+            <div>
+              {{templateName}}
+            </div>
+          </div>
+          <div>
+            <mat-label class="h6">Subject</mat-label>
+            <div>
+              {{templateSubject}}
+            </div>
+          </div>
+          <div>
+            <mat-label class="h6">From Address</mat-label>
+            <div>
+              {{templateFromName}}
+            </div>
+          </div>
+          <hr>
+          <div class="display-window" [innerHtml]="displayHTML"></div>
         </div>
+      </div>
+      <div class="close-button">
+        <button
+          style="bottom:2em"
+          mat-button
+          color="primary"
+          [mat-dialog-close]="true"
+          cdkFocusInitial
+        >
+          Save
+        </button>
       </div>
     </div>
   </div>
