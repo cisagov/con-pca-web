@@ -32,6 +32,10 @@ export class TemplateSelectDialogComponent {
     this.initMatTables();
   }
   displayHTML = '';
+  templateName = '';
+  templateSubject = '';
+  templateFromName = '';
+  templateSelected: Boolean = false;
 
   displayedColumnsSelected = ['name', 'deception_score', 'remove'];
   displayedColumnsAvailable = ['name', 'deception_score', 'add'];
@@ -89,10 +93,14 @@ export class TemplateSelectDialogComponent {
     this.avaiableList.filter = value.trim().toLocaleLowerCase();
   };
 
-  display(html) {
+  display(template: Template) {
+    this.templateSelected = true;
+    console.log(template);
     var re = '<%URL%>';
-    this.displayHTML = html.replace(re, 'javascript:void(0)');
+    this.displayHTML = template.html.replace(re, 'javascript:void(0)');
 
-    console.log(html);
+    this.templateName = template.name;
+    this.templateSubject = template.subject;
+    this.templateFromName = template.from_address;
   }
 }

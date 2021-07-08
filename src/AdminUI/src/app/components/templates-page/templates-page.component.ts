@@ -4,7 +4,7 @@ import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { TemplateManagerService } from 'src/app/services/template-manager.service';
 import { Template } from 'src/app/models/template.model';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, Sort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertComponent } from 'src/app/components/dialogs/alert/alert.component';
 
@@ -48,6 +48,10 @@ export class TemplatesPageComponent implements OnInit, AfterViewInit {
       this.showRetired
     );
     this.templatesData.sort = this.sort;
+    const sortState: Sort = { active: 'deception_score', direction: 'asc' };
+    this.sort.active = sortState.active;
+    this.sort.direction = sortState.direction;
+    this.sort.sortChange.emit(sortState);
     this.loading = false;
   }
 
