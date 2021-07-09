@@ -33,6 +33,7 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
     reported: { count: null },
   };
   campaignsDetails;
+  ipAsnStats = [];
 
   schemeLowMedHigh = {
     domain: ['#064875', '#fcbf10', '#007bc1'],
@@ -146,6 +147,8 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
           }
           this.aggregateCounts = stats['aggregate_stats'];
           this.campaignsDetails = stats['campaign_details'];
+          this.ipAsnStats = stats.asn_stats;
+          console.log(this.ipAsnStats);
         });
     }
   }
