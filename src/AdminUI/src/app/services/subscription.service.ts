@@ -103,12 +103,6 @@ export class SubscriptionService {
     });
   }
 
-  changeTargetCache(subscription: Subscription) {
-    return this.http.post(
-      `${this.settingsService.settings.apiUrl}/api/v1/subscription/targetcache/${subscription.subscription_uuid}/`,
-      subscription.target_email_list_cached_copy
-    );
-  }
   /**
    * Sends all information to the API to start a new subscription.
    * @param s
@@ -259,36 +253,30 @@ export class SubscriptionService {
     return this.http.delete(url);
   }
 
-  public getMonthlyReport(uuid: string, cycleUuid: string): Observable<Blob> {
+  public downloadReport(
+    uuid: string,
+    cycleUuid: string,
+    reportType: string,
+    nonhuman = false
+  ): Observable<Blob> {
     const headers = new HttpHeaders().set('Accept', 'application/pdf');
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${uuid}/pdf/monthly/${cycleUuid}/`;
+    let url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${uuid}/pdf/${reportType}/${cycleUuid}/`;
+    if (nonhuman) {
+      url += `?nonhuman=${nonhuman}`;
+    }
     return this.http.get(url, { headers, responseType: 'blob' });
   }
 
-  public getCycleReport(uuid: string, cycleUuid: string) {
-    const headers = new HttpHeaders().set('content-type', 'application/pdf');
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${uuid}/pdf/cycle/${cycleUuid}/`;
-    return this.http.get(url, { headers, responseType: 'blob' });
-  }
-
-  public getYearlyReport(uuid: string, cycleUuid: string) {
-    const headers = new HttpHeaders().set('content-type', 'application/pdf');
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${uuid}/pdf/yearly/${cycleUuid}/`;
-    return this.http.get(url, { headers, responseType: 'blob' });
-  }
-
-  public sendMonthlyReport(uuid: string, cycleUuid: string) {
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${uuid}/email/monthly/${cycleUuid}/`;
-    return this.http.get(url);
-  }
-
-  public sendCycleReport(uuid: string, cycleUuid: string) {
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${uuid}/email/cycle/${cycleUuid}/`;
-    return this.http.get(url);
-  }
-
-  public sendYearlyReport(uuid: string, cycleUuid: string) {
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${uuid}/email/yearly/${cycleUuid}/`;
+  public sendReport(
+    uuid: string,
+    cycleUuid: string,
+    reportType: string,
+    nonhuman = false
+  ) {
+    let url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${uuid}/email/${reportType}/${cycleUuid}/`;
+    if (nonhuman) {
+      url += `?nonhuman=${nonhuman}`;
+    }
     return this.http.get(url);
   }
 
@@ -317,5 +305,11 @@ export class SubscriptionService {
   public async getTemplatesSelected() {
     const url = `${this.settingsService.settings.apiUrl}/api/v1/templates/select/`;
     return this.http.get<TemplateSelected>(url).toPromise();
+  }
+
+  public getSubscriptionJSON(subscription_uuid) {
+    const headers = new HttpHeaders().set('content-type', 'application/json');
+    const url = `${this.settingsService.settings.apiUrl}/api/v1/subscription/downloadjson/${subscription_uuid}/`;
+    return this.http.get(url, { headers, responseType: 'blob' });
   }
 }

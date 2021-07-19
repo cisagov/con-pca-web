@@ -107,6 +107,9 @@ export class Cycle {
   phish_results_dirty: boolean;
   override_total_reported: Number;
   total_targets: Number;
+
+  // helper attributes
+  nonhuman = false;
 }
 
 export class TemplateSelected {

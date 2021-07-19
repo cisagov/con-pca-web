@@ -33,20 +33,23 @@ import { TemplateManagerService } from 'src/app/services/template-manager.servic
 import { SettingsService } from 'src/app/services/settings.service';
 import { BehaviorSubject } from 'rxjs';
 import { filterSendingProfiles } from '../../../../helper/utilities';
-import { Template } from 'src/app/models/template.model';
 import { TemplateSelectDialogComponent } from 'src/app/components/subscriptions/manage-subscription/template-select-dialog/template-select-dialog.component';
+import { MatCheckboxChange } from '@angular/material/checkbox';
+import { CanComponentDeactivate } from 'src/app/guards/unsaved-changes.guard';
+import { UnsavedComponent } from 'src/app/components/dialogs/unsaved/unsaved.component';
 
 @Component({
   selector: 'subscription-config-tab',
   templateUrl: './subscription-config-tab.component.html',
   styleUrls: ['./subscription-config-tab.component.scss'],
 })
-export class SubscriptionConfigTab implements OnInit, OnDestroy {
+export class SubscriptionConfigTab
+  implements OnInit, OnDestroy, CanComponentDeactivate
+{
   private routeSub: any;
-  dialogRefConfirm: MatDialogRef<ConfirmComponent>;
+  dialogRefConfirm: MatDialogRef<any>;
 
   subscribeForm: FormGroup;
-  submitted = false;
 
   processing = false;
 
@@ -61,6 +64,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
 
   // Valid configuration
   isValidConfig = true;
+  ignoreConfigError = false;
   validConfigMessage = '';
 
   // CREATE or EDIT
@@ -81,8 +85,6 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
   badCSV = false;
 
   timelineItems: any[] = [];
-
-  launchSubmitted = false;
 
   angular_subs = [];
   target_email_domain = new BehaviorSubject(null);
@@ -110,7 +112,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
 
     this.route.params.subscribe((params) => {
       if (!params.id) {
-        layoutSvc.setTitle('New Subscription');
+        this.layoutSvc.setTitle('New Subscription');
       }
     });
   }
@@ -164,7 +166,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         }),
         reportTimeUnit: new FormControl('Minutes'),
         reportDisplayTime: new FormControl(43200),
-        continuousSubscription: new FormControl(true, {}),
+        continuousSubscription: new FormControl(false, {}),
       },
       { updateOn: 'blur' }
     );
@@ -172,8 +174,6 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     this.onChanges();
 
     this.pageMode = 'EDIT';
-
-    this.launchSubmitted = false;
 
     this.subscriptionSvc.subscription = new Subscription();
     this.routeSub = this.route.params.subscribe((params) => {
@@ -187,6 +187,30 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     });
   }
 
+  public canDeactivate(): Promise<boolean> {
+    return this.isNavigationAllowed();
+  }
+
+  private isNavigationAllowed(): Promise<boolean> {
+    return new Promise<boolean>((resolve) => {
+      if (this.subscribeForm.dirty) {
+        this.dialogRefConfirm = this.dialog.open(UnsavedComponent);
+        this.dialogRefConfirm.afterClosed().subscribe((result) => {
+          if (result === 'save') {
+            this.save();
+            resolve(true);
+          } else if (result === 'discard') {
+            resolve(true);
+          } else {
+            resolve(false);
+          }
+        });
+      } else {
+        resolve(true);
+      }
+    });
+  }
+
   /**
    * Setup handlers for form field updates
    */
@@ -194,7 +218,6 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     this.angular_subs.push(
       this.f.startDate.valueChanges.subscribe((val) => {
         this.subscription.start_date = val;
-        this.persistChanges();
       })
     );
     this.angular_subs.push(
@@ -206,26 +229,19 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
       this.f.csvText.valueChanges.subscribe((val) => {
         this.evaluateTargetList(false);
         this.getValidationMessage();
-        this.persistChanges();
         this.checkValid();
       })
     );
     this.angular_subs.push(
       this.f.targetDomain.valueChanges.subscribe((val) => {
-        // if(val == ""){
-        //   this.f.targetDomain.setValue(null)
-        //   val = null
-        // }
         this.subscription.target_domain = val;
         this.target_email_domain.next(val);
         this.f.csvText.updateValueAndValidity({ emitEvent: false });
-        this.persistChanges();
       })
     );
     this.angular_subs.push(
       this.f.continuousSubscription.valueChanges.subscribe((val) => {
         this.subscription.continuous_subscription = val;
-        this.persistChanges();
       })
     );
     this.angular_subs.push(
@@ -265,7 +281,6 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         this.subscription.cycle_length_minutes =
           this.f.cycle_length_minutes.value;
         this.checkValid();
-        this.persistChanges();
       })
     );
 
@@ -306,7 +321,6 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
         this.subscription.report_frequency_minutes =
           this.f.report_frequency_minutes.value;
         this.checkValid();
-        this.persistChanges();
       })
     );
   }
@@ -345,11 +359,6 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
   persistChanges() {
     if (this.subscribeForm.invalid || !this.subscribeForm.dirty) {
       return;
-    }
-
-    // patch the subscription in real time if in edit mode
-    if (!this.subscribeForm.errors && this.pageMode.toLowerCase() === 'edit') {
-      this.subscriptionSvc.patchSubscription(this.subscription).subscribe();
     }
   }
 
@@ -398,7 +407,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     this.subscription = s as Subscription;
     this.getTemplates();
     this.subscriptionSvc.subscription = this.subscription;
-    this.f.selectedCustomerUuid.setValue(s.subscription_uuid);
+    this.f.selectedCustomerUuid.setValue(s.customer_uuid);
     this.f.primaryContact.setValue(s.primary_contact?.email);
     this.f.dhsContact.setValue(s.dhs_contact_uuid);
     this.f.startDate.setValue(s.start_date);
@@ -426,6 +435,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
 
     this.customerSvc.getCustomer(s.customer_uuid).subscribe((c: Customer) => {
       this.customer = c;
+      this.changePrimaryContact({ value: s.primary_contact?.email });
     });
 
     this.templatesSelected.high = await this.templateSvc.getAllTemplates(
@@ -561,21 +571,8 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     );
     this.subscription.primary_contact = this.primaryContact;
     this.subscriptionSvc.subscription.primary_contact = this.primaryContact;
-
-    // patch the subscription in real time if in edit mode
-    if (this.pageMode === 'EDIT') {
-      this.subscriptionSvc
-        .changePrimaryContact(
-          this.subscription.subscription_uuid,
-          this.primaryContact
-        )
-        .subscribe();
-    }
   }
 
-  /**
-   *
-   */
   changeDhsContact(e: any) {
     const contact = this.dhsContacts.find(
       (x) => x.dhs_contact_uuid === e.value
@@ -583,16 +580,6 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     if (contact) {
       this.dhsContactUuid = contact.dhs_contact_uuid;
       this.subscription.dhs_contact_uuid = this.dhsContactUuid;
-
-      // patch the subscription in real time if in edit mode
-      if (this.pageMode === 'EDIT') {
-        this.subscriptionSvc
-          .changeDhsContact(
-            this.subscription.subscription_uuid,
-            this.dhsContactUuid
-          )
-          .subscribe();
-      }
     }
   }
 
@@ -619,25 +606,17 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
       this.csvText = xyz;
       this.f.csvText.setValue(xyz);
     });
-    if (this.submitted) {
-      this.subscriptionSvc.changeTargetCache(this.subscription).subscribe();
-    }
   }
 
   targetsChanged(e: any) {
     this.csvText = e.target.value;
     this.f.csvText.setValue(e.target.value);
-    if (this.submitted) {
-      this.subscriptionSvc.changeTargetCache(this.subscription).subscribe();
-    }
   }
 
   /**
    * Tests the form for validity.
    */
   subValid() {
-    //this.submitted = true;
-
     // stop here if form is invalid
     if (this.subscribeForm.invalid) {
       return false;
@@ -657,8 +636,8 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     this.dialogRefConfirm = this.dialog.open(ConfirmComponent, {
       disableClose: false,
     });
-    this.dialogRefConfirm.componentInstance.confirmMessage = `Are you sure you want to restart ${this.subscription.name}?`;
-    this.dialogRefConfirm.componentInstance.title = 'Confirm Restart';
+    this.dialogRefConfirm.componentInstance.confirmMessage = `Are you sure you want to launch ${this.subscription.name}?`;
+    this.dialogRefConfirm.componentInstance.title = 'Confirm Launch';
 
     this.dialogRefConfirm.afterClosed().subscribe((result) => {
       if (result) {
@@ -685,18 +664,17 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
                   this.dialog.open(AlertComponent, {
                     data: {
                       title: '',
-                      messageText: `Subscription ${this.subscription.name} was restarted.`,
+                      messageText: `Subscription ${this.subscription.name} was launched.`,
                     },
                   });
                 },
                 (error) => {
-                  this.submitted = false;
                   this.processing = false;
                   this.dialog.open(AlertComponent, {
                     data: {
                       title: 'Error',
                       messageText:
-                        'An error occurred restarting the subscription: ' +
+                        'An error occurred launching the subscription: ' +
                         error.error,
                     },
                   });
@@ -755,18 +733,12 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
   }
 
   /**
-   * Set page title
+   * Submits the form to create or save a Subscription.
    */
-
-  /**
-   * Submits the form to create a new Subscription.
-   */
-  onSubmit() {
+  save() {
     if (!this.subValid()) {
       return;
     }
-
-    this.launchSubmitted = true;
 
     const sub = this.subscriptionSvc.subscription;
 
@@ -779,16 +751,16 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     if (typeof this.f.startDate.value === 'string') {
       this.f.startDate.setValue(new Date(this.f.startDate.value));
     }
-    if (this.f.startDate.value.getHours() === 0) {
-      this.f.startDate.value.setHours(10);
-    }
     sub.start_date = this.f.startDate.value;
     sub.status = 'Queued';
 
     // set the target list
     const csv = this.f.csvText.value;
     sub.target_email_list_cached_copy = this.buildTargetsFromCSV(csv);
-    sub.target_email_list = sub.target_email_list_cached_copy;
+
+    if (this.pageMode === 'CREATE') {
+      sub.target_email_list = sub.target_email_list_cached_copy;
+    }
     sub.target_domain = this.target_email_domain.value;
     sub.sending_profile_name = this.f.sendingProfile.value;
 
@@ -802,6 +774,14 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
 
     // call service with everything needed to start the subscription
     this.processing = true;
+    if (this.pageMode === 'CREATE') {
+      this.createSubscription(sub);
+    } else if (this.pageMode === 'EDIT') {
+      this.updateSubscription(sub);
+    }
+  }
+
+  createSubscription(sub: Subscription) {
     this.subscriptionSvc.submitSubscription(sub).subscribe(
       (resp: any) => {
         this.dialog.open(AlertComponent, {
@@ -815,7 +795,31 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
       },
       (error) => {
         this.processing = false;
-        this.launchSubmitted = false;
+        this.dialog.open(AlertComponent, {
+          data: {
+            title: 'Error',
+            messageText:
+              'An error occurred submitting the subscription: ' + error.error,
+          },
+        });
+      }
+    );
+  }
+
+  updateSubscription(sub: Subscription) {
+    this.subscriptionSvc.patchSubscription(sub).subscribe(
+      (resp: any) => {
+        this.dialog.open(AlertComponent, {
+          data: {
+            title: '',
+            messageText: 'Your subscription has been saved',
+          },
+        });
+        this.processing = false;
+      },
+      (error) => {
+        this.processing = false;
+        console.log(error);
         this.dialog.open(AlertComponent, {
           data: {
             title: 'Error',
@@ -891,7 +895,7 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
   public buildTargetsFromCSV(csv: string): Target[] {
     const targetList: Target[] = [];
     if (!csv) {
-      return;
+      return [];
     }
 
     const lines = csv.trim().split('\n');
@@ -1057,6 +1061,10 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     );
   }
 
+  setIgnoreConfigError(event: MatCheckboxChange) {
+    this.ignoreConfigError = event.checked;
+  }
+
   changeTemplate(input) {
     let templateData = {
       selected: this.templatesSelected[input],
@@ -1069,29 +1077,11 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
     });
     dialogRef.afterClosed().subscribe((result) => {
       this.setTemplatesSelected();
-      this.subscriptionSvc
-        .patchSubscription(this.subscription)
-        .subscribe((x) => {});
     });
   }
   async randomizeTemplates() {
-    let confirmMessage = {
-      title: 'Randomize Templates?',
-      confirmMessage:
-        'This will randomize the currently selected templates. This can not be undone',
-    };
-    let dialogRef = this.dialog.open(ConfirmComponent, {
-      data: confirmMessage,
-    });
-    dialogRef.afterClosed().subscribe(async (result) => {
-      if (result) {
-        await this.getRandomTemplates();
-        this.setTemplatesSelected();
-        this.subscriptionSvc
-          .patchSubscription(this.subscription)
-          .subscribe((x) => {});
-      }
-    });
+    await this.getRandomTemplates();
+    this.setTemplatesSelected();
   }
 
   async getTemplates() {
@@ -1103,7 +1093,8 @@ export class SubscriptionConfigTab implements OnInit, OnDestroy {
       (template) => template.deception_score <= low
     );
     this.templatesAvailable.moderate = templates.filter(
-      (template) => template.deception_score <= moderate
+      (template) =>
+        template.deception_score <= moderate && template.deception_score > low
     );
     this.templatesAvailable.high = templates.filter(
       (template) => template.deception_score > moderate

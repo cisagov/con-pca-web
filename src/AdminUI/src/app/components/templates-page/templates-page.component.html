@@ -14,10 +14,19 @@
 
     <!-- CREATE TEMPLATE -->
     <div class="d-inline-flex flex-column ml-2">
-      <button mat-raised-button color="primary" routerLink="/templatemanager">
-        New Template
-      </button>
-
+      <div class="d-flex">
+        <button mat-raised-button color="primary" routerLink="/templatemanager">
+          New Template
+        </button>
+        <button
+          style="width: 1em"
+          mat-raised-button
+          color="primary"
+          (click)="downloadTemplatesJSON()"
+        >
+          <mat-icon>download</mat-icon>
+        </button>
+      </div>
       <mat-slide-toggle
         class="mt-3 ml-1 mb-2"
         [(ngModel)]="showRetired"

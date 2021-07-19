@@ -99,6 +99,7 @@ import { LoginComponent } from 'src/app/components/login/login.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LoginService } from 'src/app/services/login.service';
 import { LayoutLoginComponent } from './components/layout/layout-login/layout-login.component';
+import { UnsavedComponent } from './components/dialogs/unsaved/unsaved.component';
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
   return () => settingsHttpService.initializeApp();
@@ -170,6 +171,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     RegisterUserComponent,
     LoginComponent,
     LayoutLoginComponent,
+    UnsavedComponent,
   ],
   imports: [
     BrowserModule,

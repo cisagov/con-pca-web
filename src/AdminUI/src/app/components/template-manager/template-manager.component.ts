@@ -33,7 +33,6 @@ import { RetireTemplateDialogComponent } from './retire-template-dialog/retire-t
 import { AlertComponent } from '../dialogs/alert/alert.component';
 import { LandingPageManagerService } from 'src/app/services/landing-page-manager.service';
 import { Landing_Page } from 'src/app/models/landing-page.models';
-import { SendingProfile } from 'src/app/models/sending-profile.model';
 import Swal from 'sweetalert2';
 
 import { SendingProfileService } from 'src/app/services/sending-profile.service';
@@ -41,6 +40,8 @@ import { TestEmail } from 'src/app/models/test-email.model';
 import { DomSanitizer } from '@angular/platform-browser';
 import { filterSendingProfiles } from '../../helper/utilities';
 import { ImportTemplateDialogComponent } from './import-template-dialog/import-template-dialog.component';
+import { CustomerService } from 'src/app/services/customer.service';
+import { Customer } from 'src/app/models/customer.model';
 
 @Component({
   selector: 'app-template-manager',
@@ -54,6 +55,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
 
   // Full template list variables
   sendingProfiles = [];
+  customers = [];
   testEmail = '';
   firstName = '';
   lastName = '';
@@ -63,6 +65,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
   templateId: string;
   retired: boolean;
   canDelete: boolean = false;
+  deleteTooltip: string = '';
   canStop: boolean = false;
   retiredReason: string;
   currentTemplateFormGroup: FormGroup;
@@ -111,13 +114,12 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
     private subscriptionSvc: SubscriptionService,
     private landingPageSvc: LandingPageManagerService,
     public sendingProfileSvc: SendingProfileService,
+    public customerSvc: CustomerService,
     private route: ActivatedRoute,
     private router: Router,
     private settingsService: SettingsService,
     public dialog: MatDialog,
-    private domSanitizer: DomSanitizer,
-    private cdr: ChangeDetectorRef,
-    private elRef: ElementRef
+    private domSanitizer: DomSanitizer
   ) {
     //layoutSvc.setTitle('Edit Template');
     //this.setEmptyTemplateForm();
@@ -178,6 +180,9 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
     });
     this.sendingProfileSvc.getAllProfiles().subscribe((data: any) => {
       this.sendingProfiles = filterSendingProfiles(data);
+    });
+    this.customerSvc.getCustomers().subscribe((data: Customer[]) => {
+      this.customers = data;
     });
   }
 
@@ -274,7 +279,6 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
     }
 
     this.setTemplateFrom(template.from_address);
-
     this.currentTemplateFormGroup = new FormGroup({
       templateUUID: new FormControl(template.template_uuid),
       templateName: new FormControl(template.name, [Validators.required]),
@@ -285,10 +289,12 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
       templateFromSender: new FormControl(this.fromSender),
       templateFromAddress: new FormControl(template.from_address),
       sendingProfile: new FormControl(''),
+      customer: new FormControl(''),
       templateSubject: new FormControl(template.subject, [Validators.required]),
       templateText: new FormControl(template.text),
       templateHTML: new FormControl(template.html, [Validators.required]),
       landingPage: new FormControl(template.landing_page_uuid),
+      templateSendingProfile: new FormControl(template.sending_profile_id),
       authoritative: new FormControl(template.sender?.authoritative ?? 0),
       external: new FormControl(template.sender?.external ?? 0),
       internal: new FormControl(template.sender?.internal ?? 0),
@@ -352,6 +358,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
       template_uuid: form.controls['templateUUID'].value,
       name: form.controls['templateName'].value,
       landing_page_uuid: form.controls['landingPage'].value,
+      sending_profile_id: form.controls['templateSendingProfile'].value,
       deception_score: form.controls['templateDeceptionScore'].value,
       descriptive_words: form.controls['templateDescriptiveWords'].value,
       description: form.controls['templateDescription'].value,
@@ -444,8 +451,8 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
             this.dialog.open(AlertComponent, {
               // Parse error here
               data: {
-                title: 'Template Error',
-                messageText: error.error,
+                title: `Template Error - ${error.statusText}`,
+                messageText: error.error.error,
               },
             });
           }
@@ -513,6 +520,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
       if (result.retired) {
         this.retired = result.retired;
         this.retiredReason = result.description;
+        this.setCanDelete();
       }
     });
   }
@@ -725,20 +733,6 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
   onSendTestClick() {
     this.submitted = true;
 
-    const sp: SendingProfile = this.f.sendingProfile.value;
-    if (!sp) {
-      Swal.fire('sending profile to test email is required');
-      return;
-    }
-    if (sp == null) {
-      Swal.fire('sending profile to test email is required');
-      return;
-    }
-    if (sp == undefined) {
-      Swal.fire('sending profile to test email is required');
-      return;
-    }
-
     //need to go get the sending profile from gophish
     let tmp_template = this.getTemplateFromForm(this.currentTemplateFormGroup);
     let email_for_test: TestEmail = {
@@ -748,7 +742,8 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
       email: this.testEmail,
       position: this.role,
       url: '',
-      smtp: sp,
+      smtp: this.f.sendingProfile.value,
+      customer_uuid: this.f.customer.value,
     };
 
     this.sendingProfileSvc.sendTestEmail(email_for_test).subscribe(
@@ -823,8 +818,11 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
   setCanDelete() {
     if (this.pcaSubscriptions.data.length > 0) {
       this.canDelete = false;
+      this.deleteTooltip =
+        'Can not delete templates associated with a subscription';
     } else {
       this.canDelete = true;
+      this.deleteTooltip = 'Delete the template';
     }
   }
 

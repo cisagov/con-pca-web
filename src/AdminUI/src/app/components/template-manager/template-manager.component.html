@@ -228,10 +228,21 @@
                 </mat-form-field>
               </div>
               <div class="d-flex flex-column pb-3">
+                <mat-form-field appearance="outline" class="flex-grow-1 mb-2">
+                  <mat-label>Sending Profile Selection</mat-label>
+                  <mat-select formControlName="templateSendingProfile">
+                    <mat-option [value]="null"></mat-option>
+                    <mat-option
+                      *ngFor="let sp of sendingProfiles"
+                      [value]="sp.id"
+                      >{{ sp.name }}</mat-option
+                    >
+                  </mat-select>
+                </mat-form-field>
                 <mat-form-field appearance="outline" class="flex-grow-1">
                   <mat-label>Landing Page Selection</mat-label>
                   <mat-select formControlName="landingPage">
-                    <mat-option [value]="0"></mat-option>
+                    <mat-option [value]="null"></mat-option>
                     <mat-option
                       *ngFor="let page of pagesList"
                       [value]="page.landing_page_uuid"
@@ -321,6 +332,34 @@
                 proceeding.
               </div>
             </div>
+            <mat-label class="h6">Customer</mat-label>
+            <div class="mb-4">
+              <div class="text-muted" *ngIf="customers.length > 0">
+                Select the customer that will be used in generating tags.
+              </div>
+              <mat-form-field appearance="outline" *ngIf="customers.length > 0">
+                <mat-label>Customer</mat-label>
+                <mat-select formControlName="customer">
+                  <mat-option [value]="null">--Select--</mat-option>
+                  <mat-option
+                    *ngFor="let c of customers"
+                    [value]="c.customer_uuid"
+                  >
+                    {{ c.name }}</mat-option
+                  >
+                </mat-select>
+                <mat-error
+                  *ngIf="submitted && f.customer.errors?.required"
+                  class="invalid-feedback"
+                >
+                  Customer required
+                </mat-error>
+              </mat-form-field>
+              <div class="error-color" *ngIf="customers.length === 0">
+                A customer is required, but none are currently configured.
+                Create one or more customers before proceeding.
+              </div>
+            </div>
             <div class="text-left mt-3 mb-4">
               <mat-form-field appearance="outline">
                 <mat-label>Test Email</mat-label>
@@ -408,9 +447,7 @@
         >
           New Template
         </button> -->
-        <!-- <button id="delete-button" class="d-flex" mat-raised-button color="warn" (click)="deleteTemplate()" *ngIf=templateId>
-          Delete Template
-        </button> -->
+
         <div class="flex-container flex-row save_container pb-3">
           <button
             id="retire-button"
@@ -442,16 +479,19 @@
           >
             Stop Template
           </button>
-          <button
-            id="stop-button"
-            class="d-flex"
-            mat-raised-button
-            color="warn"
-            (click)="deleteTemplate()"
-            *ngIf="canDelete && templateId"
-          >
-            Delete Template
-          </button>
+          <div [matTooltip]="deleteTooltip">
+            <button
+              id="stop-button"
+              class="d-flex"
+              mat-raised-button
+              [disabled]="!canDelete"
+              color="warn"
+              (click)="deleteTemplate()"
+              *ngIf="retired && templateId"
+            >
+              Delete Template
+            </button>
+          </div>
           <div class="ml-auto d-flex flex-row">
             <button
               id="save-button"

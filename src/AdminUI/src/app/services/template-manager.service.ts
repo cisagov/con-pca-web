@@ -135,4 +135,14 @@ export class TemplateManagerService {
     };
     return this.http.post(url, data);
   }
+
+  public getTemplatesJSON(showRetired) {
+    const headers = new HttpHeaders().set('content-type', 'application/json');
+    const parameters = [];
+    parameters.push(`retired=${showRetired}`);
+    const url = `${
+      this.settingsService.settings.apiUrl
+    }/api/v1/templates/downloadjson/?${parameters.join('&')}`;
+    return this.http.get(url, { headers, responseType: 'blob' });
+  }
 }

@@ -18,8 +18,15 @@ export class ChartsService {
   /**
    * Gets the subscriptions's statistics
    */
-  getStatisticsReport(subscriptionUuid: string, cycle_uuid: string) {
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${subscriptionUuid}/subscription-stats-page/${cycle_uuid}/`;
+  getStatisticsReport(
+    subscriptionUuid: string,
+    cycle_uuid: string,
+    nonhuman = false
+  ) {
+    let url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${subscriptionUuid}/subscription-stats-page/${cycle_uuid}/`;
+    if (nonhuman) {
+      url += `?nonhuman=${nonhuman}`;
+    }
     return this.http.get(url);
   }
 

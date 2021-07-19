@@ -4,7 +4,9 @@ import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { TemplateManagerService } from 'src/app/services/template-manager.service';
 import { Template } from 'src/app/models/template.model';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, Sort } from '@angular/material/sort';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertComponent } from 'src/app/components/dialogs/alert/alert.component';
 
 @Component({
   selector: '',
@@ -30,7 +32,8 @@ export class TemplatesPageComponent implements OnInit, AfterViewInit {
   constructor(
     private templateSvc: TemplateManagerService,
     private router: Router,
-    private layoutSvc: LayoutMainService
+    private layoutSvc: LayoutMainService,
+    public dialog: MatDialog
   ) {
     layoutSvc.setTitle('Templates');
   }
@@ -45,6 +48,10 @@ export class TemplatesPageComponent implements OnInit, AfterViewInit {
       this.showRetired
     );
     this.templatesData.sort = this.sort;
+    const sortState: Sort = { active: 'deception_score', direction: 'asc' };
+    this.sort.active = sortState.active;
+    this.sort.direction = sortState.direction;
+    this.sort.sortChange.emit(sortState);
     this.loading = false;
   }
 
@@ -66,5 +73,31 @@ export class TemplatesPageComponent implements OnInit, AfterViewInit {
       this.displayedColumns.push('retired');
     }
     this.refresh();
+  }
+  downloadObject(filename, blob) {
+    const a = document.createElement('a');
+    const objectUrl = URL.createObjectURL(blob);
+    a.href = objectUrl;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(objectUrl);
+  }
+
+  downloadTemplatesJSON() {
+    if (confirm('Download all templates?')) {
+      this.templateSvc.getTemplatesJSON(this.showRetired).subscribe(
+        (blob) => {
+          this.downloadObject(`template_data.json`, blob);
+        },
+        (error) => {
+          this.dialog.open(AlertComponent, {
+            data: {
+              title: 'Error',
+              messageText: `An error occured downloading the template data. Check logs for more detail.`,
+            },
+          });
+        }
+      );
+    }
   }
 }

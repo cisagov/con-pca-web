@@ -31,22 +31,23 @@ import { LandingPagesComponent } from './components/landing-pages/landing-pages.
 import { LandingPagesManagerComponent } from './components/landing-pages-manager/landing-pages-manager.component';
 import { UsersComponent } from './components/users/users.component';
 import { LayoutLoginComponent } from './components/layout/layout-login/layout-login.component';
+import { UnsavedChangesGuard } from './guards/unsaved-changes.guard';
 
 const routes: Routes = [
   {
     path: 'reports',
     component: LayoutBlankComponent,
     children: [
-      { path: 'monthly/:id/:cycle_uuid', component: MonthlyComponent },
       {
-        path: 'monthly/:id/:cycle_uuid/:isHeadless',
+        path: 'monthly/:id/:cycle_uuid/:isHeadless/:nonhuman',
         component: MonthlyComponent,
       },
-      { path: 'cycle/:id/:cycle_uuid', component: CycleComponent },
-      { path: 'cycle/:id/:cycle_uuid/:isHeadless', component: CycleComponent },
-      { path: 'yearly/:id/:cycle_uuid', component: YearlyComponent },
       {
-        path: 'yearly/:id/:cycle_uuid/:isHeadless',
+        path: 'cycle/:id/:cycle_uuid/:isHeadless/:nonhuman',
+        component: CycleComponent,
+      },
+      {
+        path: 'yearly/:id/:cycle_uuid/:isHeadless/:nonhuman',
         component: YearlyComponent,
       },
     ],
@@ -70,7 +71,13 @@ const routes: Routes = [
     path: 'view-subscription',
     component: LayoutMainComponent,
     canActivate: [AuthGuard],
-    children: [{ path: ':id', component: ManageSubscriptionComponent }],
+    children: [
+      {
+        path: ':id',
+        component: ManageSubscriptionComponent,
+        canDeactivate: [UnsavedChangesGuard],
+      },
+    ],
   },
   {
     path: 'templatemanager',

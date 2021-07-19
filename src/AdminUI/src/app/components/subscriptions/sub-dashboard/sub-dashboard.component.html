@@ -77,6 +77,27 @@
           </li>
         </ul>
       </div>
+      <div>
+        IP Address / ASN Org Breakdown:
+        <table class="table">
+          <tr>
+            <th>ASN Org</th>
+            <th>Ip Addresses</th>
+            <th>Cities</th>
+            <th>Opens</th>
+            <th>Clicks</th>
+            <th>Non-Human</th>
+          </tr>
+          <tr *ngFor="let item of ipAsnStats">
+            <td>{{ item.asn_org }}</td>
+            <td>{{ item.ips }}</td>
+            <td>{{ item.cities }}</td>
+            <td>{{ item.opens }}</td>
+            <td>{{ item.clicks }}</td>
+            <td>{{ item.is_non_human }}</td>
+          </tr>
+        </table>
+      </div>
     </div>
   </mat-card-content>
 </mat-card>

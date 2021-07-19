@@ -4,22 +4,18 @@ import * as moment from 'node_modules/moment/moment';
 import { DatePipe } from '@angular/common';
 import {
   Subscription,
-  GoPhishCampaignModel,
   TimelineItem,
   Cycle,
 } from 'src/app/models/subscription.model';
 import {
   FormGroup,
   FormControl,
-  FormBuilder,
-  Validators,
   ValidatorFn,
   ValidationErrors,
   AbstractControl,
 } from '@angular/forms';
-import { isSameDate } from 'src/app/helper/utilities';
-import { ResolvedStaticSymbol } from '@angular/compiler';
 import { Router } from '@angular/router';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'subscription-stats-tab',
@@ -295,7 +291,6 @@ export class SubscriptionStatsTab implements OnInit {
 
   focusOffOverrideVal() {
     let val = this.reportedStatsForm.controls['overRiderNumber'].value;
-    let saveVal = this.generateReportDiffernceList();
     if (val) {
       if (val >= 0) {
         this.hasOverrideValue = true;
@@ -341,6 +336,11 @@ export class SubscriptionStatsTab implements OnInit {
   cycleChange(event) {
     this.subscriptionSvc.setCycleBehaviorSubject(event.value);
     this.setReportsForCycle(event.value);
+  }
+
+  showNonHuman(event: MatSlideToggleChange) {
+    this.selectedCycle.nonhuman = event.checked;
+    this.subscriptionSvc.setCycleBehaviorSubject(this.selectedCycle);
   }
 
   buildSubscriptionTimeline(s: Subscription) {

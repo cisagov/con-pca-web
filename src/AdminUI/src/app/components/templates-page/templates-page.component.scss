@@ -38,3 +38,7 @@ mat-form-field.mat-form-field {
   -webkit-hyphens: auto;
   hyphens: auto;
 }
+.mat-column-select {
+  flex: 0 0 8%;
+  min-width: 75px;
+}

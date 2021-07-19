@@ -25,11 +25,14 @@ export class YearlyComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.subscriptionUuid = params.id;
-      const isHeadless = params.isHeadless;
-      const cycleUuid = params.cycle_uuid;
-
       this.reportsSvc
-        .getYearlyReport(this.subscriptionUuid, cycleUuid, isHeadless)
+        .getReport(
+          this.subscriptionUuid,
+          params.cycle_uuid,
+          'yearly',
+          params.nonhuman,
+          params.isHeadless
+        )
         .subscribe(
           (resp) => {
             this.detail = resp;

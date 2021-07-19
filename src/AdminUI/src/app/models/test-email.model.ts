@@ -1,6 +1,7 @@
 //this class reflects the gophish api
 //note that the template must be saved
 
+import { Customer } from './customer.model';
 import { SendingProfile } from './sending-profile.model';
 
 //before a test email can be sent
@@ -12,4 +13,5 @@ export class TestEmail {
   position: string;
   url: string;
   smtp: SendingProfile;
+  customer_uuid: string;
 }

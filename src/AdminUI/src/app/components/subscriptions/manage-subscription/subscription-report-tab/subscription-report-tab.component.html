@@ -1,5 +1,4 @@
 <div *ngIf="subscription['cycles']">
-  testsetset
   <mat-card *ngIf="subscription['cycles']">
     <mat-card-title> Reporting </mat-card-title>
     Reporting Cycle:
@@ -22,6 +21,11 @@
         </mat-select>
       </mat-form-field>
     </div>
+
+    <div class="flex flex-row">
+      Include Non-Human Interactions:
+      <mat-slide-toggle [(ngModel)]="includeNonhuman"></mat-slide-toggle>
+    </div>
   </mat-card>
   <mat-card>
     <mat-label class="h6">Reports</mat-label>
@@ -41,7 +45,7 @@
         mat-raised-button
         color="primary"
         class="mb-3"
-        (click)="viewMonthlyReport(); $event.preventDefault()"
+        (click)="viewReport('monthly'); $event.preventDefault()"
       >
         View Monthly Report
       </button>
@@ -49,7 +53,7 @@
         mat-raised-button
         color="primary"
         class="mb-3"
-        (click)="viewCycleReport(); $event.preventDefault()"
+        (click)="viewReport('cycle'); $event.preventDefault()"
       >
         View Cycle Report
       </button>
@@ -57,7 +61,7 @@
         mat-raised-button
         color="primary"
         class="mb-3"
-        (click)="viewYearlyReport(); $event.preventDefault()"
+        (click)="viewReport('yearly'); $event.preventDefault()"
       >
         View Yearly Report
       </button>
@@ -66,7 +70,7 @@
         mat-raised-button
         color="primary"
         class="mb-3"
-        (click)="downloadMonthlyReport(); $event.preventDefault()"
+        (click)="downloadReport('monthly'); $event.preventDefault()"
       >
         Download Monthly Report
       </button>
@@ -74,7 +78,7 @@
         mat-raised-button
         color="primary"
         class="mb-3"
-        (click)="downloadCycleReport(); $event.preventDefault()"
+        (click)="downloadReport('cycle'); $event.preventDefault()"
       >
         Download Cycle Report
       </button>
@@ -82,7 +86,7 @@
         mat-raised-button
         color="primary"
         class="mb-3"
-        (click)="downloadYearlyReport(); $event.preventDefault()"
+        (click)="downloadReport('yearly'); $event.preventDefault()"
       >
         Download Yearly Report
       </button>
@@ -91,7 +95,7 @@
         mat-raised-button
         color="accent"
         class="mb-3"
-        (click)="sendMonthlyReport(); $event.preventDefault()"
+        (click)="sendReport('monthly'); $event.preventDefault()"
       >
         Send Monthly Report
       </button>
@@ -99,7 +103,7 @@
         mat-raised-button
         color="accent"
         class="mb-3"
-        (click)="sendCycleReport(); $event.preventDefault()"
+        (click)="sendReport('cycle'); $event.preventDefault()"
       >
         Send Cycle Report
       </button>
@@ -107,12 +111,39 @@
         mat-raised-button
         color="accent"
         class="mb-3"
-        (click)="sendYearlyReport(); $event.preventDefault()"
+        (click)="sendReport('yearly'); $event.preventDefault()"
       >
         Send Yearly Report</button
       ><br />
     </div>
   </mat-card>
+  <mat-card>
+    <mat-label class="h6">Download Subscription Data</mat-label>
+    <div>
+      <div
+        *ngIf="loading"
+        style="text-align: center; padding-top: 2rem; padding-bottom: 2rem"
+      >
+        <mat-spinner
+          class="spinner"
+          style="margin-left: auto; margin-right: auto"
+          diameter="50"
+        ></mat-spinner>
+      </div>
+      <div class="text-muted">
+        Download all data associated with this subscription
+      </div>
+      <button
+        mat-raised-button
+        color="primary"
+        class="mb-3"
+        (click)="downloadSubscriptionData(); $event.preventDefault()"
+      >
+        Download Data
+      </button>
+    </div>
+  </mat-card>
+
   <!--
     <div *ngIf="subscription">
         <mat-form-field class="cycle-select-dropdown" *ngIf="subscription.cycles" appearance="outline">
