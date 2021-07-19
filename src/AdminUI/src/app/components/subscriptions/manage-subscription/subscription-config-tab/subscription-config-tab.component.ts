@@ -59,6 +59,7 @@ export class SubscriptionConfigTab
   timeRanges = ['Minutes', 'Hours', 'Days'];
   subscriptionPreviousTimeUnit = 'Minutes';
   reportPeriodPreviousTimeUnit = 'Minutes';
+  cooldownPreviousTimeUnit = 'Minutes';
   templatesSelected = new TemplateSelected();
   templatesAvailable = new TemplateSelected();
 
@@ -77,6 +78,8 @@ export class SubscriptionConfigTab
   dhsContactUuid: string;
 
   startAt = new Date();
+  sendBy = new Date();
+  endDate = new Date();
 
   sendingProfiles = [];
 
@@ -161,6 +164,11 @@ export class SubscriptionConfigTab
         }),
         subTimeUnit: new FormControl('Minutes'),
         subDisplayTime: new FormControl(129600),
+        cooldown_minutes: new FormControl(2880, {
+          validators: [Validators.required],
+        }),
+        cooldownTimeUnit: new FormControl('Minutes'),
+        cooldownDisplayTime: new FormControl(2880),
         report_frequency_minutes: new FormControl(43200, {
           validators: [Validators.required],
         }),
@@ -244,84 +252,129 @@ export class SubscriptionConfigTab
         this.subscription.continuous_subscription = val;
       })
     );
+
+    // On changes to cycle length time unit
     this.angular_subs.push(
       this.f.subTimeUnit.valueChanges.subscribe((val) => {
-        this.f.subDisplayTime.setValue(
-          this.convertTime(
-            this.subscriptionPreviousTimeUnit,
-            val,
-            this.f.subDisplayTime.value
-          ),
-          { emitEvent: false }
+        this.subscriptionPreviousTimeUnit = this.onTimeUnitChanges(
+          this.f.subDisplayTime,
+          this.subscriptionPreviousTimeUnit,
+          val
         );
-        this.subscriptionPreviousTimeUnit = val;
       })
     );
+
+    // On changes to cycle length time
     this.angular_subs.push(
       this.f.subDisplayTime.valueChanges.subscribe((val) => {
-        let convertedVal = this.convertTime(
-          this.subscriptionPreviousTimeUnit,
-          'Minutes',
-          this.f.subDisplayTime.value
+        this.subscription.cycle_length_minutes = this.onDisplayTimeChanges(
+          this.f.cycle_length_minutes,
+          this.f.subDisplayTime,
+          this.subscriptionPreviousTimeUnit
         );
-        if (convertedVal < 15) {
-          convertedVal = 15;
-        } else if (convertedVal > 518400) {
-          convertedVal = 518400;
-        }
-        this.f.subDisplayTime.setValue(
-          this.convertTime(
-            'Minutes',
-            this.subscriptionPreviousTimeUnit,
-            convertedVal
-          ),
-          { emitEvent: false }
-        );
-        this.f.cycle_length_minutes.setValue(convertedVal);
-        this.subscription.cycle_length_minutes =
-          this.f.cycle_length_minutes.value;
         this.checkValid();
       })
     );
 
+    // On changes to cooldown time unit
     this.angular_subs.push(
-      this.f.reportTimeUnit.valueChanges.subscribe((val) => {
-        this.f.reportDisplayTime.setValue(
-          this.convertTime(
-            this.reportPeriodPreviousTimeUnit,
-            val,
-            this.f.reportDisplayTime.value
-          ),
-          { emitEvent: false }
+      this.f.cooldownTimeUnit.valueChanges.subscribe((val) => {
+        this.cooldownPreviousTimeUnit = this.onTimeUnitChanges(
+          this.f.cooldownDisplayTime,
+          this.cooldownPreviousTimeUnit,
+          val
         );
-        this.reportPeriodPreviousTimeUnit = val;
       })
     );
+
+    // On changes to cooldown time
     this.angular_subs.push(
-      this.f.reportDisplayTime.valueChanges.subscribe((val) => {
-        let convertedVal = this.convertTime(
-          this.reportPeriodPreviousTimeUnit,
-          'Minutes',
-          this.f.reportDisplayTime.value
+      this.f.cooldownDisplayTime.valueChanges.subscribe((val) => {
+        this.subscription.cooldown_minutes = this.onDisplayTimeChanges(
+          this.f.cooldown_minutes,
+          this.f.cooldownDisplayTime,
+          this.cooldownPreviousTimeUnit
         );
-        if (convertedVal < 15) {
-          convertedVal = 15;
-        } else if (convertedVal > 518400) {
-          convertedVal = 518400;
-        }
-        this.f.reportDisplayTime.setValue(
-          this.convertTime(
-            'Minutes',
-            this.reportPeriodPreviousTimeUnit,
-            convertedVal
-          ),
-          { emitEvent: false }
-        );
-        this.f.report_frequency_minutes.setValue(convertedVal);
-        this.subscription.report_frequency_minutes =
-          this.f.report_frequency_minutes.value;
         this.checkValid();
       })
+    );
+
+    // On changes to reporting time unit
+    this.angular_subs.push(
+      this.f.reportTimeUnit.valueChanges.subscribe((val) => {
+        this.reportPeriodPreviousTimeUnit = this.onTimeUnitChanges(
+          this.f.reportDisplayTime,
+          this.reportPeriodPreviousTimeUnit,
+          val
+        );
+      })
+    );
+
+    // On changes to reporting frequency time
+    this.angular_subs.push(
+      this.f.reportDisplayTime.valueChanges.subscribe((val) => {
+        this.subscription.report_frequency_minutes = this.onDisplayTimeChanges(
+          this.f.report_frequency_minutes,
+          this.f.reportDisplayTime,
+          this.reportPeriodPreviousTimeUnit
+        );
+        this.checkValid();
+      })
+    );
+  }
+
+  onTimeUnitChanges(
+    displayFormControl: AbstractControl,
+    previousTimeUnit: string,
+    timeUnit: string
+  ) {
+    displayFormControl.setValue(
+      this.convertTime(previousTimeUnit, timeUnit, displayFormControl.value),
+      { emitEvent: false }
+    );
+    return timeUnit;
+  }
+
+  onDisplayTimeChanges(
+    valueFormControl: AbstractControl,
+    displayFormControl: AbstractControl,
+    previousTimeUnit: string
+  ) {
+    let convertedVal = this.convertTime(
+      previousTimeUnit,
+      'Minutes',
+      displayFormControl.value
+    );
+    if (convertedVal < 15) {
+      convertedVal = 15;
+    } else if (convertedVal > 518400) {
+      convertedVal = 518400;
+    }
+    displayFormControl.setValue(
+      this.convertTime('Minutes', previousTimeUnit, convertedVal),
+      { emitEvent: false }
+    );
+    valueFormControl.setValue(convertedVal);
+    this.setEndTimes();
+    return valueFormControl.value;
+  }
+
+  setEndTimes() {
+    // Calculate send by and end date
+    let start = this.f.startDate.value;
+    if (typeof start === 'string') {
+      start = new Date(this.f.startDate.value);
+    }
+    if (start < new Date()) {
+      start = new Date();
+    }
+    const cycleLength: number = +this.f.cycle_length_minutes.value;
+    const cooldownLength: number = +this.f.cooldown_minutes.value;
+    this.sendBy = new Date(start);
+    this.sendBy.setMinutes(this.sendBy.getMinutes() + cycleLength);
+    this.endDate = new Date(start);
+    this.endDate.setMinutes(
+      this.endDate.getMinutes() + cycleLength + cooldownLength
     );
   }
 
@@ -380,6 +433,7 @@ export class SubscriptionConfigTab
     this.subscription.subscription_uuid = Guid.create().toString();
     this.enableDisableFields();
     this.getRandomTemplates();
+    this.setEndTimes();
   }
   async getRandomTemplates() {
     //  Get Templates Selected
@@ -421,10 +475,16 @@ export class SubscriptionConfigTab
     this.f.cycle_length_minutes.setValue(s.cycle_length_minutes, {
       emitEvent: false,
     });
+    this.f.cooldown_minutes.setValue(s.cooldown_minutes, {
+      emitEvent: false,
+    });
     this.f.report_frequency_minutes.setValue(s.report_frequency_minutes, {
       emitEvent: false,
     });
     this.f.subDisplayTime.setValue(s.cycle_length_minutes, {
+      emitEvent: false,
+    });
+    this.f.cooldownDisplayTime.setValue(s.cooldown_minutes, {
       emitEvent: false,
     });
     this.f.reportDisplayTime.setValue(s.report_frequency_minutes, {
@@ -450,6 +510,7 @@ export class SubscriptionConfigTab
       false,
       s.templates_selected.low
     );
+    this.setEndTimes();
   }
 
   /**
@@ -766,9 +827,11 @@ export class SubscriptionConfigTab
 
     sub.continuous_subscription = this.f.continuousSubscription.value;
     const cycleLength: number = +this.f.cycle_length_minutes.value;
+    const cooldownLength: number = +this.f.cooldown_minutes.value;
     const reportLength: number = +this.f.report_frequency_minutes.value;
     sub.cycle_length_minutes = cycleLength;
     sub.report_frequency_minutes = reportLength;
+    sub.cooldown_minutes = cooldownLength;
     this.setTemplatesSelected();
     sub.templates_selected = this.subscription.templates_selected;
 

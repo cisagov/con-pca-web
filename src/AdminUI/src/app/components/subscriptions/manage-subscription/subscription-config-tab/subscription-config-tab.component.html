@@ -356,11 +356,13 @@
           {{ subscription.target_email_list_cached_copy.length }}</em
         >
       </div>
-      <mat-label class="h6">Cycle Run Length</mat-label>
-      <div class="mb-4">
-        <div class="text-muted" *ngIf="sendingProfiles.length > 0">
-          The time that the cycle will take to run. (Must be between 15 minutes
-          and 360 days)
+      <!-- Email Sent Time -->
+      <mat-label class="h6">Sending Strategy</mat-label>
+      <mat-label class="h7">Email Sent Time</mat-label>
+      <div class="mb-2">
+        <div class="text-muted">
+          The time that all emails will be sent within. (Must be between 15
+          minutes and 360 days)
         </div>
         <mat-form-field appearance="outline">
           <mat-label>Time</mat-label>
@@ -402,9 +404,45 @@
           </mat-checkbox>
         </div>
       </div>
+      <!-- Cooldown Period -->
+      <mat-label class="h7">Cooldown Period</mat-label>
+      <div class="mb-4">
+        <div class="text-muted">
+          The amount of time that links stay active to allow for user clicks.
+          (Must be between 15 minutes and 360 days)
+        </div>
+        <mat-form-field appearance="outline">
+          <mat-label>Time</mat-label>
+          <input
+            matInput
+            formControlName="cooldownDisplayTime"
+            type="text"
+            trim="blur"
+          />
+          <mat-error
+            *ngIf="f.cooldownDisplayTime.errors?.outOfRange"
+            class="invalid-feedback"
+          >
+            Must be between 15 minutes and 360 days
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Time Units</mat-label>
+          <mat-select formControlName="cooldownTimeUnit">
+            <mat-option *ngFor="let time of timeRanges" [value]="time">
+              {{ time }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+        <div class="text-muted">
+          All emails will be sent by {{ sendBy | date: "long" }} and the cycle
+          will be completed on {{ endDate | date: "long" }}.
+        </div>
+      </div>
+      <!-- Status Report Frequency -->
       <mat-label class="h6">Status Report Frequency</mat-label>
       <div class="mb-4">
-        <div class="text-muted" *ngIf="sendingProfiles.length > 0">
+        <div class="text-muted">
           The frequency at which the status report is sent out to the customer
           and CISA contact for this subscription. (Must be between 15 minutes
           and 360 days)
@@ -424,7 +462,7 @@
             Must be between 15 minutes and 360 days
           </mat-error>
         </mat-form-field>
-        <mat-form-field appearance="outline" *ngIf="sendingProfiles.length > 0">
+        <mat-form-field appearance="outline">
           <mat-label>Time Units</mat-label>
           <mat-select formControlName="reportTimeUnit">
             <mat-option *ngFor="let time of timeRanges" [value]="time">

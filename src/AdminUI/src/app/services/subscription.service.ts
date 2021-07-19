@@ -138,6 +138,7 @@ export class SubscriptionService {
       continuous_subscription: subscription.continuous_subscription,
       templates_selected: subscription.templates_selected,
       cycle_length_minutes: subscription.cycle_length_minutes,
+      cooldown_minutes: subscription.cooldown_minutes,
       report_frequency_minutes: subscription.report_frequency_minutes,
     };
 
