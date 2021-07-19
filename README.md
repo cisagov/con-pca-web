@@ -1,11 +1,8 @@
-
-<<<<<<< HEAD
 # Con-PCA Client #
-=======
+
 [![GitHub Build Status](https://github.com/cisagov/skeleton-docker/workflows/build/badge.svg)](https://github.com/cisagov/skeleton-docker/actions/workflows/build.yml)
 [![CodeQL](https://github.com/cisagov/skeleton-docker/workflows/CodeQL/badge.svg)](https://github.com/cisagov/skeleton-docker/actions/workflows/codeql-analysis.yml)
 [![Known Vulnerabilities](https://snyk.io/test/github/cisagov/skeleton-docker/badge.svg)](https://snyk.io/test/github/cisagov/skeleton-docker)
->>>>>>> b1949f9b301eef109150dfcb1febfa376e3997d8
 
 ## Requirements ##
 
@@ -17,7 +14,6 @@
   **Note:** The recommended requirement for deployment of this project is 4 GB RAM.
   For Docker for Mac, this can be set by following these steps:
 
-<<<<<<< HEAD
   Open Docker > Preferences > Advanced tab, then set memory to 4.0 GiB
 
 ## Additional Suggestions ##
@@ -54,8 +50,6 @@ docker-compose up -d
 Creating network "client_default" with the default driver
 Creating cpa-web      ... done
 ```
-=======
-## Running ##
 
 ### Running with Docker ###
 
@@ -186,15 +180,12 @@ containerize.  It is recommended that most users use a version tag (e.g.
 
 See the [tags tab](https://hub.docker.com/r/cisagov/example/tags) on Docker
 Hub for a list of all the supported tags.
->>>>>>> b1949f9b301eef109150dfcb1febfa376e3997d8
 
 Stop containers
 
-<<<<<<< HEAD
 * `make stop`
 
 Remove containers
-=======
 | Mount point | Purpose        |
 |-------------|----------------|
 | `/var/log`  |  Log storage   |
@@ -277,7 +268,6 @@ Docker:
     ```
 
 ## New repositories from a skeleton ##
->>>>>>> b1949f9b301eef109150dfcb1febfa376e3997d8
 
 * `make down`
 
