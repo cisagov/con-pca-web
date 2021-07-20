@@ -1,7 +1,13 @@
 <div class="modal-container">
   <div class="d-flex w-100">
-    <h1 class="d-flex" mat-dialog-title>Select {{ decep_level | titlecase }} Tempalates</h1>
-    <mat-form-field [style.width.px]="container.offsetWidth" class="template-select-search-bar d-flex flex-column" appearance="outline">
+    <h1 class="d-flex" mat-dialog-title>
+      Select {{ decep_level | titlecase }} Tempalates
+    </h1>
+    <mat-form-field
+      [style.width.px]="container.offsetWidth"
+      class="template-select-search-bar d-flex flex-column"
+      appearance="outline"
+    >
       <mat-label>Search</mat-label>
       <input
         [(ngModel)]="search_input"

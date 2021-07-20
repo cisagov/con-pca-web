@@ -43,13 +43,13 @@ export class TemplateSelectDialogComponent {
 
   initMatTables() {
     //Remove selected elements from the avaiable list to avoid duplicates
-    this.selectedArray.forEach(selected => {
-      this.availableArray.forEach((available,index) => {
-        if(selected['template_uuid'] == available['template_uuid']){
-          this.availableArray.splice(index,1)
+    this.selectedArray.forEach((selected) => {
+      this.availableArray.forEach((available, index) => {
+        if (selected['template_uuid'] == available['template_uuid']) {
+          this.availableArray.splice(index, 1);
         }
-      })
-    })
+      });
+    });
     this.selectedList = new MatTableDataSource<Template>(
       this.selectedArray as Template[]
     );
