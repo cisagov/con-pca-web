@@ -12,6 +12,7 @@ import { AlertComponent } from 'src/app/components/dialogs/alert/alert.component
 })
 export class TemplateSelectDialogComponent {
   decep_level: '';
+  search_input = '';
 
   selectedArray: Array<Template>;
   availableArray: Array<Template>;
@@ -41,6 +42,14 @@ export class TemplateSelectDialogComponent {
   displayedColumnsAvailable = ['name', 'deception_score', 'add'];
 
   initMatTables() {
+    //Remove selected elements from the avaiable list to avoid duplicates
+    this.selectedArray.forEach(selected => {
+      this.availableArray.forEach((available,index) => {
+        if(selected['template_uuid'] == available['template_uuid']){
+          this.availableArray.splice(index,1)
+        }
+      })
+    })
     this.selectedList = new MatTableDataSource<Template>(
       this.selectedArray as Template[]
     );
