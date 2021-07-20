@@ -11,6 +11,7 @@ import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { MaterialModule } from './material.module';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSortModule } from '@angular/material/sort';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -182,6 +183,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,
+    MatExpansionModule,
     MatSortModule,
     FormsModule,
     FontAwesomeModule,
