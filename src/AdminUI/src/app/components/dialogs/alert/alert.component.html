@@ -10,6 +10,14 @@
         >
       </mat-nav-list>
     </div>
+    <div *ngIf="listTitle" style="margin-top: 1em">
+      {{ listTitle }}
+    </div>
+    <div *ngIf="listItems" style="overflow-y: scroll; max-height: 25em">
+      <mat-nav-list>
+        <a mat-list-item *ngFor="let item of listItems"> {{ item.name }} </a>
+      </mat-nav-list>
+    </div>
   </mat-dialog-content>
 </div>
 
