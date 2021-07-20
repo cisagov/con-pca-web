@@ -105,7 +105,8 @@ export class ChartsService {
   formatReportStatsForChart(reportResponse: any) {
     const stats = reportResponse.subscription_stats;
     const levels = ['low', 'mid', 'high'];
-    const groups = ['sent', 'opened', 'clicked', 'reported'];
+    // const groups = ['sent', 'opened', 'clicked', 'reported'];
+    const groups = ['sent', 'opened', 'clicked'];
     const obj = [];
 
     groups.forEach((g) => {
