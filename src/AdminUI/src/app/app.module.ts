@@ -100,6 +100,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LoginService } from 'src/app/services/login.service';
 import { LayoutLoginComponent } from './components/layout/layout-login/layout-login.component';
 import { UnsavedComponent } from './components/dialogs/unsaved/unsaved.component';
+import { InvalidEmailDialogComponent } from './components/subscriptions/invalid-email-dialog/invalid-email-dialog.component';
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
   return () => settingsHttpService.initializeApp();
@@ -172,6 +173,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     LoginComponent,
     LayoutLoginComponent,
     UnsavedComponent,
+    InvalidEmailDialogComponent,
   ],
   imports: [
     BrowserModule,
