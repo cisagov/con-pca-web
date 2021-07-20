@@ -148,7 +148,6 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
           this.aggregateCounts = stats['aggregate_stats'];
           this.campaignsDetails = stats['campaign_details'];
           this.ipAsnStats = stats.asn_stats;
-          console.log(this.ipAsnStats);
         });
     }
   }
