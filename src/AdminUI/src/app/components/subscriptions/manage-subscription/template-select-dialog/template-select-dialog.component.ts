@@ -92,11 +92,6 @@ export class TemplateSelectDialogComponent {
     }
   }
 
-  test() {
-    console.log(this.data);
-    console.log('test from modal');
-  }
-
   public filterList = (value: string) => {
     this.selectedList.filter = value.trim().toLocaleLowerCase();
     this.avaiableList.filter = value.trim().toLocaleLowerCase();

@@ -34,6 +34,7 @@ import { SettingsService } from 'src/app/services/settings.service';
 import { BehaviorSubject } from 'rxjs';
 import { filterSendingProfiles } from '../../../../helper/utilities';
 import { TemplateSelectDialogComponent } from 'src/app/components/subscriptions/manage-subscription/template-select-dialog/template-select-dialog.component';
+import { InvalidEmailDialogComponent } from 'src/app/components/subscriptions/invalid-email-dialog/invalid-email-dialog.component';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { CanComponentDeactivate } from 'src/app/guards/unsaved-changes.guard';
 import { UnsavedComponent } from 'src/app/components/dialogs/unsaved/unsaved.component';
@@ -1203,6 +1204,46 @@ export class SubscriptionConfigTab
       this.subscription.templates_selected[key] = this.templatesSelected[
         key
       ].map((item: any) => item['template_uuid']);
+    });
+  }
+
+  removeInvalidEmails() {
+    const exprEmail =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const textInput = this.f.csvText.value;
+    let invalidEmails = [];
+
+    const lines = textInput.split('\n');
+    let index = 0;
+    for (const line of lines) {
+      const parts = line.split(',');
+      if (!!parts[0] && !exprEmail.test(String(parts[0]).toLowerCase())) {
+        invalidEmails.push({
+          val: parts[0],
+          index: index,
+        });
+      }
+      index += 1;
+    }
+
+    let dialogRef = this.dialog.open(InvalidEmailDialogComponent, {
+      data: invalidEmails,
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (Array.isArray(result)) {
+        if (result.length > 0) {
+          let newCSVText = '';
+          index = 0;
+          for (const line of lines) {
+            if (result.indexOf(index) == -1) {
+              newCSVText += `${line} \n`;
+            }
+            index += 1;
+          }
+          this.f.csvText.setValue(newCSVText);
+          this.f.csvText.updateValueAndValidity();
+        }
+      }
     });
   }
 }

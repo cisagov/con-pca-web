@@ -302,6 +302,15 @@
         >
           Remove Duplicate Emails
         </button>
+        <button
+          mat-raised-button
+          color="primary"
+          class="mb-3"
+          *ngIf="f.csvText.errors?.invalidEmailFormat"
+          (click)="removeInvalidEmails()"
+        >
+          Remove Invalid Emails
+        </button>
       </div>
       <mat-form-field class="w-100 flex-grow-1" appearance="outline">
         <mat-label>Target Emails</mat-label>
