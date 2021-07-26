@@ -11,6 +11,7 @@ import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { MaterialModule } from './material.module';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSortModule } from '@angular/material/sort';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -100,6 +101,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LoginService } from 'src/app/services/login.service';
 import { LayoutLoginComponent } from './components/layout/layout-login/layout-login.component';
 import { UnsavedComponent } from './components/dialogs/unsaved/unsaved.component';
+import { InvalidEmailDialogComponent } from './components/subscriptions/invalid-email-dialog/invalid-email-dialog.component';
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
   return () => settingsHttpService.initializeApp();
@@ -172,6 +174,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     LoginComponent,
     LayoutLoginComponent,
     UnsavedComponent,
+    InvalidEmailDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -180,6 +183,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,
+    MatExpansionModule,
     MatSortModule,
     FormsModule,
     FontAwesomeModule,
