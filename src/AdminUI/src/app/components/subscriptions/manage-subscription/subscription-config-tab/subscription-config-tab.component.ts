@@ -804,6 +804,7 @@ export class SubscriptionConfigTab
     if (!this.subValid()) {
       return;
     }
+    console.log(this.subscription.status);
 
     const sub = this.subscriptionSvc.subscription;
 
@@ -817,7 +818,6 @@ export class SubscriptionConfigTab
       this.f.startDate.setValue(new Date(this.f.startDate.value));
     }
     sub.start_date = this.f.startDate.value;
-    sub.status = 'Queued';
 
     // set the target list
     const csv = this.f.csvText.value;
