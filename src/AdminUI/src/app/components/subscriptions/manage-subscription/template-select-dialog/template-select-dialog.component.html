@@ -23,7 +23,9 @@
     <div class="section-container">
       <div class="left-section">
         <div class="template-selected-list">
-          <div class="template-table-title"> Selected ({{this.selectedArray.length}})</div>
+          <div class="template-table-title">
+            Selected ({{ this.selectedArray.length }})
+          </div>
           <mat-table class="header-table" [dataSource]="emptyList">
             <!-- Template Name -->
             <ng-container matColumnDef="name">
@@ -101,7 +103,9 @@
           </mat-table>
         </div>
         <div class="template-available-list">
-          <div class="template-table-title">Available ({{this.availableArray.length}})</div>
+          <div class="template-table-title">
+            Available ({{ this.availableArray.length }})
+          </div>
           <mat-table class="header-table" [dataSource]="emptyList">
             <!-- Template Name -->
             <ng-container matColumnDef="name">
