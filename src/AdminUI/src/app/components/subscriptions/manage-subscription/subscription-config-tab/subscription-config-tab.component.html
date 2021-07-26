@@ -306,7 +306,7 @@
           mat-raised-button
           color="primary"
           class="mb-3"
-          *ngIf="f.csvText.errors?.invalidEmailFormat"
+          *ngIf="f.csvText.errors?.invalidEmailFormat || f.csvText.errors?.emailDoesntMatchDomain"
           (click)="removeInvalidEmails()"
         >
           Remove Invalid Emails

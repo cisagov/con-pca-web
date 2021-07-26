@@ -84,6 +84,9 @@ export class SubscriptionConfigTab
 
   sendingProfiles = [];
 
+  //The sending domains in list form
+  sendingDomainList = [];
+
   // The raw CSV content of the textarea
   csvText: string;
   badCSV = false;
@@ -246,6 +249,13 @@ export class SubscriptionConfigTab
         this.subscription.target_domain = val;
         this.target_email_domain.next(val);
         this.f.csvText.updateValueAndValidity({ emitEvent: false });
+        if(this.f.targetDomain.valid){
+          let vals = val.split(',');
+          this.sendingDomainList = [];
+          for (const value of vals) {
+            this.sendingDomainList.push(value.trim());
+          }
+        }
       })
     );
     this.angular_subs.push(
@@ -1222,7 +1232,18 @@ export class SubscriptionConfigTab
           val: parts[0],
           index: index,
         });
+        index += 1;
+        continue
       }
+      let line_domain = parts[0].split('@');
+      if(this.sendingDomainList.indexOf(`@${line_domain[1]}`) <= -1){
+        invalidEmails.push({
+          val: parts[0],
+          index: index,
+        });
+        index += 1;
+        continue
+      }      
       index += 1;
     }
 
@@ -1246,4 +1267,5 @@ export class SubscriptionConfigTab
       }
     });
   }
+
 }
