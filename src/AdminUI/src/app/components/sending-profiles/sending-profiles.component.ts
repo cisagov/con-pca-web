@@ -7,6 +7,7 @@ import {
   MatDialogConfig,
   MatDialogRef,
 } from '@angular/material/dialog';
+import { AlertComponent } from 'src/app/components/dialogs/alert/alert.component';
 import { SendingProfileDetailComponent } from './sending-profile-detail.component';
 import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
@@ -82,9 +83,23 @@ export class SendingProfilesComponent implements OnInit {
    * @param row
    */
   deleteProfile(row: any) {
-    this.sendingProfileSvc.deleteProfile(row.id).subscribe(() => {
-      this.refresh();
-    });
+    this.sendingProfileSvc.deleteProfile(row.id).subscribe(
+      () => {
+        this.refresh();
+      },
+      (failure) => {
+        this.dialog.open(AlertComponent, {
+          data: {
+            title: 'Error Trying To Delete',
+            messageText:
+              'An error occurred deleting the Sending Profile: ' +
+              failure.error.error,
+            list: failure.error.fields,
+            listTitle: 'Subscriptions currently using:',
+          },
+        });
+      }
+    );
   }
 
   /**

@@ -32,7 +32,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class AlertComponent {
   public iconClass: string;
-
+  public listItems: null;
+  public listTitle: null;
   /**
    *
    */
@@ -45,6 +46,12 @@ export class AlertComponent {
     // default title
     if (!data.hasOwnProperty('title')) {
       data.title = 'Alert';
+    }
+    if (data.hasOwnProperty('listTitle')) {
+      this.listTitle = data.listTitle;
+    }
+    if (data.hasOwnProperty('list')) {
+      this.listItems = data.list;
     }
 
     // override icon class if provided
