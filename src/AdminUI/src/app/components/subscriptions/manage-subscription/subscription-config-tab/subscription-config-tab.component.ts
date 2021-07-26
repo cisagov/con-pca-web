@@ -252,7 +252,7 @@ export class SubscriptionConfigTab
         this.subscription.target_domain = val;
         this.target_email_domain.next(val);
         this.f.csvText.updateValueAndValidity({ emitEvent: false });
-        if(this.f.targetDomain.valid){
+        if (this.f.targetDomain.valid) {
           let vals = val.split(',');
           this.sendingDomainList = [];
           for (const value of vals) {
@@ -1251,17 +1251,17 @@ export class SubscriptionConfigTab
           index,
         });
         index += 1;
-        continue
+        continue;
       }
       let line_domain = parts[0].split('@');
-      if(this.sendingDomainList.indexOf(`@${line_domain[1]}`) <= -1){
+      if (this.sendingDomainList.indexOf(`@${line_domain[1]}`) <= -1) {
         invalidEmails.push({
           val: parts[0],
           index: index,
         });
         index += 1;
-        continue
-      }      
+        continue;
+      }
       index += 1;
     }
 
@@ -1285,5 +1285,4 @@ export class SubscriptionConfigTab
       }
     });
   }
-
 }
