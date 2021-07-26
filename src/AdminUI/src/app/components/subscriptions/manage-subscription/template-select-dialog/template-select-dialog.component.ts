@@ -99,10 +99,7 @@ export class TemplateSelectDialogComponent {
 
   display(template: Template) {
     this.templateSelected = true;
-    console.log(template);
-    var re = '<%URL%>';
-    this.displayHTML = template.html.replace(re, 'javascript:void(0)');
-
+    this.displayHTML = template.html;
     this.templateName = template.name;
     this.templateSubject = template.subject;
     this.templateFromName = template.from_address;
