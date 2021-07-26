@@ -82,18 +82,18 @@
         <table class="table">
           <tr>
             <th>ASN Org</th>
-            <th>Ip Addresses</th>
+            <th class="ip-column">Ip Addresses</th>
             <th>Cities</th>
-            <th>Opens</th>
-            <th>Clicks</th>
-            <th>Non-Human</th>
+            <th class="small-table-column">Opens</th>
+            <th class="small-table-column">Clicks</th>
+            <th class="non-human-column">Non-Human</th>
           </tr>
           <tr *ngFor="let item of ipAsnStats">
             <td>{{ item.asn_org }}</td>
             <td>{{ item.ips }}</td>
             <td>{{ item.cities }}</td>
-            <td>{{ item.opens }}</td>
-            <td>{{ item.clicks }}</td>
+            <td class="centered-text">{{ item.opens }}</td>
+            <td class="centered-text">{{ item.clicks }}</td>
             <td>{{ item.is_non_human }}</td>
           </tr>
         </table>
