@@ -99,6 +99,9 @@ export class SubscriptionConfigTab
     emailDoesntMatchDomain: '',
   };
 
+  exprEmail =
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
   /**
    *
    */
@@ -158,8 +161,8 @@ export class SubscriptionConfigTab
         csvText: new FormControl('', {
           validators: [
             Validators.required,
-            this.invalidCsv,
-            this.domainListValidator(this.target_email_domain),
+            this.invalidCsv(),
+            this.domainListValidator(),
           ],
           updateOn: 'blur',
         }),
@@ -1012,27 +1015,28 @@ export class SubscriptionConfigTab
   /**
    * A validator that requires the csv field to contain certain elements on each row
    */
-  invalidCsv(control: FormControl) {
-    const exprEmail =
-      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  invalidCsv(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: boolean } | null => {
+      const lines = control.value.split('\n');
+      const domains = this.getDomains();
+      for (const line of lines) {
+        const parts = line.split(',');
+        if (parts.length !== 4) {
+          return { invalidTargetCsv: true };
+        }
 
-    const lines = control.value.split('\n');
-    for (const line of lines) {
-      const parts = line.split(',');
-      if (parts.length !== 4) {
-        return { invalidTargetCsv: true };
+        if (parts[0].trim() === '') {
+          return { invalidTargetCsv: true };
+        }
+
+        const validEmailResp = this.validateEmail(parts[0], domains);
+        if (validEmailResp) {
+          return { invalidEmailFormat: true };
+        }
       }
 
-      if (parts[0].trim() === '') {
-        return { invalidTargetCsv: true };
-      }
-
-      if (!!parts[0] && !exprEmail.test(String(parts[0]).toLowerCase())) {
-        return { invalidEmailFormat: true };
-      }
-    }
-
-    return null;
+      return null;
+    };
   }
   validDomain(control: FormControl) {
     const exprEmail =
@@ -1042,13 +1046,13 @@ export class SubscriptionConfigTab
     if (control.value) {
       const parts = control.value.split(',');
       for (const part of parts) {
-        let trimmedPart = part.trim();
+        const trimmedPart = part.trim();
         if (!exprEmail.test(trimmedPart.toLowerCase())) {
           return { invalidDomain: true };
         }
       }
 
-      let value = control.value;
+      const value = control.value;
       if (value == null) {
         return null;
       }
@@ -1057,20 +1061,9 @@ export class SubscriptionConfigTab
     return null;
   }
 
-  domainListValidator(domain: BehaviorSubject<string>): ValidatorFn {
+  domainListValidator(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: boolean } | null => {
-      const exprEmail =
-        /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      let domain_targets = [];
-      let BS_sub = domain.subscribe((val) => {
-        if (val) {
-          let vals = val.split(',');
-          for (const value of vals) {
-            domain_targets.push(value.trim());
-          }
-        }
-      });
-      BS_sub.unsubscribe();
+      const domains = this.getDomains();
 
       const lines = control.value.split('\n');
       for (const line of lines) {
@@ -1078,34 +1071,61 @@ export class SubscriptionConfigTab
         if (parts.length !== 4) {
           return { invalidTargetCsv: true };
         }
-        if (parts[0].trim() == '') {
+        if (parts[0].trim() === '') {
           return { invalidTargetCsv: true };
         }
 
-        if (!!parts[0] && !exprEmail.test(String(parts[0]).toLowerCase())) {
-          return { invalidEmailFormat: true };
-        }
-        if (domain_targets.length == 0) {
+        if (domains.length === 0) {
           return { noTargetDomain: true };
         }
-        let line_domain = parts[0].split('@');
-        if (line_domain.length != 2) {
-          return { invalidEmailFormat: true };
-        }
-        let val_not_found = true;
-        for (const domain_target of domain_targets) {
-          if ('@' + line_domain[1] == domain_target) {
-            val_not_found = false;
-          }
-        }
 
-        if (val_not_found) {
-          return { emailDoesntMatchDomain: parts[0] };
+        const validEmailResp = this.validateEmail(parts[0], domains);
+        if (validEmailResp) {
+          return validEmailResp;
         }
       }
 
       return null;
     };
+  }
+
+  getDomains() {
+    const domains = [];
+    const sub = this.target_email_domain.subscribe((val: string) => {
+      if (val) {
+        const splitDomains = val.split(',');
+        for (const d of splitDomains) {
+          domains.push(d.trim());
+        }
+      }
+    });
+    sub.unsubscribe();
+    return domains;
+  }
+
+  validateEmail(email, domains: string[]) {
+    const exprEmail =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!!email && !exprEmail.test(email.toLowerCase())) {
+      return { invalidEmailFormat: true };
+    }
+    const emailParts = email.split('@');
+    if (emailParts.length !== 2) {
+      return { invalidEmailFormat: true };
+    }
+
+    let domainNotFound = true;
+    for (const domain of domains) {
+      if ('@' + emailParts[1].toLowerCase() === domain.toLowerCase()) {
+        domainNotFound = false;
+        break;
+      }
+    }
+    if (domainNotFound) {
+      return { emailDoesntMatchDomain: email };
+    }
+
+    return false;
   }
 
   getValidationMessage() {
@@ -1218,19 +1238,17 @@ export class SubscriptionConfigTab
   }
 
   removeInvalidEmails() {
-    const exprEmail =
-      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const textInput = this.f.csvText.value;
-    let invalidEmails = [];
-
+    const invalidEmails = [];
+    const domains = this.getDomains();
     const lines = textInput.split('\n');
     let index = 0;
     for (const line of lines) {
       const parts = line.split(',');
-      if (!!parts[0] && !exprEmail.test(String(parts[0]).toLowerCase())) {
+      if (this.validateEmail(parts[0], domains)) {
         invalidEmails.push({
           val: parts[0],
-          index: index,
+          index,
         });
         index += 1;
         continue
@@ -1247,7 +1265,7 @@ export class SubscriptionConfigTab
       index += 1;
     }
 
-    let dialogRef = this.dialog.open(InvalidEmailDialogComponent, {
+    const dialogRef = this.dialog.open(InvalidEmailDialogComponent, {
       data: invalidEmails,
     });
     dialogRef.afterClosed().subscribe((result) => {
@@ -1256,7 +1274,7 @@ export class SubscriptionConfigTab
           let newCSVText = '';
           index = 0;
           for (const line of lines) {
-            if (result.indexOf(index) == -1) {
+            if (result.indexOf(index) === -1) {
               newCSVText += `${line} \n`;
             }
             index += 1;
