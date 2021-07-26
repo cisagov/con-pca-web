@@ -804,7 +804,6 @@ export class SubscriptionConfigTab
     if (!this.subValid()) {
       return;
     }
-    console.log(this.subscription.status);
 
     const sub = this.subscriptionSvc.subscription;
 
