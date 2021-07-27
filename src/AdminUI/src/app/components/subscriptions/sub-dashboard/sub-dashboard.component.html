@@ -81,19 +81,27 @@
         IP Address / ASN Org Breakdown:
         <table class="table">
           <tr>
-            <th>ASN Org</th>
-            <th>Ip Addresses</th>
-            <th>Cities</th>
-            <th>Opens</th>
-            <th>Clicks</th>
-            <th>Non-Human</th>
+            <th class="asn-org">ASN Org</th>
+            <th class="large-column">Ip Addresses</th>
+            <th class="large-column">Cities</th>
+            <th class="small-table-column">Opens</th>
+            <th class="small-table-column">Clicks</th>
+            <th class="non-human-column">Non-Human</th>
           </tr>
           <tr *ngFor="let item of ipAsnStats">
-            <td>{{ item.asn_org }}</td>
-            <td>{{ item.ips }}</td>
-            <td>{{ item.cities }}</td>
-            <td>{{ item.opens }}</td>
-            <td>{{ item.clicks }}</td>
+            <td class="asn-org">{{ item.asn_org }}</td>
+            <td>
+              <span *ngFor="let ip of item.ips; let last = last"
+                >{{ ip }}{{ last ? "" : "," }}
+              </span>
+            </td>
+            <td>
+              <span *ngFor="let city of item.cities; let last = last"
+                >{{ city }}{{ last ? "" : "," }}
+              </span>
+            </td>
+            <td class="centered-text">{{ item.opens }}</td>
+            <td class="centered-text">{{ item.clicks }}</td>
             <td>{{ item.is_non_human }}</td>
           </tr>
         </table>
