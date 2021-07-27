@@ -7,6 +7,7 @@ import { Cycle } from 'src/app/models/subscription.model';
 @Component({
   selector: 'app-sub-dashboard',
   templateUrl: './sub-dashboard.component.html',
+  styleUrls: ['./sub-dashboard.component.scss'],
 })
 export class SubDashboardComponent implements OnInit, OnDestroy {
   @Input()
