@@ -31,6 +31,7 @@ export class SubscriptionStatsTab implements OnInit {
   subscription_uuid: string;
   selectedCycle: Cycle;
   timelineItems: any[] = [];
+  templateRanking: any[] = [];
   reportedStatsForm: FormGroup;
   invalidDateTimeObject: String;
   reportsData: any;

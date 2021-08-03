@@ -19,3 +19,28 @@
   max-width: 20em;
   word-break: break-word;
 }
+.metric-button-container {
+  display: inline;
+}
+
+.metric-button:first-child {
+  border-top-left-radius: 14px;
+  border-bottom-left-radius: 14px;
+  border-right: solid 2px white;
+}
+.metric-button:last-child {
+  border-bottom-right-radius: 14px;
+  border-top-right-radius: 14px;
+  border-left: solid 2px white;
+}
+
+.metric-button {
+  background: #29ab87;
+  border: solid white 2px;
+  padding: 0 1.5em;
+  color: white;
+}
+.metric-button:hover {
+  background: #18654f;
+  color: white;
+}
