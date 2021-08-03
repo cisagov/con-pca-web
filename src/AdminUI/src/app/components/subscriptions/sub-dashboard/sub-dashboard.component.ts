@@ -181,8 +181,8 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
       return 'solid 2px #D6C0C5';
     }
   }
-  getRatio(ratios){
-    let selectedString = `${this.performanceMetricUsed}_ratio`
-    return ratios[selectedString]
+  getRatio(ratios) {
+    let selectedString = `${this.performanceMetricUsed}_ratio`;
+    return ratios[selectedString];
   }
 }
