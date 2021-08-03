@@ -91,7 +91,7 @@
         </div>
         <ul>
           <li *ngFor="let row of templatePerformanceByMetric">
-            {{ row.order }} - {{ row.template.name }}
+            {{ row.order }} - {{getRatio(row.ratios) | percent}} - {{ row.template.name }}
             <a
               [routerLink]="['/templatemanager', row.template.template_uuid]"
               >{{ row.template.subject }}</a
