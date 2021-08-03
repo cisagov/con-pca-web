@@ -46,6 +46,9 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
   selected_cycle: Cycle;
 
   temp_angular_subs = [];
+  templatesByPerformance = [];
+  templatePerformanceByMetric = [];
+  performanceMetricUsed = 'clicked';
 
   /**
    *
@@ -136,8 +139,9 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
           this.chart.chartResults = this.chartsSvc.formatStatistics(stats);
           this.chartSent.chartResults =
             this.chartsSvc.getSentEmailNumbers(stats);
-
+          this.templatesByPerformance = stats.template_breakdown;
           this.avgTTFC = stats.avg_time_to_first_click;
+          this.selectTemplatePerformanceMetric();
           if (!this.avgTTFC) {
             this.avgTTFC = '(no emails clicked yet)';
           }
@@ -161,6 +165,20 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
       return val.toLocaleString();
     } else {
       return '';
+    }
+  }
+
+  selectTemplatePerformanceMetric(metric = 'clicked') {
+    this.performanceMetricUsed = metric;
+    this.templatesByPerformance.forEach((e) => {
+      if (e.type == this.performanceMetricUsed) {
+        this.templatePerformanceByMetric = e.list;
+      }
+    });
+  }
+  styleSelectedMetric(metric) {
+    if (this.performanceMetricUsed == metric) {
+      return 'solid 2px #D6C0C5';
     }
   }
 }

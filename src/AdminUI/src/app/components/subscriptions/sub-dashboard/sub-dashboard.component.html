@@ -78,6 +78,28 @@
         </ul>
       </div>
       <div>
+        Template Performance Breakdown
+        <div class="metric-button-container">
+          <button
+            *ngFor="let metric of templatesByPerformance"
+            [style.border]="styleSelectedMetric(metric.type)"
+            (click)="selectTemplatePerformanceMetric(metric.type)"
+            class="metric-button"
+          >
+            {{ metric.type | titlecase }}</button
+          >:
+        </div>
+        <ul>
+          <li *ngFor="let row of templatePerformanceByMetric">
+            {{ row.order }} - {{ row.template.name }}
+            <a
+              [routerLink]="['/templatemanager', row.template.template_uuid]"
+              >{{ row.template.subject }}</a
+            >
+          </li>
+        </ul>
+      </div>
+      <div>
         IP Address / ASN Org Breakdown:
         <table class="table">
           <tr>
