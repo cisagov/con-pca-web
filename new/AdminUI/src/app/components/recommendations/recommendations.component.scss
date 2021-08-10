@@ -1,0 +1,40 @@
+.testing {
+  outline: solid red 1px;
+}
+.testing-2 {
+  outline: solid blue 1px;
+}
+.testing-3 {
+  outline: solid green 1px;
+}
+
+.search-container .search-content {
+  display: flex;
+  flex-direction: row;
+}
+
+mat-form-field.mat-form-field {
+  font-size: 12px;
+}
+
+.search-content button.mat-raised-button {
+  font-size: 14px;
+  height: 42px;
+  margin-right: 0 !important; //Over ride mat-button default
+}
+
+.mat-column-name {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 38% !important;
+  width: 48% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  word-break: break-word;
+
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}

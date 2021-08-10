@@ -1,0 +1,565 @@
+<div [className]="pageMode == 'CREATE' ? 'inactive' : 'active_subscription'">
+  <form *ngIf="subscription" [formGroup]="subscribeForm">
+    <div class="d-flex flex-column mb-5">
+      <h2>Customer/Organization</h2>
+      <div *ngIf="customer" class="d-flex flex-row mb-4">
+        <div>
+          <mat-card
+            *ngIf="!!customer.customer_uuid"
+            class="mt-0 mr-3 mb-1 ml-0 customer-card"
+            appearance="outline"
+          >
+            <input type="hidden" formControlName="selectedCustomerUuid" />
+            <div>
+              <div>{{ customer?.name }}</div>
+              <div>{{ customer?.identifier }}</div>
+              <div>{{ customer?.address_1 }}</div>
+              <div>{{ customer?.address_2 }}</div>
+              <div>
+                {{ customer?.city }}, {{ customer?.state }}
+                {{ customer?.zip_code }}
+              </div>
+            </div>
+          </mat-card>
+
+          <div class="mb-3" [class.mt-2]="!customer.customer_uuid">
+            <button
+              mat-raised-button
+              color="primary"
+              *ngIf="pageMode == 'CREATE'"
+              (click)="showCustomerDialog()"
+            >
+              Assign Customer
+              <i class="fa fa-search" style="font-size: 1rem"></i>
+            </button>
+            <mat-error
+              *ngIf="f.selectedCustomerUuid.errors?.required"
+              class="invalid-feedback"
+            >
+              A Customer must be selected
+            </mat-error>
+          </div>
+        </div>
+
+        <div *ngIf="!!customer.customer_uuid">
+          <mat-form-field appearance="outline">
+            <mat-label>Primary Contact</mat-label>
+
+            <mat-select
+              formControlName="primaryContact"
+              (selectionChange)="changePrimaryContact($event)"
+            >
+              <mat-option [value]="null">--Select--</mat-option>
+              <mat-option
+                *ngFor="let c of customer?.contact_list"
+                [value]="c.email"
+              >
+                {{ c.first_name }} {{ c.last_name }}</mat-option
+              >
+            </mat-select>
+            <mat-error
+              *ngIf="f.primaryContact.errors?.required"
+              class="invalid-feedback"
+            >
+              A primary contact must be selected
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="outline">
+            <mat-label>CISA Contact</mat-label>
+            <mat-select
+              formControlName="dhsContact"
+              (selectionChange)="changeDhsContact($event)"
+            >
+              <mat-option [value]="null">--Select--</mat-option>
+              <mat-option
+                *ngFor="let c of dhsContacts"
+                [value]="c.dhs_contact_uuid"
+              >
+                {{ c.first_name }} {{ c.last_name }}</mat-option
+              >
+            </mat-select>
+            <mat-error
+              *ngIf="f.dhsContact.errors?.required"
+              class="invalid-feedback"
+            >
+              CISA contact must be selected
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <mat-label class="h6">Start Date</mat-label>
+      <div class="mb-4">
+        <mat-form-field appearance="outline">
+          <input
+            matInput
+            formControlName="startDate"
+            [matDatepicker]="picker"
+            [min]="startAt"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker [startAt]="startAt"></mat-datepicker>
+          <mat-error
+            *ngIf="f.startDate.errors?.required"
+            class="invalid-feedback"
+          >
+            Start Date is required
+          </mat-error>
+          <mat-error
+            *ngIf="f.startDate.errors?.matDatepickerMin"
+            class="invalid-feedback"
+          >
+            Start Date cannot be in the past
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div *ngIf="pageMode != 'CREATE'">
+        <mat-label class="h6">Subscription Info</mat-label>
+        <div class="mb-4">
+          <table class="table" style="max-width: 33rem">
+            <tr>
+              <td>CISA-PHISH Header Value</td>
+              <td class="text-right" style="color: grey; cursor: default">
+                {{ subscription.subscription_uuid }}
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <mat-label *ngIf="subscription.templates_selected" class="h6"
+        >Template Selection
+        <mat-icon
+          (click)="randomizeTemplates()"
+          matTooltip="Randomize Templates"
+          class="randomize-button"
+          >refresh</mat-icon
+        >
+      </mat-label>
+      <div
+        *ngIf="subscription.templates_selected"
+        class="template-selction-container"
+      >
+        <div class="template-selection-level-container">
+          <div class="tslc-title">Low</div>
+          <ul class="template-selected-list">
+            <li
+              class="template-selction-row"
+              *ngFor="let item of templatesSelected['low']"
+            >
+              {{ item.name }}
+            </li>
+          </ul>
+          <button
+            class="change-template-btn"
+            (click)="changeTemplate('low')"
+            mat-raised-button
+            color="primary"
+          >
+            Change Template
+          </button>
+        </div>
+        <div class="template-selection-level-container">
+          <div class="tslc-title">Moderate</div>
+          <ul class="template-selected-list">
+            <li
+              class="template-selction-row"
+              *ngFor="let item of templatesSelected['moderate']"
+            >
+              {{ item.name }}
+            </li>
+          </ul>
+          <button
+            class="change-template-btn"
+            (click)="changeTemplate('moderate')"
+            mat-raised-button
+            color="primary"
+          >
+            Change Template
+          </button>
+        </div>
+        <div class="template-selection-level-container">
+          <div class="tslc-title">High</div>
+          <ul class="template-selected-list">
+            <li
+              class="template-selction-row"
+              *ngFor="let item of templatesSelected['high']"
+            >
+              {{ item.name }}
+            </li>
+          </ul>
+          <button
+            class="change-template-btn"
+            (click)="changeTemplate('high')"
+            mat-raised-button
+            color="primary"
+          >
+            Change Template
+          </button>
+        </div>
+      </div>
+
+      <mat-label class="h6">Sending Profile </mat-label>
+      <div class="mb-4">
+        <div class="text-muted" *ngIf="sendingProfiles.length > 0">
+          Select the sending profile that will be used
+        </div>
+        <mat-form-field appearance="outline" *ngIf="sendingProfiles.length > 0">
+          <mat-label>Sending Profile</mat-label>
+          <mat-select formControlName="sendingProfile">
+            <mat-option [value]="null">--Select--</mat-option>
+            <mat-option *ngFor="let sp of sendingProfiles" [value]="sp.name">
+              {{ sp.name }}</mat-option
+            >
+          </mat-select>
+          <mat-error
+            *ngIf="f.sendingProfile.errors?.required"
+            class="invalid-feedback"
+          >
+            Sending Profile required
+          </mat-error>
+        </mat-form-field>
+        <div class="error-color" *ngIf="sendingProfiles.length === 0">
+          A Sending Profile is required, but none are currently configured.
+          Create one or more Sending Profiles before proceeding.
+        </div>
+      </div>
+      <div class="mb-3">
+        <mat-label class="h6">Target Email Domain</mat-label>
+        <div class="text-muted">
+          Specify the domains that the target emails can be under. Provide a
+          list of domains separated by commas.
+        </div>
+        <div class="text-muted">
+          <em>Format: @domainOne.com, @domainTwo.com, @domainThree.com</em>
+        </div>
+        <mat-form-field class="w-100" appearance="outline">
+          <input
+            matInput
+            formControlName="targetDomain"
+            type="text"
+            trim="blur"
+            [ngClass]="{ 'is-invalid': f.targetDomain.errors }"
+          />
+          <mat-error
+            *ngIf="f.targetDomain.errors?.required"
+            class="invalid-feedback"
+          >
+            Target Email Domain is a a required field
+          </mat-error>
+          <mat-error
+            *ngIf="f.targetDomain.errors?.invalidDomain"
+            class="invalid-feedback"
+          >
+            Must be a valid domain format - '@example.com'
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="mb-3">
+        <div>
+          <mat-label class="h6">Target Recipients</mat-label>
+        </div>
+        <div class="text-muted" *ngIf="f.csvText?.enabled">
+          Upload an Excel spreadsheet or comma-separated value text file
+          containing the list of target individuals or enter them directly in
+          the field below.
+        </div>
+        <div class="text-muted">
+          <em>Format: email, first name, last name, position</em>
+        </div>
+      </div>
+
+      <div>
+        <button
+          mat-raised-button
+          color="primary"
+          class="mb-3"
+          *ngIf="f.csvText?.enabled"
+          (click)="openFileBrowser($event)"
+        >
+          Upload Email Targets List <i class="fa fa-upload"></i>
+        </button>
+        <input
+          id="csvUpload"
+          type="file"
+          accept=".csv,.xls,.xlsx"
+          (change)="fileSelect($event)"
+          class="d-none"
+        />
+
+        <button
+          mat-raised-button
+          color="primary"
+          class="mb-3"
+          *ngIf="f.csvText?.enabled"
+          (click)="evaluateTargetList(true)"
+        >
+          Remove Duplicate Emails
+        </button>
+        <button
+          mat-raised-button
+          color="primary"
+          class="mb-3"
+          *ngIf="f.csvText.errors?.invalidEmailFormat"
+          (click)="removeInvalidEmails()"
+        >
+          Remove Invalid Emails
+        </button>
+      </div>
+      <mat-form-field class="w-100 flex-grow-1" appearance="outline">
+        <mat-label>Target Emails</mat-label>
+        <textarea
+          matInput
+          rows="10"
+          style="overflow: scroll"
+          formControlName="csvText"
+          [ngClass]="{ 'is-invalid': f.csvText.errors }"
+          (change)="targetsChanged($event)"
+        >
+        </textarea>
+        <mat-error
+          *ngIf="f.csvText.errors?.invalidEmailFormat"
+          class="invalid-feedback"
+        >
+          One or more email addresses are invalid
+        </mat-error>
+        <mat-error *ngIf="f.csvText.errors?.required" class="invalid-feedback">
+          At least 1 target must be defined
+        </mat-error>
+        <mat-error
+          *ngIf="
+            f.csvText.errors?.invalidTargetCsv && !f.csvText.errors?.required
+          "
+          class="invalid-feedback"
+        >
+          All target lines must have an email and contain only 4 parts.
+        </mat-error>
+        <mat-error
+          *ngIf="
+            f.csvText.errors?.emailDoesntMatchDomain &&
+            !f.csvText.errors?.required
+          "
+          class="invalid-feedback"
+        >
+          The email {{ this.validationErrors.emailDoesntMatchDomain }} does not
+          match any of the domain targets specified in the domain targets field
+        </mat-error>
+        <mat-error
+          *ngIf="
+            f.csvText.errors?.noTargetDomain && !f.csvText.errors?.required
+          "
+          class="invalid-feedback"
+        >
+          A Target Email Domain must be specified
+        </mat-error>
+      </mat-form-field>
+      <div class="text-muted mb-3">
+        <em
+          >Target Count:
+          {{ subscription.target_email_list_cached_copy.length }}</em
+        >
+      </div>
+      <!-- Email Sent Time -->
+      <mat-label class="h6">Sending Strategy</mat-label>
+      <mat-label class="h7">Email Sent Time</mat-label>
+      <div class="mb-2">
+        <div class="text-muted">
+          The time that all emails will be sent within. (Must be between 15
+          minutes and 360 days)
+        </div>
+        <mat-form-field appearance="outline">
+          <mat-label>Time</mat-label>
+          <input
+            matInput
+            formControlName="subDisplayTime"
+            type="text"
+            trim="blur"
+          />
+          <mat-error
+            *ngIf="f.subDisplayTime.errors?.required"
+            class="invalid-feedback"
+          >
+            Run time is a required field
+          </mat-error>
+          <mat-error
+            *ngIf="f.subDisplayTime.errors?.outOfRange"
+            class="invalid-feedback"
+          >
+            Must be between 15 minutes and 360 days
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" *ngIf="sendingProfiles.length > 0">
+          <mat-label>Time Units</mat-label>
+          <mat-select formControlName="subTimeUnit">
+            <mat-option *ngFor="let time of timeRanges" [value]="time">
+              {{ time }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+        <div class="error-color mb-3" *ngIf="!isValidConfig">
+          {{ validConfigMessage }}
+        </div>
+        <div class="error-color" *ngIf="!isValidConfig">
+          <mat-checkbox (change)="setIgnoreConfigError($event)">
+            I understand that this configuration does not fall within
+            recommended email sending guidelines, but would like to continue
+            anyway.
+          </mat-checkbox>
+        </div>
+      </div>
+      <!-- Cooldown Period -->
+      <mat-label class="h7">Cooldown Period</mat-label>
+      <div class="mb-4">
+        <div class="text-muted">
+          The amount of time that links stay active to allow for user clicks.
+          (Must be between 15 minutes and 360 days)
+        </div>
+        <mat-form-field appearance="outline">
+          <mat-label>Time</mat-label>
+          <input
+            matInput
+            formControlName="cooldownDisplayTime"
+            type="text"
+            trim="blur"
+          />
+          <mat-error
+            *ngIf="f.cooldownDisplayTime.errors?.outOfRange"
+            class="invalid-feedback"
+          >
+            Must be between 15 minutes and 360 days
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Time Units</mat-label>
+          <mat-select formControlName="cooldownTimeUnit">
+            <mat-option *ngFor="let time of timeRanges" [value]="time">
+              {{ time }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+        <div class="text-muted">
+          All emails will be sent by {{ sendBy | date: "long" }} and the cycle
+          will be completed on {{ endDate | date: "long" }}.
+        </div>
+      </div>
+      <!-- Status Report Frequency -->
+      <mat-label class="h6">Status Report Frequency</mat-label>
+      <div class="mb-4">
+        <div class="text-muted">
+          The frequency at which the status report is sent out to the customer
+          and CISA contact for this subscription. (Must be between 15 minutes
+          and 360 days)
+        </div>
+        <mat-form-field appearance="outline">
+          <mat-label>Time</mat-label>
+          <input
+            matInput
+            formControlName="reportDisplayTime"
+            type="text"
+            trim="blur"
+          />
+          <mat-error
+            *ngIf="f.reportDisplayTime.errors?.outOfRange"
+            class="invalid-feedback"
+          >
+            Must be between 15 minutes and 360 days
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Time Units</mat-label>
+          <mat-select formControlName="reportTimeUnit">
+            <mat-option *ngFor="let time of timeRanges" [value]="time">
+              {{ time }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="text-muted">
+        *Note while a subscription is actively running, changes to the email
+        list will not take effect until the next 90 day cycle.
+      </div>
+
+      <div class="continuous-subscription-checkbox">
+        <mat-checkbox formControlName="continuousSubscription"
+          >Continuous Subscription Cycles</mat-checkbox
+        >
+      </div>
+      <div class="d-flex flex-row-reverse justify-content-between">
+        <div class="d-flex flex-row">
+          <!-- DROP DOWN MENU BUTTON -->
+          <button
+            mat-raised-button
+            color="accent"
+            [matMenuTriggerFor]="menu"
+            *ngIf="pageMode === 'EDIT'"
+          >
+            Actions<mat-icon>arrow_drop_up</mat-icon>
+          </button>
+          <mat-menu xPosition="before" yPosition="above" #menu="matMenu">
+            <button
+              mat-menu-item
+              (click)="startSubscription()"
+              *ngIf="
+                (subscription?.status == 'stopped' ||
+                  subscription?.status == 'created') &&
+                !subscription?.archived
+              "
+            >
+              <mat-icon color="primary">play_arrow</mat-icon>Launch
+            </button>
+            <button
+              mat-menu-item
+              (click)="stopSubscription()"
+              *ngIf="subscription?.status != 'stopped'"
+            >
+              <mat-icon color="accent">stop</mat-icon>Stop
+            </button>
+            <delete-subscription
+              [subscription]="subscription"
+            ></delete-subscription>
+            <button
+              mat-menu-item
+              (click)="archiveSubscription()"
+              *ngIf="
+                subscription?.status === 'stopped' && !subscription?.archived
+              "
+            >
+              <mat-icon>archive</mat-icon>Archive
+            </button>
+            <button
+              mat-menu-item
+              (click)="unarchiveSubscription()"
+              *ngIf="subscription?.archived"
+            >
+              <mat-icon>unarchive</mat-icon>Unarchive Subscription
+            </button>
+          </mat-menu>
+          <!-- START/CREATE BUTTON -->
+          <button
+            type="submit"
+            mat-raised-button
+            color="primary"
+            [disabled]="!isValidConfig && !ignoreConfigError"
+            (click)="save()"
+          >
+            <div *ngIf="pageMode === 'CREATE'">Create Subscription</div>
+            <div *ngIf="pageMode === 'EDIT'">Save Subscription</div>
+          </button>
+        </div>
+      </div>
+
+      <mat-progress-spinner
+        *ngIf="processing"
+        class="spinner mt-3"
+        diameter="25"
+        mode="indeterminate"
+      ></mat-progress-spinner>
+    </div>
+  </form>
+</div>

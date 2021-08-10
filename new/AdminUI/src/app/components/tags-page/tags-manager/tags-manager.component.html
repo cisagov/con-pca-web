@@ -1,0 +1,120 @@
+<div class="container-fluid">
+  <div class="row h-100">
+    <div class="col-8 h-100 d-flex flex-column mt-2">
+      <div class="p-3">
+        <div class="d-flex flex-row mb-3">
+          <div
+            class="d-flex flex-grow-1 flex-column"
+            [formGroup]="tagFormGroup"
+          >
+            <div class="d-flex flex-row">
+              <mat-form-field appearance="outline" class="flex-grow-1 pb-3">
+                <mat-label>Tag Name*</mat-label>
+                <input
+                  type="text"
+                  trim="blur"
+                  matInput
+                  placeholder="Tag Name"
+                  formControlName="tagName"
+                  (change)="
+                    tagFormGroup.patchValue({
+                      tagName: $event.target.value.toUpperCase()
+                    })
+                  "
+                />
+                <mat-error
+                  *ngIf="tagFormGroup.controls.tagName.hasError('required')"
+                >
+                  Tag name is <strong>required</strong>
+                </mat-error>
+                <mat-error
+                  *ngIf="tagFormGroup.controls.tagName.hasError('whitespace')"
+                >
+                  Tag name may not contain only spaces
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="d-flex flex-row">
+              <mat-form-field appearance="outline" class="flex-grow-1 pb-3">
+                <mat-label>Tag Data Source*</mat-label>
+                <input
+                  type="text"
+                  trim="blur"
+                  matInput
+                  placeholder="Tag Data Source"
+                  formControlName="tagDataSource"
+                />
+                <mat-error
+                  *ngIf="
+                    tagFormGroup.controls.tagDataSource.hasError('required')
+                  "
+                >
+                  Tag Data Source is <strong>required</strong>
+                </mat-error>
+                <mat-error
+                  *ngIf="
+                    tagFormGroup.controls.tagDataSource.hasError('whitespace')
+                  "
+                >
+                  Tag Data Source may not contain only spaces
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="d-flex flex-row">
+              <mat-form-field appearance="outline" *ngIf="tagTypes.length > 0">
+                <mat-label>Tag Type</mat-label>
+                <mat-select formControlName="tagType">
+                  <mat-option [value]="null">--Select--</mat-option>
+                  <mat-option *ngFor="let tt of tagTypes" [value]="tt">
+                    {{ tt }}</mat-option
+                  >
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="d-flex flex-row">
+              <mat-form-field appearance="outline" class="flex-grow-1">
+                <mat-label>Description</mat-label>
+                <textarea
+                  trim="blur"
+                  matInput
+                  cdkTextareaAutosize
+                  cdkAutosizeMinRows="5"
+                  cdkAutosizeMaxRows="10"
+                  placeholder="Description"
+                  formControlName="tagDescription"
+                ></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex flex-row flex-grow-1 justify-content-end">
+        <div
+          matTooltip="A Tag must have all required fields filled"
+          matTooltipPosition="right"
+          matTooltipShowDelay="500"
+        >
+          <button
+            id="save-button"
+            class="d-flex"
+            mat-raised-button
+            (click)="saveTags()"
+          >
+            Save Tag
+          </button>
+        </div>
+        <button
+          id="save-button-cancel"
+          class="d-flex"
+          mat-flat-button
+          (click)="onCancelClick()"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

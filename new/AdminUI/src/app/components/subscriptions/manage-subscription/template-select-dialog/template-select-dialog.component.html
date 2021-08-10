@@ -1,0 +1,220 @@
+<div class="modal-container">
+  <div class="d-flex w-100">
+    <h1 class="d-flex" mat-dialog-title>
+      Select {{ decep_level | titlecase }} Tempalates
+    </h1>
+    <mat-form-field
+      [style.width.px]="container.offsetWidth"
+      class="template-select-search-bar d-flex flex-column"
+      appearance="outline"
+    >
+      <mat-label>Search</mat-label>
+      <input
+        [(ngModel)]="search_input"
+        (keyup)="filterList($event.target.value)"
+        matInput
+        placeholder="Search"
+      />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </div>
+  <div mat-dialog-content style="overflow: visible">
+    <!-- Dialog Here -->
+    <div class="section-container">
+      <div class="left-section">
+        <div class="template-selected-list">
+          <div class="template-table-title">
+            Selected ({{ this.selectedArray.length }})
+          </div>
+          <mat-table class="header-table" [dataSource]="emptyList">
+            <!-- Template Name -->
+            <ng-container matColumnDef="name">
+              <mat-header-cell *matHeaderCellDef>Template Name</mat-header-cell>
+              <mat-cell *matCellDef="let row">{{ row.name }}</mat-cell>
+            </ng-container>
+
+            <!-- Deception Score -->
+            <ng-container matColumnDef="deception_score">
+              <mat-header-cell *matHeaderCellDef
+                >Deception Score</mat-header-cell
+              >
+              <mat-cell class="score-cell" *matCellDef="let row">{{
+                row.deception_score
+              }}</mat-cell>
+            </ng-container>
+
+            <!-- Remove -->
+            <ng-container matColumnDef="remove">
+              <mat-header-cell *matHeaderCellDef>Remove</mat-header-cell>
+              <mat-cell *matCellDef="let row"
+                ><mat-icon class="cursor-pointer" (click)="remove(row)"
+                  >remove_circle</mat-icon
+                ></mat-cell
+              >
+            </ng-container>
+
+            <!-- Header Info -->
+            <mat-header-row
+              *matHeaderRowDef="displayedColumnsSelected"
+            ></mat-header-row>
+            <mat-row
+              class="table-row"
+              (click)="display(row)"
+              *matRowDef="let row; columns: displayedColumnsSelected"
+            ></mat-row>
+          </mat-table>
+          <mat-table class="template-mat-table" [dataSource]="selectedList">
+            <!-- Template Name -->
+            <ng-container matColumnDef="name">
+              <mat-header-cell *matHeaderCellDef>Template Name</mat-header-cell>
+              <mat-cell *matCellDef="let row">{{ row.name }}</mat-cell>
+            </ng-container>
+
+            <!-- Deception Score -->
+            <ng-container matColumnDef="deception_score">
+              <mat-header-cell *matHeaderCellDef
+                >Deception Score</mat-header-cell
+              >
+              <mat-cell class="score-cell" *matCellDef="let row">{{
+                row.deception_score
+              }}</mat-cell>
+            </ng-container>
+
+            <!-- Remove -->
+            <ng-container matColumnDef="remove">
+              <mat-header-cell *matHeaderCellDef>Remove</mat-header-cell>
+              <mat-cell *matCellDef="let row"
+                ><mat-icon class="cursor-pointer" (click)="remove(row)"
+                  >remove_circle</mat-icon
+                ></mat-cell
+              >
+            </ng-container>
+
+            <!-- Header Info -->
+            <mat-header-row
+              style="display: none"
+              *matHeaderRowDef="displayedColumnsSelected"
+            ></mat-header-row>
+            <mat-row
+              class="table-row"
+              (click)="display(row)"
+              *matRowDef="let row; columns: displayedColumnsSelected"
+            ></mat-row>
+          </mat-table>
+        </div>
+        <div class="template-available-list">
+          <div class="template-table-title">
+            Available ({{ this.availableArray.length }})
+          </div>
+          <mat-table class="header-table" [dataSource]="emptyList">
+            <!-- Template Name -->
+            <ng-container matColumnDef="name">
+              <mat-header-cell *matHeaderCellDef>Template Name</mat-header-cell>
+              <mat-cell *matCellDef="let row">{{ row.name }}</mat-cell>
+            </ng-container>
+
+            <!-- Deception Score -->
+            <ng-container matColumnDef="deception_score">
+              <mat-header-cell *matHeaderCellDef>Approved</mat-header-cell>
+              <mat-cell *matCellDef="let row">{{
+                row.deception_score
+              }}</mat-cell>
+            </ng-container>
+            <!-- Add -->
+            <ng-container matColumnDef="add">
+              <mat-header-cell *matHeaderCellDef>Remove</mat-header-cell>
+              <mat-cell *matCellDef="let row"
+                ><mat-icon class="cursor-pointer" (click)="add(row)"
+                  >add_circle</mat-icon
+                ></mat-cell
+              >
+            </ng-container>
+
+            <!-- Header Info -->
+            <mat-header-row
+              *matHeaderRowDef="displayedColumnsAvailable"
+            ></mat-header-row>
+            <mat-row
+              class="table-row"
+              (click)="display(row)"
+              *matRowDef="let row; columns: displayedColumnsAvailable"
+            ></mat-row>
+          </mat-table>
+          <mat-table class="template-mat-table" [dataSource]="avaiableList">
+            <!-- Template Name -->
+            <ng-container matColumnDef="name">
+              <mat-header-cell *matHeaderCellDef>Template Name</mat-header-cell>
+              <mat-cell *matCellDef="let row">{{ row.name }}</mat-cell>
+            </ng-container>
+
+            <!-- Deception Score -->
+            <ng-container matColumnDef="deception_score">
+              <mat-header-cell *matHeaderCellDef>Approved</mat-header-cell>
+              <mat-cell *matCellDef="let row">{{
+                row.deception_score
+              }}</mat-cell>
+            </ng-container>
+            <!-- Add -->
+            <ng-container matColumnDef="add">
+              <mat-header-cell *matHeaderCellDef>Remove</mat-header-cell>
+              <mat-cell *matCellDef="let row"
+                ><mat-icon class="cursor-pointer" (click)="add(row)"
+                  >add_circle</mat-icon
+                ></mat-cell
+              >
+            </ng-container>
+
+            <!-- Header Info -->
+            <mat-header-row
+              style="display: none"
+              *matHeaderRowDef="displayedColumnsAvailable"
+            ></mat-header-row>
+            <mat-row
+              class="table-row"
+              (click)="display(row)"
+              *matRowDef="let row; columns: displayedColumnsAvailable"
+            ></mat-row>
+          </mat-table>
+        </div>
+      </div>
+      <div #container class="right-section">
+        <div *ngIf="!templateSelected" class="template-information">
+          Please click a template to view a preview of it.
+        </div>
+        <div *ngIf="templateSelected" class="template-information">
+          <div>
+            <mat-label class="h6">Template Name</mat-label>
+            <div>
+              {{ templateName }}
+            </div>
+          </div>
+          <div>
+            <mat-label class="h6">Subject</mat-label>
+            <div>
+              {{ templateSubject }}
+            </div>
+          </div>
+          <div>
+            <mat-label class="h6">From Address</mat-label>
+            <div>
+              {{ templateFromName }}
+            </div>
+          </div>
+          <hr />
+          <div class="display-window" [innerHtml]="displayHTML"></div>
+        </div>
+      </div>
+      <div class="close-button">
+        <button
+          style="bottom: 2em"
+          mat-button
+          color="primary"
+          [mat-dialog-close]="true"
+          cdkFocusInitial
+        >
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

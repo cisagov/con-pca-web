@@ -1,0 +1,27 @@
+<mat-dialog-content class="d-flex flex-column">
+  <mat-form-field appearance="outline" class="flex-grow-1">
+    <textarea
+      matInput
+      cdkTextareaAutosize
+      cdkAutosizeMinRows="5"
+      cdkAutosizeMaxRows="20"
+      [(ngModel)]="content"
+    >
+    </textarea>
+  </mat-form-field>
+  <mat-checkbox [(ngModel)]="convertLink"
+    >Change Links to Point to Landing Page</mat-checkbox
+  >
+  <div class="d-flex flex-row mt-3 justify-content-end">
+    <button mat-raised-button color="accent" (click)="cancel()">Cancel</button>
+    <button
+      mat-raised-button
+      [disabled]="!content"
+      cdkFocusInitial
+      color="primary"
+      (click)="import()"
+    >
+      Import
+    </button>
+  </div>
+</mat-dialog-content>

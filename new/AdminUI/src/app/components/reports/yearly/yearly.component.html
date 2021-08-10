@@ -1,0 +1,603 @@
+<!-- <script type="text/javascript">
+    google.charts.load('current', { packages: ['corechart', 'line'] });
+    google.charts.setOnLoadCallback(drawYearTrends);
+    google.charts.setOnLoadCallback(drawNumbersByLevel);
+    google.charts.setOnLoadCallback(drawTimeIntervalGraph);
+    google.charts.setOnLoadCallback(drawTimeComplexityGraph);
+
+    // Yearly Trend Graph
+    function drawYearTrends() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('number', 'X');
+        data.addColumn('number', 'Clicked');
+        data.addColumn('number', 'Submitted')
+
+        data.addRows([
+            [1, 50, 25], [2, 41, 21], [3, 21, 10], [4, 19, 11]
+        ]);
+
+        var options = {
+            hAxis: { title: 'Quarter' },
+            vAxis: { title: 'Percent' }
+        };
+
+        var chart_div = document.getElementById('percentageLineGraph');
+        var chart_div2 = document.getElementById('clickedVsReportedLineGraph');
+        var chart = new google.visualization.LineChart(chart_div);
+
+        google.visualization.events.addListener(chart, 'ready', function () {
+            chart_div.innerHTML = '<img src="' + chart.getImageURI() + '">';
+            chart_div2.innerHTML = '<img src="' + chart.getImageURI() + '">';
+        });
+        chart.draw(data, options);
+    }
+
+    // Graph of numbers by phishing difficulty
+    function drawNumbersByLevel() {
+        var data = google.visualization.arrayToDataTable([
+            ['Category', 'Low', 'Med', 'High'],
+            ['Sent', 333, 333, 333],
+            ['Opened', 300, 300, 300],
+            ['Clicked', 50, 100, 150],
+            ['Submitted', 21, 37, 44],
+        ]);
+
+        var options = {
+            vAxis: { title: 'Amount' },
+            hAxis: { title: 'Category' },
+            seriesType: 'bars',
+            series: { 4: { type: 'bar' } }
+        };
+
+        var chart_div = document.getElementById('numbersByLevelGraph');
+        var chart = new google.visualization.ComboChart(chart_div);
+
+        google.visualization.events.addListener(chart, 'ready', function () {
+            chart_div.innerHTML = '<img src="' + chart.getImageURI() + '">';
+            console.log(chart_div.innerHTML);
+        });
+        chart.draw(data, options);
+    }
+
+    // Time to first click within 24h graph
+    function drawTimeIntervalGraph() {
+        var data = new google.visualization.arrayToDataTable([
+            ['Time', 'Percent', { role: 'style' }],
+            ['1 Minute', 5, ''],
+            ['3 Minutes', 14, ''],
+            ['5 Minutes', 19, ''],
+            ['15 Minutes', 43, ''],
+            ['30 Minute', 60, ''],
+            ['60 Minutes', 67, ''],
+            ['2 Hours', 72, ''],
+            ['4 Hours', 80, ''],
+            ['24 Hours', 93, '']
+        ]);
+
+        var options = {
+            hAxis: { title: 'Time' },
+            vAxis: { title: '% of Unique User Clicks' }
+        };
+
+        var chart_div = document.getElementById('timeIntervalGraph');
+        var chart = new google.visualization.ColumnChart(chart_div);
+
+        google.visualization.events.addListener(chart, 'ready', function () {
+            chart_div.innerHTML = '<img src="' + chart.getImageURI() + '">';
+            console.log(chart_div.innerHTML);
+        });
+
+        chart.draw(data, options);
+    }
+
+    // Time to first click by complexity level
+    function drawTimeComplexityGraph() {
+        var data = new google.visualization.arrayToDataTable([
+            ['Complexity', 'Elapsed Time (minutes)', { role: 'style' }],
+            ['1', 185, ''],
+            ['2', 80, ''],
+            ['3', 21, ''],
+            ['4', 9, ''],
+            ['5', 34, ''],
+            ['6', 1, '']
+        ]);
+
+        var options = {
+            hAxis: { title: 'Complexity Level' },
+            vAxis: { title: 'Elapsed Time' }
+        };
+
+        var chart_div = document.getElementById('timeComplexityGraph');
+        var chart = new google.visualization.ColumnChart(chart_div);
+
+        google.visualization.events.addListener(chart, 'ready', function () {
+            chart_div.innerHTML = '<img src="' + chart.getImageURI() + '">';
+            console.log(chart_div.innerHTML);
+        });
+
+        chart.draw(data, options);
+    }
+
+</script> -->
+
+<title>Yearly Report</title>
+
+<div style="width: 8.5in" class="p-5">
+  <article id="cover">
+    <div class="row">
+      <div id="blueDateBox">
+        <span class="year">{{
+          detail?.yearly_report_start_date | date: "yyyy"
+        }}</span
+        ><br />
+        <span class="dateRange"
+          >{{ detail?.yearly_report_start_date | date: dateFormat }} -
+          {{ detail?.yearly_report_end_date | date: dateFormat }}</span
+        >
+      </div>
+    </div>
+    <div class="row">
+      <div id="bluePhishLogo" class="col-12">
+        <img
+          src="/assets/blue_phishlogo.png"
+          alt="Continuous Phishing Campaign Assessment Logo"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div id="whiteBox" class="col-5"></div>
+    </div>
+    <div class="row">
+      <div id="leftYellowBox"></div>
+    </div>
+    <div class="row">
+      <div id="rightYellowBox"></div>
+    </div>
+    <div class="row">
+      <div id="blueHacker" class="col-12">
+        <img
+          src="/assets/blue_hacker.png"
+          alt="blue hacker image with code overlay"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <h2 id="reportTitle">
+          <span class="smallerTitle">Annual</span><br />Summary
+        </h2>
+      </div>
+    </div>
+    <div id="coverFooter" class="row mb-2">
+      <div id="preparationDetails">
+        Prepared for:<br />
+        {{ detail?.customer.name }}<br />
+        {{ detail?.customer.address_1 }} {{ detail?.customer.address_2 }}
+      </div>
+      <div id="dhsContactDetails">
+        <div class="mb-2">
+          Subscription Primary Contact<br />
+          {{ detail?.primary_contact.first_name }}
+          {{ detail?.primary_contact.last_name }}<br />
+          {{ detail?.primary_contact_email }}<br />
+        </div>
+        <div>
+          CISA Contact<br />
+          {{ detail?.dhs_contact_name }}<br />
+          Phishing Assessment Team<br />
+          vulnerability@cisa.dhs.gov
+        </div>
+      </div>
+      <!-- <div id="cisa_logo">
+        <img
+          src="/assets/CISA_Logo.png"
+          style="width: 8rem"
+          alt="Cybersecurity & Infrastructure Security Agency Logo"
+        />
+      </div> -->
+    </div>
+  </article>
+
+  <article id="pageOne">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <!-- <div id="centerCisaLogo">
+            <img
+              src="/assets/CISA_Logo.png"
+              style="width: 8rem"
+              alt="Cybersecurity & Infrastructure Security Agency Logo"
+            />
+          </div> -->
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <h1 id="assessmentTitle">
+            Continuous Phishing Campaign Assessment Details
+          </h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <table id="subscriptionDetailsTable">
+            <tr>
+              <td>Customer Name:</td>
+              <td>{{ detail?.customer.name }}</td>
+            </tr>
+            <tr>
+              <td>Customer POC:</td>
+              <td>
+                {{ detail?.primary_contact.first_name }}
+                {{ detail?.primary_contact.last_name }}
+              </td>
+            </tr>
+            <tr>
+              <td>Vulnerability Management<br />Team Lead:</td>
+              <td>
+                Federal Lead, {{ detail?.DHS_contact.first_name }}
+                {{ detail?.DHS_contact.last_name }}
+              </td>
+            </tr>
+            <tr>
+              <td>Dates:</td>
+              <td>
+                {{ detail?.yearly_report_start_date | date: "MMM d, yyyy" }} -
+                {{ detail?.yearly_report_end_date | date: "MMM d, yyyy" }}
+              </td>
+            </tr>
+            <tr>
+              <td>Test Location:</td>
+              <td>CISA/VM Lab</td>
+            </tr>
+            <tr>
+              <td>Services:</td>
+              <td>Continuous Phishing Assessment</td>
+            </tr>
+            <tr>
+              <td>Vulnerability Management ID:</td>
+              <td>XXXXX</td>
+            </tr>
+            <tr>
+              <td>Scope:</td>
+              <td>
+                {{ detail?.metrics.total_users_targeted }} users within the
+                following domain: {{ detail?.customer.identifier }}
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <table id="datesTable">
+            <tr>
+              <th>Cycle</th>
+              <th>Start Date - End Date</th>
+              <th>Notes</th>
+            </tr>
+            <tr *ngFor="let cycle of detail?.cycles">
+              <td>{{ cycle.quarter }}</td>
+              <td>
+                {{ cycle.start_date | date: "MMM d, yyyy" }} -
+                {{ cycle.end_date | date: "MMM d, yyyy" }}
+              </td>
+              <td>{{ cycle.notes }}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <article id="pageTwo">
+    <div class="row">
+      <div class="col-12">
+        <h3>Summary:</h3>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12" id="summary-text">
+        <p>
+          The purpose of the CON-PCA assessment is to enable organizations to
+          reduce their risk from email phishing attacks through a constant
+          assessment process. User education is an ongoing and continual
+          process. The CON-PCA is a tool for assessment, evaluation, and
+          education of the organization’s employees and members with regard to
+          email phishing. Improving trends indicator of return on investment for
+          this awareness and training.
+        </p>
+        <p>
+          The Con-PCA to be effective should be coupled with an education
+          program, that instructs users on what to look for and an overall
+          awareness of the tactics employed by malicious actors. Using the
+          Con-PCA service this training should be adjusted periodically to
+          address any vulnerable trends in user behavior, such as a propensity
+          to click on benign looking links without know how to check the actual
+          destination. See the recommendations in the 90 day cycle reports for
+          further details.
+        </p>
+        <p>
+          The purpose of this annual report is to show trends over the last year
+          for your companies click rate, time to first reporting, and reporting
+          rate. Lower click rate percentages are better and indicate aware and
+          educated employees. Higher reporting rates are better and allow more
+          opportunity for the organizations IT to identify and contain breach
+          attempts.
+        </p>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <h2 id="summaryTitle">Summary</h2>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <div id="summary">
+            <p>
+              Percentage of targets who clicked a malicious link in phishing
+              emails this year.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" id="statFlexContainer">
+      <div id="companyAverageText">
+        <div id="companyAverageBox">
+          {{ detail?.metrics.customer_clicked_avg }}%
+        </div>
+        <b>{{ detail?.customer.identifier }}</b>
+      </div>
+      <div>
+        <table>
+          <tr>
+            <td colspan="2">
+              <div id="nationalAverageText" style="margin: auto">
+                <div id="nationalAverageBox">
+                  {{ detail?.metrics.national_clicked_avg }}%
+                </div>
+                <b>National Average</b>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div id="sectorAverageText">
+                <div id="sectorAverageBox">
+                  {{ detail?.metrics.sector_clicked_avg }}%
+                </div>
+                <b>Sector Average</b>
+              </div>
+            </td>
+            <td>
+              <div id="industryAverageText">
+                <div id="industryAverageBox">
+                  {{ detail?.metrics.industry_clicked_avg }}%
+                </div>
+                <b>Industry Average</b>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </article>
+
+  <article id="pageThree">
+    <div class="row">
+      <div class="col-12">
+        <h3>Annual Trends</h3>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12" id="summary-text">
+        <p>
+          These trends show the effect of phishing training and email filtering
+          investments. Trends toward lower click rates and higher reporting
+          rates are ideal.
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="line-chart m-2">
+          <h4>Percentage Trends</h4>
+          <div style="display: grid" class="report-chart">
+            <yearly-percentage-trends
+              *ngIf="detail"
+              [data]="detail.percentage_trends_data"
+            ></yearly-percentage-trends>
+          </div>
+        </div>
+        <div class="line-chart m-2">
+          <h4>Click Rate vs. Reported Rate</h4>
+          <div style="display: grid" class="report-chart">
+            <yearly-click-rate-vs-report-rate
+              *ngIf="detail"
+              [data]="detail.clickrate_vs_reportrate_data"
+            ></yearly-click-rate-vs-report-rate>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <table id="trendStatistics">
+          <tr>
+            <th>Time from start of Quarterly Campagin until first reported:</th>
+            <td>{{ detail?.metrics.shortest_time_to_report }}</td>
+          </tr>
+          <tr>
+            <th style="padding: 0 75px 0 0">
+              Median Time to open email from first sent:
+            </th>
+            <td>
+              {{
+                detail?.metrics.median_time_to_open * 1000
+                  | date: "hh:mm:ss":"UTC"
+              }}
+            </td>
+          </tr>
+          <tr>
+            <th><i>Geometric mean.</i></th>
+          </tr>
+          <tr>
+            <th>Shortest Time to open email:</th>
+            <td>
+              {{
+                detail?.metrics.shortest_time_to_open * 1000
+                  | date: "hh:mm:ss":"UTC"
+              }}
+            </td>
+          </tr>
+          <tr>
+            <th>Longest Time to open email:</th>
+            <td>
+              {{
+                detail?.metrics.longest_time_to_open * 1000
+                  | date: "hh:mm:ss":"UTC"
+              }}
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div id="subNotesTwo">
+          <ul class="list-unstyled">
+            <small>
+              <li>
+                <sup>*</sup>Time from start shows how quickly your organization
+                detects a phishing campaign.
+              </li>
+              <li>
+                <sup>*</sup>Comparing median time and first reported time is the
+                attacker window.
+              </li>
+              <li>
+                <sup>*</sup>Shortest time to open compared to first report
+                indicates the window of time the attacker has before detection.
+              </li>
+              <li>
+                <sup>*</sup>An indicator of how long a phishing campaign could
+                potentially be viable.
+              </li>
+              <li>
+                <sup>**</sup>based on phishing assessments conducted by CISA VM.
+              </li>
+            </small>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <article id="pageFive">
+    <div class="row">
+      <div class="col-12">
+        <h3>Click Time vs. Report Time:</h3>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12" id="summary-text">
+        <p>
+          To contain an attack, an organization’s security team must be aware of
+          the potential breach. In the scenario that this PCA tested, no
+          technical controls were triggered during a phishing attack and the
+          clock for a potential breach started once a targeted user clicked on a
+          “malicious” link. Timely user reporting decreases the window of
+          opportunity that an adversary has to access data or gain further
+          network entry. Timely reporting also increases the opportunity the
+          security team has to detect and respond to a potential breach. By
+          educating users on how to both spot and promptly respond to phishing
+          attempts, an organization can improve their anti-phishing defenses.
+        </p>
+      </div>
+    </div>
+
+    <div *ngIf="detail?.trend == 'improving'" class="row">
+      <div class="col-12">
+        <p>
+          Your trends for this past year indicate that your security posture is
+          improving as the reporting rate has increased and time to report has
+          decreased.
+        </p>
+      </div>
+    </div>
+    <div *ngIf="detail?.trend == 'degrading'" class="row">
+      <div class="col-12">
+        <p>
+          Your trends for this past year indicate that your security posture is
+          degrading as the reporting rate has decreased and time to report has
+          increased. Examine your training and employee awareness to recover
+          these trends.
+        </p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <h3>Closing</h3>
+
+        <div class="row mb-3">
+          <div class="col-12">
+            <h3 id="recommendationsTitle">Recommendations</h3>
+            <div id="recommendations">
+              <p>
+                Based on the assessment data, Vulnerability Managements
+                recommends implementing the following:
+              </p>
+              <p *ngFor="let rec of detail?.recommendations; let i = index">
+                <b>Recommendation {{ i + 1 }}:</b> {{ rec.name }}
+                <br />
+                {{ rec.description }}
+              </p>
+
+              <p *ngIf="detail?.recommendations?.length === 0">
+                (no recommendations found for the problem templates)
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngFor="let conc of detail?.conclusions; index as i">
+      <div class="row">
+        <div class="col-12">
+          <h5 class="closing-header">
+            <span>Detailed Conclusion {{ i + 1 }} </span>- {{ conc.category }}
+          </h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <p [innerHTML]="conc.description"></p>
+        </div>
+      </div>
+    </div>
+
+    <p>
+      PCA is a young service with limited but meaningful data made available to
+      {{ detail?.customer.full_name }}. VM hopes this data will be actionable
+      and allow {{ detail?.customer.full_name }} to reduce some level of risk
+      within their organization. As more PCAs are completed over time,
+      statistical reporting will be enhanced and a non-attributable overview of
+      phishing results will be collected as part of the VM annual service
+      review.
+    </p>
+
+    <p>
+      As this new service continues to mature, VM looks forward to enhancing the
+      PCA and building new test capabilities that include technical control
+      checks. VM appreciates any comments to improve this report or service as a
+      whole. For questions about this report or for future engagements with VM,
+      please send an email to VM_info@hq.dhs.gov.
+    </p>
+  </article>
+</div>

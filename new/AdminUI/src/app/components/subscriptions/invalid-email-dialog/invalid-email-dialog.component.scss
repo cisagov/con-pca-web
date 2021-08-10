@@ -1,0 +1,21 @@
+.close-button {
+  display: flex;
+  margin-left: auto;
+}
+.remove-emails-container {
+  width: 80ch;
+}
+.invalid-email-list-accordion {
+  margin: 2em 0;
+}
+.invalid-email-val,
+.invalid-email-checkbox {
+  width: 50%;
+}
+.email-list {
+  overflow-y: scroll;
+  max-height: 21.5em;
+}
+.email-list-item:hover {
+  background: rgba(0, 0, 0, 0.3);
+}

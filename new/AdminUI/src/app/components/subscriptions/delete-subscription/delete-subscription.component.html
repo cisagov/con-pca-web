@@ -1,0 +1,8 @@
+<button
+  id="delete-subscription"
+  mat-menu-item
+  (click)="openDialog()"
+  *ngIf="subscription?.status === 'stopped'"
+>
+  <mat-icon color="warn">delete</mat-icon>Delete
+</button>

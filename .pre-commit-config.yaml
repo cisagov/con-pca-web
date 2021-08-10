@@ -9,9 +9,9 @@ repos:
     hooks:
       - id: check-case-conflict
       - id: check-executables-have-shebangs
-        exclude: src/AdminUI/src/assets/htmlhelp/
+        exclude: src/AdminUI/src/assets/htmlhelp/|new/AdminUI/src/assets/htmlhelp/
       - id: check-json
-        exclude: src/AdminUI/src/assets/htmlhelp/
+        exclude: src/AdminUI/src/assets/htmlhelp/|new/AdminUI/src/assets/htmlhelp/
       - id: check-merge-conflict
       - id: check-toml
       - id: check-xml
@@ -22,17 +22,17 @@ repos:
       - id: detect-private-key
         exclude: src/secrets/privkey.pem
       - id: end-of-file-fixer
-        exclude: files/(issue|motd)|src/AdminUI/src/assets/htmlhelp/
+        exclude: files/(issue|motd)|src/AdminUI/src/assets/htmlhelp/|new/AdminUI/src/assets/htmlhelp/
       - id: mixed-line-ending
         args:
           - --fix=lf
       - id: pretty-format-json
-        exclude: src/AdminUI/src/assets/htmlhelp/
+        exclude: src/AdminUI/src/assets/htmlhelp/|new/AdminUI/src/assets/htmlhelp/
         args:
           - --autofix
       - id: requirements-txt-fixer
       - id: trailing-whitespace
-        exclude: src/AdminUI/src/assets/htmlhelp/
+        exclude: src/AdminUI/src/assets/htmlhelp/|new/AdminUI/src/assets/htmlhelp/
 
   # Text file hooks
   - repo: https://github.com/igorshubovych/markdownlint-cli
@@ -49,6 +49,7 @@ repos:
     rev: v1.26.1
     hooks:
       - id: yamllint
+        exclude: .pre-commit-config.yaml
         args:
           - --strict
 
@@ -105,13 +106,13 @@ repos:
       - id: pyupgrade
 
   # Ansible hooks
-  - repo: https://github.com/ansible-community/ansible-lint
-    # This is intentionally being held back because of issues in v5 per
-    # https://github.com/cisagov/skeleton-ansible-role/issues/69
-    rev: v5.0.8
-    hooks:
-      - id: ansible-lint
-      # files: molecule/default/playbook.yml
+  # - repo: https://github.com/ansible-community/ansible-lint
+  #   # This is intentionally being held back because of issues in v5 per
+  #   # https://github.com/cisagov/skeleton-ansible-role/issues/69
+  #   rev: v5.0.8
+  #   hooks:
+  #     - id: ansible-lint
+  #     # files: molecule/default/playbook.yml
 
   # Terraform hooks
   - repo: https://github.com/antonbabenko/pre-commit-terraform
