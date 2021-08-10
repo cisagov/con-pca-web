@@ -1,0 +1,82 @@
+<div class="table-list-header flex">
+  <div class="search-bar flex">
+    <mat-form-field class="w-100" appearance="outline">
+      <mat-label>Search</mat-label>
+      <input
+        (keyup)="filterList($event.target.value)"
+        matInput
+        placeholder="Search"
+      />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </div>
+</div>
+<div
+  *ngIf="loading"
+  style="text-align: center; padding-top: 2rem; padding-bottom: 2rem"
+>
+  <mat-spinner
+    class="spinner"
+    style="margin-left: auto; margin-right: auto"
+    diameter="50"
+  ></mat-spinner>
+</div>
+<mat-table [hidden]="loading" [dataSource]="users" matSort>
+  <!-- Username -->
+  <ng-container matColumnDef="Username">
+    <mat-header-cell *matHeaderCellDef mat-sort-header
+      >Username</mat-header-cell
+    >
+    <mat-cell *matCellDef="let row">{{ row.Username }}</mat-cell>
+  </ng-container>
+
+  <!-- Template Base -->
+  <ng-container matColumnDef="UserStatus">
+    <mat-header-cell *matHeaderCellDef mat-sort-header
+      >User Status</mat-header-cell
+    >
+    <mat-cell *matCellDef="let row">
+      <div *ngIf="row.UserStatus == 'CONFIRMED'">{{ row.UserStatus }}</div>
+      <button
+        *ngIf="row.UserStatus != 'CONFIRMED'"
+        mat-raised-button
+        color="accent"
+        (click)="confirmUser(row.Username)"
+      >
+        Confirm User
+      </button>
+    </mat-cell>
+  </ng-container>
+
+  <!-- User Created Date -->
+  <ng-container matColumnDef="UserCreateDate">
+    <mat-header-cell *matHeaderCellDef mat-sort-header
+      >Created Date</mat-header-cell
+    >
+    <mat-cell *matCellDef="let row">{{
+      row.UserCreateDate | date: "MM/dd/yy"
+    }}</mat-cell>
+  </ng-container>
+
+  <!-- Delete -->
+  <ng-container matColumnDef="delete">
+    <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <button
+        color="warn"
+        mat-flat-button
+        class="table-btn-icon"
+        (click)="deleteUser(row.Username)"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+    </mat-cell>
+  </ng-container>
+
+  <!-- Header Info -->
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row
+    class="table-row"
+    *matRowDef="let row; columns: displayedColumns"
+  ></mat-row>
+</mat-table>

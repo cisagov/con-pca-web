@@ -1,0 +1,89 @@
+<h1 mat-dialog-title>Add New Customer</h1>
+
+<div mat-dialog-content class="d-flex flex-column" [formGroup]="form_group">
+  <!-- NAME -->
+  <mat-form-field appearance="outline">
+    <mat-label>Name</mat-label>
+    <input matInput type="text" formControlName="name" placeholder="Name" />
+  </mat-form-field>
+
+  <!-- IDENTIFIER -->
+  <mat-form-field appearance="outline">
+    <mat-label>Identifier</mat-label>
+    <input
+      matInput
+      type="text"
+      formControlName="identifier"
+      placeholder="Identifier"
+    />
+  </mat-form-field>
+
+  <!-- ADDRESS_1 -->
+  <mat-form-field appearance="outline">
+    <mat-label>Address 1</mat-label>
+    <input
+      matInput
+      type="text"
+      formControlName="address_1"
+      placeholder="Address 1"
+    />
+  </mat-form-field>
+
+  <!-- ADDRESS_2 -->
+  <mat-form-field appearance="outline">
+    <mat-label>Address 2</mat-label>
+    <input
+      matInput
+      type="text"
+      formControlName="address_2"
+      placeholder="Address 2"
+    />
+  </mat-form-field>
+
+  <!-- CITY -->
+  <mat-form-field appearance="outline">
+    <mat-label>City</mat-label>
+    <input matInput type="text" formControlName="city" placeholder="City" />
+  </mat-form-field>
+
+  <!-- STATE -->
+  <mat-form-field appearance="outline">
+    <mat-label>State</mat-label>
+    <input matInput type="text" formControlName="state" placeholder="State" />
+  </mat-form-field>
+
+  <!-- ZIP CODE -->
+  <mat-form-field appearance="outline">
+    <mat-label>Zip Code</mat-label>
+    <input
+      matInput
+      type="text"
+      formControlName="zip_code"
+      placeholder="Zip Code"
+    />
+  </mat-form-field>
+
+  <div class="d-flex flex-row justify-content-end">
+    <div class="d-flex flex-column">
+      <button mat-flat-button (click)="onCancelClick()">Cancel</button>
+    </div>
+    <div class="d-flex flex-column">
+      <button mat-raised-button color="primary" (click)="onSaveClick()">
+        Save Contact
+      </button>
+    </div>
+  </div>
+  <div style="max-height: 70vh">
+    <app-add-customer></app-add-customer>
+  </div>
+  <div class="text-right mt-3">
+    <button
+      mat-flat-button
+      class="add-button"
+      color="basic"
+      (click)="onCancelClick()"
+    >
+      Cancel
+    </button>
+  </div>
+</div>

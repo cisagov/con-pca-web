@@ -1,0 +1,157 @@
+<div class="container-fluid" [style.height.px]="body_content_height">
+  <div class="row h-100">
+    <div
+      class="col-8 h-100 d-flex flex-column mt-2"
+      [formGroup]="currentTemplateFormGroup"
+    >
+      <div
+        #selectedTemplateTitle
+        class="flex-container flex-row selected-template"
+      >
+        <mat-form-field
+          class="w-100 selected_template_title"
+          appearance="outline"
+        >
+          <mat-label>Landing Page Name</mat-label>
+          <input
+            formControlName="templateName"
+            trim="blur"
+            matInput
+            placeholder="Enter a template name"
+            [errorStateMatcher]="matchTemplateName"
+          />
+          <mat-error
+            *ngIf="
+              currentTemplateFormGroup.controls.templateName.hasError(
+                'required'
+              )
+            "
+          >
+            Page name <strong>required</strong>
+          </mat-error>
+          <mat-error
+            *ngIf="
+              currentTemplateFormGroup.controls.templateName.hasError(
+                'whitespace'
+              )
+            "
+            >Page name may not contain only spaces</mat-error
+          >
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-checkbox formControlName="IsDefaultTemplate"
+          >Set As System Default Template</mat-checkbox
+        >
+      </div>
+      <div class="d-flex">
+        <mat-tab-group
+          class="w-100"
+          #tabs
+          (selectedTabChange)="onTabChanged($event)"
+        >
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <span
+                [ngClass]="{
+                  'tab-form-error':
+                    currentTemplateFormGroup.controls.templateHTML.touched &&
+                    (currentTemplateFormGroup.controls.templateHTML.hasError(
+                      'required'
+                    ) ||
+                      currentTemplateFormGroup.controls.templateHTML.hasError(
+                        'whitespace'
+                      ))
+                }"
+                >Landing Page Editor HTML View
+              </span>
+            </ng-template>
+            <div>
+              <angular-editor
+                #angularEditor
+                [style.height.px]="text_editor_height"
+                formControlName="templateHTML"
+                [config]="editorConfig"
+              ></angular-editor>
+            </div>
+          </mat-tab>
+
+          <mat-tab>
+            <ng-template mat-tab-label>Templates</ng-template>
+            <div class="p-3 flex-column" [style.height.px]="text_editor_height">
+              <mat-table
+                *ngIf="this.templates.length > 0"
+                class="w-100"
+                [dataSource]="templates"
+              >
+                <ng-container matColumnDef="name">
+                  <mat-header-cell *matHeaderCellDef>
+                    Template Name
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let template">
+                    {{ template.name }}
+                  </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="deception_score">
+                  <mat-header-cell *matHeaderCellDef>
+                    Deception Score
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let template">
+                    {{ template.deception_score }}
+                  </mat-cell>
+                </ng-container>
+
+                <mat-header-row
+                  *matHeaderRowDef="displayed_columns"
+                ></mat-header-row>
+                <mat-row
+                  *matRowDef="let row; columns: displayed_columns"
+                  class="table-row cursor-pointer"
+                  [routerLink]="['/templatemanager', row.template_uuid]"
+                ></mat-row>
+              </mat-table>
+              <div *ngIf="this.templates.length == 0" class="p-3 text-center">
+                No templates are currently using this landing page
+              </div>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+
+      <div class="flex-container flex-column pb-3">
+        <div class="flex-container flex-row save_container pb-3">
+          <button
+            id="delete-button"
+            class="d-flex"
+            mat-raised-button
+            color="warn"
+            (click)="deletePage()"
+            *ngIf="templateId && canDelete"
+          >
+            Delete Page
+          </button>
+          <div class="ml-auto d-flex flex-row">
+            <button
+              id="save-button"
+              class="d-flex"
+              mat-flat-button
+              color="basic"
+              (click)="onCancelClick()"
+            >
+              Cancel
+            </button>
+            <button
+              id="save-button"
+              class="d-flex"
+              mat-raised-button
+              color="primary"
+              (click)="saveTemplate()"
+            >
+              Save Page
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

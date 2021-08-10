@@ -1,0 +1,57 @@
+.customer-card {
+  font-size: 16px !important;
+  font-weight: bold;
+}
+
+.customer-card .placeholder {
+  font-weight: normal;
+  color: #cccccc;
+}
+
+.startButton {
+  align-self: right;
+}
+.active_subscription {
+  margin-top: 1em;
+}
+
+.template-selction-container {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  margin-top: 1em;
+  margin-bottom: 4em;
+}
+.template-selection-level-container {
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+  position: relative;
+  display: flex;
+  min-height: 10em;
+  flex-basis: 100%;
+  margin: 0.5em;
+}
+.tslc-title {
+  margin-top: -1.5em;
+  position: absolute;
+}
+.template-selected-list {
+  list-style: none;
+  padding: 0.5em;
+  width: 100%;
+}
+.template-selction-row {
+  min-width: 100%;
+}
+.template-selction-row:hover {
+  background: rgba(0, 0, 0, 0.15);
+}
+.change-template-btn {
+  display: inline-block;
+  position: absolute;
+  bottom: -3em;
+  right: 0;
+  height: 2.5em;
+  width: 11em;
+  margin-right: 0 !important;
+}

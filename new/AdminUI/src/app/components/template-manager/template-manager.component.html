@@ -1,0 +1,689 @@
+<div class="container-fluid" [style.height.px]="body_content_height">
+  <div class="row h-100">
+    <div
+      class="col-8 h-100 d-flex flex-column mt-2"
+      [formGroup]="currentTemplateFormGroup"
+    >
+      <div #selectedTemplateTitle class="d-flex flex-row selected-template">
+        <mat-form-field
+          class="w-100 selected_template_title"
+          appearance="outline"
+        >
+          <mat-label>Template Name</mat-label>
+          <input
+            formControlName="templateName"
+            trim="blur"
+            matInput
+            placeholder="Enter a template name"
+            [errorStateMatcher]="matchTemplateName"
+          />
+          <mat-error
+            *ngIf="
+              currentTemplateFormGroup.controls.templateName.hasError(
+                'required'
+              )
+            "
+          >
+            Template name <strong>required</strong>
+          </mat-error>
+          <mat-error
+            *ngIf="
+              currentTemplateFormGroup.controls.templateName.hasError(
+                'whitespace'
+              )
+            "
+          >
+            Template name may not contain only spaces
+          </mat-error>
+        </mat-form-field>
+        <div class="d-inline-flex flex-column mt-2 ml-1 mb-2">
+          <button mat-raised-button color="primary" (click)="importEmail()">
+            Import Email
+          </button>
+        </div>
+      </div>
+      <div class="d-flex">
+        <mat-tab-group
+          class="w-100"
+          #tabs
+          (selectedTabChange)="onTabChanged($event)"
+        >
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <span
+                [ngClass]="{
+                  'tab-form-error':
+                    currentTemplateFormGroup.controls.templateHTML.touched &&
+                    (currentTemplateFormGroup.controls.templateHTML.hasError(
+                      'required'
+                    ) ||
+                      currentTemplateFormGroup.controls.templateHTML.hasError(
+                        'whitespace'
+                      ))
+                }"
+                >HTML View
+              </span>
+            </ng-template>
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="openTagChoice()"
+              class="hidden-insert-tag-button d-none"
+            >
+              Insert Tag
+            </button>
+            <div [style.height.px]="text_editor_height2">
+              <angular-editor
+                #angularEditor
+                [style.height.px]="text_editor_height"
+                formControlName="templateHTML"
+                [config]="editorConfig"
+              ></angular-editor>
+            </div>
+          </mat-tab>
+
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <span
+                [ngClass]="{
+                  'tab-form-error':
+                    (currentTemplateFormGroup.controls.templateSubject.hasError(
+                      'required'
+                    ) &&
+                      currentTemplateFormGroup.controls.templateSubject
+                        .touched) ||
+                    (currentTemplateFormGroup.controls.templateFromAddress.hasError(
+                      'required'
+                    ) &&
+                      currentTemplateFormGroup.controls.templateFromAddress
+                        .touched)
+                }"
+                >Template Attributes
+              </span>
+            </ng-template>
+            <div class="p-3 flex-column" [style.height.px]="text_editor_height">
+              <div class="d-flex flex-column mb-3">
+                <mat-form-field appearance="outline">
+                  <mat-label>Subject*</mat-label>
+                  <input
+                    type="text"
+                    trim="blur"
+                    matInput
+                    placeholder="Template Subject"
+                    formControlName="templateSubject"
+                    [errorStateMatcher]="matchSubject"
+                  />
+                  <mat-error
+                    *ngIf="
+                      currentTemplateFormGroup.controls.templateSubject.hasError(
+                        'required'
+                      )
+                    "
+                  >
+                    Template subject <strong>required</strong>
+                  </mat-error>
+                  <mat-error
+                    *ngIf="
+                      currentTemplateFormGroup.controls.templateSubject.hasError(
+                        'whitespace'
+                      )
+                    "
+                  >
+                    Subject may not contain only spaces
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="d-flex flex-row pb-1">
+                <mat-form-field appearance="outline">
+                  <mat-label>Display Name*</mat-label>
+                  <input
+                    type="text"
+                    trim="blur"
+                    matInput
+                    placeholder="Display Name"
+                    formControlName="templateFromDisplayName"
+                    [errorStateMatcher]="matchFromAddress"
+                  />
+                  <mat-error
+                    *ngIf="
+                      currentTemplateFormGroup.controls.templateFromDisplayName.hasError(
+                        'required'
+                      )
+                    "
+                  >
+                    Display Name <strong>required</strong>
+                  </mat-error>
+                  <mat-error
+                    *ngIf="
+                      currentTemplateFormGroup.controls.templateFromDisplayName.hasError(
+                        'whitespace'
+                      )
+                    "
+                  >
+                    Display Name may not contain only spaces
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Sender*</mat-label>
+                  <input
+                    type="text"
+                    trim="blur"
+                    matInput
+                    placeholder="Sender"
+                    formControlName="templateFromSender"
+                    [errorStateMatcher]="matchFromAddress"
+                  />
+                  <mat-error
+                    *ngIf="
+                      currentTemplateFormGroup.controls.templateFromSender.hasError(
+                        'required'
+                      )
+                    "
+                  >
+                    Sender <strong>required</strong>
+                  </mat-error>
+                  <mat-error
+                    *ngIf="
+                      currentTemplateFormGroup.controls.templateFromSender.hasError(
+                        'whitespace'
+                      )
+                    "
+                  >
+                    Sender may not contain only spaces
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <mat-label class="h6 pl-1">
+                From Address:
+                <span class="text-muted" style="font-size: 85%">
+                  {{ fromDisplayName }} &lt;{{ fromSender }}@domain.com&gt;
+                </span>
+              </mat-label>
+
+              <div class="d-flex flex-column pb-3 mt-3">
+                <mat-form-field appearance="outline">
+                  <mat-label>Description</mat-label>
+                  <input
+                    type="text"
+                    trim="blur"
+                    matInput
+                    placeholder="Template Description..."
+                    formControlName="templateDescription"
+                  />
+                </mat-form-field>
+              </div>
+              <div class="d-flex flex-column pb-3">
+                <mat-form-field appearance="outline" class="flex-grow-1">
+                  <mat-label>Descriptive Words (CSV)</mat-label>
+                  <textarea
+                    trim="blur"
+                    matInput
+                    cdkTextareaAutosize
+                    cdkAutosizeMinRows="5"
+                    cdkAutosizeMaxRows="10"
+                    placeholder="Template Descriptive Words Seperated By A Comma"
+                    formControlName="templateDescriptiveWords"
+                  ></textarea>
+                </mat-form-field>
+              </div>
+              <div class="d-flex flex-column pb-3">
+                <mat-form-field appearance="outline" class="flex-grow-1 mb-2">
+                  <mat-label>Sending Profile Selection</mat-label>
+                  <mat-select formControlName="templateSendingProfile">
+                    <mat-option [value]="null"></mat-option>
+                    <mat-option
+                      *ngFor="let sp of sendingProfiles"
+                      [value]="sp.id"
+                      >{{ sp.name }}</mat-option
+                    >
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="flex-grow-1">
+                  <mat-label>Landing Page Selection</mat-label>
+                  <mat-select formControlName="landingPage">
+                    <mat-option [value]="null"></mat-option>
+                    <mat-option
+                      *ngFor="let page of pagesList"
+                      [value]="page.landing_page_uuid"
+                      >{{ page.name }}</mat-option
+                    >
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="d-flex flex-column pb-1">
+                <button (click)="openLandingPageEditor()">
+                  Open Landing Pages Editor
+                </button>
+              </div>
+            </div>
+          </mat-tab>
+
+          <mat-tab>
+            <ng-template mat-tab-label> Subscriptions </ng-template>
+            <div class="p-3 flex-column" [style.height.px]="text_editor_height">
+              <mat-table
+                *ngIf="this.pcaSubscriptions.data.length > 0"
+                class="w-100"
+                [dataSource]="pcaSubscriptions"
+              >
+                <ng-container matColumnDef="name">
+                  <mat-header-cell *matHeaderCellDef>
+                    Subscription Name
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let sub">
+                    {{ sub.name }}
+                  </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="start_date">
+                  <mat-header-cell *matHeaderCellDef>
+                    Start Date
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let sub">
+                    {{ sub.start_date | date: dateFormat }}
+                  </mat-cell>
+                </ng-container>
+
+                <mat-header-row
+                  *matHeaderRowDef="displayed_columns"
+                ></mat-header-row>
+                <mat-row
+                  *matRowDef="let row; columns: displayed_columns"
+                  class="table-row cursor-pointer"
+                  [routerLink]="['/view-subscription', row.subscription_uuid]"
+                ></mat-row>
+              </mat-table>
+              <div
+                *ngIf="this.pcaSubscriptions.data.length == 0"
+                class="p-3 text-center"
+              >
+                No subscriptions are currently using this template
+              </div>
+            </div>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label> Template Testing </ng-template>
+            <mat-label class="h6">Sending Profile</mat-label>
+            <div class="mb-4">
+              <div class="text-muted" *ngIf="sendingProfiles.length > 0">
+                Select the sending profile that will be used
+              </div>
+              <mat-form-field
+                appearance="outline"
+                *ngIf="sendingProfiles.length > 0"
+              >
+                <mat-label>Sending Profile</mat-label>
+                <mat-select formControlName="sendingProfile">
+                  <mat-option [value]="null">--Select--</mat-option>
+                  <mat-option *ngFor="let sp of sendingProfiles" [value]="sp">
+                    {{ sp.name }}</mat-option
+                  >
+                </mat-select>
+                <mat-error
+                  *ngIf="submitted && f.sendingProfile.errors?.required"
+                  class="invalid-feedback"
+                >
+                  Sending Profile required
+                </mat-error>
+              </mat-form-field>
+              <div class="error-color" *ngIf="sendingProfiles.length === 0">
+                A Sending Profile is required, but none are currently
+                configured. Create one or more Sending Profiles before
+                proceeding.
+              </div>
+            </div>
+            <mat-label class="h6">Customer</mat-label>
+            <div class="mb-4">
+              <div class="text-muted" *ngIf="customers.length > 0">
+                Select the customer that will be used in generating tags.
+              </div>
+              <mat-form-field appearance="outline" *ngIf="customers.length > 0">
+                <mat-label>Customer</mat-label>
+                <mat-select formControlName="customer">
+                  <mat-option [value]="null">--Select--</mat-option>
+                  <mat-option
+                    *ngFor="let c of customers"
+                    [value]="c.customer_uuid"
+                  >
+                    {{ c.name }}</mat-option
+                  >
+                </mat-select>
+                <mat-error
+                  *ngIf="submitted && f.customer.errors?.required"
+                  class="invalid-feedback"
+                >
+                  Customer required
+                </mat-error>
+              </mat-form-field>
+              <div class="error-color" *ngIf="customers.length === 0">
+                A customer is required, but none are currently configured.
+                Create one or more customers before proceeding.
+              </div>
+            </div>
+            <div class="text-left mt-3 mb-4">
+              <mat-form-field appearance="outline">
+                <mat-label>Test Email</mat-label>
+                <input
+                  matInput
+                  id="testEmail"
+                  name="testEmail"
+                  class="mr-2 ml-3"
+                  [(ngModel)]="testEmail"
+                  [ngModelOptions]="{ standalone: true }"
+                  placeholder="Test Email"
+                  maxlength="100"
+                  email
+                />
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Test First Name</mat-label>
+                <input
+                  matInput
+                  id="firstName"
+                  name="firstName"
+                  class="mr-2 ml-3"
+                  [(ngModel)]="firstName"
+                  [ngModelOptions]="{ standalone: true }"
+                  placeholder="First Name"
+                  maxlength="100"
+                />
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Last Name</mat-label>
+                <input
+                  matInput
+                  id="lastName"
+                  name="lastName"
+                  class="mr-2 ml-3"
+                  [(ngModel)]="lastName"
+                  [ngModelOptions]="{ standalone: true }"
+                  placeholder="Last Name"
+                  maxlength="100"
+                />
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Role</mat-label>
+                <input
+                  matInput
+                  id="role"
+                  name="role"
+                  class="mr-2 ml-3"
+                  [(ngModel)]="role"
+                  [ngModelOptions]="{ standalone: true }"
+                  placeholder="Role"
+                  maxlength="100"
+                />
+              </mat-form-field>
+
+              <button
+                mat-flat-button
+                class="add-button"
+                color="primary"
+                (click)="onSendTestClick()"
+              >
+                Send Test Email
+              </button>
+            </div>
+            <div class="flex-container flex-row">
+              <iframe
+                class="mb-3"
+                style="flex-grow: 2"
+                [src]="mailtester_iframe_url"
+                title="Testing results"
+                [style.height.px]="iframe_height"
+              ></iframe>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+
+      <div class="flex-container flex-column pb-3">
+        <!-- <button
+          id="save-button"
+          class="d-flex"
+          mat-raised-button
+          color="primary"
+          (click)="setEmptyTemplateForm()"
+        >
+          New Template
+        </button> -->
+
+        <div class="flex-container flex-row save_container pb-3">
+          <button
+            id="retire-button"
+            class="d-flex"
+            mat-raised-button
+            color="accent"
+            (click)="openRetireTemplateDialog()"
+            *ngIf="templateId && !retired"
+          >
+            Retire Template
+          </button>
+          <button
+            id="restore-button"
+            class="d-flex"
+            mat-raised-button
+            color="accent"
+            (click)="openRestoreTemplateDialog()"
+            *ngIf="templateId && retired"
+          >
+            Restore Template
+          </button>
+          <button
+            id="stop-button"
+            class="d-flex"
+            mat-raised-button
+            color="warn"
+            (click)="stopTemplate()"
+            *ngIf="templateId && canStop"
+          >
+            Stop Template
+          </button>
+          <div [matTooltip]="deleteTooltip">
+            <button
+              id="stop-button"
+              class="d-flex"
+              mat-raised-button
+              [disabled]="!canDelete"
+              color="warn"
+              (click)="deleteTemplate()"
+              *ngIf="retired && templateId"
+            >
+              Delete Template
+            </button>
+          </div>
+          <div class="ml-auto d-flex flex-row">
+            <button
+              id="save-button"
+              class="d-flex"
+              mat-flat-button
+              color="basic"
+              (click)="onCancelClick()"
+            >
+              Cancel
+            </button>
+            <button
+              id="save-button"
+              class="d-flex"
+              mat-raised-button
+              color="primary"
+              (click)="saveTemplate()"
+            >
+              Save Template
+            </button>
+          </div>
+        </div>
+        <div class="flex-container flex-row pb-3" *ngIf="templateId && retired">
+          <p class="text-danger">Reason for Retiring - {{ retiredReason }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-4 h-100 border-left" [formGroup]="currentTemplateFormGroup">
+      <h2>Deception Calculations</h2>
+      <div class="d-flex flex-row pb-3">
+        <mat-form-field appearance="outline" class="flex-grow-1">
+          <mat-label>Final Deception Score</mat-label>
+          <input
+            type="text"
+            trim="blur"
+            matInput
+            placeholder="DeceptionScore"
+            formControlName="final_deception_score"
+          />
+        </mat-form-field>
+      </div>
+      <div class="d-flex flex-column overflow-auto deception_calc_content">
+        <div class="h6 mt-2">Appearance</div>
+        <div class="">
+          <mat-label class="mb-3">Grammar</mat-label>
+          <mat-radio-group
+            appearance="outline"
+            class="row radio_selection_group"
+            formControlName="grammar"
+          >
+            <mat-radio-button [value]="0" radioGroup="grammarRadioGroup"
+              >0 = Poor</mat-radio-button
+            >
+            <mat-radio-button [value]="1" radioGroup="grammarRadioGroup"
+              >1 = Decent</mat-radio-button
+            >
+            <mat-radio-button [value]="2" radioGroup="grammarRadioGroup"
+              >2 = Proper</mat-radio-button
+            >
+          </mat-radio-group>
+        </div>
+        <div class="">
+          <mat-label class="mb-3">Link / Domain</mat-label>
+          <mat-radio-group
+            appearance="outline"
+            class="row radio_selection_group"
+            formControlName="link_domain"
+          >
+            <mat-radio-button [value]="0" radioGroup="linkRadioGroup"
+              >0 = Unrelated</mat-radio-button
+            >
+            <mat-radio-button [value]="1" radioGroup="linkRadioGroup"
+              >1 = Related / Hidden / Spoofed</mat-radio-button
+            >
+          </mat-radio-group>
+        </div>
+        <div class="">
+          <mat-label class="mb-3">Logo / Graphics</mat-label>
+          <mat-radio-group
+            appearance="outline"
+            class="row radio_selection_group"
+            formControlName="logo_graphics"
+          >
+            <mat-radio-button [value]="0" radioGroup="graphicsRadioGroup"
+              >0 = Fake / None</mat-radio-button
+            >
+            <mat-radio-button [value]="1" radioGroup="graphicsRadioGroup"
+              >1 = Spoofed / HTML</mat-radio-button
+            >
+          </mat-radio-group>
+        </div>
+        <div class="h6 mt-2">Sender</div>
+        <div class="">
+          <mat-label class="mb-3">External</mat-label>
+          <mat-radio-group
+            appearance="outline"
+            class="row radio_selection_group"
+            formControlName="external"
+          >
+            <mat-radio-button [value]="0" radioGroup="senderExternalRadioGroup"
+              >0 = Not External / Unspecified</mat-radio-button
+            >
+            <mat-radio-button [value]="1" radioGroup="senderExternalRadioGroup"
+              >1 = Specified</mat-radio-button
+            >
+          </mat-radio-group>
+        </div>
+        <div class="">
+          <mat-label class="mb-3">Internal</mat-label>
+          <mat-radio-group
+            appearance="outline"
+            class="row radio_selection_group"
+            formControlName="internal"
+          >
+            <mat-radio-button [value]="0" radioGroup="internalRadioGroup"
+              >0 = Not Internal / Unspecified</mat-radio-button
+            >
+            <mat-radio-button [value]="1" radioGroup="internalRadioGroup"
+              >1 = Generic</mat-radio-button
+            >
+            <mat-radio-button [value]="2" radioGroup="internalRadioGroup"
+              >2 = Spoofed</mat-radio-button
+            >
+          </mat-radio-group>
+        </div>
+        <div class="">
+          <mat-label class="mb-3">Authoritative</mat-label>
+          <mat-radio-group
+            appearance="outline"
+            class="row radio_selection_group"
+            formControlName="authoritative"
+          >
+            <mat-radio-button [value]="0" radioGroup="authoritativeRadioGroup"
+              >0 = None</mat-radio-button
+            >
+            <mat-radio-button [value]="1" radioGroup="authoritativeRadioGroup"
+              >1 = Peer</mat-radio-button
+            >
+            <mat-radio-button [value]="2" radioGroup="authoritativeRadioGroup"
+              >2 = Superior</mat-radio-button
+            >
+          </mat-radio-group>
+        </div>
+        <div class="h6 mt-2">Relevancy</div>
+        <div class="">
+          <mat-label class="mb-3">Organization</mat-label>
+          <mat-radio-group
+            appearance="outline"
+            class="row radio_selection_group"
+            formControlName="organization"
+          >
+            <mat-radio-button
+              [value]="0"
+              radioGroup="relevancyOrganizationGroup"
+              >0 = No</mat-radio-button
+            >
+            <mat-radio-button
+              [value]="1"
+              radioGroup="relevancyOrganizationGroup"
+              >1 = Yes</mat-radio-button
+            >
+          </mat-radio-group>
+        </div>
+        <div class="">
+          <mat-label class="mb-3">Public News</mat-label>
+          <mat-radio-group
+            appearance="outline"
+            class="row radio_selection_group"
+            formControlName="public_news"
+          >
+            <mat-radio-button [value]="0" radioGroup="publicNewsGroup"
+              >0 = No</mat-radio-button
+            >
+            <mat-radio-button [value]="1" radioGroup="publicNewsGroup"
+              >1 = Yes</mat-radio-button
+            >
+          </mat-radio-group>
+        </div>
+        <div class="check-box-wrapper">
+          <mat-label class="mb-3 h6">Behavior</mat-label>
+          <div class="deception_checkboxes mt-2 ml-3">
+            <mat-checkbox formControlName="fear">Fear </mat-checkbox>
+            <mat-checkbox formControlName="curiosity"
+              >Duty or Obligation</mat-checkbox
+            >
+            <mat-checkbox formControlName="duty_obligation"
+              >Curiosity</mat-checkbox
+            >
+            <mat-checkbox formControlName="greed">Greed</mat-checkbox>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

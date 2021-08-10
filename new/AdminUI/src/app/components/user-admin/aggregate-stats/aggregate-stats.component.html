@@ -1,0 +1,148 @@
+<div style="max-width: 25rem">
+  <table class="table">
+    <tr>
+      <td>Total customers enrolled</td>
+      <td class="text-right">{{ detail?.customers_enrolled }}</td>
+    </tr>
+    <tr>
+      <td>Total monthly reports sent out</td>
+      <td class="text-right">{{ detail?.monthly_reports_sent }}</td>
+    </tr>
+    <tr>
+      <td>Total completed cycle reports sent out</td>
+      <td class="text-right">{{ detail?.cycle_reports_sent }}</td>
+    </tr>
+    <tr>
+      <td>Total yearly reports sent out</td>
+      <td class="text-right">{{ detail?.yearly_reports_sent }}</td>
+    </tr>
+  </table>
+
+  <h3>Customer Totals By Category</h3>
+
+  <table class="table">
+    <tr>
+      <td colspan="2" class="pr-0">
+        <div class="mb-1">Federal</div>
+        <div class="pl-3">
+          <table class="w-100 no-borders">
+            <tr>
+              <td>Subscription Count</td>
+              <td class="text-right">
+                {{ detail?.federal_stats.subscription_count }}
+              </td>
+            </tr>
+            <tr>
+              <td>Cycle Count</td>
+              <td class="text-right">
+                {{ detail?.federal_stats.cycle_count }}
+              </td>
+            </tr>
+          </table>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" class="pr-0">
+        <div class="mb-1">State</div>
+        <div class="pl-3">
+          <table class="w-100 no-borders">
+            <tr>
+              <td>Subscription Count</td>
+              <td class="text-right">
+                {{ detail?.state_stats.subscription_count }}
+              </td>
+            </tr>
+            <tr>
+              <td>Cycle Count</td>
+              <td class="text-right">{{ detail?.state_stats.cycle_count }}</td>
+            </tr>
+          </table>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" class="pr-0">
+        <div class="mb-1">Local</div>
+        <div class="pl-3">
+          <table class="w-100 no-borders">
+            <tr>
+              <td>Subscription Count</td>
+              <td class="text-right">
+                {{ detail?.local_stats.subscription_count }}
+              </td>
+            </tr>
+            <tr>
+              <td>Cycle Count</td>
+              <td class="text-right">{{ detail?.local_stats.cycle_count }}</td>
+            </tr>
+          </table>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" class="pr-0">
+        <div class="mb-1">Tribal/Territorial</div>
+        <div class="pl-3">
+          <table class="w-100 no-borders">
+            <tr>
+              <td>Subscription Count</td>
+              <td class="text-right">
+                {{ detail?.tribal_territorial_stats.subscription_count }}
+              </td>
+            </tr>
+            <tr>
+              <td>Cycle Count</td>
+              <td class="text-right">
+                {{ detail?.tribal_territorial_stats.cycle_count }}
+              </td>
+            </tr>
+          </table>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" class="pr-0">
+        <div class="mb-1">Critical Infrastructure (Private Sector)</div>
+        <div class="pl-3">
+          <table class="w-100 no-borders">
+            <tr>
+              <td>Subscription Count</td>
+              <td class="text-right">
+                {{
+                  detail?.critical_infrastructure_private_stats
+                    .subscription_count
+                }}
+              </td>
+            </tr>
+            <tr>
+              <td>Cycle Count</td>
+              <td class="text-right">
+                {{ detail?.critical_infrastructure_private_stats.cycle_count }}
+              </td>
+            </tr>
+          </table>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <h3>Responses</h3>
+
+  <table class="table">
+    <tr>
+      <td>Average click rate across all customers</td>
+      <td class="text-right">
+        {{
+          detail?.click_rate_across_all_customers
+            | nullishCoalesce: 0
+            | percent: "0.2"
+        }}
+      </td>
+    </tr>
+    <tr>
+      <td>Average time to click across all customers</td>
+      <td class="text-right">{{ detail?.avgTimeToClick }}</td>
+    </tr>
+  </table>
+</div>
