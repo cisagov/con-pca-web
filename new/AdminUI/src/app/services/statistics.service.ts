@@ -12,7 +12,7 @@ export class StatisticsService {
   ) {}
 
   public getAggregateStats() {
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/aggregate`;
+    const url = `${this.settingsService.settings.apiUrl}/api/reports/aggregate`;
     return this.http.get(url);
   }
 }

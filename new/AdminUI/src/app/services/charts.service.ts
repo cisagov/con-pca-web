@@ -23,7 +23,7 @@ export class ChartsService {
     cycle_uuid: string,
     nonhuman = false
   ) {
-    let url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${subscriptionUuid}/subscription-stats-page/${cycle_uuid}/`;
+    let url = `${this.settingsService.settings.apiUrl}/api/reports/${subscriptionUuid}/subscription-stats-page/${cycle_uuid}/`;
     if (nonhuman) {
       url += `?nonhuman=${nonhuman}`;
     }

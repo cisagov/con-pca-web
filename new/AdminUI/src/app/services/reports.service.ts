@@ -22,7 +22,7 @@ export class ReportsService {
       isHeadless === 'false'
         ? this.settingsService.settings.apiUrl
         : this.settingsService.settings.apiUrlHeadless;
-    let url = `${apiUrl}/api/v1/reports/${subscriptionUuid}/${reportType}/${cycleUuid}/`;
+    let url = `${apiUrl}/api/reports/${subscriptionUuid}/${reportType}/${cycleUuid}/`;
     if (nonhuman) {
       url += `?nonhuman=${nonhuman}`;
     }

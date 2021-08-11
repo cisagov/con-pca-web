@@ -30,7 +30,7 @@ export class CustomerService {
   }
   // Returns observable on http request to get customers
   public getCustomers() {
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/customers/`;
+    const url = `${this.settingsService.settings.apiUrl}/api/customers/`;
     return this.http.get(url);
   }
 
@@ -57,7 +57,7 @@ export class CustomerService {
   }
 
   public getCustomer(uuid: string) {
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/customer/${uuid}/`;
+    const url = `${this.settingsService.settings.apiUrl}/api/customer/${uuid}/`;
     return this.http.get(url);
   }
 
@@ -95,33 +95,33 @@ export class CustomerService {
     };
 
     return this.http.patch(
-      `${this.settingsService.settings.apiUrl}/api/v1/customer/${uuid}/`,
+      `${this.settingsService.settings.apiUrl}/api/customer/${uuid}/`,
       data
     );
   }
 
   public patchCustomer(data: Customer) {
     return this.http.patch(
-      `${this.settingsService.settings.apiUrl}/api/v1/customer/${data.customer_uuid}/`,
+      `${this.settingsService.settings.apiUrl}/api/customer/${data.customer_uuid}/`,
       data
     );
   }
 
   public addCustomer(customer: NewCustomer) {
     return this.http.post(
-      `${this.settingsService.settings.apiUrl}/api/v1/customers/`,
+      `${this.settingsService.settings.apiUrl}/api/customers/`,
       customer
     );
   }
 
   public getSectorList() {
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/sectorindustry/`;
+    const url = `${this.settingsService.settings.apiUrl}/api/sectorindustry/`;
     return this.http.get(url);
   }
 
   public deleteCustomer(data: Customer) {
     return this.http.delete(
-      `${this.settingsService.settings.apiUrl}/api/v1/customer/${data.customer_uuid}/`
+      `${this.settingsService.settings.apiUrl}/api/customer/${data.customer_uuid}/`
     );
   }
 }

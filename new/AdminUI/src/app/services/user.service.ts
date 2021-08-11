@@ -15,17 +15,17 @@ export class UserService {
   ) {}
 
   getUsers() {
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/users/`;
+    const url = `${this.settingsService.settings.apiUrl}/api/users/`;
     return this.http.get(url);
   }
 
   deleteUser(username: string) {
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/user/${username}/`;
+    const url = `${this.settingsService.settings.apiUrl}/api/user/${username}/`;
     return this.http.delete(url);
   }
 
   confirmUser(username: string) {
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/user/${username}/confirm/`;
+    const url = `${this.settingsService.settings.apiUrl}/api/user/${username}/confirm/`;
     return this.http.get(url);
   }
 

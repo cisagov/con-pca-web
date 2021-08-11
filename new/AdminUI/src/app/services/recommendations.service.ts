@@ -25,7 +25,7 @@ export class RecommendationsService {
    * @param retired
    */
   getAllRecommendations(retired: boolean = false) {
-    let url = `${this.settingsService.settings.apiUrl}/api/v1/recommendations/`;
+    let url = `${this.settingsService.settings.apiUrl}/api/recommendations/`;
     if (retired) {
       url = `${url}?retired=true`;
     }
@@ -38,7 +38,7 @@ export class RecommendationsService {
    */
   getRecommendation(uuid: string) {
     return this.http.get(
-      `${this.settingsService.settings.apiUrl}/api/v1/recommendations/${uuid}`
+      `${this.settingsService.settings.apiUrl}/api/recommendations/${uuid}`
     );
   }
 
@@ -48,7 +48,7 @@ export class RecommendationsService {
    */
   saveNewRecommendation(recommendation: Recommendations) {
     return this.http.post(
-      `${this.settingsService.settings.apiUrl}/api/v1/recommendations/`,
+      `${this.settingsService.settings.apiUrl}/api/recommendations/`,
       recommendation
     );
   }
@@ -59,7 +59,7 @@ export class RecommendationsService {
    */
   updateRecommendation(recommendation: Recommendations) {
     return this.http.patch(
-      `${this.settingsService.settings.apiUrl}/api/v1/recommendations/${recommendation.recommendations_uuid}/`,
+      `${this.settingsService.settings.apiUrl}/api/recommendations/${recommendation.recommendations_uuid}/`,
       recommendation
     );
   }
@@ -70,7 +70,7 @@ export class RecommendationsService {
    */
   deleteRecommendation(recommendation: Recommendations) {
     return this.http.delete(
-      `${this.settingsService.settings.apiUrl}/api/v1/recommendations/${recommendation.recommendations_uuid}/`
+      `${this.settingsService.settings.apiUrl}/api/recommendations/${recommendation.recommendations_uuid}/`
     );
   }
 }

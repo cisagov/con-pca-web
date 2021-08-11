@@ -56,7 +56,7 @@ export class SubscriptionService {
    *
    */
   public getSubscriptions(archived: boolean = false) {
-    let url = `${this.settingsService.settings.apiUrl}/api/v1/subscriptions/`;
+    let url = `${this.settingsService.settings.apiUrl}/api/subscriptions/`;
 
     if (archived) {
       url = `${url}?archived=true`;
@@ -73,7 +73,7 @@ export class SubscriptionService {
     contact: Contact
   ) {
     const c = { primary_contact: contact };
-    let url = `${this.settingsService.settings.apiUrl}/api/v1/subscription/customer/${customer_uuid}/`;
+    let url = `${this.settingsService.settings.apiUrl}/api/subscription/customer/${customer_uuid}/`;
     return this.http.post(url, c);
   }
 
@@ -82,7 +82,7 @@ export class SubscriptionService {
    * @param subscription_uuid
    */
   public getSubscription(subscription_uuid: string) {
-    let url = `${this.settingsService.settings.apiUrl}/api/v1/subscription/${subscription_uuid}/`;
+    let url = `${this.settingsService.settings.apiUrl}/api/subscription/${subscription_uuid}/`;
     return this.http.get(url);
   }
 
@@ -90,7 +90,7 @@ export class SubscriptionService {
     return new Promise((resolve, reject) => {
       this.http
         .delete(
-          `${this.settingsService.settings.apiUrl}/api/v1/subscription/${subscription.subscription_uuid}/`
+          `${this.settingsService.settings.apiUrl}/api/subscription/${subscription.subscription_uuid}/`
         )
         .subscribe(
           (success) => {
@@ -109,7 +109,7 @@ export class SubscriptionService {
    */
   submitSubscription(subscription: Subscription) {
     return this.http.post(
-      `${this.settingsService.settings.apiUrl}/api/v1/subscriptions/`,
+      `${this.settingsService.settings.apiUrl}/api/subscriptions/`,
       subscription
     );
   }
@@ -120,7 +120,7 @@ export class SubscriptionService {
    */
   restartSubscription(uuid: string) {
     return this.http.get(
-      `${this.settingsService.settings.apiUrl}/api/v1/subscription/restart/${uuid}`
+      `${this.settingsService.settings.apiUrl}/api/subscription/restart/${uuid}`
     );
   }
 
@@ -143,7 +143,7 @@ export class SubscriptionService {
     };
 
     return this.http.patch(
-      `${this.settingsService.settings.apiUrl}/api/v1/subscription/${subscription.subscription_uuid}/`,
+      `${this.settingsService.settings.apiUrl}/api/subscription/${subscription.subscription_uuid}/`,
       data
     );
   }
@@ -154,7 +154,7 @@ export class SubscriptionService {
   changePrimaryContact(subscriptUuid: string, contact: Contact) {
     const c = { primary_contact: contact };
     return this.http.patch(
-      `${this.settingsService.settings.apiUrl}/api/v1/subscription/${subscriptUuid}/`,
+      `${this.settingsService.settings.apiUrl}/api/subscription/${subscriptUuid}/`,
       c
     );
   }
@@ -165,7 +165,7 @@ export class SubscriptionService {
    */
   public getSubscriptionsByDnsContact(dhsContact: Contact) {
     return this.http.get(
-      `${this.settingsService.settings.apiUrl}/api/v1/subscriptions/?dhs_contact=${dhsContact.dhs_contact_uuid}`
+      `${this.settingsService.settings.apiUrl}/api/subscriptions/?dhs_contact=${dhsContact.dhs_contact_uuid}`
     );
   }
 
@@ -175,7 +175,7 @@ export class SubscriptionService {
   changeDhsContact(subscriptUuid: string, contactUuid: string) {
     const c = { dhs_contact_uuid: contactUuid };
     return this.http.patch(
-      `${this.settingsService.settings.apiUrl}/api/v1/subscription/${subscriptUuid}/`,
+      `${this.settingsService.settings.apiUrl}/api/subscription/${subscriptUuid}/`,
       c
     );
   }
@@ -186,7 +186,7 @@ export class SubscriptionService {
    */
   public getSubscriptionsByTemplate(template: Template) {
     return this.http.get(
-      `${this.settingsService.settings.apiUrl}/api/v1/subscriptions/?template=${template.template_uuid}`
+      `${this.settingsService.settings.apiUrl}/api/subscriptions/?template=${template.template_uuid}`
     );
   }
 
@@ -196,13 +196,13 @@ export class SubscriptionService {
    */
   public getSubscriptionsByCustomer(customer: Customer) {
     return this.http.get(
-      `${this.settingsService.settings.apiUrl}/api/v1/subscription/customer/${customer.customer_uuid}`
+      `${this.settingsService.settings.apiUrl}/api/subscription/customer/${customer.customer_uuid}`
     );
   }
 
   public stopSubscription(subscription_uuid: string) {
     return this.http.get(
-      `${this.settingsService.settings.apiUrl}/api/v1/subscription/stop/${subscription_uuid}/`
+      `${this.settingsService.settings.apiUrl}/api/subscription/stop/${subscription_uuid}/`
     );
   }
 
@@ -211,7 +211,7 @@ export class SubscriptionService {
     continuousSubscription: boolean
   ) {
     return this.http.get(
-      `${this.settingsService.settings.apiUrl}/api/v1/subscription/restart/${subscription_uuid}?continuous_subscription=${continuousSubscription}`
+      `${this.settingsService.settings.apiUrl}/api/subscription/restart/${subscription_uuid}?continuous_subscription=${continuousSubscription}`
     );
   }
 
@@ -219,7 +219,7 @@ export class SubscriptionService {
    * Gets timeline items for the subscription.
    */
   public getTimelineItems(subscription_uuid) {
-    let url = `${this.settingsService.settings.apiUrl}/api/v1/subscription/timeline/${subscription_uuid}/`;
+    let url = `${this.settingsService.settings.apiUrl}/api/subscription/timeline/${subscription_uuid}/`;
     return this.http.get(url);
   }
 
@@ -227,7 +227,7 @@ export class SubscriptionService {
    * Returns a list of CISA contacts.
    */
   public getDhsContacts() {
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/dhscontacts/`;
+    const url = `${this.settingsService.settings.apiUrl}/api/dhscontacts/`;
     return this.http.get(url);
   }
 
@@ -237,11 +237,11 @@ export class SubscriptionService {
   public saveDhsContact(c: Contact) {
     if (!!c.dhs_contact_uuid) {
       // patch existing contact
-      const url = `${this.settingsService.settings.apiUrl}/api/v1/dhscontact/${c.dhs_contact_uuid}/`;
+      const url = `${this.settingsService.settings.apiUrl}/api/dhscontact/${c.dhs_contact_uuid}/`;
       return this.http.patch(url, c);
     } else {
       // insert new contact
-      const url = `${this.settingsService.settings.apiUrl}/api/v1/dhscontacts/`;
+      const url = `${this.settingsService.settings.apiUrl}/api/dhscontacts/`;
       return this.http.post(url, c);
     }
   }
@@ -250,7 +250,7 @@ export class SubscriptionService {
    * Deletes a CISA contact.
    */
   public deleteDhsContact(c: Contact) {
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/dhscontact/${c.dhs_contact_uuid}/`;
+    const url = `${this.settingsService.settings.apiUrl}/api/dhscontact/${c.dhs_contact_uuid}/`;
     return this.http.delete(url);
   }
 
@@ -261,7 +261,7 @@ export class SubscriptionService {
     nonhuman = false
   ): Observable<Blob> {
     const headers = new HttpHeaders().set('Accept', 'application/pdf');
-    let url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${uuid}/pdf/${reportType}/${cycleUuid}/`;
+    let url = `${this.settingsService.settings.apiUrl}/api/reports/${uuid}/pdf/${reportType}/${cycleUuid}/`;
     if (nonhuman) {
       url += `?nonhuman=${nonhuman}`;
     }
@@ -274,7 +274,7 @@ export class SubscriptionService {
     reportType: string,
     nonhuman = false
   ) {
-    let url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${uuid}/email/${reportType}/${cycleUuid}/`;
+    let url = `${this.settingsService.settings.apiUrl}/api/reports/${uuid}/email/${reportType}/${cycleUuid}/`;
     if (nonhuman) {
       url += `?nonhuman=${nonhuman}`;
     }
@@ -282,21 +282,21 @@ export class SubscriptionService {
   }
 
   public getReportValuesForSubscription(subscription_uuid) {
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/cycleemailreported/${subscription_uuid}/`;
+    const url = `${this.settingsService.settings.apiUrl}/api/cycleemailreported/${subscription_uuid}/`;
     return this.http.get(url);
   }
   public postReportValuesForSubscription(data, subscription_uuid) {
     console.log(data);
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/cycleemailreported/${subscription_uuid}/`;
+    const url = `${this.settingsService.settings.apiUrl}/api/cycleemailreported/${subscription_uuid}/`;
     return this.http.post(url, data);
   }
   public getSusbcriptionStatusEmailsSent(subscription_uuid) {
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/subscription_report_emails_sent/${subscription_uuid}/`;
+    const url = `${this.settingsService.settings.apiUrl}/api/reports/subscription_report_emails_sent/${subscription_uuid}/`;
     return this.http.get(url);
   }
 
   public checkValid(cycleLengthMinutes: number, targetCount: number) {
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/subscriptions/valid/`;
+    const url = `${this.settingsService.settings.apiUrl}/api/subscriptions/valid/`;
     const data = {
       target_count: targetCount,
       cycle_minutes: cycleLengthMinutes,
@@ -304,13 +304,13 @@ export class SubscriptionService {
     return this.http.post(url, data);
   }
   public async getTemplatesSelected() {
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/templates/select/`;
+    const url = `${this.settingsService.settings.apiUrl}/api/templates/select/`;
     return this.http.get<TemplateSelected>(url).toPromise();
   }
 
   public getSubscriptionJSON(subscription_uuid) {
     const headers = new HttpHeaders().set('content-type', 'application/json');
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/subscription/downloadjson/${subscription_uuid}/`;
+    const url = `${this.settingsService.settings.apiUrl}/api/subscription/downloadjson/${subscription_uuid}/`;
     return this.http.get(url, { headers, responseType: 'blob' });
   }
 }

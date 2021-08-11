@@ -25,7 +25,7 @@ export class TagService {
    * @param retired
    */
   getAllTags() {
-    let url = `${this.settingsService.settings.apiUrl}/api/v1/tags/`;
+    let url = `${this.settingsService.settings.apiUrl}/api/tags/`;
     return this.http.get(url, headers);
   }
 
@@ -35,7 +35,7 @@ export class TagService {
    */
   getTag(uuid: string) {
     return this.http.get(
-      `${this.settingsService.settings.apiUrl}/api/v1/tag/${uuid}`
+      `${this.settingsService.settings.apiUrl}/api/tag/${uuid}`
     );
   }
 
@@ -45,7 +45,7 @@ export class TagService {
    */
   saveNewTag(tag: Tags) {
     return this.http.post(
-      `${this.settingsService.settings.apiUrl}/api/v1/tags/`,
+      `${this.settingsService.settings.apiUrl}/api/tags/`,
       tag
     );
   }
@@ -56,7 +56,7 @@ export class TagService {
    */
   updateTag(tag: Tags) {
     return this.http.patch(
-      `${this.settingsService.settings.apiUrl}/api/v1/tag/${tag.tag_definition_uuid}/`,
+      `${this.settingsService.settings.apiUrl}/api/tag/${tag.tag_definition_uuid}/`,
       tag
     );
   }
@@ -67,7 +67,7 @@ export class TagService {
    */
   deleteTag(tag: Tags) {
     return this.http.delete(
-      `${this.settingsService.settings.apiUrl}/api/v1/tag/${tag.tag_definition_uuid}/`
+      `${this.settingsService.settings.apiUrl}/api/tag/${tag.tag_definition_uuid}/`
     );
   }
 }

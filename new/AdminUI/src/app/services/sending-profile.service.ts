@@ -21,7 +21,7 @@ export class SendingProfileService {
    * Returns a promise with all sending profiles.
    */
   public getAllProfiles() {
-    let url = `${this.settingsService.settings.apiUrl}/api/v1/sendingprofiles/`;
+    let url = `${this.settingsService.settings.apiUrl}/api/sendingprofiles/`;
     return this.http.get(url);
   }
 
@@ -30,7 +30,7 @@ export class SendingProfileService {
    * @param id
    */
   public getProfile(id: number) {
-    let url = `${this.settingsService.settings.apiUrl}/api/v1/sendingprofile/${id}/`;
+    let url = `${this.settingsService.settings.apiUrl}/api/sendingprofile/${id}/`;
     return this.http.get(url);
   }
 
@@ -43,11 +43,11 @@ export class SendingProfileService {
   public saveProfile(sp: SendingProfile) {
     if (!sp.id) {
       // if new, post
-      let url = `${this.settingsService.settings.apiUrl}/api/v1/sendingprofiles/`;
+      let url = `${this.settingsService.settings.apiUrl}/api/sendingprofiles/`;
       return this.http.post(url, sp);
     } else {
       // else patch
-      let url = `${this.settingsService.settings.apiUrl}/api/v1/sendingprofile/${sp.id}/`;
+      let url = `${this.settingsService.settings.apiUrl}/api/sendingprofile/${sp.id}/`;
       return this.http.patch(url, sp);
     }
   }
@@ -57,12 +57,12 @@ export class SendingProfileService {
    * @param sp
    */
   public deleteProfile(spId: number) {
-    let url = `${this.settingsService.settings.apiUrl}/api/v1/sendingprofile/${spId}`;
+    let url = `${this.settingsService.settings.apiUrl}/api/sendingprofile/${spId}`;
     return this.http.delete(url);
   }
 
   sendTestEmail(sp: TestEmail) {
-    let url = `${this.settingsService.settings.apiUrl}/api/v1/test_email/`;
+    let url = `${this.settingsService.settings.apiUrl}/api/test_email/`;
     return this.http.post(url, sp);
   }
 }

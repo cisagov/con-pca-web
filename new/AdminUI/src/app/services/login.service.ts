@@ -30,12 +30,12 @@ export class LoginService {
   }
 
   public postLogin(login: Login): Observable<any> {
-    const url = `${this.settingsService.settings.apiUrl}/auth/login/`;
+    const url = `${this.settingsService.settings.apiUrl}/api/auth/login/`;
     return this.http.post(url, login);
   }
 
   public refreshToken() {
-    const url = `${this.settingsService.settings.apiUrl}/auth/refresh/`;
+    const url = `${this.settingsService.settings.apiUrl}/api/auth/refresh/`;
     return this.http.post(url, {
       refreshToken: this.cookieSvc.get('con-pca-auth-refresh-token'),
       username: localStorage.getItem('username'),
