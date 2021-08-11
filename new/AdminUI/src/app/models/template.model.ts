@@ -63,7 +63,7 @@ export class Template {
   last_updated_by?: string;
   lub_timestamp?: Date;
   landing_page_uuid: any;
-  sending_profile_id: number;
+  sending_profile_uuid: string;
 
   public constructor(init?: Partial<Template>) {
     Object.assign(this, init);

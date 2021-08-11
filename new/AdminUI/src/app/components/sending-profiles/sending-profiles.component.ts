@@ -35,9 +35,6 @@ export class SendingProfilesComponent implements OnInit {
     layoutSvc.setTitle('Sending Profiles');
   }
 
-  /**
-   *
-   */
   ngOnInit(): void {
     this.refresh();
   }
@@ -57,12 +54,8 @@ export class SendingProfilesComponent implements OnInit {
     });
   }
 
-  /**
-   * Confirm that they want to delete the profile.
-   * @param row
-   */
   confirmDeleteProfile(row: any): void {
-    if (this.dialog.openDialogs.length == 0) {
+    if (this.dialog.openDialogs.length === 0) {
       this.dialogRefConfirm = this.dialog.open(ConfirmComponent, {
         disableClose: false,
       });
@@ -78,10 +71,6 @@ export class SendingProfilesComponent implements OnInit {
     }
   }
 
-  /**
-   *
-   * @param row
-   */
   deleteProfile(row: any) {
     this.sendingProfileSvc.deleteProfile(row.id).subscribe(
       () => {
@@ -106,11 +95,11 @@ export class SendingProfilesComponent implements OnInit {
    * Open the detail dialog and pass the ID of the clicked row, or 0 if they clicked 'new'.
    */
   openProfileDialog(row: any): void {
-    if (this.dialog.openDialogs.length == 0) {
+    if (this.dialog.openDialogs.length === 0) {
       const dialogConfig = new MatDialogConfig();
       dialogConfig.width = '60vw';
       dialogConfig.data = {
-        sendingProfileId: row.id,
+        sending_profile_uuid: row.sending_profile_uuid,
       };
       const dialogRef = this.dialog.open(
         SendingProfileDetailComponent,

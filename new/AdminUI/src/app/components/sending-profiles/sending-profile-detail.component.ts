@@ -40,7 +40,7 @@ export class SendingProfileDetailComponent implements OnInit {
 
   profileForm: FormGroup;
   profile: SendingProfile;
-  id: number;
+  uuid: string;
 
   @ViewChild(MatSort) sort: MatSort;
   displayedColumns = ['header', 'value', 'actions'];
@@ -59,7 +59,7 @@ export class SendingProfileDetailComponent implements OnInit {
     public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.id = data.sendingProfileId;
+    this.uuid = data.sending_profile_uuid;
   }
 
   /**
@@ -90,9 +90,9 @@ export class SendingProfileDetailComponent implements OnInit {
       newHeaderValue: new FormControl(''),
     });
 
-    if (!!this.id) {
+    if (!!this.uuid) {
       this.mode = 'edit';
-      this.sendingProfileSvc.getProfile(this.id).subscribe(
+      this.sendingProfileSvc.getProfile(this.uuid).subscribe(
         (data: any) => {
           this.profile = data as SendingProfile;
 
@@ -218,8 +218,8 @@ export class SendingProfileDetailComponent implements OnInit {
       }
     }
 
-    if (this.id) {
-      sp.id = this.id;
+    if (this.uuid) {
+      sp.sending_profile_uuid = this.uuid;
     }
     return sp;
   }

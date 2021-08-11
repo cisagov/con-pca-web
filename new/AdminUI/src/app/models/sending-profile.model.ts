@@ -1,5 +1,5 @@
 export class SendingProfile {
-  id: number;
+  sending_profile_uuid: string;
   interface_type: string;
   name: string;
   host: string;

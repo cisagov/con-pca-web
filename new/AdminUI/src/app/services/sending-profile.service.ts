@@ -8,61 +8,40 @@ import { TestEmail } from '../models/test-email.model';
   providedIn: 'root',
 })
 export class SendingProfileService {
-  /**
-   * Constructor.
-   * @param http
-   */
   constructor(
     private http: HttpClient,
     private settingsService: SettingsService
   ) {}
 
-  /**
-   * Returns a promise with all sending profiles.
-   */
   public getAllProfiles() {
-    let url = `${this.settingsService.settings.apiUrl}/api/sendingprofiles/`;
+    const url = `${this.settingsService.settings.apiUrl}/api/sendingprofiles/`;
     return this.http.get(url);
   }
 
-  /**
-   *
-   * @param id
-   */
-  public getProfile(id: number) {
-    let url = `${this.settingsService.settings.apiUrl}/api/sendingprofile/${id}/`;
+  public getProfile(uuid: string) {
+    const url = `${this.settingsService.settings.apiUrl}/api/sendingprofile/${uuid}/`;
     return this.http.get(url);
   }
 
-  /**
-   * Posts a new Sending Profile
-   * -or-
-   * patches an existing Sending Profile
-   * @param sp
-   */
   public saveProfile(sp: SendingProfile) {
-    if (!sp.id) {
+    if (!sp.sending_profile_uuid) {
       // if new, post
-      let url = `${this.settingsService.settings.apiUrl}/api/sendingprofiles/`;
+      const url = `${this.settingsService.settings.apiUrl}/api/sendingprofiles/`;
       return this.http.post(url, sp);
     } else {
       // else patch
-      let url = `${this.settingsService.settings.apiUrl}/api/sendingprofile/${sp.id}/`;
+      const url = `${this.settingsService.settings.apiUrl}/api/sendingprofile/${sp.sending_profile_uuid}/`;
       return this.http.put(url, sp);
     }
   }
 
-  /**
-   *
-   * @param sp
-   */
-  public deleteProfile(spId: number) {
-    let url = `${this.settingsService.settings.apiUrl}/api/sendingprofile/${spId}`;
+  public deleteProfile(uuid: string) {
+    const url = `${this.settingsService.settings.apiUrl}/api/sendingprofile/${uuid}`;
     return this.http.delete(url);
   }
 
   sendTestEmail(sp: TestEmail) {
-    let url = `${this.settingsService.settings.apiUrl}/api/test_email/`;
+    const url = `${this.settingsService.settings.apiUrl}/api/test_email/`;
     return this.http.post(url, sp);
   }
 }
