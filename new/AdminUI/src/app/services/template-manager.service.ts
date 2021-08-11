@@ -80,7 +80,7 @@ export class TemplateManagerService {
   updateTemplate(template: Template) {
     return new Promise((resolve, reject) => {
       this.http
-        .patch(
+        .put(
           `${this.settingsService.settings.apiUrl}/api/template/${template.template_uuid}/`,
           template
         )

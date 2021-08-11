@@ -67,7 +67,7 @@ export class LandingPageManagerService {
   updatelandingpage(landingpage: Landing_Page) {
     return new Promise((resolve, reject) => {
       this.http
-        .patch(
+        .put(
           `${this.settingsService.settings.apiUrl}/api/landingpage/${landingpage.landing_page_uuid}/`,
           landingpage
         )
