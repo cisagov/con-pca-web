@@ -55,7 +55,7 @@ export class TagService {
    * @param tag
    */
   updateTag(tag: Tags) {
-    return this.http.patch(
+    return this.http.put(
       `${this.settingsService.settings.apiUrl}/api/tag/${tag.tag_definition_uuid}/`,
       tag
     );

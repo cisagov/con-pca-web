@@ -48,7 +48,7 @@ export class SendingProfileService {
     } else {
       // else patch
       let url = `${this.settingsService.settings.apiUrl}/api/sendingprofile/${sp.id}/`;
-      return this.http.patch(url, sp);
+      return this.http.put(url, sp);
     }
   }
 

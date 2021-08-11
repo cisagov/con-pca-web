@@ -72,8 +72,6 @@ import { UTCtoReadableTime } from './helper/utcTimeReadable.pipe';
 import { SvgTimelineComponent } from './components/subscriptions/svg-timeline/svg-timeline.component';
 import { AuthAppendInterceptor } from './helper/AuthAppendInterceptor';
 import { UnauthorizedInterceptor } from './helper/UnauthorizedInterceptor';
-import { DhsPocComponent } from './components/user-admin/dhs-poc/dhs-poc.component';
-import { DhsPocDetailComponent } from './components/user-admin/dhs-poc/dhs-poc-detail.component';
 import { InputTrimDirective } from './helper/input-trim.directive';
 import { DatePipe } from '@angular/common';
 import { RecommendationsService } from './services/recommendations.service';
@@ -151,8 +149,6 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     SafePipe,
     UTCtoReadableTime,
     SvgTimelineComponent,
-    DhsPocComponent,
-    DhsPocDetailComponent,
     InputTrimDirective,
     MonthlyComponent,
     CycleComponent,

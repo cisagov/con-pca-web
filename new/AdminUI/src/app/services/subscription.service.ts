@@ -142,7 +142,7 @@ export class SubscriptionService {
       report_frequency_minutes: subscription.report_frequency_minutes,
     };
 
-    return this.http.patch(
+    return this.http.put(
       `${this.settingsService.settings.apiUrl}/api/subscription/${subscription.subscription_uuid}/`,
       data
     );
@@ -153,7 +153,7 @@ export class SubscriptionService {
    */
   changePrimaryContact(subscriptUuid: string, contact: Contact) {
     const c = { primary_contact: contact };
-    return this.http.patch(
+    return this.http.put(
       `${this.settingsService.settings.apiUrl}/api/subscription/${subscriptUuid}/`,
       c
     );
@@ -174,7 +174,7 @@ export class SubscriptionService {
    */
   changeDhsContact(subscriptUuid: string, contactUuid: string) {
     const c = { dhs_contact_uuid: contactUuid };
-    return this.http.patch(
+    return this.http.put(
       `${this.settingsService.settings.apiUrl}/api/subscription/${subscriptUuid}/`,
       c
     );
@@ -238,7 +238,7 @@ export class SubscriptionService {
     if (!!c.dhs_contact_uuid) {
       // patch existing contact
       const url = `${this.settingsService.settings.apiUrl}/api/dhscontact/${c.dhs_contact_uuid}/`;
-      return this.http.patch(url, c);
+      return this.http.put(url, c);
     } else {
       // insert new contact
       const url = `${this.settingsService.settings.apiUrl}/api/dhscontacts/`;

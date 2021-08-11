@@ -58,7 +58,7 @@ export class RecommendationsService {
    * @param recommendation
    */
   updateRecommendation(recommendation: Recommendations) {
-    return this.http.patch(
+    return this.http.put(
       `${this.settingsService.settings.apiUrl}/api/recommendations/${recommendation.recommendations_uuid}/`,
       recommendation
     );

@@ -94,14 +94,14 @@ export class CustomerService {
       contact_list: contacts,
     };
 
-    return this.http.patch(
+    return this.http.put(
       `${this.settingsService.settings.apiUrl}/api/customer/${uuid}/`,
       data
     );
   }
 
   public patchCustomer(data: Customer) {
-    return this.http.patch(
+    return this.http.put(
       `${this.settingsService.settings.apiUrl}/api/customer/${data.customer_uuid}/`,
       data
     );

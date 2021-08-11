@@ -18,7 +18,6 @@ import { SendingProfilesComponent } from './components/sending-profiles/sending-
 import { AuthGuard } from './guards/auth.guard';
 import { LoginComponent } from 'src/app/components/login/login.component';
 import { RegisterUserComponent } from 'src/app/components/register/register-user.component';
-import { DhsPocComponent } from './components/user-admin/dhs-poc/dhs-poc.component';
 import { HelpFilesComponent } from './components/help-files/help-files.component';
 import { RecommendationsComponent } from './components/recommendations/recommendations.component';
 import { TagsPageComponent } from './components/tags-page/tags-page.component';
@@ -158,12 +157,6 @@ const routes: Routes = [
     component: LayoutMainComponent,
     canActivate: [AuthGuard],
     children: [{ path: '', component: HelpFilesComponent }],
-  },
-  {
-    path: 'dhspoc',
-    component: LayoutMainComponent,
-    canActivate: [AuthGuard],
-    children: [{ path: '', component: DhsPocComponent }],
   },
   {
     path: 'aggreg-stats',
