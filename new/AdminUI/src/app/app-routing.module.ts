@@ -5,7 +5,6 @@ import { SubscriptionsComponent } from './components/subscriptions/subscriptions
 import { ManageSubscriptionComponent } from './components/subscriptions/manage-subscription/manage-subscription.component';
 import { SubscriptionConfigTab } from './components/subscriptions/manage-subscription/subscription-config-tab/subscription-config-tab.component';
 import { TemplateManagerComponent } from './components/template-manager/template-manager.component';
-import { RecommendationsManagerComponent } from './components/recommendations/recommendations-manager/recommendations-manager.component';
 import { TagsManagerComponent } from './components/tags-page/tags-manager/tags-manager.component';
 import { SearchPanelComponent } from './components/search-panel/search-panel.component';
 import { TemplatesPageComponent } from './components/templates-page/templates-page.component';
@@ -17,7 +16,6 @@ import { AuthGuard } from './guards/auth.guard';
 import { LoginComponent } from 'src/app/components/login/login.component';
 import { RegisterUserComponent } from 'src/app/components/register/register-user.component';
 import { HelpFilesComponent } from './components/help-files/help-files.component';
-import { RecommendationsComponent } from './components/recommendations/recommendations.component';
 import { TagsPageComponent } from './components/tags-page/tags-page.component';
 import { LayoutBlankComponent } from './components/layout/layout-blank/layout-blank.component';
 import { MonthlyComponent } from './components/reports/monthly/monthly.component';
@@ -113,24 +111,6 @@ const routes: Routes = [
     component: LayoutMainComponent,
     canActivate: [AuthGuard],
     children: [{ path: '', component: AddCustomerComponent }],
-  },
-  {
-    path: 'recommendations',
-    component: LayoutMainComponent,
-    canActivate: [AuthGuard],
-    children: [{ path: '', component: RecommendationsComponent }],
-  },
-  {
-    path: 'recommendationsmanager',
-    component: LayoutMainComponent,
-    canActivate: [AuthGuard],
-    children: [{ path: '', component: RecommendationsManagerComponent }],
-  },
-  {
-    path: 'recommendationsmanager/:recommendationsId',
-    component: LayoutMainComponent,
-    canActivate: [AuthGuard],
-    children: [{ path: '', component: RecommendationsManagerComponent }],
   },
   {
     path: 'useradmin',

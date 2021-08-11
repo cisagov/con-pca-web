@@ -28,7 +28,6 @@ import { SubscriptionTasksTabComponent } from './components/subscriptions/manage
 import { UserAuthService } from './services/user-auth.service';
 import { TemplateManagerComponent } from './components/template-manager/template-manager.component';
 import { TemplateManagerService } from './services/template-manager.service';
-import { RecommendationsManagerComponent } from './components/recommendations/recommendations-manager/recommendations-manager.component';
 import { TagsManagerComponent } from './components/tags-page/tags-manager/tags-manager.component';
 import { ListFilterPipe } from './pipes/list-filter.pipe';
 import { NullishCoalescePipe } from './pipes/nullish-coalesce.pipe';
@@ -39,7 +38,6 @@ import { ThemeService } from './services/theme.service';
 import { LayoutMainService } from './services/layout-main.service';
 
 import { TemplatesPageComponent } from './components/templates-page/templates-page.component';
-import { RecommendationsComponent } from './components/recommendations/recommendations.component';
 import { TagsPageComponent } from './components/tags-page/tags-page.component';
 import { UserAdminComponent } from './components/user-admin/user-admin.component';
 import { HelpFilesComponent } from './components/help-files/help-files.component';
@@ -72,7 +70,6 @@ import { AuthAppendInterceptor } from './helper/AuthAppendInterceptor';
 import { UnauthorizedInterceptor } from './helper/UnauthorizedInterceptor';
 import { InputTrimDirective } from './helper/input-trim.directive';
 import { DatePipe } from '@angular/common';
-import { RecommendationsService } from './services/recommendations.service';
 import { TagService } from './services/tag.service';
 import { MonthlyComponent } from './components/reports/monthly/monthly.component';
 import { CycleComponent } from './components/reports/cycle/cycle.component';
@@ -117,12 +114,10 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     SubscriptionTasksTabComponent,
     SubscriptionStatsTab,
     TemplateManagerComponent,
-    RecommendationsManagerComponent,
     TagsManagerComponent,
     ListFilterPipe,
     NullishCoalescePipe,
     TemplatesPageComponent,
-    RecommendationsComponent,
     TagsPageComponent,
     UserAdminComponent,
     HelpFilesComponent,
@@ -189,7 +184,6 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     CustomerService,
     TemplateManagerService,
     LandingPageManagerService,
-    RecommendationsService,
     TagService,
     ThemeService,
     LayoutMainService,
