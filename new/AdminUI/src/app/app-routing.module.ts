@@ -8,8 +8,6 @@ import { TemplateManagerComponent } from './components/template-manager/template
 import { RecommendationsManagerComponent } from './components/recommendations/recommendations-manager/recommendations-manager.component';
 import { TagsManagerComponent } from './components/tags-page/tags-manager/tags-manager.component';
 import { SearchPanelComponent } from './components/search-panel/search-panel.component';
-import { ContactsComponent } from './components/contacts/contacts.component';
-import { DomainsComponent } from './components/domains/domains.component';
 import { TemplatesPageComponent } from './components/templates-page/templates-page.component';
 import { UserAdminComponent } from './components/user-admin/user-admin.component';
 import { CustomersComponent } from './components/customers/customers.component';
@@ -105,12 +103,6 @@ const routes: Routes = [
     ],
   },
   {
-    path: 'contacts',
-    component: LayoutMainComponent,
-    canActivate: [AuthGuard],
-    children: [{ path: '', component: ContactsComponent }],
-  },
-  {
     path: 'customers',
     component: LayoutMainComponent,
     canActivate: [AuthGuard],
@@ -121,12 +113,6 @@ const routes: Routes = [
     component: LayoutMainComponent,
     canActivate: [AuthGuard],
     children: [{ path: '', component: AddCustomerComponent }],
-  },
-  {
-    path: 'domains',
-    component: LayoutMainComponent,
-    canActivate: [AuthGuard],
-    children: [{ path: '', component: DomainsComponent }],
   },
   {
     path: 'recommendations',

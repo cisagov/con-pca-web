@@ -142,7 +142,7 @@ export class TemplateManagerService {
     parameters.push(`retired=${showRetired}`);
     const url = `${
       this.settingsService.settings.apiUrl
-    }/api/templates/downloadjson/?${parameters.join('&')}`;
+    }/api/templates/?${parameters.join('&')}`;
     return this.http.get(url, { headers, responseType: 'blob' });
   }
 }
