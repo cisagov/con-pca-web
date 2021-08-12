@@ -236,13 +236,7 @@ export class SendingProfileDetailComponent implements OnInit {
     sp = this.save();
     sp.from_address = this.getEmailFromBrackets(sp.from_address);
     let email_for_test: TestEmail = {
-      template: {
-        attachments: [],
-        html: null,
-        text: null,
-        name: null,
-        subject: null,
-      }, //template name to be used in the test
+      template: null, //template name to be used in the test
       first_name: 'test',
       last_name: 'test',
       email: this.testEmail,
