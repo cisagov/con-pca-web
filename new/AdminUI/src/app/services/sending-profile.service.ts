@@ -41,7 +41,7 @@ export class SendingProfileService {
   }
 
   sendTestEmail(sp: TestEmail) {
-    const url = `${this.settingsService.settings.apiUrl}/api/test_email/`;
+    const url = `${this.settingsService.settings.apiUrl}/api/util/send_test_email/`;
     return this.http.post(url, sp);
   }
 }
