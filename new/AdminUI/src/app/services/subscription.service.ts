@@ -129,11 +129,11 @@ export class SubscriptionService {
     const data = {
       archived: subscription.archived,
       primary_contact: subscription.primary_contact,
-      dhs_contact_uuid: subscription.dhs_contact_uuid,
+      admin_email: subscription.admin_email,
       start_date: subscription.start_date,
       target_email_list_cached_copy: subscription.target_email_list_cached_copy,
       target_email_list: subscription.target_email_list,
-      sending_profile_name: subscription.sending_profile_name,
+      sending_profile_uuid: subscription.sending_profile_uuid,
       target_domain: subscription.target_domain,
       continuous_subscription: subscription.continuous_subscription,
       templates_selected: subscription.templates_selected,
@@ -153,27 +153,6 @@ export class SubscriptionService {
    */
   changePrimaryContact(subscriptUuid: string, contact: Contact) {
     const c = { primary_contact: contact };
-    return this.http.put(
-      `${this.settingsService.settings.apiUrl}/api/subscription/${subscriptUuid}/`,
-      c
-    );
-  }
-
-  /**
-   * Gets all subscriptions for a given template.
-   * @param dhsContact
-   */
-  public getSubscriptionsByDnsContact(dhsContact: Contact) {
-    return this.http.get(
-      `${this.settingsService.settings.apiUrl}/api/subscriptions/?dhs_contact=${dhsContact.dhs_contact_uuid}`
-    );
-  }
-
-  /**
-   * Patches the subscription with the new CISA contact.
-   */
-  changeDhsContact(subscriptUuid: string, contactUuid: string) {
-    const c = { dhs_contact_uuid: contactUuid };
     return this.http.put(
       `${this.settingsService.settings.apiUrl}/api/subscription/${subscriptUuid}/`,
       c
@@ -221,37 +200,6 @@ export class SubscriptionService {
   public getTimelineItems(subscription_uuid) {
     let url = `${this.settingsService.settings.apiUrl}/api/subscription/timeline/${subscription_uuid}/`;
     return this.http.get(url);
-  }
-
-  /**
-   * Returns a list of CISA contacts.
-   */
-  public getDhsContacts() {
-    const url = `${this.settingsService.settings.apiUrl}/api/dhscontacts/`;
-    return this.http.get(url);
-  }
-
-  /**
-   * Posts or patches a CISA contact.
-   */
-  public saveDhsContact(c: Contact) {
-    if (!!c.dhs_contact_uuid) {
-      // patch existing contact
-      const url = `${this.settingsService.settings.apiUrl}/api/dhscontact/${c.dhs_contact_uuid}/`;
-      return this.http.put(url, c);
-    } else {
-      // insert new contact
-      const url = `${this.settingsService.settings.apiUrl}/api/dhscontacts/`;
-      return this.http.post(url, c);
-    }
-  }
-
-  /**
-   * Deletes a CISA contact.
-   */
-  public deleteDhsContact(c: Contact) {
-    const url = `${this.settingsService.settings.apiUrl}/api/dhscontact/${c.dhs_contact_uuid}/`;
-    return this.http.delete(url);
   }
 
   public downloadReport(

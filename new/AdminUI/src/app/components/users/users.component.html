@@ -23,25 +23,31 @@
 </div>
 <mat-table [hidden]="loading" [dataSource]="users" matSort>
   <!-- Username -->
-  <ng-container matColumnDef="Username">
+  <ng-container matColumnDef="username">
     <mat-header-cell *matHeaderCellDef mat-sort-header
       >Username</mat-header-cell
     >
-    <mat-cell *matCellDef="let row">{{ row.Username }}</mat-cell>
+    <mat-cell *matCellDef="let row">{{ row.username }}</mat-cell>
   </ng-container>
 
-  <!-- Template Base -->
-  <ng-container matColumnDef="UserStatus">
+  <!-- Email -->
+  <ng-container matColumnDef="email">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Email</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{ row.email }}</mat-cell>
+  </ng-container>
+
+  <!-- Status -->
+  <ng-container matColumnDef="status">
     <mat-header-cell *matHeaderCellDef mat-sort-header
       >User Status</mat-header-cell
     >
     <mat-cell *matCellDef="let row">
-      <div *ngIf="row.UserStatus == 'CONFIRMED'">{{ row.UserStatus }}</div>
+      <div *ngIf="row.status == 'CONFIRMED'">{{ row.status }}</div>
       <button
-        *ngIf="row.UserStatus != 'CONFIRMED'"
+        *ngIf="row.status != 'CONFIRMED'"
         mat-raised-button
         color="accent"
-        (click)="confirmUser(row.Username)"
+        (click)="confirmUser(row.status)"
       >
         Confirm User
       </button>
@@ -49,12 +55,12 @@
   </ng-container>
 
   <!-- User Created Date -->
-  <ng-container matColumnDef="UserCreateDate">
+  <ng-container matColumnDef="created">
     <mat-header-cell *matHeaderCellDef mat-sort-header
       >Created Date</mat-header-cell
     >
     <mat-cell *matCellDef="let row">{{
-      row.UserCreateDate | date: "MM/dd/yy"
+      row.created | date: "MM/dd/yy"
     }}</mat-cell>
   </ng-container>
 

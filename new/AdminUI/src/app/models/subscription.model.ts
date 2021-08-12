@@ -34,32 +34,34 @@ export class CampaignTimelineItem {
 export interface SubscriptionClicksModel {}
 
 export class Subscription {
-  active: boolean;
-  archived: boolean;
-  customer_uuid: string;
-  cycles: Cycle[];
-  lub_timestamp: Date;
-  manually_stopped: boolean;
-  name: string;
-  primary_contact: Contact;
-  dhs_contact_uuid: string;
-  start_date: Date;
-  end_date: Date;
-  status: string;
   subscription_uuid: string;
-  tasks: Task[] = [];
-  templates_selected_uuid_list: string[];
+  name: string;
+  customer_uuid: string;
+  target_domain: string;
+  start_date: Date;
+  primary_contact: Contact;
+  admin_email: string;
+  status: string;
   target_email_list: Target[] = [];
   target_email_list_cached_copy: Target[] = [];
-  campaigns: GoPhishCampaignModel[];
-  sending_profile_name: string;
-  target_domain: string;
+  templates_selected: TemplateSelected;
+  sending_profile_uuid: string;
+  active: boolean;
   continuous_subscription: boolean;
-  email_report_history: EmailHistory[] = [];
   cycle_length_minutes: number;
   cooldown_minutes: number;
   report_frequency_minutes: number;
-  templates_selected: TemplateSelected;
+
+  // Old attributes
+  archived: boolean;
+  cycles: Cycle[];
+  lub_timestamp: Date;
+  manually_stopped: boolean;
+  end_date: Date;
+  tasks: Task[] = [];
+  templates_selected_uuid_list: string[];
+  campaigns: GoPhishCampaignModel[];
+  email_report_history: EmailHistory[] = [];
 }
 
 export class EmailHistory {

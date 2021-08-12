@@ -14,7 +14,7 @@ import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
 })
 export class UsersComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
-  displayedColumns = ['Username', 'UserStatus', 'UserCreateDate', 'delete'];
+  displayedColumns = ['username', 'email', 'status', 'created', 'delete'];
   users = new MatTableDataSource<User>();
   loading = true;
 
@@ -33,6 +33,7 @@ export class UsersComponent implements OnInit {
   getUsers() {
     return this.userService.getUsers().subscribe(
       (success: User[]) => {
+        console.log(success);
         this.users = new MatTableDataSource<User>(success);
         this.users.sort = this.sort;
         this.loading = false;

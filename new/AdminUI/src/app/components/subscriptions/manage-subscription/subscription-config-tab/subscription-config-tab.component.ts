@@ -38,6 +38,8 @@ import { InvalidEmailDialogComponent } from 'src/app/components/subscriptions/in
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { CanComponentDeactivate } from 'src/app/guards/unsaved-changes.guard';
 import { UnsavedComponent } from 'src/app/components/dialogs/unsaved/unsaved.component';
+import { UserService } from 'src/app/services/user.service';
+import { User } from 'src/app/models/user.model';
 
 @Component({
   selector: 'subscription-config-tab',
@@ -75,8 +77,7 @@ export class SubscriptionConfigTab
   subscription: Subscription;
   customer: Customer = new Customer();
   primaryContact: Contact = new Contact();
-  dhsContacts = [];
-  dhsContactUuid: string;
+  adminEmails = [];
 
   startAt = new Date();
   sendBy = new Date();
@@ -112,9 +113,10 @@ export class SubscriptionConfigTab
     private layoutSvc: LayoutMainService,
     public settingsService: SettingsService,
     private route: ActivatedRoute,
-    private templateSvc: TemplateManagerService
+    private templateSvc: TemplateManagerService,
+    private userSvc: UserService
   ) {
-    this.loadDhsContacts();
+    this.loadAdminEmails();
     this.loadSendingProfiles();
 
     this.route.params.subscribe((params) => {
@@ -143,7 +145,7 @@ export class SubscriptionConfigTab
         primaryContact: new FormControl(null, {
           validators: Validators.required,
         }),
-        dhsContact: new FormControl(null, {
+        adminEmail: new FormControl(null, {
           validators: Validators.required,
         }),
         startDate: new FormControl(new Date(), {
@@ -234,7 +236,7 @@ export class SubscriptionConfigTab
     );
     this.angular_subs.push(
       this.f.sendingProfile.valueChanges.subscribe((val) => {
-        this.subscription.sending_profile_name = val;
+        this.subscription.sending_profile_uuid = val;
       })
     );
     this.angular_subs.push(
@@ -467,14 +469,14 @@ export class SubscriptionConfigTab
     this.subscriptionSvc.subscription = this.subscription;
     this.f.selectedCustomerUuid.setValue(s.customer_uuid);
     this.f.primaryContact.setValue(s.primary_contact?.email);
-    this.f.dhsContact.setValue(s.dhs_contact_uuid);
+    this.f.adminEmail.setValue(s.admin_email);
     this.f.startDate.setValue(s.start_date);
     this.f.csvText.setValue(
       this.formatTargetsToCSV(s.target_email_list_cached_copy),
       { emitEvent: false }
     );
 
-    this.f.sendingProfile.setValue(s.sending_profile_name);
+    this.f.sendingProfile.setValue(s.sending_profile_uuid);
     this.f.targetDomain.setValue(s?.target_domain);
     this.f.cycle_length_minutes.setValue(s.cycle_length_minutes, {
       emitEvent: false,
@@ -540,15 +542,14 @@ export class SubscriptionConfigTab
   /**
    * Gets all known CISA contacts from the API.
    */
-  loadDhsContacts() {
-    this.subscriptionSvc.getDhsContacts().subscribe((data: any) => {
-      this.dhsContacts = data;
+  loadAdminEmails() {
+    this.userSvc.getUsers().subscribe((data: User[]) => {
+      data.forEach((user) => {
+        this.adminEmails.push(user.email);
+      });
     });
   }
 
-  /**
-   *
-   */
   loadContactsForCustomer(customerUuid: string) {
     // get the customer and contacts from the API
     this.customerSvc.getCustomer(customerUuid).subscribe((c: Customer) => {
@@ -559,9 +560,6 @@ export class SubscriptionConfigTab
     });
   }
 
-  /**
-   *
-   */
   loadSendingProfiles() {
     this.sendingProfileSvc.getAllProfiles().subscribe((data: any) => {
       this.sendingProfiles = filterSendingProfiles(data);
@@ -624,9 +622,6 @@ export class SubscriptionConfigTab
     });
   }
 
-  /**
-   *
-   */
   changePrimaryContact(e: any) {
     if (!this.customer) {
       return;
@@ -636,16 +631,6 @@ export class SubscriptionConfigTab
     );
     this.subscription.primary_contact = this.primaryContact;
     this.subscriptionSvc.subscription.primary_contact = this.primaryContact;
-  }
-
-  changeDhsContact(e: any) {
-    const contact = this.dhsContacts.find(
-      (x) => x.dhs_contact_uuid === e.value
-    );
-    if (contact) {
-      this.dhsContactUuid = contact.dhs_contact_uuid;
-      this.subscription.dhs_contact_uuid = this.dhsContactUuid;
-    }
   }
 
   /**
@@ -809,7 +794,7 @@ export class SubscriptionConfigTab
 
     sub.customer_uuid = this.customer.customer_uuid;
     sub.primary_contact = this.primaryContact;
-    sub.dhs_contact_uuid = this.dhsContactUuid;
+    sub.admin_email = this.f.adminEmail.value;
     sub.active = true;
 
     sub.lub_timestamp = new Date();
@@ -826,7 +811,7 @@ export class SubscriptionConfigTab
       sub.target_email_list = sub.target_email_list_cached_copy;
     }
     sub.target_domain = this.target_email_domain.value;
-    sub.sending_profile_name = this.f.sendingProfile.value;
+    sub.sending_profile_uuid = this.f.sendingProfile.value;
 
     sub.continuous_subscription = this.f.continuousSubscription.value;
     const cycleLength: number = +this.f.cycle_length_minutes.value;
