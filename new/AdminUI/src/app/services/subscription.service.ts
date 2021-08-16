@@ -120,7 +120,7 @@ export class SubscriptionService {
    */
   restartSubscription(uuid: string) {
     return this.http.get(
-      `${this.settingsService.settings.apiUrl}/api/subscription/restart/${uuid}`
+      `${this.settingsService.settings.apiUrl}/api/subscription/${uuid}/launch/`
     );
   }
 
@@ -131,7 +131,6 @@ export class SubscriptionService {
       primary_contact: subscription.primary_contact,
       admin_email: subscription.admin_email,
       start_date: subscription.start_date,
-      target_email_list_cached_copy: subscription.target_email_list_cached_copy,
       target_email_list: subscription.target_email_list,
       sending_profile_uuid: subscription.sending_profile_uuid,
       target_domain: subscription.target_domain,
@@ -180,17 +179,8 @@ export class SubscriptionService {
   }
 
   public stopSubscription(subscription_uuid: string) {
-    return this.http.get(
-      `${this.settingsService.settings.apiUrl}/api/subscription/stop/${subscription_uuid}/`
-    );
-  }
-
-  public startSubscription(
-    subscription_uuid: string,
-    continuousSubscription: boolean
-  ) {
-    return this.http.get(
-      `${this.settingsService.settings.apiUrl}/api/subscription/restart/${subscription_uuid}?continuous_subscription=${continuousSubscription}`
+    return this.http.delete(
+      `${this.settingsService.settings.apiUrl}/api/subscription/${subscription_uuid}/launch/`
     );
   }
 

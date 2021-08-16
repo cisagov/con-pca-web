@@ -43,7 +43,6 @@ export class Subscription {
   admin_email: string;
   status: string;
   target_email_list: Target[] = [];
-  target_email_list_cached_copy: Target[] = [];
   templates_selected: TemplateSelected;
   sending_profile_uuid: string;
   active: boolean;

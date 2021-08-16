@@ -471,10 +471,9 @@ export class SubscriptionConfigTab
     this.f.primaryContact.setValue(s.primary_contact?.email);
     this.f.adminEmail.setValue(s.admin_email);
     this.f.startDate.setValue(s.start_date);
-    this.f.csvText.setValue(
-      this.formatTargetsToCSV(s.target_email_list_cached_copy),
-      { emitEvent: false }
-    );
+    this.f.csvText.setValue(this.formatTargetsToCSV(s.target_email_list), {
+      emitEvent: false,
+    });
 
     this.f.sendingProfile.setValue(s.sending_profile_uuid);
     this.f.targetDomain.setValue(s?.target_domain);
@@ -694,7 +693,7 @@ export class SubscriptionConfigTab
         this.processing = true;
         this.setTemplatesSelected();
         this.subscription.target_email_list =
-          this.subscription.target_email_list_cached_copy;
+          this.subscription.target_email_list;
         // persist any changes before restart
         this.subscriptionSvc
           .patchSubscription(this.subscription)
@@ -805,10 +804,10 @@ export class SubscriptionConfigTab
 
     // set the target list
     const csv = this.f.csvText.value;
-    sub.target_email_list_cached_copy = this.buildTargetsFromCSV(csv);
+    sub.target_email_list = this.buildTargetsFromCSV(csv);
 
     if (this.pageMode === 'CREATE') {
-      sub.target_email_list = sub.target_email_list_cached_copy;
+      sub.target_email_list = sub.target_email_list;
     }
     sub.target_domain = this.target_email_domain.value;
     sub.sending_profile_uuid = this.f.sendingProfile.value;
@@ -915,25 +914,26 @@ export class SubscriptionConfigTab
    * Formats the targets back into CSV text and refreshes the field.
    */
   evaluateTargetList(removeDupes: boolean) {
-    this.subscription.target_email_list_cached_copy = this.buildTargetsFromCSV(
+    this.subscription.target_email_list = this.buildTargetsFromCSV(
       this.f.csvText.value
     );
 
     if (removeDupes) {
-      const uniqueArray: Target[] =
-        this.subscription.target_email_list_cached_copy.filter((t1, index) => {
+      const uniqueArray: Target[] = this.subscription.target_email_list.filter(
+        (t1, index) => {
           return (
             index ===
-            this.subscription.target_email_list_cached_copy.findIndex((t2) => {
+            this.subscription.target_email_list.findIndex((t2) => {
               return t2.email.toLowerCase() === t1.email.toLowerCase();
             })
           );
-        });
-      this.subscription.target_email_list_cached_copy = uniqueArray;
+        }
+      );
+      this.subscription.target_email_list = uniqueArray;
     }
 
     this.f.csvText.setValue(
-      this.formatTargetsToCSV(this.subscription.target_email_list_cached_copy),
+      this.formatTargetsToCSV(this.subscription.target_email_list),
       { emitEvent: false }
     );
   }
