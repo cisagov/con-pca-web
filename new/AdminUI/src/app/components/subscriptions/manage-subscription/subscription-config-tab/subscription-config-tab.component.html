@@ -208,7 +208,10 @@
           <mat-label>Sending Profile</mat-label>
           <mat-select formControlName="sendingProfile">
             <mat-option [value]="null">--Select--</mat-option>
-            <mat-option *ngFor="let sp of sendingProfiles" [value]="sp.name">
+            <mat-option
+              *ngFor="let sp of sendingProfiles"
+              [value]="sp.sending_profile_uuid"
+            >
               {{ sp.name }}</mat-option
             >
           </mat-select>
