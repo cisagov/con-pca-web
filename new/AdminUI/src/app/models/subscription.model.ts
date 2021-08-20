@@ -1,5 +1,6 @@
 import { Contact } from './customer.model';
 import * as moment from 'node_modules/moment/moment';
+import { Cycle } from './cycle.model';
 
 export class GoPhishCampaignModel {
   campaign_id: Number;
@@ -51,9 +52,11 @@ export class Subscription {
   cooldown_minutes: number;
   report_frequency_minutes: number;
 
+  // Helper attributes
+  cycles: Cycle[];
+
   // Old attributes
   archived: boolean;
-  cycles: Cycle[];
   lub_timestamp: Date;
   manually_stopped: boolean;
   end_date: Date;
@@ -97,21 +100,6 @@ export class Task {
   executed: boolean;
   executed_date: Date;
   error: string;
-}
-
-export class Cycle {
-  cycle_uuid: string;
-  start_date: Date;
-  end_date: Date;
-  active: boolean;
-  campaigns_in_cycle: string[];
-  phish_results: any[];
-  phish_results_dirty: boolean;
-  override_total_reported: Number;
-  total_targets: Number;
-
-  // helper attributes
-  nonhuman = false;
 }
 
 export class TemplateSelected {

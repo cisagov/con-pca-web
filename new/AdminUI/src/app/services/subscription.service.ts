@@ -1,14 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Customer, Contact } from '../models/customer.model';
-import {
-  Cycle,
-  Subscription,
-  TemplateSelected,
-} from '../models/subscription.model';
+import { Subscription, TemplateSelected } from '../models/subscription.model';
 import { Template } from '../models/template.model';
 import { SettingsService } from './settings.service';
 import { Observable, BehaviorSubject } from 'rxjs';
+import { Cycle } from '../models/cycle.model';
 
 @Injectable({
   providedIn: 'root',

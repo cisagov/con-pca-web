@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { ChartsService } from 'src/app/services/charts.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
-import { humanTiming } from 'src/app/helper/utilities';
-import { Cycle } from 'src/app/models/subscription.model';
+import { Cycle, CycleStats } from 'src/app/models/cycle.model';
+import { CycleService } from 'src/app/services/cycle.service';
 
 @Component({
   selector: 'app-sub-dashboard',
@@ -14,6 +14,7 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
   subscriptionUuid: string;
   dataAvailable = false;
   cycle_selected = false;
+  cycleStats = new CycleStats();
 
   chart: any = {};
   chartSent: any = {};
@@ -54,6 +55,7 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
    *
    */
   constructor(
+    public cycleSvc: CycleService,
     public chartsSvc: ChartsService,
     private subscriptionSvc: SubscriptionService
   ) {}
@@ -76,10 +78,11 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
       this.subscriptionSvc
         .getCycleBehaviorSubject()
         .subscribe((data: Cycle) => {
+          console.log(data);
           this.selected_cycle = data;
           if (Object.keys(data).length > 0) {
             this.cycle_selected = true;
-            this.numberTemplatesInUse = data.campaigns_in_cycle.length;
+            this.numberTemplatesInUse = data.template_uuids.length;
           }
           this.drawGraphs();
         })
@@ -129,16 +132,20 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
       this.chartSent.colorScheme = this.schemeSent;
 
       // get content
-      this.chartsSvc
-        .getStatisticsReport(
-          this.subscriptionUuid,
+      this.cycleSvc
+        .getCycleStats(
           this.selected_cycle.cycle_uuid,
           this.selected_cycle.nonhuman
         )
-        .subscribe((stats: any) => {
+        .subscribe((stats: CycleStats) => {
+          this.cycleStats = stats;
+          this.chartSent.chartResults = this.chartsSvc.getSentEmailNumbers(
+            this.selected_cycle,
+            stats
+          );
+
           this.chart.chartResults = this.chartsSvc.formatStatistics(stats);
-          this.chartSent.chartResults =
-            this.chartsSvc.getSentEmailNumbers(stats);
+
           this.templatesByPerformance = stats.template_breakdown;
           this.avgTTFC = stats.avg_time_to_first_click;
           this.selectTemplatePerformanceMetric();

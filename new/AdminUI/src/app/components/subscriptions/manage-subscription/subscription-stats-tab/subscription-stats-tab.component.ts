@@ -2,11 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import * as moment from 'node_modules/moment/moment';
 import { DatePipe } from '@angular/common';
-import {
-  Subscription,
-  TimelineItem,
-  Cycle,
-} from 'src/app/models/subscription.model';
+import { Subscription, TimelineItem } from 'src/app/models/subscription.model';
 import {
   FormGroup,
   FormControl,
@@ -16,6 +12,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { Cycle } from 'src/app/models/cycle.model';
 
 @Component({
   selector: 'subscription-stats-tab',
