@@ -50,8 +50,13 @@
       </div>
 
       <h4>Response Statistics</h4>
-      <div>Average Time to First Click: {{ avgTTFC }}</div>
-      <div>Average Time to First Report: {{ avgTTFR }}</div>
+      <div>
+        Average Time to First Click:
+        {{
+          cycleStats.stats.all.clicked.average * 1000
+            | date: "m 'minutes and' s 'seconds'"
+        }}
+      </div>
       <div>
         Aggregate Count:
         <ul>

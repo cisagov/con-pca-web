@@ -39,6 +39,10 @@ export class Cycle {
 
 export class CycleStatsEventMetrics {
   count: number;
+  average: number;
+  minimum: number;
+  maximum: number;
+  median: number;
 }
 
 export class CycleStatsEvents {
