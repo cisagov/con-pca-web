@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Cycle, CycleStats } from '../models/cycle.model';
+import { Cycle } from '../models/cycle.model';
+import { CycleStats } from '../models/stats.model';
 import { SettingsService } from './settings.service';
 
 @Injectable({

@@ -1,8 +1,9 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { ChartsService } from 'src/app/services/charts.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
-import { Cycle, CycleStats } from 'src/app/models/cycle.model';
+import { Cycle } from 'src/app/models/cycle.model';
 import { CycleService } from 'src/app/services/cycle.service';
+import { CycleStats } from 'src/app/models/stats.model';
 
 @Component({
   selector: 'app-sub-dashboard',
@@ -18,8 +19,6 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
 
   chart: any = {};
   chartSent: any = {};
-
-  numberTemplatesInUse = 0;
 
   // average time to first click
   avgTTFC: string;
@@ -47,7 +46,6 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
   selected_cycle: Cycle;
 
   temp_angular_subs = [];
-  templatesByPerformance = [];
   templatePerformanceByMetric = [];
   performanceMetricUsed = 'clicked';
 
@@ -78,11 +76,9 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
       this.subscriptionSvc
         .getCycleBehaviorSubject()
         .subscribe((data: Cycle) => {
-          console.log(data);
           this.selected_cycle = data;
           if (Object.keys(data).length > 0) {
             this.cycle_selected = true;
-            this.numberTemplatesInUse = data.template_uuids.length;
           }
           this.drawGraphs();
         })
@@ -146,7 +142,6 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
 
           this.chart.chartResults = this.chartsSvc.formatStatistics(stats);
 
-          this.templatesByPerformance = stats.template_breakdown;
           this.avgTTFC = stats.avg_time_to_first_click;
           this.selectTemplatePerformanceMetric();
           if (!this.avgTTFC) {
@@ -158,7 +153,6 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
             this.avgTTFR = '(no emails reported yet)';
           }
           this.aggregateCounts = stats['aggregate_stats'];
-          this.campaignsDetails = stats['campaign_details'];
           this.ipAsnStats = stats.asn_stats;
         });
     }
@@ -177,19 +171,17 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
 
   selectTemplatePerformanceMetric(metric = 'clicked') {
     this.performanceMetricUsed = metric;
-    this.templatesByPerformance.forEach((e) => {
-      if (e.type == this.performanceMetricUsed) {
-        this.templatePerformanceByMetric = e.list;
-      }
-    });
+    this.templatePerformanceByMetric = this.cycleStats.template_stats.sort(
+      (first, second) => 0 - (first[metric].rank > second[metric].rank ? -1 : 1)
+    );
+    console.log(this.templatePerformanceByMetric);
   }
   styleSelectedMetric(metric) {
     if (this.performanceMetricUsed == metric) {
       return 'solid 2px #D6C0C5';
     }
   }
-  getRatio(ratios) {
-    let selectedString = `${this.performanceMetricUsed}_ratio`;
-    return ratios[selectedString];
+  getRatio(templateStat) {
+    return templateStat[this.performanceMetricUsed]['ratio'];
   }
 }

@@ -216,15 +216,6 @@ export class SubscriptionService {
     return this.http.get(url);
   }
 
-  public getReportValuesForSubscription(subscription_uuid) {
-    const url = `${this.settingsService.settings.apiUrl}/api/cycleemailreported/${subscription_uuid}/`;
-    return this.http.get(url);
-  }
-  public postReportValuesForSubscription(data, subscription_uuid) {
-    console.log(data);
-    const url = `${this.settingsService.settings.apiUrl}/api/cycleemailreported/${subscription_uuid}/`;
-    return this.http.post(url, data);
-  }
   public getSusbcriptionStatusEmailsSent(subscription_uuid) {
     const url = `${this.settingsService.settings.apiUrl}/api/reports/subscription_report_emails_sent/${subscription_uuid}/`;
     return this.http.get(url);

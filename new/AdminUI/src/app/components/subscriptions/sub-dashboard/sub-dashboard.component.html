@@ -46,7 +46,7 @@
       </div>
 
       <div class="mb-4">
-        Number of Templates in Use: {{ numberTemplatesInUse }}
+        Number of Templates in Use: {{ cycleStats.template_stats.length }}
       </div>
 
       <h4>Response Statistics</h4>
@@ -68,16 +68,11 @@
       <div>
         Template Deception Breakdown:
         <ul>
-          <li *ngFor="let campaign of campaignsDetails">
-            Deception Score: {{ campaign.template.deception_score }} - Template
-            Subject:
-            <a
-              [routerLink]="[
-                '/templatemanager',
-                campaign.template.template_uuid
-              ]"
-              >{{ campaign.template.subject }}</a
-            >
+          <li *ngFor="let template of cycleStats.template_stats">
+            Deception Level: {{ template.deception_level }} - Template Subject:
+            <a [routerLink]="['/templatemanager', template.template_uuid]">{{
+              template.template.subject
+            }}</a>
           </li>
         </ul>
       </div>
@@ -85,17 +80,18 @@
         Template Performance Breakdown
         <div class="metric-button-container">
           <button
-            *ngFor="let metric of templatesByPerformance"
-            [style.border]="styleSelectedMetric(metric.type)"
-            (click)="selectTemplatePerformanceMetric(metric.type)"
+            *ngFor="let metric of ['clicked', 'opened']"
+            [style.border]="styleSelectedMetric(metric)"
+            (click)="selectTemplatePerformanceMetric(metric)"
             class="metric-button"
           >
-            {{ metric.type | titlecase }}</button
+            {{ metric | titlecase }}</button
           >:
         </div>
         <ul>
           <li *ngFor="let row of templatePerformanceByMetric">
-            {{ row.order }} - {{ getRatio(row.ratios) | percent }} -
+            {{ row[performanceMetricUsed]["rank"] }} -
+            {{ row[performanceMetricUsed]["ratio"] | percent }} -
             {{ row.template.name }}
             <a
               [routerLink]="['/templatemanager', row.template.template_uuid]"

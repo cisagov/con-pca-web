@@ -36,38 +36,3 @@ export class Cycle {
   // Helper Attributes
   nonhuman: boolean;
 }
-
-export class CycleStatsEventMetrics {
-  count: number;
-  average: number;
-  minimum: number;
-  maximum: number;
-  median: number;
-}
-
-export class CycleStatsEvents {
-  sent = new CycleStatsEventMetrics();
-  opened = new CycleStatsEventMetrics();
-  clicked = new CycleStatsEventMetrics();
-}
-
-export class CycleStatsLevel {
-  high = new CycleStatsEvents();
-  moderate = new CycleStatsEvents();
-  low = new CycleStatsEvents();
-  all = new CycleStatsEvents();
-}
-
-export class CycleStats {
-  stats = new CycleStatsLevel();
-
-  // old
-  avg_time_to_first_click: string;
-  avg_time_to_first_report: string;
-  sent: number;
-  campaign_details: any;
-  aggregate_stats: any;
-  template_breakdown: any;
-  levels: any;
-  asn_stats: any;
-}
