@@ -3,11 +3,6 @@ import { Injectable } from '@angular/core';
 import { SettingsService } from './settings.service';
 import { Landing_Page } from '../models/landing-page.models';
 
-const headers = {
-  headers: new HttpHeaders().set('Content-Type', 'application/json'),
-  params: new HttpParams(),
-};
-
 @Injectable()
 export class LandingPageManagerService {
   /**
@@ -26,7 +21,7 @@ export class LandingPageManagerService {
     if (with_default) {
       url = `${url}?with_default=true`;
     }
-    return this.http.get(url, headers);
+    return this.http.get(url);
   }
 
   /**

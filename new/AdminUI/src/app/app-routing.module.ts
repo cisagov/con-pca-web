@@ -34,15 +34,15 @@ const routes: Routes = [
     component: LayoutBlankComponent,
     children: [
       {
-        path: 'monthly/:id/:cycle_uuid/:isHeadless/:nonhuman',
+        path: 'monthly/:cycle_uuid',
         component: MonthlyComponent,
       },
       {
-        path: 'cycle/:id/:cycle_uuid/:isHeadless/:nonhuman',
+        path: 'cycle/:cycle_uuid',
         component: CycleComponent,
       },
       {
-        path: 'yearly/:id/:cycle_uuid/:isHeadless/:nonhuman',
+        path: 'yearly/:cycle_uuid',
         component: YearlyComponent,
       },
     ],

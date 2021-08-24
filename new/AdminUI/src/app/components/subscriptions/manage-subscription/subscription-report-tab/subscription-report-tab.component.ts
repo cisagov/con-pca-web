@@ -56,11 +56,7 @@ export class SubscriptionReportTab implements OnInit {
 
   viewReport(reportType: string) {
     this.router.navigate([
-      `/reports/${reportType}`,
-      this.subscription.subscription_uuid,
-      this.selectedCycle.cycle_uuid,
-      false,
-      this.includeNonhuman,
+      `/reports/${reportType}/${this.selectedCycle.cycle_uuid}`,
     ]);
   }
 

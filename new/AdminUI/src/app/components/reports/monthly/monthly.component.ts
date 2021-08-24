@@ -12,6 +12,7 @@ import { ChartsService } from 'src/app/services/charts.service';
 })
 export class MonthlyComponent implements OnInit {
   subscriptionUuid: string;
+  showOld = false;
   detail: any;
 
   avgTTFC: any;
@@ -26,6 +27,9 @@ export class MonthlyComponent implements OnInit {
     domain: ['#064875', '#fcbf10', '#007bc1'],
   };
 
+  reportHtml = '';
+  cycleUuid: string;
+
   constructor(
     public sanitizer: DomSanitizer,
     public reportsSvc: ReportsService,
@@ -34,18 +38,20 @@ export class MonthlyComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.route.params.subscribe((params) => {
+      this.cycleUuid = params.cycle_uuid;
+      this.reportsSvc.getReport(this.cycleUuid, 'monthly').subscribe((resp) => {
+        this.reportHtml = resp;
+      });
+    });
+
+    return;
     this.subscriptionUuid = this.route.snapshot.params.id;
 
     this.route.params.subscribe((params) => {
       this.subscriptionUuid = params.id;
       this.reportsSvc
-        .getReport(
-          this.subscriptionUuid,
-          params.cycle_uuid,
-          'monthly',
-          params.nonhuman,
-          params.isHeadless
-        )
+        .getReport(params.cycle_uuid, 'monthly', params.nonhuman)
         .subscribe((resp) => {
           this.detail = resp;
           this.sanatize_template_indicators();
