@@ -29,9 +29,19 @@ export class TemplateStats extends CycleStatsLevel {
   deception_level: string;
 }
 
+export class MaxmindStats {
+  asn_org: string;
+  is_nonhuman: boolean;
+  ips: string[];
+  cities: string[];
+  opens: number;
+  clicks: number;
+}
+
 export class CycleStats {
   stats = new CycleStatsLevel();
   template_stats: TemplateStats[] = [];
+  maxmind_stats: MaxmindStats[] = [];
 
   // old
   avg_time_to_first_click: string;

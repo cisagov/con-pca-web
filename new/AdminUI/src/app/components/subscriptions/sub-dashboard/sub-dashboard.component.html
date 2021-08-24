@@ -111,7 +111,7 @@
             <th class="small-table-column">Clicks</th>
             <th class="non-human-column">Non-Human</th>
           </tr>
-          <tr *ngFor="let item of ipAsnStats">
+          <tr *ngFor="let item of cycleStats.maxmind_stats">
             <td class="asn-org">{{ item.asn_org }}</td>
             <td>
               <span *ngFor="let ip of item.ips; let last = last"
@@ -125,7 +125,7 @@
             </td>
             <td class="centered-text">{{ item.opens }}</td>
             <td class="centered-text">{{ item.clicks }}</td>
-            <td>{{ item.is_non_human }}</td>
+            <td>{{ item.is_nonhuman }}</td>
           </tr>
         </table>
       </div>

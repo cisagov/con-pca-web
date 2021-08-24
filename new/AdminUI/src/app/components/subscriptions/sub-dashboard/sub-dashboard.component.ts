@@ -34,7 +34,6 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
     reported: { count: null },
   };
   campaignsDetails;
-  ipAsnStats = [];
 
   schemeLowMedHigh = {
     domain: ['#064875', '#fcbf10', '#007bc1'],
@@ -153,7 +152,6 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
             this.avgTTFR = '(no emails reported yet)';
           }
           this.aggregateCounts = stats['aggregate_stats'];
-          this.ipAsnStats = stats.asn_stats;
         });
     }
   }
@@ -174,7 +172,6 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
     this.templatePerformanceByMetric = this.cycleStats.template_stats.sort(
       (first, second) => 0 - (first[metric].rank > second[metric].rank ? -1 : 1)
     );
-    console.log(this.templatePerformanceByMetric);
   }
   styleSelectedMetric(metric) {
     if (this.performanceMetricUsed == metric) {
