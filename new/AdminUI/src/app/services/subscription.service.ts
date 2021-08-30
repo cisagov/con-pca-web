@@ -202,13 +202,8 @@ export class SubscriptionService {
     return this.http.get(url, { headers, responseType: 'blob' });
   }
 
-  public sendReport(
-    uuid: string,
-    cycleUuid: string,
-    reportType: string,
-    nonhuman = false
-  ) {
-    let url = `${this.settingsService.settings.apiUrl}/api/reports/${uuid}/email/${reportType}/${cycleUuid}/`;
+  public sendReport(cycleUuid: string, reportType: string, nonhuman = false) {
+    let url = `${this.settingsService.settings.apiUrl}/api/cycle/${cycleUuid}/reports/${reportType}/email/`;
     if (nonhuman) {
       url += `?nonhuman=${nonhuman}`;
     }
