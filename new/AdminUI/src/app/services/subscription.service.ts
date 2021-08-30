@@ -190,13 +190,12 @@ export class SubscriptionService {
   }
 
   public downloadReport(
-    uuid: string,
     cycleUuid: string,
     reportType: string,
     nonhuman = false
   ): Observable<Blob> {
     const headers = new HttpHeaders().set('Accept', 'application/pdf');
-    let url = `${this.settingsService.settings.apiUrl}/api/reports/${uuid}/pdf/${reportType}/${cycleUuid}/`;
+    let url = `${this.settingsService.settings.apiUrl}/api/cycle/${cycleUuid}/reports/${reportType}/pdf/`;
     if (nonhuman) {
       url += `?nonhuman=${nonhuman}`;
     }

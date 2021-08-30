@@ -44,20 +44,6 @@ export class MonthlyComponent implements OnInit {
         this.reportHtml = resp;
       });
     });
-
-    return;
-    this.subscriptionUuid = this.route.snapshot.params.id;
-
-    this.route.params.subscribe((params) => {
-      this.subscriptionUuid = params.id;
-      this.reportsSvc
-        .getReport(params.cycle_uuid, 'monthly', params.nonhuman)
-        .subscribe((resp) => {
-          this.detail = resp;
-          this.sanatize_template_indicators();
-          this.renderReport();
-        });
-    });
   }
   sanatize_template_indicators() {
     let san_list = this.detail.subscription_stats.indicator_ranking.filter(

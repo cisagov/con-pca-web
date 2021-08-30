@@ -64,7 +64,6 @@ export class SubscriptionReportTab implements OnInit {
     this.loading = true;
     this.subscriptionSvc
       .downloadReport(
-        this.subscription.subscription_uuid,
         this.selectedCycle.cycle_uuid,
         reportType,
         this.includeNonhuman
