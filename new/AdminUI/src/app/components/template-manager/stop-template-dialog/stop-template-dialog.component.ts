@@ -4,9 +4,9 @@ import {
   MAT_DIALOG_DATA,
   MatDialog,
 } from '@angular/material/dialog';
-import { Template } from 'src/app/models/template.model';
+import { TemplateModel } from 'src/app/models/template.model';
 import { SubscriptionService } from 'src/app/services/subscription.service';
-import { Subscription } from 'src/app/models/subscription.model';
+import { SubscriptionModel } from 'src/app/models/subscription.model';
 import { TemplateManagerService } from 'src/app/services/template-manager.service';
 import { ConfirmComponent } from '../../dialogs/confirm/confirm.component';
 
@@ -18,8 +18,8 @@ import { ConfirmComponent } from '../../dialogs/confirm/confirm.component';
 export class StopTemplateDialogComponent implements OnInit {
   dialogRefConfirm: MatDialogRef<ConfirmComponent>;
 
-  template: Template;
-  subscriptions: Subscription[];
+  template: TemplateModel;
+  subscriptions: SubscriptionModel[];
 
   displayedColumns = ['subscription_name'];
   constructor(
@@ -27,7 +27,7 @@ export class StopTemplateDialogComponent implements OnInit {
     public subscriptionSvc: SubscriptionService,
     public templateSvc: TemplateManagerService,
     public dialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) data: Template
+    @Inject(MAT_DIALOG_DATA) data: TemplateModel
   ) {
     this.template = data;
   }
@@ -36,7 +36,7 @@ export class StopTemplateDialogComponent implements OnInit {
     this.subscriptionSvc
       .getSubscriptionsByTemplate(this.template)
       .subscribe((data: any[]) => {
-        this.subscriptions = data as Subscription[];
+        this.subscriptions = data as SubscriptionModel[];
         this.subscriptions = this.subscriptions.filter(
           (subscription) => subscription.status === 'In Progress'
         );

@@ -1,6 +1,4 @@
-import { TemplateShort } from './template.model';
-
-export class Customer {
+export class CustomerModel {
   customer_uuid: string;
   name: string;
   identifier: string;
@@ -12,14 +10,14 @@ export class Customer {
   sector: string;
   industry: string;
   customer_type: string;
-  contact_list: Contact[];
+  contact_list: ContactModel[];
 
-  public constructor(init?: Partial<TemplateShort>) {
+  public constructor(init?: Partial<CustomerModel>) {
     Object.assign(this, init);
   }
 }
 
-export class NewCustomer {
+export class NewCustomerModel {
   name: string;
   identifier: string;
   address_1: string;
@@ -28,10 +26,14 @@ export class NewCustomer {
   state: string;
   zip_code: string;
   customer_type: string;
-  contact_list: Contact[];
+  contact_list: ContactModel[];
+
+  public constructor(init?: Partial<NewCustomerModel>) {
+    Object.assign(this, init);
+  }
 }
 
-export class Contact {
+export class ContactModel {
   first_name: string;
   last_name: string;
   title: string;
@@ -41,7 +43,7 @@ export class Contact {
   notes: string;
   active: boolean;
 
-  public constructor(init?: Partial<TemplateShort>) {
+  public constructor(init?: Partial<ContactModel>) {
     Object.assign(this, init);
   }
 }

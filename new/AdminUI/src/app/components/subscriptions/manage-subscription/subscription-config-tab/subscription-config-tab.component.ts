@@ -14,12 +14,12 @@ import {
   AbstractControl,
 } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Customer, Contact } from 'src/app/models/customer.model';
+import { CustomerModel, ContactModel } from 'src/app/models/customer.model';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import {
-  Subscription,
-  Target,
-  TemplateSelected,
+  SubscriptionModel,
+  TargetModel,
+  TemplateSelectedModel,
 } from 'src/app/models/subscription.model';
 import { Guid } from 'guid-typescript';
 import { CustomerService } from 'src/app/services/customer.service';
@@ -39,7 +39,7 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 import { CanComponentDeactivate } from 'src/app/guards/unsaved-changes.guard';
 import { UnsavedComponent } from 'src/app/components/dialogs/unsaved/unsaved.component';
 import { UserService } from 'src/app/services/user.service';
-import { User } from 'src/app/models/user.model';
+import { UserModel } from 'src/app/models/user.model';
 
 @Component({
   selector: 'subscription-config-tab',
@@ -63,8 +63,8 @@ export class SubscriptionConfigTab
   subscriptionPreviousTimeUnit = 'Minutes';
   reportPeriodPreviousTimeUnit = 'Minutes';
   cooldownPreviousTimeUnit = 'Minutes';
-  templatesSelected = new TemplateSelected();
-  templatesAvailable = new TemplateSelected();
+  templatesSelected = new TemplateSelectedModel();
+  templatesAvailable = new TemplateSelectedModel();
 
   // Valid configuration
   isValidConfig = true;
@@ -74,9 +74,9 @@ export class SubscriptionConfigTab
   // CREATE or EDIT
   pageMode = 'CREATE';
 
-  subscription: Subscription;
-  customer: Customer = new Customer();
-  primaryContact: Contact = new Contact();
+  subscription: SubscriptionModel;
+  customer: CustomerModel = new CustomerModel();
+  primaryContact: ContactModel = new ContactModel();
   adminEmails = [];
 
   startAt = new Date();
@@ -189,7 +189,7 @@ export class SubscriptionConfigTab
 
     this.pageMode = 'EDIT';
 
-    this.subscriptionSvc.subscription = new Subscription();
+    this.subscriptionSvc.subscription = new SubscriptionModel();
     this.routeSub = this.route.params.subscribe((params) => {
       if (!params.id) {
         this.loadPageForCreate(params);
@@ -434,7 +434,7 @@ export class SubscriptionConfigTab
   async loadPageForCreate(params: any) {
     this.pageMode = 'CREATE';
     this.action = this.actionCREATE;
-    this.subscription = new Subscription();
+    this.subscription = new SubscriptionModel();
     this.subscription.templates_selected = this.templatesSelected;
     this.subscription.subscription_uuid = Guid.create().toString();
     this.enableDisableFields();
@@ -463,8 +463,8 @@ export class SubscriptionConfigTab
   /**
    * EDIT mode
    */
-  async loadPageForEdit(s: Subscription) {
-    this.subscription = s as Subscription;
+  async loadPageForEdit(s: SubscriptionModel) {
+    this.subscription = s as SubscriptionModel;
     this.getTemplates();
     this.subscriptionSvc.subscription = this.subscription;
     this.f.selectedCustomerUuid.setValue(s.customer_uuid);
@@ -498,10 +498,12 @@ export class SubscriptionConfigTab
     this.f.continuousSubscription.setValue(s.continuous_subscription);
     this.enableDisableFields();
 
-    this.customerSvc.getCustomer(s.customer_uuid).subscribe((c: Customer) => {
-      this.customer = c;
-      this.changePrimaryContact({ value: s.primary_contact?.email });
-    });
+    this.customerSvc
+      .getCustomer(s.customer_uuid)
+      .subscribe((c: CustomerModel) => {
+        this.customer = c;
+        this.changePrimaryContact({ value: s.primary_contact?.email });
+      });
 
     this.templatesSelected.high = await this.templateSvc.getAllTemplates(
       false,
@@ -528,7 +530,7 @@ export class SubscriptionConfigTab
       });
       this.customerSvc
         .getCustomer(this.customerSvc.selectedCustomer)
-        .subscribe((data: Customer) => {
+        .subscribe((data: CustomerModel) => {
           this.customer = data;
           this.customer.contact_list = this.customer.contact_list.filter(
             (contact) => contact.active === true
@@ -542,7 +544,7 @@ export class SubscriptionConfigTab
    * Gets all known CISA contacts from the API.
    */
   loadAdminEmails() {
-    this.userSvc.getUsers().subscribe((data: User[]) => {
+    this.userSvc.getUsers().subscribe((data: UserModel[]) => {
       data.forEach((user) => {
         this.adminEmails.push(user.email);
       });
@@ -551,7 +553,7 @@ export class SubscriptionConfigTab
 
   loadContactsForCustomer(customerUuid: string) {
     // get the customer and contacts from the API
-    this.customerSvc.getCustomer(customerUuid).subscribe((c: Customer) => {
+    this.customerSvc.getCustomer(customerUuid).subscribe((c: CustomerModel) => {
       this.customer = c;
 
       this.customer.contact_list = this.customerSvc.getContactsForCustomer(c);
@@ -705,7 +707,7 @@ export class SubscriptionConfigTab
                 () => {
                   this.subscriptionSvc
                     .getSubscription(this.subscription.subscription_uuid)
-                    .subscribe((resp: Subscription) => {
+                    .subscribe((resp: SubscriptionModel) => {
                       this.subscription = resp;
                     });
                   this.enableDisableFields();
@@ -753,7 +755,7 @@ export class SubscriptionConfigTab
             () => {
               this.subscriptionSvc
                 .getSubscription(this.subscription.subscription_uuid)
-                .subscribe((resp: Subscription) => {
+                .subscribe((resp: SubscriptionModel) => {
                   this.subscription = resp;
                 });
               this.enableDisableFields();
@@ -796,7 +798,6 @@ export class SubscriptionConfigTab
     sub.admin_email = this.f.adminEmail.value;
     sub.active = true;
 
-    sub.lub_timestamp = new Date();
     if (typeof this.f.startDate.value === 'string') {
       this.f.startDate.setValue(new Date(this.f.startDate.value));
     }
@@ -831,7 +832,7 @@ export class SubscriptionConfigTab
     }
   }
 
-  createSubscription(sub: Subscription) {
+  createSubscription(sub: SubscriptionModel) {
     this.subscriptionSvc.submitSubscription(sub).subscribe(
       (resp: any) => {
         this.dialog.open(AlertComponent, {
@@ -856,7 +857,7 @@ export class SubscriptionConfigTab
     );
   }
 
-  updateSubscription(sub: Subscription) {
+  updateSubscription(sub: SubscriptionModel) {
     this.subscriptionSvc.patchSubscription(sub).subscribe(
       (resp: any) => {
         this.dialog.open(AlertComponent, {
@@ -919,16 +920,15 @@ export class SubscriptionConfigTab
     );
 
     if (removeDupes) {
-      const uniqueArray: Target[] = this.subscription.target_email_list.filter(
-        (t1, index) => {
+      const uniqueArray: TargetModel[] =
+        this.subscription.target_email_list.filter((t1, index) => {
           return (
             index ===
             this.subscription.target_email_list.findIndex((t2) => {
               return t2.email.toLowerCase() === t1.email.toLowerCase();
             })
           );
-        }
-      );
+        });
       this.subscription.target_email_list = uniqueArray;
     }
 
@@ -943,8 +943,8 @@ export class SubscriptionConfigTab
    * Format: email, firstname, lastname, position
    * @param csv A comma-separated string with linefeed delimiters
    */
-  public buildTargetsFromCSV(csv: string): Target[] {
-    const targetList: Target[] = [];
+  public buildTargetsFromCSV(csv: string): TargetModel[] {
+    const targetList: TargetModel[] = [];
     if (!csv) {
       return [];
     }
@@ -956,7 +956,7 @@ export class SubscriptionConfigTab
         parts.push('');
       }
 
-      const t = new Target();
+      const t = new TargetModel();
       t.email = parts[0].trim();
       t.first_name = parts[1].trim();
       t.last_name = parts[2].trim();
@@ -970,12 +970,12 @@ export class SubscriptionConfigTab
   /**
    * Formats Targets for display in the form.
    */
-  formatTargetsToCSV(targetList: Target[]) {
+  formatTargetsToCSV(targetList: TargetModel[]) {
     if (!targetList) {
       return '';
     }
     let output = '';
-    targetList.forEach((t: Target) => {
+    targetList.forEach((t: TargetModel) => {
       output += `${t.email}, ${t.first_name}, ${t.last_name}, ${t.position}\n`;
     });
 

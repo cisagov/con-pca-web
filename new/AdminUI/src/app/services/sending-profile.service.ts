@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { SendingProfile } from '../models/sending-profile.model';
+import { SendingProfileModel } from '../models/sending-profile.model';
 import { SettingsService } from './settings.service';
-import { TestEmail } from '../models/test-email.model';
+import { TestEmailModel } from '../models/test-email.model';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +23,7 @@ export class SendingProfileService {
     return this.http.get(url);
   }
 
-  public saveProfile(sp: SendingProfile) {
+  public saveProfile(sp: SendingProfileModel) {
     if (!sp.sending_profile_uuid) {
       // if new, post
       const url = `${this.settingsService.settings.apiUrl}/api/sendingprofiles/`;
@@ -40,7 +40,7 @@ export class SendingProfileService {
     return this.http.delete(url);
   }
 
-  sendTestEmail(sp: TestEmail) {
+  sendTestEmail(sp: TestEmailModel) {
     const url = `${this.settingsService.settings.apiUrl}/api/util/send_test_email/`;
     return this.http.post(url, sp);
   }

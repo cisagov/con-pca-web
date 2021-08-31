@@ -8,7 +8,7 @@ import {
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { MyErrorStateMatcher } from '../../../helper/ErrorStateMatcher';
 import { SubscriptionService } from 'src/app/services/subscription.service';
-import { Contact, Customer } from 'src/app/models/customer.model';
+import { ContactModel, CustomerModel } from 'src/app/models/customer.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CustomerService } from 'src/app/services/customer.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -39,9 +39,9 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
   ];
   contactError = '';
   orgError = '';
-  contacts = new MatTableDataSource<Contact>();
+  contacts = new MatTableDataSource<ContactModel>();
   isEdit = false;
-  tempEditContact: Contact = null;
+  tempEditContact: ContactModel = null;
 
   matchCustomerName = new MyErrorStateMatcher();
   matchCustomerIdentifier = new MyErrorStateMatcher();
@@ -82,7 +82,7 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
   angularSubscriptions = Array<Subscription>();
   // Customer_uuid if not new
   customer_uuid: string;
-  customer: Customer;
+  customer: CustomerModel;
   subscriptions = new MatTableDataSource<Subscription>();
   hasSubs = true;
 
@@ -144,9 +144,9 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
     this.customerSvc.getCustomer(this.customer_uuid).subscribe(
       (data: any) => {
         if (data.customer_uuid != null) {
-          this.customer = data as Customer;
+          this.customer = data as CustomerModel;
           this.setCustomerForm(this.customer);
-          this.setContacts(this.customer.contact_list as Contact[]);
+          this.setContacts(this.customer.contact_list as ContactModel[]);
           this.getSectorList();
           this.subscriptionSvc
             .getSubscriptionsByCustomer(this.customer)
@@ -185,7 +185,7 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
     );
   }
 
-  setCustomerForm(customer: Customer) {
+  setCustomerForm(customer: CustomerModel) {
     this.customerFormGroup.patchValue({
       customerName: customer.name,
       customerIdentifier: customer.identifier,
@@ -200,10 +200,10 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
     });
   }
 
-  setContacts(contactsList: Contact[]) {
-    var newContacts = Array<Contact>();
+  setContacts(contactsList: ContactModel[]) {
+    var newContacts = Array<ContactModel>();
     contactsList.forEach((contact) => {
-      var contactToAdd: Contact = {
+      var contactToAdd: ContactModel = {
         office_phone: contact.office_phone,
         mobile_phone: contact.mobile_phone,
         email: contact.email,
@@ -254,7 +254,7 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
         sector = this.customerFormGroup.controls['sector'].value;
         industry = this.customerFormGroup.controls['industry'].value;
       }
-      const customer: Customer = {
+      const customer: CustomerModel = {
         customer_uuid: '',
         name: this.customerFormGroup.controls['customerName'].value,
         identifier: this.customerFormGroup.controls['customerIdentifier'].value,
@@ -326,7 +326,7 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
           this.tempEditContact = null;
           this.isEdit = false;
         }
-        const contact: Contact = {
+        const contact: ContactModel = {
           office_phone: this.contactFormGroup.controls['office_phone'].value,
           mobile_phone: this.contactFormGroup.controls['mobile_phone'].value,
           email: this.contactFormGroup.controls['email'].value,
@@ -350,7 +350,7 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
     }
   }
 
-  editContact(contact: Contact) {
+  editContact(contact: ContactModel) {
     this.isEdit = true;
     this.tempEditContact = contact;
     this.contactFormGroup.controls['office_phone'].setValue(
@@ -367,16 +367,16 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
     this.showAddContact(true);
   }
 
-  removeContact(contact: Contact) {
+  removeContact(contact: ContactModel) {
     const index = this.contacts.data.findIndex((d) => d === contact);
     this.contacts.data.splice(index, 1);
     const tempContact = this.contacts;
-    this.contacts = new MatTableDataSource<Contact>(tempContact.data);
+    this.contacts = new MatTableDataSource<ContactModel>(tempContact.data);
   }
 
   clearCustomer() {
     this.customerFormGroup.reset();
-    this.contacts = new MatTableDataSource<Contact>();
+    this.contacts = new MatTableDataSource<ContactModel>();
     this.orgError = '';
   }
 

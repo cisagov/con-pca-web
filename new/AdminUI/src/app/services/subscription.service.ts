@@ -1,21 +1,26 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Customer, Contact } from '../models/customer.model';
-import { Subscription, TemplateSelected } from '../models/subscription.model';
-import { Template } from '../models/template.model';
+import { CustomerModel, ContactModel } from '../models/customer.model';
+import {
+  SubscriptionModel,
+  TemplateSelectedModel,
+} from '../models/subscription.model';
+import { TemplateModel } from '../models/template.model';
 import { SettingsService } from './settings.service';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { Cycle } from '../models/cycle.model';
+import { CycleModel } from '../models/cycle.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SubscriptionService {
-  subscription: Subscription;
-  subBehaviorSubject = new BehaviorSubject<Subscription>(new Subscription());
-  cycleBehaviorSubject = new BehaviorSubject<Cycle>(new Cycle());
-  customer: Customer;
-  customers: Array<Customer> = [];
+  subscription: SubscriptionModel;
+  subBehaviorSubject = new BehaviorSubject<SubscriptionModel>(
+    new SubscriptionModel()
+  );
+  cycleBehaviorSubject = new BehaviorSubject<CycleModel>(new CycleModel());
+  customer: CustomerModel;
+  customers: Array<CustomerModel> = [];
   cameFromSubscription: boolean;
   removeDupeTargets = true;
 
@@ -34,8 +39,8 @@ export class SubscriptionService {
     this.subBehaviorSubject.next(sub);
   }
   public clearSubBehaviorSubject() {
-    this.subBehaviorSubject = new BehaviorSubject<Subscription>(
-      new Subscription()
+    this.subBehaviorSubject = new BehaviorSubject<SubscriptionModel>(
+      new SubscriptionModel()
     );
   }
 
@@ -46,19 +51,20 @@ export class SubscriptionService {
     this.cycleBehaviorSubject.next(cycle);
   }
   public clearCycleBehaviorSubject() {
-    this.cycleBehaviorSubject = new BehaviorSubject<Cycle>(new Cycle());
+    this.cycleBehaviorSubject = new BehaviorSubject<CycleModel>(
+      new CycleModel()
+    );
   }
 
   /**
    *
    */
-  public getSubscriptions(archived: boolean = false) {
+  public getSubscriptions(archived = false) {
     let url = `${this.settingsService.settings.apiUrl}/api/subscriptions/`;
 
     if (archived) {
       url = `${url}?archived=true`;
     }
-
     return this.http.get(url);
   }
 
@@ -67,7 +73,7 @@ export class SubscriptionService {
    */
   public getPrimaryContactSubscriptions(
     customer_uuid: string,
-    contact: Contact
+    contact: ContactModel
   ) {
     const c = { primary_contact: contact };
     let url = `${this.settingsService.settings.apiUrl}/api/subscription/customer/${customer_uuid}/`;
@@ -83,7 +89,7 @@ export class SubscriptionService {
     return this.http.get(url);
   }
 
-  public deleteSubscription(subscription: Subscription) {
+  public deleteSubscription(subscription: SubscriptionModel) {
     return new Promise((resolve, reject) => {
       this.http
         .delete(
@@ -104,7 +110,7 @@ export class SubscriptionService {
    * Sends all information to the API to start a new subscription.
    * @param s
    */
-  submitSubscription(subscription: Subscription) {
+  submitSubscription(subscription: SubscriptionModel) {
     return this.http.post(
       `${this.settingsService.settings.apiUrl}/api/subscriptions/`,
       subscription
@@ -121,7 +127,7 @@ export class SubscriptionService {
     );
   }
 
-  patchSubscription(subscription: Subscription) {
+  patchSubscription(subscription: SubscriptionModel) {
     // This should be the only data that needs patched
     const data = {
       archived: subscription.archived,
@@ -147,7 +153,7 @@ export class SubscriptionService {
   /**
    * Patches the subscription with the new primary contact.
    */
-  changePrimaryContact(subscriptUuid: string, contact: Contact) {
+  changePrimaryContact(subscriptUuid: string, contact: ContactModel) {
     const c = { primary_contact: contact };
     return this.http.put(
       `${this.settingsService.settings.apiUrl}/api/subscription/${subscriptUuid}/`,
@@ -159,7 +165,7 @@ export class SubscriptionService {
    * Gets all subscriptions for a given template.
    * @param template
    */
-  public getSubscriptionsByTemplate(template: Template) {
+  public getSubscriptionsByTemplate(template: TemplateModel) {
     return this.http.get(
       `${this.settingsService.settings.apiUrl}/api/subscriptions/?template=${template.template_uuid}`
     );
@@ -169,7 +175,7 @@ export class SubscriptionService {
    * Gets all subscriptions for a given customer.
    * @param template
    */
-  public getSubscriptionsByCustomer(customer: Customer) {
+  public getSubscriptionsByCustomer(customer: CustomerModel) {
     return this.http.get(
       `${this.settingsService.settings.apiUrl}/api/subscription/customer/${customer.customer_uuid}`
     );
@@ -225,7 +231,7 @@ export class SubscriptionService {
   }
   public async getTemplatesSelected() {
     const url = `${this.settingsService.settings.apiUrl}/api/templates/select/`;
-    return this.http.get<TemplateSelected>(url).toPromise();
+    return this.http.get<TemplateSelectedModel>(url).toPromise();
   }
 
   public getSubscriptionJSON(subscription_uuid) {

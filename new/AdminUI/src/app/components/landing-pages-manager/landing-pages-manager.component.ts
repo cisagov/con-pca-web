@@ -4,7 +4,7 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MyErrorStateMatcher } from 'src/app/helper/ErrorStateMatcher';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
-import { Subscription as PcaSubscription } from 'src/app/models/subscription.model';
+import { SubscriptionModel as PcaSubscription } from 'src/app/models/subscription.model';
 import { Subscription } from 'rxjs';
 import $ from 'jquery';
 import 'src/app/helper/csvToArray';
@@ -17,8 +17,8 @@ import { SettingsService } from 'src/app/services/settings.service';
 import { RetireTemplateDialogComponent } from '../template-manager/retire-template-dialog/retire-template-dialog.component';
 import { AlertComponent } from '../dialogs/alert/alert.component';
 import { LandingPageManagerService } from 'src/app/services/landing-page-manager.service';
-import { Landing_Page } from 'src/app/models/landing-page.models';
-import { Template } from 'src/app/models/template.model';
+import { LandingPageModel } from 'src/app/models/landing-page.models';
+import { TemplateModel } from 'src/app/models/template.model';
 
 @Component({
   selector: 'app-landing-pages-manager',
@@ -30,7 +30,7 @@ export class LandingPagesManagerComponent implements OnInit {
   dialogRefRetire: MatDialogRef<RetireTemplateDialogComponent>;
 
   canDelete: boolean;
-  templates: Template[] = [];
+  templates: TemplateModel[] = [];
 
   //Full template list variables
   search_input: string;
@@ -86,7 +86,7 @@ export class LandingPagesManagerComponent implements OnInit {
       }
     });
     //this.setEmptyTemplateForm();
-    this.setTemplateForm(new Landing_Page());
+    this.setTemplateForm(new LandingPageModel());
     //this.getAllTemplates();
   }
   ngOnInit() {
@@ -137,7 +137,7 @@ export class LandingPagesManagerComponent implements OnInit {
     //Get template and call setTemplateForm to initialize a form group using the selected template
     this.landingPageManagerSvc.getlandingpage(template_uuid).then(
       (success) => {
-        let t = <Landing_Page>success;
+        let t = <LandingPageModel>success;
 
         this.setTemplateForm(t);
         this.templateId = t.landing_page_uuid;
@@ -150,7 +150,7 @@ export class LandingPagesManagerComponent implements OnInit {
   }
 
   //Create a formgroup using a Template as initial data
-  setTemplateForm(template: Landing_Page) {
+  setTemplateForm(template: LandingPageModel) {
     this.currentTemplateFormGroup = new FormGroup({
       landingPageUUID: new FormControl(template.landing_page_uuid),
       templateName: new FormControl(template.name, [Validators.required]),
@@ -175,7 +175,7 @@ export class LandingPagesManagerComponent implements OnInit {
       form.controls['templateHTML'].value
     );
 
-    let saveTemplate = new Landing_Page({
+    let saveTemplate = new LandingPageModel({
       landing_page_uuid: form.controls['landingPageUUID'].value,
       name: form.controls['templateName'].value,
       html: htmlValue,
@@ -313,7 +313,7 @@ export class LandingPagesManagerComponent implements OnInit {
   setCanDelete() {
     this.landingPageManagerSvc
       .getLandingPageTemplates(this.templateId)
-      .subscribe((templates: Template[]) => {
+      .subscribe((templates: TemplateModel[]) => {
         this.templates = templates;
         if (templates.length === 0 && !this.IsDefaultTemplate) {
           this.canDelete = true;

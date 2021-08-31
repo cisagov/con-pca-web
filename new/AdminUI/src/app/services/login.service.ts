@@ -13,7 +13,7 @@ import * as moment from 'moment';
 import { SettingsService } from 'src/app/services/settings.service';
 
 // Models
-import { Login } from 'src/app/models/login.model';
+import { LoginModel } from 'src/app/models/login.model';
 
 @Injectable()
 export class LoginService {
@@ -29,7 +29,7 @@ export class LoginService {
     this.apiUrl = this.settingsService.settings.apiUrl;
   }
 
-  public postLogin(login: Login): Observable<any> {
+  public postLogin(login: LoginModel): Observable<any> {
     const url = `${this.settingsService.settings.apiUrl}/api/auth/login/`;
     return this.http.post(url, login);
   }

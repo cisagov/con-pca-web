@@ -2,8 +2,8 @@ import { Component, OnInit, Inject, HostBinding } from '@angular/core';
 import { TemplateManagerService } from 'src/app/services/template-manager.service';
 import { LandingPageManagerService } from 'src/app/services/landing-page-manager.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Template } from 'src/app/models/template.model';
-import { Landing_Page } from 'src/app/models/landing-page.models';
+import { TemplateModel } from 'src/app/models/template.model';
+import { LandingPageModel } from 'src/app/models/landing-page.models';
 
 @Component({
   selector: 'app-retire-template-dialog',
@@ -12,7 +12,7 @@ import { Landing_Page } from 'src/app/models/landing-page.models';
   host: { class: 'd-flex flex-column flex-11a' },
 })
 export class RetireTemplateDialogComponent implements OnInit {
-  template: Template;
+  template: TemplateModel;
   retiredDescription: string;
   canRetire: boolean;
 
@@ -20,7 +20,7 @@ export class RetireTemplateDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<RetireTemplateDialogComponent>,
     public templateSvc: TemplateManagerService,
     public landingSvc: LandingPageManagerService,
-    @Inject(MAT_DIALOG_DATA) data: Template
+    @Inject(MAT_DIALOG_DATA) data: TemplateModel
   ) {
     this.template = data;
   }
@@ -39,7 +39,7 @@ export class RetireTemplateDialogComponent implements OnInit {
     this.template.retired = true;
     this.template.retired_description = this.retiredDescription;
     if (this.template.template_uuid == null) {
-      let landingpage = this.template as unknown as Landing_Page;
+      let landingpage = this.template as unknown as LandingPageModel;
       this.landingSvc.updatelandingpage(landingpage);
     } else {
       this.templateSvc.updateTemplate(this.template);

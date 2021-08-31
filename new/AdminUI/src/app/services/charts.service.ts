@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { SettingsService } from './settings.service';
 import { toTitleCase } from 'src/app/helper/utilities';
-import { Cycle } from '../models/cycle.model';
-import { CycleStats } from '../models/stats.model';
+import { CycleModel } from '../models/cycle.model';
+import { CycleStatsModel } from '../models/stats.model';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +21,7 @@ export class ChartsService {
    * Converts the API response into an object that the chart expects.
    * Refactor idea -- this could be done more programatically
    */
-  formatStatistics(stats: CycleStats) {
+  formatStatistics(stats: CycleStatsModel) {
     const chartObject = [
       {
         name: 'Sent',
@@ -113,7 +113,7 @@ export class ChartsService {
   /**
    * Returns the percentage of emails sent thus far in the cycle.
    */
-  getSentEmailNumbers(cycle: Cycle, stats: CycleStats) {
+  getSentEmailNumbers(cycle: CycleModel, stats: CycleStatsModel) {
     return [
       {
         name: '',

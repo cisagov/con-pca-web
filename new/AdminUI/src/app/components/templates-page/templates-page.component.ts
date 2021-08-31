@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { TemplateManagerService } from 'src/app/services/template-manager.service';
-import { Template } from 'src/app/models/template.model';
+import { TemplateModel } from 'src/app/models/template.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
@@ -21,7 +21,7 @@ export class TemplatesPageComponent implements OnInit, AfterViewInit {
     'created_by',
     'select',
   ];
-  templatesData = new MatTableDataSource<Template>();
+  templatesData = new MatTableDataSource<TemplateModel>();
   search_input = '';
   @ViewChild(MatSort) sort: MatSort;
 
@@ -62,7 +62,7 @@ export class TemplatesPageComponent implements OnInit, AfterViewInit {
   public filterTemplates = (value: string) => {
     this.templatesData.filter = value.trim().toLocaleLowerCase();
   };
-  public editTemplate(template: Template) {
+  public editTemplate(template: TemplateModel) {
     this.router.navigate(['/templatemanager', template.template_uuid]);
   }
 

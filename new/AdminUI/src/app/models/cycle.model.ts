@@ -1,16 +1,16 @@
-export class TimelineDetails {
+export class TimelineDetailsModel {
   user_agent: string;
   ip: string;
   asn_org: string;
 }
 
-export class CycleTargetTimeline {
+export class CycleTargetTimelineModel {
   time: Date;
   message: string;
-  details: TimelineDetails;
+  details: TimelineDetailsModel;
 }
 
-export class CycleTarget {
+export class CycleTargetModel {
   target_uuid: string;
   template_uuid: string;
   deception_level: string;
@@ -18,10 +18,10 @@ export class CycleTarget {
   sent: boolean;
   sent_date: Date;
   error: string;
-  timeline: CycleTargetTimeline[];
+  timeline: CycleTargetTimelineModel[];
 }
 
-export class Cycle {
+export class CycleModel {
   cycle_uuid: string;
   subscription_uuid: string;
   template_uuids: string[];
@@ -30,9 +30,13 @@ export class Cycle {
   send_by_date: Date;
   active: boolean;
   target_count: number;
-  targets: CycleTarget[];
+  targets: CycleTargetModel[];
   processing: boolean;
 
   // Helper Attributes
   nonhuman: boolean;
+
+  public constructor(init?: Partial<CycleModel>) {
+    Object.assign(this, init);
+  }
 }

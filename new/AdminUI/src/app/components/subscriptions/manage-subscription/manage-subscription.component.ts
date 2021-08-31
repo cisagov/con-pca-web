@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
-import { Subscription } from 'src/app/models/subscription.model';
+import { SubscriptionModel } from 'src/app/models/subscription.model';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { AlertComponent } from '../../dialogs/alert/alert.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -19,7 +19,7 @@ export class ManageSubscriptionComponent
 {
   @ViewChild(SubscriptionConfigTab) configTab: SubscriptionConfigTab;
   private routeSub: any;
-  subscription: Subscription;
+  subscription: SubscriptionModel;
 
   sub_subscription: any;
 
@@ -70,14 +70,14 @@ export class ManageSubscriptionComponent
   }
 
   loadPageForEdit(params: any) {
-    this.subscriptionSvc.subscription = new Subscription();
+    this.subscriptionSvc.subscription = new SubscriptionModel();
     const sub = this.subscriptionSvc.subscription;
     sub.subscription_uuid = params.id;
 
     this.sub_subscription = this.subscriptionSvc
       .getSubscription(sub.subscription_uuid)
       .subscribe(
-        (success: Subscription) => {
+        (success: SubscriptionModel) => {
           this.cycleSvc
             .getSubscriptionCycles(sub.subscription_uuid)
             .subscribe((cycles) => {
@@ -99,12 +99,12 @@ export class ManageSubscriptionComponent
       );
   }
 
-  setPageForEdit(s: Subscription) {
+  setPageForEdit(s: SubscriptionModel) {
     if (s.cycles) {
       s.cycles.reverse();
     }
 
-    this.subscription = s as Subscription;
+    this.subscription = s as SubscriptionModel;
     this.subscriptionSvc.subscription = this.subscription;
     this.subscriptionSvc.setSubBhaviorSubject(s);
 

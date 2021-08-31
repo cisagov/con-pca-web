@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Cycle } from '../models/cycle.model';
-import { CycleStats } from '../models/stats.model';
+import { CycleModel } from '../models/cycle.model';
+import { CycleStatsModel } from '../models/stats.model';
 import { SettingsService } from './settings.service';
 
 @Injectable({
@@ -15,12 +15,12 @@ export class CycleService {
 
   public getSubscriptionCycles(subscriptionUuid: string) {
     const url = `${this.SettingsService.settings.apiUrl}/api/cycles/?subscription_uuid=${subscriptionUuid}`;
-    return this.http.get<Cycle[]>(url);
+    return this.http.get<CycleModel[]>(url);
   }
 
   public getCycle(cycleUuid: string) {
     const url = `${this.SettingsService.settings.apiUrl}/api/cycle/${cycleUuid}/`;
-    return this.http.get<Cycle>(url);
+    return this.http.get<CycleModel>(url);
   }
 
   public getCycleStats(cycleUuid: string, nonhuman = false) {
@@ -28,6 +28,6 @@ export class CycleService {
     if (nonhuman) {
       url += `?nonhuman${nonhuman}`;
     }
-    return this.http.get<CycleStats>(url);
+    return this.http.get<CycleStatsModel>(url);
   }
 }

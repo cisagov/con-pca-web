@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { ChartsService } from 'src/app/services/charts.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
-import { Cycle } from 'src/app/models/cycle.model';
+import { CycleModel } from 'src/app/models/cycle.model';
 import { CycleService } from 'src/app/services/cycle.service';
-import { CycleStats } from 'src/app/models/stats.model';
+import { CycleStatsModel } from 'src/app/models/stats.model';
 
 @Component({
   selector: 'app-sub-dashboard',
@@ -15,15 +15,13 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
   subscriptionUuid: string;
   dataAvailable = false;
   cycle_selected = false;
-  cycleStats = new CycleStats();
+  cycleStats = new CycleStatsModel();
 
   chart: any = {};
   chartSent: any = {};
 
   // average time to first click
-  avgTTFC: string;
-  // average time to first report
-  avgTTFR: string;
+  avgTTFC: number;
 
   //Total stats
   aggregateCounts = {
@@ -42,7 +40,7 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
   schemeSent = {
     domain: ['#336600', '#eeeeee'],
   };
-  selected_cycle: Cycle;
+  selected_cycle: CycleModel;
 
   temp_angular_subs = [];
   templatePerformanceByMetric = [];
@@ -74,7 +72,7 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
     this.temp_angular_subs.push(
       this.subscriptionSvc
         .getCycleBehaviorSubject()
-        .subscribe((data: Cycle) => {
+        .subscribe((data: CycleModel) => {
           this.selected_cycle = data;
           if (Object.keys(data).length > 0) {
             this.cycle_selected = true;
@@ -132,7 +130,7 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
           this.selected_cycle.cycle_uuid,
           this.selected_cycle.nonhuman
         )
-        .subscribe((stats: CycleStats) => {
+        .subscribe((stats: CycleStatsModel) => {
           this.cycleStats = stats;
           this.chartSent.chartResults = this.chartsSvc.getSentEmailNumbers(
             this.selected_cycle,
@@ -141,16 +139,12 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
 
           this.chart.chartResults = this.chartsSvc.formatStatistics(stats);
 
-          this.avgTTFC = stats.avg_time_to_first_click;
+          this.avgTTFC = stats.stats.all.clicked.average;
           this.selectTemplatePerformanceMetric();
           if (!this.avgTTFC) {
-            this.avgTTFC = '(no emails clicked yet)';
+            this.avgTTFC = 0;
           }
 
-          this.avgTTFR = stats.avg_time_to_first_report;
-          if (!this.avgTTFR) {
-            this.avgTTFR = '(no emails reported yet)';
-          }
           this.aggregateCounts = stats['aggregate_stats'];
         });
     }

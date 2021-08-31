@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { SettingsService } from './settings.service';
-import { Landing_Page } from '../models/landing-page.models';
+import { LandingPageModel } from '../models/landing-page.models';
 
 @Injectable()
 export class LandingPageManagerService {
@@ -48,7 +48,7 @@ export class LandingPageManagerService {
    * POST a new landingpage
    * @param landingpage
    */
-  saveNewlandingpage(landingpage: Landing_Page) {
+  saveNewlandingpage(landingpage: LandingPageModel) {
     return this.http.post(
       `${this.settingsService.settings.apiUrl}/api/landingpages/`,
       landingpage
@@ -59,7 +59,7 @@ export class LandingPageManagerService {
    * PATCH an existing landingpage with partial data
    * @param landingpage
    */
-  updatelandingpage(landingpage: Landing_Page) {
+  updatelandingpage(landingpage: LandingPageModel) {
     return new Promise((resolve, reject) => {
       this.http
         .put(
@@ -82,7 +82,7 @@ export class LandingPageManagerService {
    *
    * @param landingpage
    */
-  deletelandingpage(landingpage: Landing_Page) {
+  deletelandingpage(landingpage: LandingPageModel) {
     return new Promise((resolve, reject) => {
       this.http
         .delete(
@@ -103,7 +103,7 @@ export class LandingPageManagerService {
    *
    * @param landingpage
    */
-  stoplandingpage(landingpage: Landing_Page) {
+  stoplandingpage(landingpage: LandingPageModel) {
     return this.http.get(
       `${this.settingsService.settings.apiUrl}/api/landingpage/stop/${landingpage.landing_page_uuid}/`
     );

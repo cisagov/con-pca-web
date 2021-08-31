@@ -2,11 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import * as moment from 'node_modules/moment/moment';
 import { DatePipe } from '@angular/common';
-import { Subscription, TimelineItem } from 'src/app/models/subscription.model';
+import {
+  SubscriptionModel,
+  TimelineItem,
+} from 'src/app/models/subscription.model';
 import { FormGroup, ValidatorFn, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
-import { Cycle } from 'src/app/models/cycle.model';
+import { CycleModel } from 'src/app/models/cycle.model';
 
 @Component({
   selector: 'subscription-stats-tab',
@@ -18,9 +21,9 @@ export class SubscriptionStatsTab implements OnInit {
   //   @Input()
   //   subscription: Subscription
 
-  subscription: Subscription;
+  subscription: SubscriptionModel;
   subscription_uuid: string;
-  selectedCycle: Cycle;
+  selectedCycle: CycleModel;
   timelineItems: any[] = [];
   display_timeline = false;
 
@@ -29,7 +32,7 @@ export class SubscriptionStatsTab implements OnInit {
     public datePipe: DatePipe,
     private router: Router
   ) {
-    this.subscription = new Subscription();
+    this.subscription = new SubscriptionModel();
   }
 
   pageRefresh(): void {
@@ -69,7 +72,7 @@ export class SubscriptionStatsTab implements OnInit {
     this.subscriptionSvc.setCycleBehaviorSubject(this.selectedCycle);
   }
 
-  buildSubscriptionTimeline(s: Subscription) {
+  buildSubscriptionTimeline(s: SubscriptionModel) {
     const items: TimelineItem[] = [];
 
     items.push({
@@ -77,10 +80,14 @@ export class SubscriptionStatsTab implements OnInit {
       date: moment(s.start_date),
     });
     // now extract a simple timeline based on campaign events
-    s.cycles.forEach((c: Cycle) => {
+    s.cycles.forEach((c: CycleModel) => {
       items.push({
         title: 'Cycle Start',
         date: moment(c.start_date),
+      });
+      items.push({
+        title: 'Cycle End',
+        date: moment(c.end_date),
       });
     });
 
@@ -88,11 +95,6 @@ export class SubscriptionStatsTab implements OnInit {
     items.push({
       title: 'Today',
       date: moment(),
-    });
-
-    items.push({
-      title: 'Cycle End',
-      date: moment(s.end_date),
     });
 
     this.timelineItems = items;

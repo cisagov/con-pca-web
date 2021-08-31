@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { CustomerService } from 'src/app/services/customer.service';
-import { NewCustomer } from 'src/app/models/customer.model';
+import { NewCustomerModel } from 'src/app/models/customer.model';
 
 @Component({
   selector: 'app-add-customer-dialog',
@@ -10,7 +10,7 @@ import { NewCustomer } from 'src/app/models/customer.model';
   styleUrls: ['./add-customer-dialog.component.scss'],
 })
 export class AddCustomerDialogComponent implements OnInit {
-  form_group = new FormGroup({
+  formGroup = new FormGroup({
     name: new FormControl(),
     identifier: new FormControl(),
     address_1: new FormControl(),
@@ -20,35 +20,35 @@ export class AddCustomerDialogComponent implements OnInit {
     zip_code: new FormControl(),
   });
   constructor(
-    public dialog_ref: MatDialogRef<AddCustomerDialogComponent>,
-    public customer_service: CustomerService
+    public dialogRef: MatDialogRef<AddCustomerDialogComponent>,
+    public customerService: CustomerService
   ) {}
 
   ngOnInit(): void {}
 
   onNoClick(): void {
-    this.dialog_ref.close();
+    this.dialogRef.close();
   }
 
   onCancelClick(): void {
-    this.dialog_ref.close();
+    this.dialogRef.close();
   }
 
   onSaveClick(): void {
-    let customer: NewCustomer = {
-      name: this.form_group.controls['name'].value,
-      identifier: this.form_group.controls['identifier'].value,
-      customer_type: this.form_group.controls['customer_type'].value,
-      address_1: this.form_group.controls['address_1'].value,
-      address_2: this.form_group.controls['address_2'].value,
-      city: this.form_group.controls['city'].value,
-      state: this.form_group.controls['state'].value,
-      zip_code: this.form_group.controls['zip_code'].value,
+    const customer: NewCustomerModel = {
+      name: this.formGroup.controls.name.value,
+      identifier: this.formGroup.controls.identifier.value,
+      customer_type: this.formGroup.controls.customer_type.value,
+      address_1: this.formGroup.controls.address_1.value,
+      address_2: this.formGroup.controls.address_2.value,
+      city: this.formGroup.controls.city.value,
+      state: this.formGroup.controls.state.value,
+      zip_code: this.formGroup.controls.zip_code.value,
       contact_list: [],
     };
 
-    this.customer_service.addCustomer(customer).subscribe();
+    this.customerService.addCustomer(customer).subscribe();
 
-    this.dialog_ref.close();
+    this.dialogRef.close();
   }
 }

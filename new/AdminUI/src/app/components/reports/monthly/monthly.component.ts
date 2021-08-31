@@ -76,10 +76,6 @@ export class MonthlyComponent implements OnInit {
     this.avgTTFC = this.secondsToDay(
       this.detail.metrics.avg_time_to_first_click
     );
-    // this.avgTTFCFormatted = this.formatTTF(this.detail.metrics.avg_time_to_first_click);
-    this.avgTTFR = this.secondsToDay(
-      this.detail.metrics.avg_time_to_first_report
-    );
 
     // build statistics by level chart
     this.chart.showXAxis = true;

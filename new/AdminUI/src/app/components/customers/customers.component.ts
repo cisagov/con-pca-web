@@ -4,7 +4,7 @@ import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { CustomerService } from 'src/app/services/customer.service';
 import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { AddCustomerDialogComponent } from './add-customer-dialog/add-customer-dialog.component';
-import { Customer } from 'src/app/models/customer.model';
+import { CustomerModel } from 'src/app/models/customer.model';
 import { Router } from '@angular/router';
 import { MatSort } from '@angular/material/sort';
 
@@ -29,7 +29,7 @@ export class CustomersComponent implements OnInit {
     'zip_code',
     'select',
   ];
-  customersData = new MatTableDataSource<Customer>();
+  customersData = new MatTableDataSource<CustomerModel>();
   search_input = '';
 
   /**
@@ -76,7 +76,7 @@ export class CustomersComponent implements OnInit {
     }
     this.loading = true;
     this.customerSvc.getCustomers().subscribe((data: any) => {
-      this.customersData.data = data as Customer[];
+      this.customersData.data = data as CustomerModel[];
       this.customersData.sort = this.sort;
       this.loading = false;
     });

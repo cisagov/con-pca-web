@@ -13,7 +13,7 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { LoginService } from 'src/app/services/login.service';
 
 // Models
-import { Login } from 'src/app/models/login.model';
+import { LoginModel } from 'src/app/models/login.model';
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -36,7 +36,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-  model = new Login('', '');
+  model = new LoginModel('', '');
   matcherusername = new MyErrorStateMatcher();
   matcherpassword = new MyErrorStateMatcher();
 

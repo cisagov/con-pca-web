@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { Template, TagModel } from 'src/app/models/template.model';
+import { TemplateModel } from 'src/app/models/template.model';
 import { SettingsService } from './settings.service';
 
 const headers = {
@@ -39,7 +39,7 @@ export class TemplateManagerService {
       url = `${url}?${parameters.join('&')}`;
     }
 
-    return this.http.get<Template[]>(url, headers).toPromise();
+    return this.http.get<TemplateModel[]>(url, headers).toPromise();
   }
 
   /**
@@ -66,7 +66,7 @@ export class TemplateManagerService {
    * POST a new template
    * @param template
    */
-  saveNewTemplate(template: Template) {
+  saveNewTemplate(template: TemplateModel) {
     return this.http.post(
       `${this.settingsService.settings.apiUrl}/api/templates/`,
       template
@@ -77,7 +77,7 @@ export class TemplateManagerService {
    * PATCH an existing template with partial data
    * @param template
    */
-  updateTemplate(template: Template) {
+  updateTemplate(template: TemplateModel) {
     return new Promise((resolve, reject) => {
       this.http
         .put(
@@ -100,7 +100,7 @@ export class TemplateManagerService {
    *
    * @param template
    */
-  deleteTemplate(template: Template) {
+  deleteTemplate(template: TemplateModel) {
     return new Promise((resolve, reject) => {
       this.http
         .delete(
@@ -121,7 +121,7 @@ export class TemplateManagerService {
    *
    * @param template
    */
-  stopTemplate(template: Template) {
+  stopTemplate(template: TemplateModel) {
     return this.http.get(
       `${this.settingsService.settings.apiUrl}/api/template/stop/${template.template_uuid}/`
     );

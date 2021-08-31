@@ -1,6 +1,6 @@
-import { Template } from './template.model';
+import { TemplateModel } from './template.model';
 
-export class CycleStatsEventMetrics {
+export class CycleStatsEventMetricsModel {
   count: number;
   average: number;
   minimum: number;
@@ -10,26 +10,26 @@ export class CycleStatsEventMetrics {
   rank: number;
 }
 
-export class CycleStatsEvents {
-  sent = new CycleStatsEventMetrics();
-  opened = new CycleStatsEventMetrics();
-  clicked = new CycleStatsEventMetrics();
+export class CycleStatsEventsModel {
+  sent = new CycleStatsEventMetricsModel();
+  opened = new CycleStatsEventMetricsModel();
+  clicked = new CycleStatsEventMetricsModel();
 }
 
-export class CycleStatsLevel {
-  high = new CycleStatsEvents();
-  moderate = new CycleStatsEvents();
-  low = new CycleStatsEvents();
-  all = new CycleStatsEvents();
+export class CycleStatsLevelModel {
+  high = new CycleStatsEventsModel();
+  moderate = new CycleStatsEventsModel();
+  low = new CycleStatsEventsModel();
+  all = new CycleStatsEventsModel();
 }
 
-export class TemplateStats extends CycleStatsLevel {
+export class TemplateStatsModel extends CycleStatsLevelModel {
   template_uuid: string;
-  template: Template;
+  template: TemplateModel;
   deception_level: string;
 }
 
-export class MaxmindStats {
+export class MaxmindStatsModel {
   asn_org: string;
   is_nonhuman: boolean;
   ips: string[];
@@ -38,18 +38,8 @@ export class MaxmindStats {
   clicks: number;
 }
 
-export class CycleStats {
-  stats = new CycleStatsLevel();
-  template_stats: TemplateStats[] = [];
-  maxmind_stats: MaxmindStats[] = [];
-
-  // old
-  avg_time_to_first_click: string;
-  avg_time_to_first_report: string;
-  sent: number;
-  campaign_details: any;
-  aggregate_stats: any;
-  template_breakdown: any;
-  levels: any;
-  asn_stats: any;
+export class CycleStatsModel {
+  stats = new CycleStatsLevelModel();
+  template_stats: TemplateStatsModel[] = [];
+  maxmind_stats: MaxmindStatsModel[] = [];
 }

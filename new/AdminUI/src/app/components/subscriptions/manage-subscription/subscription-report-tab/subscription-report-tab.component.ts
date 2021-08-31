@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { SubscriptionService } from 'src/app/services/subscription.service';
-import { Subscription } from 'src/app/models/subscription.model';
+import { SubscriptionModel } from 'src/app/models/subscription.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { Router } from '@angular/router';
@@ -13,7 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./subscription-report-tab.component.scss'],
 })
 export class SubscriptionReportTab implements OnInit {
-  subscription: Subscription;
+  subscription: SubscriptionModel;
   selectedCycle: any;
   emailsSent = new MatTableDataSource<any>();
   @ViewChild(MatSort) sort: MatSort;
@@ -26,19 +26,21 @@ export class SubscriptionReportTab implements OnInit {
     private router: Router,
     public dialog: MatDialog
   ) {
-    this.subscription = new Subscription();
+    this.subscription = new SubscriptionModel();
   }
 
   ngOnInit() {
-    this.subscriptionSvc.subBehaviorSubject.subscribe((data: Subscription) => {
-      if ('subscription_uuid' in data && data.cycles) {
-        this.subscription = data;
-        this.emailsSent.sort = this.sort;
-        const selectedCycleIndex = 0;
-        this.selectedCycle = this.subscription.cycles[selectedCycleIndex];
-        this.emailsSent.data = data.email_report_history;
+    this.subscriptionSvc.subBehaviorSubject.subscribe(
+      (data: SubscriptionModel) => {
+        if ('subscription_uuid' in data && data.cycles) {
+          this.subscription = data;
+          this.emailsSent.sort = this.sort;
+          const selectedCycleIndex = 0;
+          this.selectedCycle = this.subscription.cycles[selectedCycleIndex];
+          this.emailsSent.data = [];
+        }
       }
-    });
+    );
   }
 
   refresh() {}
