@@ -47,7 +47,7 @@
         *ngIf="row.status != 'CONFIRMED'"
         mat-raised-button
         color="accent"
-        (click)="confirmUser(row.status)"
+        (click)="confirmUser(row.username)"
       >
         Confirm User
       </button>
@@ -72,7 +72,7 @@
         color="warn"
         mat-flat-button
         class="table-btn-icon"
-        (click)="deleteUser(row.Username)"
+        (click)="deleteUser(row.username)"
       >
         <mat-icon>delete</mat-icon>
       </button>
