@@ -26,7 +26,7 @@ export class CycleService {
   public getCycleStats(cycleUuid: string, nonhuman = false) {
     let url = `${this.SettingsService.settings.apiUrl}/api/cycle/${cycleUuid}/stats/`;
     if (nonhuman) {
-      url += `?nonhuman${nonhuman}`;
+      url += `?nonhuman=${nonhuman}`;
     }
     return this.http.get<CycleStatsModel>(url);
   }
