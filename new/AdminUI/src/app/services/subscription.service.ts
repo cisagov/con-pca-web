@@ -86,7 +86,7 @@ export class SubscriptionService {
    */
   public getSubscription(subscription_uuid: string) {
     let url = `${this.settingsService.settings.apiUrl}/api/subscription/${subscription_uuid}/`;
-    return this.http.get(url);
+    return this.http.get<SubscriptionModel>(url);
   }
 
   public deleteSubscription(subscription: SubscriptionModel) {
@@ -232,11 +232,5 @@ export class SubscriptionService {
   public async getTemplatesSelected() {
     const url = `${this.settingsService.settings.apiUrl}/api/templates/select/`;
     return this.http.get<TemplateSelectedModel>(url).toPromise();
-  }
-
-  public getSubscriptionJSON(subscription_uuid) {
-    const headers = new HttpHeaders().set('content-type', 'application/json');
-    const url = `${this.settingsService.settings.apiUrl}/api/subscription/downloadjson/${subscription_uuid}/`;
-    return this.http.get(url, { headers, responseType: 'blob' });
   }
 }

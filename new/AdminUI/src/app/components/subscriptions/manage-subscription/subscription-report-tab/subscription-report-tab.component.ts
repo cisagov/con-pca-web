@@ -6,6 +6,7 @@ import { MatSort } from '@angular/material/sort';
 import { Router } from '@angular/router';
 import { AlertComponent } from 'src/app/components/dialogs/alert/alert.component';
 import { MatDialog } from '@angular/material/dialog';
+import { CycleService } from 'src/app/services/cycle.service';
 
 @Component({
   selector: 'subscription-report-tab',
@@ -23,6 +24,7 @@ export class SubscriptionReportTab implements OnInit {
 
   constructor(
     private subscriptionSvc: SubscriptionService,
+    private cycleSvc: CycleService,
     private router: Router,
     public dialog: MatDialog
   ) {
@@ -122,24 +124,16 @@ export class SubscriptionReportTab implements OnInit {
         }
       );
   }
-  downloadSubscriptionData() {
-    this.subscriptionSvc
-      .getSubscriptionJSON(this.subscription.subscription_uuid)
-      .subscribe(
-        (blob) => {
-          this.downloadObject(
-            `${this.subscription.name}_subscription_data.json`,
-            blob
-          );
-        },
-        (error) => {
-          this.dialog.open(AlertComponent, {
-            data: {
-              title: 'Error',
-              messageText: `An error occured downloading the subscription JSON data. Check logs for more detail.`,
-            },
-          });
-        }
-      );
+  downloadCycleData() {
+    this.cycleSvc.getCycle(this.selectedCycle.cycle_uuid).subscribe((cycle) => {
+      this.subscriptionSvc
+        .getSubscription(cycle.subscription_uuid)
+        .subscribe((subscription) => {
+          const data = { cycle, subscription };
+          const filename = `${subscription.name}_cycle_data.json`;
+          const blob = new Blob([JSON.stringify(data)]);
+          this.downloadObject(filename, blob);
+        });
+    });
   }
 }
