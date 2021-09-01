@@ -27,14 +27,7 @@ export class CustomerSubscriptionsComponent implements OnInit {
 
   subscriptions = new MatTableDataSource<SubscriptionModel>();
 
-  displayedColumns = [
-    'name',
-    'status',
-    'active',
-    'start_date',
-    'lub_timestamp',
-    'inspect',
-  ];
+  displayedColumns = ['name', 'status', 'active', 'start_date', 'inspect'];
 
   constructor(public subscriptionSvc: SubscriptionService) {}
 

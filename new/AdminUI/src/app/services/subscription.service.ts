@@ -177,7 +177,7 @@ export class SubscriptionService {
    */
   public getSubscriptionsByCustomer(customer: CustomerModel) {
     return this.http.get(
-      `${this.settingsService.settings.apiUrl}/api/subscription/customer/${customer.customer_uuid}`
+      `${this.settingsService.settings.apiUrl}/api/subscriptions/?customer_uuid=${customer.customer_uuid}`
     );
   }
 
