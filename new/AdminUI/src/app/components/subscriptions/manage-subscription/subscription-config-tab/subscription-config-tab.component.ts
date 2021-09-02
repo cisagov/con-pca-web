@@ -1124,7 +1124,8 @@ export class SubscriptionConfigTab
       },
       (error) => {
         this.isValidConfig = false;
-        this.validConfigMessage = error.error;
+        console.log(error);
+        this.validConfigMessage = error.error.error;
       }
     );
   }
