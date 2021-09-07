@@ -14,13 +14,7 @@ import { AlertComponent } from 'src/app/components/dialogs/alert/alert.component
   styleUrls: ['./templates-page.component.scss'],
 })
 export class TemplatesPageComponent implements OnInit, AfterViewInit {
-  displayedColumns = [
-    'name',
-    'deception_score',
-    'template_type',
-    'created_by',
-    'select',
-  ];
+  displayedColumns = ['name', 'deception_score', 'created_by', 'select'];
   templatesData = new MatTableDataSource<TemplateModel>();
   search_input = '';
   @ViewChild(MatSort) sort: MatSort;

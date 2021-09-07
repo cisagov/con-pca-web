@@ -17,7 +17,6 @@ import { Subscription } from 'rxjs';
 import $ from 'jquery';
 import 'src/app/helper/csvToArray';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { StopTemplateDialogComponent } from './stop-template-dialog/stop-template-dialog.component';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
 import { AppSettings } from 'src/app/AppSettings';
@@ -62,7 +61,6 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
   retired: boolean;
   canDelete: boolean = false;
   deleteTooltip: string = '';
-  canStop: boolean = false;
   retiredReason: string;
   currentTemplateFormGroup: FormGroup;
   matchSubject = new MyErrorStateMatcher();
@@ -251,7 +249,6 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
         .subscribe((x: PcaSubscription[]) => {
           this.pcaSubscriptions.data = x;
           this.setCanDelete();
-          this.setCanStop();
         });
     });
   }
@@ -539,16 +536,6 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
     });
   }
 
-  stopTemplate() {
-    // check if no subs, of not, then stop, if else, then no
-    let templateToStop = this.getTemplateFromForm(
-      this.currentTemplateFormGroup
-    );
-    this.dialog.open(StopTemplateDialogComponent, {
-      data: templateToStop,
-    });
-  }
-
   //Event that fires everytime the template tab choice is changed
   onTabChanged($event) {
     //Required because the angular-editor library can not bind to [value].
@@ -798,17 +785,6 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
     } else {
       this.canDelete = true;
       this.deleteTooltip = 'Delete the template';
-    }
-  }
-
-  setCanStop() {
-    const data = this.pcaSubscriptions.data.filter(
-      (subscription) => subscription.status === 'In Progress'
-    );
-    if (data.length > 0) {
-      this.canStop = true;
-    } else {
-      this.canStop = false;
     }
   }
 
