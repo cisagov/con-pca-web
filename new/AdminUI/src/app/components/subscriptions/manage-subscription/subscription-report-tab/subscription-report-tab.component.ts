@@ -1,6 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { SubscriptionService } from 'src/app/services/subscription.service';
-import { SubscriptionModel } from 'src/app/models/subscription.model';
+import {
+  SubscriptionModel,
+  SubscriptionNotificationModel,
+} from 'src/app/models/subscription.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { Router } from '@angular/router';
@@ -16,9 +19,9 @@ import { CycleService } from 'src/app/services/cycle.service';
 export class SubscriptionReportTab implements OnInit {
   subscription: SubscriptionModel;
   selectedCycle: any;
-  emailsSent = new MatTableDataSource<any>();
+  emailsSent = new MatTableDataSource<SubscriptionNotificationModel>();
   @ViewChild(MatSort) sort: MatSort;
-  displayedColumns = ['report', 'sent', 'to', 'from', 'bcc', 'manual'];
+  displayedColumns = ['report', 'sent', 'to', 'from'];
   loading = false;
   includeNonhuman = false;
 
@@ -39,7 +42,8 @@ export class SubscriptionReportTab implements OnInit {
           this.emailsSent.sort = this.sort;
           const selectedCycleIndex = 0;
           this.selectedCycle = this.subscription.cycles[selectedCycleIndex];
-          this.emailsSent.data = [];
+          console.log(this.subscription.notification_history);
+          this.emailsSent.data = this.subscription.notification_history;
         }
       }
     );
@@ -92,9 +96,9 @@ export class SubscriptionReportTab implements OnInit {
         this.includeNonhuman
       )
       .subscribe(
-        (data: any) => {
+        () => {
           this.loading = false;
-          this.updateReportList(data.subscription_uuid);
+          this.updateReportList();
         },
         (error) => {
           this.popupReportError(error, 'sending', reportType);
@@ -112,18 +116,10 @@ export class SubscriptionReportTab implements OnInit {
     });
   }
 
-  updateReportList(subscription_uuid) {
-    this.subscriptionSvc
-      .getSusbcriptionStatusEmailsSent(subscription_uuid)
-      .subscribe(
-        (data: any) => {
-          this.emailsSent.data = data;
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
+  updateReportList() {
+    this.emailsSent.data = this.subscription.notification_history;
   }
+
   downloadCycleData() {
     this.cycleSvc.getCycle(this.selectedCycle.cycle_uuid).subscribe((cycle) => {
       this.subscriptionSvc

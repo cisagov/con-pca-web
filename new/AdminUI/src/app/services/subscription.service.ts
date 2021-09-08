@@ -216,11 +216,6 @@ export class SubscriptionService {
     return this.http.get(url);
   }
 
-  public getSusbcriptionStatusEmailsSent(subscription_uuid) {
-    const url = `${this.settingsService.settings.apiUrl}/api/reports/subscription_report_emails_sent/${subscription_uuid}/`;
-    return this.http.get(url);
-  }
-
   public checkValid(cycleLengthMinutes: number, targetCount: number) {
     const url = `${this.settingsService.settings.apiUrl}/api/subscriptions/valid/`;
     const data = {

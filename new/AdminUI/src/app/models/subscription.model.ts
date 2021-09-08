@@ -27,6 +27,13 @@ export class TemplateSelectedModel {
   low: any[] = [];
 }
 
+export class SubscriptionNotificationModel {
+  message_type: string;
+  sent: Date;
+  email_to: string[];
+  email_from: string;
+}
+
 export class SubscriptionModel {
   subscription_uuid: string;
   name: string;
@@ -46,6 +53,7 @@ export class SubscriptionModel {
   report_frequency_minutes: number;
   archived: boolean;
   tasks: TaskModel[];
+  notification_history: SubscriptionNotificationModel[];
 
   // Helper attributes
   cycles: CycleModel[];

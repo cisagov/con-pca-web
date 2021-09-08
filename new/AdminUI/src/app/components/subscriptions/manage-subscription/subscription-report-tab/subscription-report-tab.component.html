@@ -136,7 +136,7 @@
           <mat-header-cell *matHeaderCellDef mat-sort-header
             >Report</mat-header-cell
           >
-          <mat-cell *matCellDef="let row">{{ row.report_type }}</mat-cell>
+          <mat-cell *matCellDef="let row">{{ row.message_type }}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="sent">
           <mat-header-cell *matHeaderCellDef mat-sort-header
@@ -157,18 +157,6 @@
             >From</mat-header-cell
           >
           <mat-cell *matCellDef="let row"> {{ row.email_from }}</mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="bcc">
-          <mat-header-cell *matHeaderCellDef mat-sort-header
-            >BCC</mat-header-cell
-          >
-          <mat-cell *matCellDef="let row">{{ row.bcc }}</mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="manual">
-          <mat-header-cell *matHeaderCellDef mat-sort-header
-            >Manual</mat-header-cell
-          >
-          <mat-cell *matCellDef="let row">{{ row.manual }}</mat-cell>
         </ng-container>
 
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
