@@ -9,7 +9,7 @@
       <td class="text-right">{{ detail?.monthly_reports_sent }}</td>
     </tr>
     <tr>
-      <td>Total completed cycle reports sent out</td>
+      <td>Total cycle reports sent out</td>
       <td class="text-right">{{ detail?.cycle_reports_sent }}</td>
     </tr>
     <tr>
@@ -88,13 +88,13 @@
             <tr>
               <td>Subscription Count</td>
               <td class="text-right">
-                {{ detail?.tribal_territorial_stats.subscription_count }}
+                {{ detail?.tribal_stats.subscription_count }}
               </td>
             </tr>
             <tr>
               <td>Cycle Count</td>
               <td class="text-right">
-                {{ detail?.tribal_territorial_stats.cycle_count }}
+                {{ detail?.tribal_stats.cycle_count }}
               </td>
             </tr>
           </table>
@@ -109,16 +109,13 @@
             <tr>
               <td>Subscription Count</td>
               <td class="text-right">
-                {{
-                  detail?.critical_infrastructure_private_stats
-                    .subscription_count
-                }}
+                {{ detail?.private_stats.subscription_count }}
               </td>
             </tr>
             <tr>
               <td>Cycle Count</td>
               <td class="text-right">
-                {{ detail?.critical_infrastructure_private_stats.cycle_count }}
+                {{ detail?.private_stats.cycle_count }}
               </td>
             </tr>
           </table>
@@ -142,7 +139,9 @@
     </tr>
     <tr>
       <td>Average time to click across all customers</td>
-      <td class="text-right">{{ detail?.avgTimeToClick }}</td>
+      <td class="text-right">
+        {{ detail?.average_time_to_click_all_customers }}
+      </td>
     </tr>
   </table>
 </div>

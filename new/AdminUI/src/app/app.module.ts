@@ -43,7 +43,6 @@ import { UserAdminComponent } from './components/user-admin/user-admin.component
 import { HelpFilesComponent } from './components/help-files/help-files.component';
 import { CustomerService } from './services/customer.service';
 import { CustomersComponent } from './components/customers/customers.component';
-import { AddCustomerDialogComponent } from './components/customers/add-customer-dialog/add-customer-dialog.component';
 import { AddContactDialogComponent } from './components/contacts/add-contact-dialog/add-contact-dialog.component';
 import { ViewContactDialogComponent } from './components/contacts/view-contact-dialog/view-contact-dialog.component';
 import {
@@ -121,7 +120,6 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     UserAdminComponent,
     HelpFilesComponent,
     CustomersComponent,
-    AddCustomerDialogComponent,
     AddContactDialogComponent,
     ViewContactDialogComponent,
     DeleteSubscription,
