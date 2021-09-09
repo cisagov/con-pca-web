@@ -19,6 +19,7 @@ import { AlertComponent } from '../dialogs/alert/alert.component';
 import { LandingPageManagerService } from 'src/app/services/landing-page-manager.service';
 import { LandingPageModel } from 'src/app/models/landing-page.models';
 import { TemplateModel } from 'src/app/models/template.model';
+import { TagSelectionComponent } from '../dialogs/tag-selection/tag-selection.component';
 
 @Component({
   selector: 'app-landing-pages-manager',
@@ -28,6 +29,7 @@ import { TemplateModel } from 'src/app/models/template.model';
 export class LandingPagesManagerComponent implements OnInit {
   dialogRefConfirm: MatDialogRef<ConfirmComponent>;
   dialogRefRetire: MatDialogRef<RetireTemplateDialogComponent>;
+  dialogRefTagSelection: MatDialogRef<TagSelectionComponent>;
 
   canDelete: boolean;
   templates: TemplateModel[] = [];
@@ -129,6 +131,7 @@ export class LandingPagesManagerComponent implements OnInit {
 
   ngAfterViewInit() {
     this.configAngularEditor();
+    this.addInsertTagButtonIntoEditor();
     $('#toggleEditorMode-').on('mousedown', this.toggleEditorMode.bind(this));
   }
 
@@ -416,4 +419,52 @@ export class LandingPagesManagerComponent implements OnInit {
     toolbarPosition: 'top',
     toolbarHiddenButtons: [['insertVideo']],
   };
+
+  /**
+   * Hack the angular-editor to add a new button after the "clear formatting" button.
+   * Clicking it clicks a hidden button to get us back into Angular.
+   */
+  addInsertTagButtonIntoEditor() {
+    let btnClearFormatting = $(this.angularEditorEle.doc).find(
+      "[title='Horizontal Line']"
+    )[0];
+    let attribs = btnClearFormatting.attributes;
+    // this assumes that the _ngcontent attribute occurs first
+    let ngcontent = attribs.item(0).name;
+    let newButtonHtml1 = `<button ${ngcontent} type="button" title="Insert Tag" tabindex="-1" class="angular-editor-button" id="insertTag-" `;
+    let newButtonHtml2 =
+      'onclick="var h = document.getElementsByClassName(\'hidden-insert-tag-button\'); h[0].click();">';
+    let newButtonHtml3 = `<i ${ngcontent} class="fa fa-tag"></i></button>`;
+    $(btnClearFormatting)
+      .closest('div')
+      .append(newButtonHtml1 + newButtonHtml2 + newButtonHtml3);
+  }
+
+  /**
+   * Opens a dialog that presents the tag options.
+   */
+  openTagChoice() {
+    this.angularEditorEle.textArea.nativeElement.focus();
+    const selection = window.getSelection().getRangeAt(0);
+    this.dialogRefTagSelection = this.dialog.open(TagSelectionComponent, {
+      disableClose: false,
+    });
+    this.dialogRefTagSelection.afterClosed().subscribe((result) => {
+      if (result) {
+        this.insertTag(selection, result);
+        $('.angular-editor-wrapper').removeClass('show-placeholder');
+      }
+      this.dialogRefTagSelection = null;
+    });
+  }
+
+  /**
+   * Inserts a span containing the tag at the location of the selection.
+   * @param selection
+   * @param tag
+   */
+  insertTag(selection, tagText: string) {
+    const newNode = document.createTextNode(tagText);
+    selection.insertNode(newNode);
+  }
 }
