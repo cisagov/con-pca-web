@@ -94,6 +94,32 @@
     </div>
   </mat-card>
   <mat-card>
+    <mat-label class="h6">Download Set Cycle Reports</mat-label>
+    <div>
+      <div
+        *ngIf="loading"
+        style="text-align: center; padding-top: 2rem; padding-bottom: 2rem"
+      >
+        <mat-spinner
+          class="spinner"
+          style="margin-left: auto; margin-right: auto"
+          diameter="50"
+        ></mat-spinner>
+      </div>
+      <div class="text-muted">
+        Download a report for a specified set of cycles
+      </div>
+      <button
+        mat-raised-button
+        color="primary"
+        class="mb-3"
+        (click)="openCycleSelectionDialog()"
+      >
+        Open Cycle Selection
+      </button>
+    </div>
+  </mat-card>
+  <mat-card>
     <mat-label class="h6">Download Cycle Data</mat-label>
     <div>
       <div

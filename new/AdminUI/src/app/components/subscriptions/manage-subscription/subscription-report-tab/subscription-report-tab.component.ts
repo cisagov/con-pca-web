@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { AlertComponent } from 'src/app/components/dialogs/alert/alert.component';
 import { MatDialog } from '@angular/material/dialog';
 import { CycleService } from 'src/app/services/cycle.service';
+import { CycleSelect } from 'src/app/components/dialogs/cycle-select/cycle-select.component';
 
 @Component({
   selector: 'subscription-report-tab',
@@ -72,7 +73,7 @@ export class SubscriptionReportTab implements OnInit {
     this.loading = true;
     this.subscriptionSvc
       .downloadReport(
-        this.selectedCycle.cycle_uuid,
+        [this.selectedCycle.cycle_uuid],
         reportType,
         this.includeNonhuman
       )
@@ -91,7 +92,7 @@ export class SubscriptionReportTab implements OnInit {
     this.loading = true;
     this.subscriptionSvc
       .sendReport(
-        this.selectedCycle.cycle_uuid,
+        [this.selectedCycle.cycle_uuid],
         reportType,
         this.includeNonhuman
       )
@@ -130,6 +131,36 @@ export class SubscriptionReportTab implements OnInit {
           const blob = new Blob([JSON.stringify(data)]);
           this.downloadObject(filename, blob);
         });
+    });
+  }
+  openCycleSelectionDialog() {
+    let dialogOptions = {
+      cycles: this.subscription.cycles,
+      sub_name: this.subscription.name,
+    };
+
+    let dialogRef = this.dialog.open(CycleSelect, { data: dialogOptions });
+
+    let cycle_uuids = [];
+    dialogRef.afterClosed().subscribe((val) => {
+      cycle_uuids = val;
+      if (cycle_uuids.length > 0) {
+        this.subscriptionSvc.downloadReport(cycle_uuids, 'monthly').subscribe(
+          (success) => {
+            this.downloadObject(`subscription_cycleset_report.pdf`, success);
+          },
+          (failure) => {
+            console.log(failure);
+          }
+        );
+      } else {
+        this.dialog.open(AlertComponent, {
+          data: {
+            title: 'Error',
+            messageText: ``,
+          },
+        });
+      }
     });
   }
 }
