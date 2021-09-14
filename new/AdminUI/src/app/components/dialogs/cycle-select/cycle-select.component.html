@@ -8,21 +8,20 @@
 </div>
 
 <div class="mt-2 mb-2 d-flex flex-column justify-content-end">
-  <mat-dialog-actions 
-  class="mt-2 mb-2 d-flex flex-column">
-    <div 
-    style="
-    display:flex;
-    max-height: 60vw;
-    overflow: scroll;">
-      <mat-selection-list #cycles 
-      >
-        <mat-list-option style="width:20em" [value]="cycle.cycle_uuid" [selected]='true' *ngFor="let cycle of cycleList">
-          {{cycle.start_date | UTCtoReadableTime}} - {{cycle.target_count}}
+  <mat-dialog-actions class="mt-2 mb-2 d-flex flex-column">
+    <div style="display: flex; max-height: 60vw; overflow: scroll">
+      <mat-selection-list #cycles>
+        <mat-list-option
+          style="width: 20em"
+          [value]="cycle.cycle_uuid"
+          [selected]="true"
+          *ngFor="let cycle of cycleList"
+        >
+          {{ cycle.start_date | UTCtoReadableTime }} - {{ cycle.target_count }}
         </mat-list-option>
       </mat-selection-list>
     </div>
-    <div class="d-flex" style= "align-self:end">
+    <div class="d-flex" style="align-self: end">
       <button mat-raised-button color="secondary" (click)="this.deselectAll()">
         Deslect All
       </button>
