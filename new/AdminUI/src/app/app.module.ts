@@ -36,6 +36,7 @@ import { AddCustomerComponent } from './components/customer/add-customer/add-cus
 import { SubscriptionService } from './services/subscription.service';
 import { ThemeService } from './services/theme.service';
 import { LayoutMainService } from './services/layout-main.service';
+import { CycleSelect } from './components/dialogs/cycle-select/cycle-select.component';
 
 import { TemplatesPageComponent } from './components/templates-page/templates-page.component';
 import { TagsPageComponent } from './components/tags-page/tags-page.component';
@@ -116,6 +117,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     ListFilterPipe,
     NullishCoalescePipe,
     TemplatesPageComponent,
+    CycleSelect,
     TagsPageComponent,
     UserAdminComponent,
     HelpFilesComponent,

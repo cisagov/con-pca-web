@@ -196,20 +196,28 @@ export class SubscriptionService {
   }
 
   public downloadReport(
-    cycleUuid: string,
+    cycleUuids: any[],
     reportType: string,
     nonhuman = false
   ): Observable<Blob> {
     const headers = new HttpHeaders().set('Accept', 'application/pdf');
-    let url = `${this.settingsService.settings.apiUrl}/api/cycle/${cycleUuid}/reports/${reportType}/pdf/`;
+    let url = `${
+      this.settingsService.settings.apiUrl
+    }/api/cycle/reports/${reportType}/pdf/?cycles=${cycleUuids.join(',')}`;
     if (nonhuman) {
       url += `?nonhuman=${nonhuman}`;
     }
     return this.http.get(url, { headers, responseType: 'blob' });
   }
 
-  public sendReport(cycleUuid: string, reportType: string, nonhuman = false) {
-    let url = `${this.settingsService.settings.apiUrl}/api/cycle/${cycleUuid}/reports/${reportType}/email/`;
+  public sendReport(
+    cycleUuids: string[],
+    reportType: string,
+    nonhuman = false
+  ) {
+    let url = `${
+      this.settingsService.settings.apiUrl
+    }/api/cycle/reports/${reportType}/email/?cycles=${cycleUuids.join(',')}`;
     if (nonhuman) {
       url += `?nonhuman=${nonhuman}`;
     }
