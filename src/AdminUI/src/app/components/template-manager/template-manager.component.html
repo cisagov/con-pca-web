@@ -201,32 +201,6 @@
                 </span>
               </mat-label>
 
-              <div class="d-flex flex-column pb-3 mt-3">
-                <mat-form-field appearance="outline">
-                  <mat-label>Description</mat-label>
-                  <input
-                    type="text"
-                    trim="blur"
-                    matInput
-                    placeholder="Template Description..."
-                    formControlName="templateDescription"
-                  />
-                </mat-form-field>
-              </div>
-              <div class="d-flex flex-column pb-3">
-                <mat-form-field appearance="outline" class="flex-grow-1">
-                  <mat-label>Descriptive Words (CSV)</mat-label>
-                  <textarea
-                    trim="blur"
-                    matInput
-                    cdkTextareaAutosize
-                    cdkAutosizeMinRows="5"
-                    cdkAutosizeMaxRows="10"
-                    placeholder="Template Descriptive Words Seperated By A Comma"
-                    formControlName="templateDescriptiveWords"
-                  ></textarea>
-                </mat-form-field>
-              </div>
               <div class="d-flex flex-column pb-3">
                 <mat-form-field appearance="outline" class="flex-grow-1 mb-2">
                   <mat-label>Sending Profile Selection</mat-label>
@@ -468,16 +442,6 @@
             *ngIf="templateId && retired"
           >
             Restore Template
-          </button>
-          <button
-            id="stop-button"
-            class="d-flex"
-            mat-raised-button
-            color="warn"
-            (click)="stopTemplate()"
-            *ngIf="templateId && canStop"
-          >
-            Stop Template
           </button>
           <div [matTooltip]="deleteTooltip">
             <button

@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Tags } from 'src/app/models/tags.model';
+import { TagModel } from 'src/app/models/tags.model';
 import { TagService } from 'src/app/services/tag.service';
 
 @Component({
@@ -10,10 +10,10 @@ import { TagService } from 'src/app/services/tag.service';
   templateUrl: './tag-selection.component.html',
 })
 export class TagSelectionComponent implements OnInit, AfterViewInit {
-  tags: Tags[];
+  tags: TagModel[];
 
   displayedColumns = ['tag', 'description'];
-  tagsData = new MatTableDataSource<Tags>();
+  tagsData = new MatTableDataSource<TagModel>();
   searchInput = '';
   @ViewChild(MatSort) sort: MatSort;
 
@@ -23,7 +23,7 @@ export class TagSelectionComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
-    this.tagService.getAllTags().subscribe((result: Tags[]) => {
+    this.tagService.getAllTags().subscribe((result: TagModel[]) => {
       this.tags = result;
 
       this.tagsData.data = result;

@@ -3,7 +3,6 @@ import {
   OnInit,
   ViewChild,
   ElementRef,
-  ChangeDetectorRef,
   AfterViewInit,
 } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
@@ -12,17 +11,12 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MyErrorStateMatcher } from 'src/app/helper/ErrorStateMatcher';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { TemplateManagerService } from 'src/app/services/template-manager.service';
-import {
-  Template,
-  TagModel,
-  GoPhishTemplate,
-} from 'src/app/models/template.model';
-import { Subscription as PcaSubscription } from 'src/app/models/subscription.model';
+import { TemplateModel } from 'src/app/models/template.model';
+import { SubscriptionModel as PcaSubscription } from 'src/app/models/subscription.model';
 import { Subscription } from 'rxjs';
 import $ from 'jquery';
 import 'src/app/helper/csvToArray';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { StopTemplateDialogComponent } from './stop-template-dialog/stop-template-dialog.component';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
 import { AppSettings } from 'src/app/AppSettings';
@@ -32,16 +26,17 @@ import { SettingsService } from 'src/app/services/settings.service';
 import { RetireTemplateDialogComponent } from './retire-template-dialog/retire-template-dialog.component';
 import { AlertComponent } from '../dialogs/alert/alert.component';
 import { LandingPageManagerService } from 'src/app/services/landing-page-manager.service';
-import { Landing_Page } from 'src/app/models/landing-page.models';
+import { LandingPageModel } from 'src/app/models/landing-page.models';
 import Swal from 'sweetalert2';
 
 import { SendingProfileService } from 'src/app/services/sending-profile.service';
-import { TestEmail } from 'src/app/models/test-email.model';
+import { TestEmailModel } from 'src/app/models/test-email.model';
 import { DomSanitizer } from '@angular/platform-browser';
 import { filterSendingProfiles } from '../../helper/utilities';
 import { ImportTemplateDialogComponent } from './import-template-dialog/import-template-dialog.component';
 import { CustomerService } from 'src/app/services/customer.service';
-import { Customer } from 'src/app/models/customer.model';
+import { CustomerModel } from 'src/app/models/customer.model';
+import { TagModel } from 'src/app/models/tags.model';
 
 @Component({
   selector: 'app-template-manager',
@@ -66,7 +61,6 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
   retired: boolean;
   canDelete: boolean = false;
   deleteTooltip: string = '';
-  canStop: boolean = false;
   retiredReason: string;
   currentTemplateFormGroup: FormGroup;
   matchSubject = new MyErrorStateMatcher();
@@ -79,30 +73,30 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
   mailtester_iframe_url = this.cleanURL('');
   currentTab = 'HTML View';
 
-  //RxJS Subscriptions
+  // RxJS Subscriptions
   subscriptions = Array<Subscription>();
 
   // Con-PCA Subscriptions for the current Template
   pcaSubscriptions = new MatTableDataSource<PcaSubscription>();
   displayed_columns = ['name', 'start_date'];
 
-  //config vars
-  image_upload_url: string = `${this.settingsService.settings.apiUrl}/api/v1/imageupload/`;
+  // config vars
+  image_upload_url: string = `${this.settingsService.settings.apiUrl}/api/imageupload/`;
 
   dateFormat = AppSettings.DATE_FORMAT;
 
   tags: TagModel[];
-  pagesList: Landing_Page[];
+  pagesList: LandingPageModel[];
 
-  //Styling variables, required to properly size and display the angular-editor import
+  // Styling variables, required to properly size and display the angular-editor import
   body_content_height: number;
   text_editor_height: number;
   text_editor_height2: number;
   iframe_height: number;
-  text_area_bot_marg: number = 20; //based on the default text area padding on a mat textarea element
+  text_area_bot_marg: number = 20; // based on the default text area padding on a mat textarea element
   angular_editor_mode: String = 'WYSIWYG';
 
-  //Elements used to get reference sizes for styling
+  // Elements used to get reference sizes for styling
   @ViewChild('selectedTemplateTitle') titleElement: ElementRef;
   @ViewChild('tabs') tabElement: any;
   @ViewChild('angularEditor') angularEditorEle: any;
@@ -121,10 +115,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
     public dialog: MatDialog,
     private domSanitizer: DomSanitizer
   ) {
-    //layoutSvc.setTitle('Edit Template');
-    //this.setEmptyTemplateForm();
-    this.setTemplateForm(new Template());
-    //this.getAllTemplates();
+    this.setTemplateForm(new TemplateModel());
     // Here updating title on creation.
     route.params.subscribe((params) => {
       this.templateId = params['templateId'];
@@ -132,7 +123,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
         layoutSvc.setTitle('Edit Template');
         this.selectTemplate(this.templateId);
       } else {
-        //Use preset empty form
+        // Use preset empty form
         layoutSvc.setTitle('New Template');
       }
     });
@@ -181,7 +172,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
     this.sendingProfileSvc.getAllProfiles().subscribe((data: any) => {
       this.sendingProfiles = filterSendingProfiles(data);
     });
-    this.customerSvc.getCustomers().subscribe((data: Customer[]) => {
+    this.customerSvc.getCustomers().subscribe((data: CustomerModel[]) => {
       this.customers = data;
     });
   }
@@ -246,7 +237,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
   selectTemplate(template_uuid: string) {
     //Get template and call setTemplateForm to initialize a form group using the selected template
     this.templateManagerSvc.getTemplate(template_uuid).then((success) => {
-      let t = <Template>success;
+      let t = <TemplateModel>success;
 
       this.setTemplateForm(t);
       this.testEmail = this.getRecommendedEmail();
@@ -258,24 +249,26 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
         .subscribe((x: PcaSubscription[]) => {
           this.pcaSubscriptions.data = x;
           this.setCanDelete();
-          this.setCanStop();
         });
     });
   }
 
   //Create a formgroup using a Template as initial data
-  setTemplateForm(template: Template) {
-    if (!template.appearance) {
-      template.appearance = <any>{};
+  setTemplateForm(template: TemplateModel) {
+    if (!template.indicators) {
+      template.indicators = {} as any;
     }
-    if (!template.sender) {
-      template.sender = <any>{};
+    if (!template.indicators.appearance) {
+      template.indicators.appearance = {} as any;
     }
-    if (!template.relevancy) {
-      template.relevancy = <any>{};
+    if (!template.indicators.sender) {
+      template.indicators.sender = {} as any;
     }
-    if (!template.behavior) {
-      template.behavior = <any>{};
+    if (!template.indicators.relevancy) {
+      template.indicators.relevancy = {} as any;
+    }
+    if (!template.indicators.behavior) {
+      template.indicators.behavior = {} as any;
     }
 
     this.setTemplateFrom(template.from_address);
@@ -283,8 +276,6 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
       templateUUID: new FormControl(template.template_uuid),
       templateName: new FormControl(template.name, [Validators.required]),
       templateDeceptionScore: new FormControl(template.deception_score),
-      templateDescriptiveWords: new FormControl(template.descriptive_words),
-      templateDescription: new FormControl(template.description),
       templateFromDisplayName: new FormControl(this.fromDisplayName),
       templateFromSender: new FormControl(this.fromSender),
       templateFromAddress: new FormControl(template.from_address),
@@ -294,24 +285,33 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
       templateText: new FormControl(template.text),
       templateHTML: new FormControl(template.html, [Validators.required]),
       landingPage: new FormControl(template.landing_page_uuid),
-      templateSendingProfile: new FormControl(template.sending_profile_id),
-      authoritative: new FormControl(template.sender?.authoritative ?? 0),
-      external: new FormControl(template.sender?.external ?? 0),
-      internal: new FormControl(template.sender?.internal ?? 0),
-      grammar: new FormControl(template.appearance?.grammar ?? 0),
-      link_domain: new FormControl(template.appearance?.link_domain ?? 0),
-      logo_graphics: new FormControl(template.appearance?.logo_graphics ?? 0),
-      organization: new FormControl(template.relevancy.organization ?? 0),
-      public_news: new FormControl(template.relevancy.public_news ?? 0),
-      fear: new FormControl(template.behavior?.fear ?? false),
-      duty_obligation: new FormControl(
-        template.behavior?.duty_obligation ?? false
+      templateSendingProfile: new FormControl(template.sending_profile_uuid),
+      authoritative: new FormControl(
+        template.indicators.sender?.authoritative ?? 0
       ),
-      curiosity: new FormControl(template.behavior?.curiosity ?? false),
-      greed: new FormControl(template.behavior?.greed ?? false),
-      descriptive_words: new FormControl(template.descriptive_words ?? ' ', {
-        updateOn: 'blur',
-      }),
+      external: new FormControl(template.indicators.sender?.external ?? 0),
+      internal: new FormControl(template.indicators.sender?.internal ?? 0),
+      grammar: new FormControl(template.indicators.appearance?.grammar ?? 0),
+      link_domain: new FormControl(
+        template.indicators.appearance?.link_domain ?? 0
+      ),
+      logo_graphics: new FormControl(
+        template.indicators.appearance?.logo_graphics ?? 0
+      ),
+      organization: new FormControl(
+        template.indicators.relevancy.organization ?? 0
+      ),
+      public_news: new FormControl(
+        template.indicators.relevancy.public_news ?? 0
+      ),
+      fear: new FormControl(template.indicators.behavior?.fear ?? false),
+      duty_obligation: new FormControl(
+        template.indicators.behavior?.duty_obligation ?? false
+      ),
+      curiosity: new FormControl(
+        template.indicators.behavior?.curiosity ?? false
+      ),
+      greed: new FormControl(template.indicators.behavior?.greed ?? false),
       final_deception_score: new FormControl({
         value: this.calcDeceptionScore(template),
         disabled: true,
@@ -350,58 +350,49 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
       this.angularEditorEle.textArea.nativeElement.innerText
     );
 
-    let formTemplate = new Template(form.value);
+    let formTemplate = form.value;
     let htmlValue = this.replaceEscapeSequence(
       form.controls['templateHTML'].value
     );
-    let saveTemplate = new Template({
-      template_uuid: form.controls['templateUUID'].value,
+    return new TemplateModel({
+      template_uuid: this.templateId,
       name: form.controls['templateName'].value,
       landing_page_uuid: form.controls['landingPage'].value,
-      sending_profile_id: form.controls['templateSendingProfile'].value,
-      deception_score: form.controls['templateDeceptionScore'].value,
-      descriptive_words: form.controls['templateDescriptiveWords'].value,
-      description: form.controls['templateDescription'].value,
+      sending_profile_uuid: form.controls['templateSendingProfile'].value,
+      deception_score: form.controls['final_deception_score'].value,
       from_address: this.getTemplateFrom(),
       subject: form.controls['templateSubject'].value,
       text: form.controls['templateText'].value,
       html: htmlValue,
+      indicators: {
+        appearance: {
+          grammar: formTemplate.grammar,
+          link_domain: formTemplate.link_domain,
+          logo_graphics: formTemplate.logo_graphics,
+        },
+        sender: {
+          authoritative: formTemplate.authoritative,
+          external: formTemplate.external,
+          internal: formTemplate.internal,
+        },
+        relevancy: {
+          organization: formTemplate.organization,
+          public_news: formTemplate.public_news,
+        },
+        behavior: {
+          curiosity: formTemplate.curiosity ? 1 : 0,
+          duty_obligation: formTemplate.duty_obligation ? 1 : 0,
+          fear: formTemplate.fear ? 1 : 0,
+          greed: formTemplate.greed ? 1 : 0,
+        },
+      },
     });
-    saveTemplate.appearance = {
-      grammar: formTemplate.grammar,
-      link_domain: formTemplate.link_domain,
-      logo_graphics: formTemplate.logo_graphics,
-    };
-    saveTemplate.sender = {
-      authoritative: formTemplate.authoritative,
-      external: formTemplate.external,
-      internal: formTemplate.internal,
-    };
-    saveTemplate.relevancy = {
-      organization: formTemplate.organization,
-      public_news: formTemplate.public_news,
-    };
-    saveTemplate.behavior = {
-      curiosity: formTemplate.curiosity ? 1 : 0,
-      duty_obligation: formTemplate.duty_obligation ? 1 : 0,
-      fear: formTemplate.fear ? 1 : 0,
-      greed: formTemplate.greed ? 1 : 0,
-    };
-    saveTemplate.template_uuid = this.templateId;
-    saveTemplate.deception_score = form.controls['final_deception_score'].value;
-    return saveTemplate;
   }
 
-  /**
-   *
-   */
   onCancelClick() {
     this.router.navigate(['/templates']);
   }
 
-  /**
-   *
-   */
   saveTemplate() {
     // mark all as touched to ensure formgroup validation checks all fields on new entry
     this.currentTemplateFormGroup.markAllAsTouched();
@@ -542,16 +533,6 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
         this.templateManagerSvc.updateTemplate(templateToRestore);
         this.retired = templateToRestore.retired;
       }
-    });
-  }
-
-  stopTemplate() {
-    // check if no subs, of not, then stop, if else, then no
-    let templateToStop = this.getTemplateFromForm(
-      this.currentTemplateFormGroup
-    );
-    this.dialog.open(StopTemplateDialogComponent, {
-      data: templateToStop,
     });
   }
 
@@ -711,31 +692,12 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/landing-pages']);
   }
 
-  getGophishTemplateFromForm(form: FormGroup) {
-    // form fields might not have the up-to-date content that the angular-editor has
-    form.controls['templateHTML'].setValue(
-      this.angularEditorEle.textArea.nativeElement.innerHTML
-    );
-    form.controls['templateText'].setValue(
-      this.angularEditorEle.textArea.nativeElement.innerText
-    );
-    let saveTemplate: GoPhishTemplate = {
-      attachments: [],
-      name: form.controls['templateName'].value,
-      subject: form.controls['templateSubject'].value,
-      text: form.controls['templateText'].value,
-      html: form.controls['templateHTML'].value,
-    };
-
-    return saveTemplate;
-  }
-
   onSendTestClick() {
     this.submitted = true;
 
     //need to go get the sending profile from gophish
     let tmp_template = this.getTemplateFromForm(this.currentTemplateFormGroup);
-    let email_for_test: TestEmail = {
+    let email_for_test: TestEmailModel = {
       template: tmp_template, //template name to be used in the test
       first_name: this.firstName,
       last_name: this.lastName,
@@ -826,17 +788,6 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
     }
   }
 
-  setCanStop() {
-    const data = this.pcaSubscriptions.data.filter(
-      (subscription) => subscription.status === 'In Progress'
-    );
-    if (data.length > 0) {
-      this.canStop = true;
-    } else {
-      this.canStop = false;
-    }
-  }
-
   importEmail() {
     const dialogRef = this.dialog.open(ImportTemplateDialogComponent, {
       disableClose: false,
@@ -848,9 +799,9 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
           $('#toggleEditorMode-').trigger('click');
           this.angular_editor_mode = 'WYSIWYG';
         }
-        this.currentTemplateFormGroup.patchValue({
-          templateSubject: result.subject,
-        });
+        // this.currentTemplateFormGroup.patchValue({
+        //   templateSubject: result.subject,
+        // });
         if (result.html) {
           this.angularEditorEle.textArea.nativeElement.innerHTML = result.html;
           this.editorConfig.placeholder = null;

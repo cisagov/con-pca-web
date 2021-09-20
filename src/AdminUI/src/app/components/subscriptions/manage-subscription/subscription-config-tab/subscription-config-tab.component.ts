@@ -14,12 +14,12 @@ import {
   AbstractControl,
 } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Customer, Contact } from 'src/app/models/customer.model';
+import { CustomerModel, ContactModel } from 'src/app/models/customer.model';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import {
-  Subscription,
-  Target,
-  TemplateSelected,
+  SubscriptionModel,
+  TargetModel,
+  TemplateSelectedModel,
 } from 'src/app/models/subscription.model';
 import { Guid } from 'guid-typescript';
 import { CustomerService } from 'src/app/services/customer.service';
@@ -38,6 +38,8 @@ import { InvalidEmailDialogComponent } from 'src/app/components/subscriptions/in
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { CanComponentDeactivate } from 'src/app/guards/unsaved-changes.guard';
 import { UnsavedComponent } from 'src/app/components/dialogs/unsaved/unsaved.component';
+import { UserService } from 'src/app/services/user.service';
+import { UserModel } from 'src/app/models/user.model';
 
 @Component({
   selector: 'subscription-config-tab',
@@ -61,8 +63,8 @@ export class SubscriptionConfigTab
   subscriptionPreviousTimeUnit = 'Minutes';
   reportPeriodPreviousTimeUnit = 'Minutes';
   cooldownPreviousTimeUnit = 'Minutes';
-  templatesSelected = new TemplateSelected();
-  templatesAvailable = new TemplateSelected();
+  templatesSelected = new TemplateSelectedModel();
+  templatesAvailable = new TemplateSelectedModel();
 
   // Valid configuration
   isValidConfig = true;
@@ -72,11 +74,10 @@ export class SubscriptionConfigTab
   // CREATE or EDIT
   pageMode = 'CREATE';
 
-  subscription: Subscription;
-  customer: Customer = new Customer();
-  primaryContact: Contact = new Contact();
-  dhsContacts = [];
-  dhsContactUuid: string;
+  subscription: SubscriptionModel;
+  customer: CustomerModel = new CustomerModel();
+  primaryContact: ContactModel = new ContactModel();
+  adminEmails = [];
 
   startAt = new Date();
   sendBy = new Date();
@@ -112,9 +113,10 @@ export class SubscriptionConfigTab
     private layoutSvc: LayoutMainService,
     public settingsService: SettingsService,
     private route: ActivatedRoute,
-    private templateSvc: TemplateManagerService
+    private templateSvc: TemplateManagerService,
+    private userSvc: UserService
   ) {
-    this.loadDhsContacts();
+    this.loadAdminEmails();
     this.loadSendingProfiles();
 
     this.route.params.subscribe((params) => {
@@ -143,7 +145,7 @@ export class SubscriptionConfigTab
         primaryContact: new FormControl(null, {
           validators: Validators.required,
         }),
-        dhsContact: new FormControl(null, {
+        adminEmail: new FormControl(null, {
           validators: Validators.required,
         }),
         startDate: new FormControl(new Date(), {
@@ -187,7 +189,7 @@ export class SubscriptionConfigTab
 
     this.pageMode = 'EDIT';
 
-    this.subscriptionSvc.subscription = new Subscription();
+    this.subscriptionSvc.subscription = new SubscriptionModel();
     this.routeSub = this.route.params.subscribe((params) => {
       if (!params.id) {
         this.loadPageForCreate(params);
@@ -234,7 +236,7 @@ export class SubscriptionConfigTab
     );
     this.angular_subs.push(
       this.f.sendingProfile.valueChanges.subscribe((val) => {
-        this.subscription.sending_profile_name = val;
+        this.subscription.sending_profile_uuid = val;
       })
     );
     this.angular_subs.push(
@@ -432,7 +434,7 @@ export class SubscriptionConfigTab
   async loadPageForCreate(params: any) {
     this.pageMode = 'CREATE';
     this.action = this.actionCREATE;
-    this.subscription = new Subscription();
+    this.subscription = new SubscriptionModel();
     this.subscription.templates_selected = this.templatesSelected;
     this.subscription.subscription_uuid = Guid.create().toString();
     this.enableDisableFields();
@@ -461,20 +463,19 @@ export class SubscriptionConfigTab
   /**
    * EDIT mode
    */
-  async loadPageForEdit(s: Subscription) {
-    this.subscription = s as Subscription;
+  async loadPageForEdit(s: SubscriptionModel) {
+    this.subscription = s as SubscriptionModel;
     this.getTemplates();
     this.subscriptionSvc.subscription = this.subscription;
     this.f.selectedCustomerUuid.setValue(s.customer_uuid);
     this.f.primaryContact.setValue(s.primary_contact?.email);
-    this.f.dhsContact.setValue(s.dhs_contact_uuid);
+    this.f.adminEmail.setValue(s.admin_email);
     this.f.startDate.setValue(s.start_date);
-    this.f.csvText.setValue(
-      this.formatTargetsToCSV(s.target_email_list_cached_copy),
-      { emitEvent: false }
-    );
+    this.f.csvText.setValue(this.formatTargetsToCSV(s.target_email_list), {
+      emitEvent: false,
+    });
 
-    this.f.sendingProfile.setValue(s.sending_profile_name);
+    this.f.sendingProfile.setValue(s.sending_profile_uuid);
     this.f.targetDomain.setValue(s?.target_domain);
     this.f.cycle_length_minutes.setValue(s.cycle_length_minutes, {
       emitEvent: false,
@@ -497,10 +498,12 @@ export class SubscriptionConfigTab
     this.f.continuousSubscription.setValue(s.continuous_subscription);
     this.enableDisableFields();
 
-    this.customerSvc.getCustomer(s.customer_uuid).subscribe((c: Customer) => {
-      this.customer = c;
-      this.changePrimaryContact({ value: s.primary_contact?.email });
-    });
+    this.customerSvc
+      .getCustomer(s.customer_uuid)
+      .subscribe((c: CustomerModel) => {
+        this.customer = c;
+        this.changePrimaryContact({ value: s.primary_contact?.email });
+      });
 
     this.templatesSelected.high = await this.templateSvc.getAllTemplates(
       false,
@@ -527,7 +530,7 @@ export class SubscriptionConfigTab
       });
       this.customerSvc
         .getCustomer(this.customerSvc.selectedCustomer)
-        .subscribe((data: Customer) => {
+        .subscribe((data: CustomerModel) => {
           this.customer = data;
           this.customer.contact_list = this.customer.contact_list.filter(
             (contact) => contact.active === true
@@ -540,18 +543,17 @@ export class SubscriptionConfigTab
   /**
    * Gets all known CISA contacts from the API.
    */
-  loadDhsContacts() {
-    this.subscriptionSvc.getDhsContacts().subscribe((data: any) => {
-      this.dhsContacts = data;
+  loadAdminEmails() {
+    this.userSvc.getUsers().subscribe((data: UserModel[]) => {
+      data.forEach((user) => {
+        this.adminEmails.push(user.email);
+      });
     });
   }
 
-  /**
-   *
-   */
   loadContactsForCustomer(customerUuid: string) {
     // get the customer and contacts from the API
-    this.customerSvc.getCustomer(customerUuid).subscribe((c: Customer) => {
+    this.customerSvc.getCustomer(customerUuid).subscribe((c: CustomerModel) => {
       this.customer = c;
 
       this.customer.contact_list = this.customerSvc.getContactsForCustomer(c);
@@ -559,9 +561,6 @@ export class SubscriptionConfigTab
     });
   }
 
-  /**
-   *
-   */
   loadSendingProfiles() {
     this.sendingProfileSvc.getAllProfiles().subscribe((data: any) => {
       this.sendingProfiles = filterSendingProfiles(data);
@@ -624,9 +623,6 @@ export class SubscriptionConfigTab
     });
   }
 
-  /**
-   *
-   */
   changePrimaryContact(e: any) {
     if (!this.customer) {
       return;
@@ -636,16 +632,6 @@ export class SubscriptionConfigTab
     );
     this.subscription.primary_contact = this.primaryContact;
     this.subscriptionSvc.subscription.primary_contact = this.primaryContact;
-  }
-
-  changeDhsContact(e: any) {
-    const contact = this.dhsContacts.find(
-      (x) => x.dhs_contact_uuid === e.value
-    );
-    if (contact) {
-      this.dhsContactUuid = contact.dhs_contact_uuid;
-      this.subscription.dhs_contact_uuid = this.dhsContactUuid;
-    }
   }
 
   /**
@@ -709,7 +695,7 @@ export class SubscriptionConfigTab
         this.processing = true;
         this.setTemplatesSelected();
         this.subscription.target_email_list =
-          this.subscription.target_email_list_cached_copy;
+          this.subscription.target_email_list;
         // persist any changes before restart
         this.subscriptionSvc
           .patchSubscription(this.subscription)
@@ -721,7 +707,7 @@ export class SubscriptionConfigTab
                 () => {
                   this.subscriptionSvc
                     .getSubscription(this.subscription.subscription_uuid)
-                    .subscribe((resp: Subscription) => {
+                    .subscribe((resp: SubscriptionModel) => {
                       this.subscription = resp;
                     });
                   this.enableDisableFields();
@@ -769,7 +755,7 @@ export class SubscriptionConfigTab
             () => {
               this.subscriptionSvc
                 .getSubscription(this.subscription.subscription_uuid)
-                .subscribe((resp: Subscription) => {
+                .subscribe((resp: SubscriptionModel) => {
                   this.subscription = resp;
                 });
               this.enableDisableFields();
@@ -809,10 +795,9 @@ export class SubscriptionConfigTab
 
     sub.customer_uuid = this.customer.customer_uuid;
     sub.primary_contact = this.primaryContact;
-    sub.dhs_contact_uuid = this.dhsContactUuid;
+    sub.admin_email = this.f.adminEmail.value;
     sub.active = true;
 
-    sub.lub_timestamp = new Date();
     if (typeof this.f.startDate.value === 'string') {
       this.f.startDate.setValue(new Date(this.f.startDate.value));
     }
@@ -820,13 +805,13 @@ export class SubscriptionConfigTab
 
     // set the target list
     const csv = this.f.csvText.value;
-    sub.target_email_list_cached_copy = this.buildTargetsFromCSV(csv);
+    sub.target_email_list = this.buildTargetsFromCSV(csv);
 
     if (this.pageMode === 'CREATE') {
-      sub.target_email_list = sub.target_email_list_cached_copy;
+      sub.target_email_list = sub.target_email_list;
     }
     sub.target_domain = this.target_email_domain.value;
-    sub.sending_profile_name = this.f.sendingProfile.value;
+    sub.sending_profile_uuid = this.f.sendingProfile.value;
 
     sub.continuous_subscription = this.f.continuousSubscription.value;
     const cycleLength: number = +this.f.cycle_length_minutes.value;
@@ -847,7 +832,7 @@ export class SubscriptionConfigTab
     }
   }
 
-  createSubscription(sub: Subscription) {
+  createSubscription(sub: SubscriptionModel) {
     this.subscriptionSvc.submitSubscription(sub).subscribe(
       (resp: any) => {
         this.dialog.open(AlertComponent, {
@@ -872,7 +857,7 @@ export class SubscriptionConfigTab
     );
   }
 
-  updateSubscription(sub: Subscription) {
+  updateSubscription(sub: SubscriptionModel) {
     this.subscriptionSvc.patchSubscription(sub).subscribe(
       (resp: any) => {
         this.dialog.open(AlertComponent, {
@@ -930,25 +915,25 @@ export class SubscriptionConfigTab
    * Formats the targets back into CSV text and refreshes the field.
    */
   evaluateTargetList(removeDupes: boolean) {
-    this.subscription.target_email_list_cached_copy = this.buildTargetsFromCSV(
+    this.subscription.target_email_list = this.buildTargetsFromCSV(
       this.f.csvText.value
     );
 
     if (removeDupes) {
-      const uniqueArray: Target[] =
-        this.subscription.target_email_list_cached_copy.filter((t1, index) => {
+      const uniqueArray: TargetModel[] =
+        this.subscription.target_email_list.filter((t1, index) => {
           return (
             index ===
-            this.subscription.target_email_list_cached_copy.findIndex((t2) => {
+            this.subscription.target_email_list.findIndex((t2) => {
               return t2.email.toLowerCase() === t1.email.toLowerCase();
             })
           );
         });
-      this.subscription.target_email_list_cached_copy = uniqueArray;
+      this.subscription.target_email_list = uniqueArray;
     }
 
     this.f.csvText.setValue(
-      this.formatTargetsToCSV(this.subscription.target_email_list_cached_copy),
+      this.formatTargetsToCSV(this.subscription.target_email_list),
       { emitEvent: false }
     );
   }
@@ -958,8 +943,8 @@ export class SubscriptionConfigTab
    * Format: email, firstname, lastname, position
    * @param csv A comma-separated string with linefeed delimiters
    */
-  public buildTargetsFromCSV(csv: string): Target[] {
-    const targetList: Target[] = [];
+  public buildTargetsFromCSV(csv: string): TargetModel[] {
+    const targetList: TargetModel[] = [];
     if (!csv) {
       return [];
     }
@@ -971,7 +956,7 @@ export class SubscriptionConfigTab
         parts.push('');
       }
 
-      const t = new Target();
+      const t = new TargetModel();
       t.email = parts[0].trim();
       t.first_name = parts[1].trim();
       t.last_name = parts[2].trim();
@@ -985,12 +970,12 @@ export class SubscriptionConfigTab
   /**
    * Formats Targets for display in the form.
    */
-  formatTargetsToCSV(targetList: Target[]) {
+  formatTargetsToCSV(targetList: TargetModel[]) {
     if (!targetList) {
       return '';
     }
     let output = '';
-    targetList.forEach((t: Target) => {
+    targetList.forEach((t: TargetModel) => {
       output += `${t.email}, ${t.first_name}, ${t.last_name}, ${t.position}\n`;
     });
 
@@ -1139,7 +1124,8 @@ export class SubscriptionConfigTab
       },
       (error) => {
         this.isValidConfig = false;
-        this.validConfigMessage = error.error;
+        console.log(error);
+        this.validConfigMessage = error.error.error;
       }
     );
   }

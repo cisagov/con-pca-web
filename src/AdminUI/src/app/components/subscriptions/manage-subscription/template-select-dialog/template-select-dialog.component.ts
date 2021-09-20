@@ -1,6 +1,6 @@
 import { Component, Inject, ViewChild } from '@angular/core';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Template } from 'src/app/models/template.model';
+import { TemplateModel } from 'src/app/models/template.model';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertComponent } from 'src/app/components/dialogs/alert/alert.component';
@@ -14,12 +14,12 @@ export class TemplateSelectDialogComponent {
   decep_level: '';
   search_input = '';
 
-  selectedArray: Array<Template>;
-  availableArray: Array<Template>;
+  selectedArray: Array<TemplateModel>;
+  availableArray: Array<TemplateModel>;
 
-  selectedList: MatTableDataSource<Template>;
-  avaiableList: MatTableDataSource<Template>;
-  emptyList: MatTableDataSource<Template>;
+  selectedList: MatTableDataSource<TemplateModel>;
+  avaiableList: MatTableDataSource<TemplateModel>;
+  emptyList: MatTableDataSource<TemplateModel>;
   // @ViewChild('selectedSort') selectedSort: MatSort;
   // @ViewChild('availableSort') availableSort: MatSort;
 
@@ -50,12 +50,12 @@ export class TemplateSelectDialogComponent {
         }
       });
     });
-    this.selectedList = new MatTableDataSource<Template>(
-      this.selectedArray as Template[]
+    this.selectedList = new MatTableDataSource<TemplateModel>(
+      this.selectedArray as TemplateModel[]
     );
     // this.selectedList.sort = this.selectedSort;
-    this.avaiableList = new MatTableDataSource<Template>(
-      this.availableArray as Template[]
+    this.avaiableList = new MatTableDataSource<TemplateModel>(
+      this.availableArray as TemplateModel[]
     );
     // this.selectedList.sort = this.availableSort;
   }
@@ -97,7 +97,7 @@ export class TemplateSelectDialogComponent {
     this.avaiableList.filter = value.trim().toLocaleLowerCase();
   };
 
-  display(template: Template) {
+  display(template: TemplateModel) {
     this.templateSelected = true;
     this.displayHTML = template.html;
     this.templateName = template.name;

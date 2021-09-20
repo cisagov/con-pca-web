@@ -4,8 +4,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { LandingPageManagerService } from 'src/app/services/landing-page-manager.service';
 import { Router } from '@angular/router';
-import { Template } from 'src/app/models/template.model';
-import { Landing_Page } from 'src/app/models/landing-page.models';
+import { TemplateModel } from 'src/app/models/template.model';
+import { LandingPageModel } from 'src/app/models/landing-page.models';
 
 @Component({
   selector: 'app-landing-pages',
@@ -14,7 +14,7 @@ import { Landing_Page } from 'src/app/models/landing-page.models';
 })
 export class LandingPagesComponent implements OnInit, AfterViewInit {
   displayedColumns = ['name', 'is_default_template', 'created_by', 'select'];
-  landingPageData = new MatTableDataSource<Landing_Page>();
+  landingPageData = new MatTableDataSource<LandingPageModel>();
   search_input = '';
   @ViewChild(MatSort) sort: MatSort;
 
@@ -35,7 +35,7 @@ export class LandingPagesComponent implements OnInit, AfterViewInit {
   refresh() {
     this.loading = true;
     this.templateSvc.getAlllandingpages().subscribe((data: any) => {
-      this.landingPageData.data = data as Landing_Page[];
+      this.landingPageData.data = data as LandingPageModel[];
       this.landingPageData.sort = this.sort;
       this.loading = false;
     });
@@ -48,7 +48,7 @@ export class LandingPagesComponent implements OnInit, AfterViewInit {
   public filterTemplates = (value: string) => {
     this.landingPageData.filter = value.trim().toLocaleLowerCase();
   };
-  public editTemplate(template: Landing_Page) {
+  public editTemplate(template: LandingPageModel) {
     this.router.navigate(['/landingpagesmanager', template.landing_page_uuid]);
   }
 }

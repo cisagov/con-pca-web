@@ -32,13 +32,7 @@ export class CycleComponent implements OnInit {
     this.route.params.subscribe((params) => {
       this.subscriptionUuid = params.id;
       this.reportsSvc
-        .getReport(
-          this.subscriptionUuid,
-          params.cycle_uuid,
-          'cycle',
-          params.nonhuman,
-          params.isHeadless
-        )
+        .getReport(params.cycle_uuid, 'cycle', params.nonhuman)
         .subscribe(
           (resp) => {
             this.detail = resp;

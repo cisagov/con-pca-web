@@ -12,3 +12,19 @@ ng-select {
   display: inline-block;
   margin-left: 1em;
 }
+
+.mat-column-to {
+  word-wrap: normal !important;
+  white-space: unset !important;
+  flex: 0 0 38% !important;
+  width: 48% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  word-break: break-word;
+
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}

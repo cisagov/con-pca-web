@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { SendingProfile } from 'src/app/models/sending-profile.model';
+import { SendingProfileModel } from 'src/app/models/sending-profile.model';
 import { SendingProfileService } from 'src/app/services/sending-profile.service';
 import {
   MatDialog,
@@ -20,7 +20,7 @@ import { filterSendingProfiles } from '../../helper/utilities';
 })
 export class SendingProfilesComponent implements OnInit {
   displayedColumns = ['name', 'interface_type', 'modified_date', 'action'];
-  sendingProfilesData = new MatTableDataSource<SendingProfile>();
+  sendingProfilesData = new MatTableDataSource<SendingProfileModel>();
 
   dialogRefConfirm: MatDialogRef<ConfirmComponent>;
 
@@ -35,9 +35,6 @@ export class SendingProfilesComponent implements OnInit {
     layoutSvc.setTitle('Sending Profiles');
   }
 
-  /**
-   *
-   */
   ngOnInit(): void {
     this.refresh();
   }
@@ -48,7 +45,7 @@ export class SendingProfilesComponent implements OnInit {
   refresh() {
     this.loading = true;
     this.sendingProfileSvc.getAllProfiles().subscribe((data: any) => {
-      this.sendingProfilesData.data = data as SendingProfile[];
+      this.sendingProfilesData.data = data as SendingProfileModel[];
       this.sendingProfilesData.data = filterSendingProfiles(
         this.sendingProfilesData.data
       );
@@ -57,12 +54,8 @@ export class SendingProfilesComponent implements OnInit {
     });
   }
 
-  /**
-   * Confirm that they want to delete the profile.
-   * @param row
-   */
   confirmDeleteProfile(row: any): void {
-    if (this.dialog.openDialogs.length == 0) {
+    if (this.dialog.openDialogs.length === 0) {
       this.dialogRefConfirm = this.dialog.open(ConfirmComponent, {
         disableClose: false,
       });
@@ -78,10 +71,6 @@ export class SendingProfilesComponent implements OnInit {
     }
   }
 
-  /**
-   *
-   * @param row
-   */
   deleteProfile(row: any) {
     this.sendingProfileSvc.deleteProfile(row.id).subscribe(
       () => {
@@ -106,11 +95,11 @@ export class SendingProfilesComponent implements OnInit {
    * Open the detail dialog and pass the ID of the clicked row, or 0 if they clicked 'new'.
    */
   openProfileDialog(row: any): void {
-    if (this.dialog.openDialogs.length == 0) {
+    if (this.dialog.openDialogs.length === 0) {
       const dialogConfig = new MatDialogConfig();
       dialogConfig.width = '60vw';
       dialogConfig.data = {
-        sendingProfileId: row.id,
+        sending_profile_uuid: row.sending_profile_uuid,
       };
       const dialogRef = this.dialog.open(
         SendingProfileDetailComponent,

@@ -1,12 +1,13 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
-import { Subscription } from 'src/app/models/subscription.model';
+import { SubscriptionModel } from 'src/app/models/subscription.model';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { AlertComponent } from '../../dialogs/alert/alert.component';
 import { MatDialog } from '@angular/material/dialog';
 import { CanComponentDeactivate } from 'src/app/guards/unsaved-changes.guard';
 import { SubscriptionConfigTab } from './subscription-config-tab/subscription-config-tab.component';
+import { CycleService } from 'src/app/services/cycle.service';
 
 @Component({
   selector: 'app-manage-subscription',
@@ -18,7 +19,7 @@ export class ManageSubscriptionComponent
 {
   @ViewChild(SubscriptionConfigTab) configTab: SubscriptionConfigTab;
   private routeSub: any;
-  subscription: Subscription;
+  subscription: SubscriptionModel;
 
   sub_subscription: any;
 
@@ -27,6 +28,7 @@ export class ManageSubscriptionComponent
   constructor(
     private layoutSvc: LayoutMainService,
     private subscriptionSvc: SubscriptionService,
+    private cycleSvc: CycleService,
     private route: ActivatedRoute,
     private router: Router,
     public dialog: MatDialog
@@ -68,15 +70,20 @@ export class ManageSubscriptionComponent
   }
 
   loadPageForEdit(params: any) {
-    this.subscriptionSvc.subscription = new Subscription();
+    this.subscriptionSvc.subscription = new SubscriptionModel();
     const sub = this.subscriptionSvc.subscription;
     sub.subscription_uuid = params.id;
 
     this.sub_subscription = this.subscriptionSvc
       .getSubscription(sub.subscription_uuid)
       .subscribe(
-        (success: Subscription) => {
-          this.setPageForEdit(success);
+        (success: SubscriptionModel) => {
+          this.cycleSvc
+            .getSubscriptionCycles(sub.subscription_uuid)
+            .subscribe((cycles) => {
+              success.cycles = cycles;
+              this.setPageForEdit(success);
+            });
         },
         (error) => {
           console.log(error);
@@ -92,12 +99,12 @@ export class ManageSubscriptionComponent
       );
   }
 
-  setPageForEdit(s: Subscription) {
+  setPageForEdit(s: SubscriptionModel) {
     if (s.cycles) {
       s.cycles.reverse();
     }
 
-    this.subscription = s as Subscription;
+    this.subscription = s as SubscriptionModel;
     this.subscriptionSvc.subscription = this.subscription;
     this.subscriptionSvc.setSubBhaviorSubject(s);
 

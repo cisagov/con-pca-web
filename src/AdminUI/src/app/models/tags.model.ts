@@ -1,13 +1,11 @@
-export class Tags {
+export class TagModel {
   tag_definition_uuid: string;
   tag: string;
   description: string;
   data_source: string;
   tag_type: string;
 
-  // Database tracking variables
-  created_by?: string;
-  cb_timestamp?: Date;
-  last_updated_by?: string;
-  lub_timestamp?: Date;
+  public constructor(init?: Partial<TagModel>) {
+    Object.assign(this, init);
+  }
 }

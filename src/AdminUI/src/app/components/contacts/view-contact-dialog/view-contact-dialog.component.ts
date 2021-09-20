@@ -9,10 +9,10 @@ import { CustomerService } from 'src/app/services/customer.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import {
   ICustomerContact,
-  Customer,
-  Contact,
+  CustomerModel,
+  ContactModel,
 } from 'src/app/models/customer.model';
-import { Subscription } from 'src/app/models/subscription.model';
+import { SubscriptionModel } from 'src/app/models/subscription.model';
 import { AlertComponent } from '../../dialogs/alert/alert.component';
 
 @Component({
@@ -33,9 +33,9 @@ export class ViewContactDialogComponent implements OnInit {
     notes: new FormControl(),
     active: new FormControl(),
   });
-  contactSubs: Subscription[];
-  customer: Customer;
-  subscription: Subscription;
+  contactSubs: SubscriptionModel[];
+  customer: CustomerModel;
+  subscription: SubscriptionModel;
   initial: ICustomerContact;
   data: ICustomerContact;
 
@@ -54,7 +54,7 @@ export class ViewContactDialogComponent implements OnInit {
     this.customer_service
       .getCustomer(this.data.customer_uuid)
       .subscribe((data: any) => {
-        this.customer = data as Customer;
+        this.customer = data as CustomerModel;
       });
   }
 
@@ -89,7 +89,7 @@ export class ViewContactDialogComponent implements OnInit {
         this.customer.contact_list[index]
       )
       .subscribe((subscriptions: any[]) => {
-        this.contactSubs = subscriptions as Subscription[];
+        this.contactSubs = subscriptions as SubscriptionModel[];
         if (this.contactSubs.length > 0) {
           // this contact had subs, dont delete
           const invalid = [];
@@ -121,16 +121,19 @@ export class ViewContactDialogComponent implements OnInit {
     }
   }
 
-  updateSubsContact(old_contact: Contact, updated_contact: Contact): void {
+  updateSubsContact(
+    old_contact: ContactModel,
+    updated_contact: ContactModel
+  ): void {
     // Get all subs of the contact then update
     this.subscription_service
       .getPrimaryContactSubscriptions(this.customer.customer_uuid, old_contact)
-      .subscribe((subscriptions: Subscription[]) => {
-        this.contactSubs = subscriptions as Subscription[];
+      .subscribe((subscriptions: SubscriptionModel[]) => {
+        this.contactSubs = subscriptions as SubscriptionModel[];
         if (this.contactSubs.length > 0) {
           // Check if there are any subs with contact, if so, remove them from the sub.
           for (let index in this.contactSubs) {
-            let contsub: Subscription = this.contactSubs[index];
+            let contsub: SubscriptionModel = this.contactSubs[index];
             this.subscription_service
               .changePrimaryContact(contsub.subscription_uuid, updated_contact)
               .subscribe();
@@ -151,7 +154,7 @@ export class ViewContactDialogComponent implements OnInit {
 
   getContactIndex(): number {
     for (var i = 0; i < this.customer.contact_list.length; i++) {
-      var contact: Contact = this.customer.contact_list[i];
+      var contact: ContactModel = this.customer.contact_list[i];
       if (
         contact.first_name == this.initial.first_name &&
         contact.last_name == this.initial.last_name &&
