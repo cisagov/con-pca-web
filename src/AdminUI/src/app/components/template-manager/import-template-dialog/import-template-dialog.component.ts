@@ -28,7 +28,6 @@ export class ImportTemplateDialogComponent implements OnInit {
         this.dialogRef.close({
           text: success.text,
           html: success.html,
-          subject: success.subject,
         });
       },
       (error: any) => {

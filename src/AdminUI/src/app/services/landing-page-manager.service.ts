@@ -1,12 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { SettingsService } from './settings.service';
-import { Landing_Page } from '../models/landing-page.models';
-
-const headers = {
-  headers: new HttpHeaders().set('Content-Type', 'application/json'),
-  params: new HttpParams(),
-};
+import { LandingPageModel } from '../models/landing-page.models';
 
 @Injectable()
 export class LandingPageManagerService {
@@ -22,11 +17,11 @@ export class LandingPageManagerService {
   }
 
   getAlllandingpages(with_default: boolean = false) {
-    let url = `${this.settingsService.settings.apiUrl}/api/v1/landingpages/`;
+    let url = `${this.settingsService.settings.apiUrl}/api/landingpages/`;
     if (with_default) {
       url = `${url}?with_default=true`;
     }
-    return this.http.get(url, headers);
+    return this.http.get(url);
   }
 
   /**
@@ -36,9 +31,7 @@ export class LandingPageManagerService {
   getlandingpage(uuid: string) {
     return new Promise((resolve, reject) => {
       this.http
-        .get(
-          `${this.settingsService.settings.apiUrl}/api/v1/landingpage/${uuid}`
-        )
+        .get(`${this.settingsService.settings.apiUrl}/api/landingpage/${uuid}`)
         .subscribe(
           (success) => {
             resolve(success);
@@ -55,9 +48,9 @@ export class LandingPageManagerService {
    * POST a new landingpage
    * @param landingpage
    */
-  saveNewlandingpage(landingpage: Landing_Page) {
+  saveNewlandingpage(landingpage: LandingPageModel) {
     return this.http.post(
-      `${this.settingsService.settings.apiUrl}/api/v1/landingpages/`,
+      `${this.settingsService.settings.apiUrl}/api/landingpages/`,
       landingpage
     );
   }
@@ -66,11 +59,11 @@ export class LandingPageManagerService {
    * PATCH an existing landingpage with partial data
    * @param landingpage
    */
-  updatelandingpage(landingpage: Landing_Page) {
+  updatelandingpage(landingpage: LandingPageModel) {
     return new Promise((resolve, reject) => {
       this.http
-        .patch(
-          `${this.settingsService.settings.apiUrl}/api/v1/landingpage/${landingpage.landing_page_uuid}/`,
+        .put(
+          `${this.settingsService.settings.apiUrl}/api/landingpage/${landingpage.landing_page_uuid}/`,
           landingpage
         )
         .subscribe(
@@ -89,11 +82,11 @@ export class LandingPageManagerService {
    *
    * @param landingpage
    */
-  deletelandingpage(landingpage: Landing_Page) {
+  deletelandingpage(landingpage: LandingPageModel) {
     return new Promise((resolve, reject) => {
       this.http
         .delete(
-          `${this.settingsService.settings.apiUrl}/api/v1/landingpage/${landingpage.landing_page_uuid}/`
+          `${this.settingsService.settings.apiUrl}/api/landingpage/${landingpage.landing_page_uuid}/`
         )
         .subscribe(
           (success) => {
@@ -110,15 +103,15 @@ export class LandingPageManagerService {
    *
    * @param landingpage
    */
-  stoplandingpage(landingpage: Landing_Page) {
+  stoplandingpage(landingpage: LandingPageModel) {
     return this.http.get(
-      `${this.settingsService.settings.apiUrl}/api/v1/landingpage/stop/${landingpage.landing_page_uuid}/`
+      `${this.settingsService.settings.apiUrl}/api/landingpage/stop/${landingpage.landing_page_uuid}/`
     );
   }
 
   getLandingPageTemplates(landingPageUuid: string) {
     return this.http.get(
-      `${this.settingsService.settings.apiUrl}/api/v1/templates/?landing_page_uuid=${landingPageUuid}`
+      `${this.settingsService.settings.apiUrl}/api/templates/?landing_page_uuid=${landingPageUuid}`
     );
   }
 }

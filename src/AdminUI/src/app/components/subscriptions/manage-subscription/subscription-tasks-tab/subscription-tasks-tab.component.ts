@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { SubscriptionService } from 'src/app/services/subscription.service';
-import { Subscription, Task } from 'src/app/models/subscription.model';
+import {
+  SubscriptionModel,
+  TaskModel,
+} from 'src/app/models/subscription.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { ConfirmComponent } from 'src/app/components/dialogs/confirm/confirm.component';
@@ -12,8 +15,8 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./subscription-tasks-tab.component.scss'],
 })
 export class SubscriptionTasksTabComponent implements OnInit {
-  subscription: Subscription;
-  tasks = new MatTableDataSource<Task>();
+  subscription: SubscriptionModel;
+  tasks = new MatTableDataSource<TaskModel>();
 
   displayedColumns = [
     'message_type',

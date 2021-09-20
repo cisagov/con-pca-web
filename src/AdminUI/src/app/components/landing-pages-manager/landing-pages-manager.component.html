@@ -66,6 +66,14 @@
                 >Landing Page Editor HTML View
               </span>
             </ng-template>
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="openTagChoice()"
+              class="hidden-insert-tag-button d-none"
+            >
+              Insert Tag
+            </button>
             <div>
               <angular-editor
                 #angularEditor

@@ -1,24 +1,26 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Customer, Contact } from '../models/customer.model';
+import { CustomerModel, ContactModel } from '../models/customer.model';
 import {
-  Cycle,
-  Subscription,
-  TemplateSelected,
+  SubscriptionModel,
+  TemplateSelectedModel,
 } from '../models/subscription.model';
-import { Template } from '../models/template.model';
+import { TemplateModel } from '../models/template.model';
 import { SettingsService } from './settings.service';
 import { Observable, BehaviorSubject } from 'rxjs';
+import { CycleModel } from '../models/cycle.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SubscriptionService {
-  subscription: Subscription;
-  subBehaviorSubject = new BehaviorSubject<Subscription>(new Subscription());
-  cycleBehaviorSubject = new BehaviorSubject<Cycle>(new Cycle());
-  customer: Customer;
-  customers: Array<Customer> = [];
+  subscription: SubscriptionModel;
+  subBehaviorSubject = new BehaviorSubject<SubscriptionModel>(
+    new SubscriptionModel()
+  );
+  cycleBehaviorSubject = new BehaviorSubject<CycleModel>(new CycleModel());
+  customer: CustomerModel;
+  customers: Array<CustomerModel> = [];
   cameFromSubscription: boolean;
   removeDupeTargets = true;
 
@@ -37,8 +39,8 @@ export class SubscriptionService {
     this.subBehaviorSubject.next(sub);
   }
   public clearSubBehaviorSubject() {
-    this.subBehaviorSubject = new BehaviorSubject<Subscription>(
-      new Subscription()
+    this.subBehaviorSubject = new BehaviorSubject<SubscriptionModel>(
+      new SubscriptionModel()
     );
   }
 
@@ -49,19 +51,20 @@ export class SubscriptionService {
     this.cycleBehaviorSubject.next(cycle);
   }
   public clearCycleBehaviorSubject() {
-    this.cycleBehaviorSubject = new BehaviorSubject<Cycle>(new Cycle());
+    this.cycleBehaviorSubject = new BehaviorSubject<CycleModel>(
+      new CycleModel()
+    );
   }
 
   /**
    *
    */
-  public getSubscriptions(archived: boolean = false) {
-    let url = `${this.settingsService.settings.apiUrl}/api/v1/subscriptions/`;
+  public getSubscriptions(archived = false) {
+    let url = `${this.settingsService.settings.apiUrl}/api/subscriptions/`;
 
     if (archived) {
       url = `${url}?archived=true`;
     }
-
     return this.http.get(url);
   }
 
@@ -70,10 +73,10 @@ export class SubscriptionService {
    */
   public getPrimaryContactSubscriptions(
     customer_uuid: string,
-    contact: Contact
+    contact: ContactModel
   ) {
     const c = { primary_contact: contact };
-    let url = `${this.settingsService.settings.apiUrl}/api/v1/subscription/customer/${customer_uuid}/`;
+    let url = `${this.settingsService.settings.apiUrl}/api/subscription/customer/${customer_uuid}/`;
     return this.http.post(url, c);
   }
 
@@ -82,15 +85,15 @@ export class SubscriptionService {
    * @param subscription_uuid
    */
   public getSubscription(subscription_uuid: string) {
-    let url = `${this.settingsService.settings.apiUrl}/api/v1/subscription/${subscription_uuid}/`;
-    return this.http.get(url);
+    let url = `${this.settingsService.settings.apiUrl}/api/subscription/${subscription_uuid}/`;
+    return this.http.get<SubscriptionModel>(url);
   }
 
-  public deleteSubscription(subscription: Subscription) {
+  public deleteSubscription(subscription: SubscriptionModel) {
     return new Promise((resolve, reject) => {
       this.http
         .delete(
-          `${this.settingsService.settings.apiUrl}/api/v1/subscription/${subscription.subscription_uuid}/`
+          `${this.settingsService.settings.apiUrl}/api/subscription/${subscription.subscription_uuid}/`
         )
         .subscribe(
           (success) => {
@@ -107,9 +110,9 @@ export class SubscriptionService {
    * Sends all information to the API to start a new subscription.
    * @param s
    */
-  submitSubscription(subscription: Subscription) {
+  submitSubscription(subscription: SubscriptionModel) {
     return this.http.post(
-      `${this.settingsService.settings.apiUrl}/api/v1/subscriptions/`,
+      `${this.settingsService.settings.apiUrl}/api/subscriptions/`,
       subscription
     );
   }
@@ -120,20 +123,19 @@ export class SubscriptionService {
    */
   restartSubscription(uuid: string) {
     return this.http.get(
-      `${this.settingsService.settings.apiUrl}/api/v1/subscription/restart/${uuid}`
+      `${this.settingsService.settings.apiUrl}/api/subscription/${uuid}/launch/`
     );
   }
 
-  patchSubscription(subscription: Subscription) {
+  patchSubscription(subscription: SubscriptionModel) {
     // This should be the only data that needs patched
     const data = {
       archived: subscription.archived,
       primary_contact: subscription.primary_contact,
-      dhs_contact_uuid: subscription.dhs_contact_uuid,
+      admin_email: subscription.admin_email,
       start_date: subscription.start_date,
-      target_email_list_cached_copy: subscription.target_email_list_cached_copy,
       target_email_list: subscription.target_email_list,
-      sending_profile_name: subscription.sending_profile_name,
+      sending_profile_uuid: subscription.sending_profile_uuid,
       target_domain: subscription.target_domain,
       continuous_subscription: subscription.continuous_subscription,
       templates_selected: subscription.templates_selected,
@@ -142,8 +144,8 @@ export class SubscriptionService {
       report_frequency_minutes: subscription.report_frequency_minutes,
     };
 
-    return this.http.patch(
-      `${this.settingsService.settings.apiUrl}/api/v1/subscription/${subscription.subscription_uuid}/`,
+    return this.http.put(
+      `${this.settingsService.settings.apiUrl}/api/subscription/${subscription.subscription_uuid}/`,
       data
     );
   }
@@ -151,31 +153,10 @@ export class SubscriptionService {
   /**
    * Patches the subscription with the new primary contact.
    */
-  changePrimaryContact(subscriptUuid: string, contact: Contact) {
+  changePrimaryContact(subscriptUuid: string, contact: ContactModel) {
     const c = { primary_contact: contact };
-    return this.http.patch(
-      `${this.settingsService.settings.apiUrl}/api/v1/subscription/${subscriptUuid}/`,
-      c
-    );
-  }
-
-  /**
-   * Gets all subscriptions for a given template.
-   * @param dhsContact
-   */
-  public getSubscriptionsByDnsContact(dhsContact: Contact) {
-    return this.http.get(
-      `${this.settingsService.settings.apiUrl}/api/v1/subscriptions/?dhs_contact=${dhsContact.dhs_contact_uuid}`
-    );
-  }
-
-  /**
-   * Patches the subscription with the new CISA contact.
-   */
-  changeDhsContact(subscriptUuid: string, contactUuid: string) {
-    const c = { dhs_contact_uuid: contactUuid };
-    return this.http.patch(
-      `${this.settingsService.settings.apiUrl}/api/v1/subscription/${subscriptUuid}/`,
+    return this.http.put(
+      `${this.settingsService.settings.apiUrl}/api/subscription/${subscriptUuid}/`,
       c
     );
   }
@@ -184,9 +165,9 @@ export class SubscriptionService {
    * Gets all subscriptions for a given template.
    * @param template
    */
-  public getSubscriptionsByTemplate(template: Template) {
+  public getSubscriptionsByTemplate(template: TemplateModel) {
     return this.http.get(
-      `${this.settingsService.settings.apiUrl}/api/v1/subscriptions/?template=${template.template_uuid}`
+      `${this.settingsService.settings.apiUrl}/api/subscriptions/?template=${template.template_uuid}`
     );
   }
 
@@ -194,24 +175,15 @@ export class SubscriptionService {
    * Gets all subscriptions for a given customer.
    * @param template
    */
-  public getSubscriptionsByCustomer(customer: Customer) {
+  public getSubscriptionsByCustomer(customer: CustomerModel) {
     return this.http.get(
-      `${this.settingsService.settings.apiUrl}/api/v1/subscription/customer/${customer.customer_uuid}`
+      `${this.settingsService.settings.apiUrl}/api/subscriptions/?customer_uuid=${customer.customer_uuid}`
     );
   }
 
   public stopSubscription(subscription_uuid: string) {
-    return this.http.get(
-      `${this.settingsService.settings.apiUrl}/api/v1/subscription/stop/${subscription_uuid}/`
-    );
-  }
-
-  public startSubscription(
-    subscription_uuid: string,
-    continuousSubscription: boolean
-  ) {
-    return this.http.get(
-      `${this.settingsService.settings.apiUrl}/api/v1/subscription/restart/${subscription_uuid}?continuous_subscription=${continuousSubscription}`
+    return this.http.delete(
+      `${this.settingsService.settings.apiUrl}/api/subscription/${subscription_uuid}/launch/`
     );
   }
 
@@ -219,49 +191,19 @@ export class SubscriptionService {
    * Gets timeline items for the subscription.
    */
   public getTimelineItems(subscription_uuid) {
-    let url = `${this.settingsService.settings.apiUrl}/api/v1/subscription/timeline/${subscription_uuid}/`;
+    let url = `${this.settingsService.settings.apiUrl}/api/subscription/timeline/${subscription_uuid}/`;
     return this.http.get(url);
-  }
-
-  /**
-   * Returns a list of CISA contacts.
-   */
-  public getDhsContacts() {
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/dhscontacts/`;
-    return this.http.get(url);
-  }
-
-  /**
-   * Posts or patches a CISA contact.
-   */
-  public saveDhsContact(c: Contact) {
-    if (!!c.dhs_contact_uuid) {
-      // patch existing contact
-      const url = `${this.settingsService.settings.apiUrl}/api/v1/dhscontact/${c.dhs_contact_uuid}/`;
-      return this.http.patch(url, c);
-    } else {
-      // insert new contact
-      const url = `${this.settingsService.settings.apiUrl}/api/v1/dhscontacts/`;
-      return this.http.post(url, c);
-    }
-  }
-
-  /**
-   * Deletes a CISA contact.
-   */
-  public deleteDhsContact(c: Contact) {
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/dhscontact/${c.dhs_contact_uuid}/`;
-    return this.http.delete(url);
   }
 
   public downloadReport(
-    uuid: string,
-    cycleUuid: string,
+    cycleUuids: any[],
     reportType: string,
     nonhuman = false
   ): Observable<Blob> {
     const headers = new HttpHeaders().set('Accept', 'application/pdf');
-    let url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${uuid}/pdf/${reportType}/${cycleUuid}/`;
+    let url = `${
+      this.settingsService.settings.apiUrl
+    }/api/cycle/reports/${reportType}/pdf/?cycles=${cycleUuids.join(',')}`;
     if (nonhuman) {
       url += `?nonhuman=${nonhuman}`;
     }
@@ -269,34 +211,21 @@ export class SubscriptionService {
   }
 
   public sendReport(
-    uuid: string,
-    cycleUuid: string,
+    cycleUuids: string[],
     reportType: string,
     nonhuman = false
   ) {
-    let url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${uuid}/email/${reportType}/${cycleUuid}/`;
+    let url = `${
+      this.settingsService.settings.apiUrl
+    }/api/cycle/reports/${reportType}/email/?cycles=${cycleUuids.join(',')}`;
     if (nonhuman) {
       url += `?nonhuman=${nonhuman}`;
     }
     return this.http.get(url);
   }
 
-  public getReportValuesForSubscription(subscription_uuid) {
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/cycleemailreported/${subscription_uuid}/`;
-    return this.http.get(url);
-  }
-  public postReportValuesForSubscription(data, subscription_uuid) {
-    console.log(data);
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/cycleemailreported/${subscription_uuid}/`;
-    return this.http.post(url, data);
-  }
-  public getSusbcriptionStatusEmailsSent(subscription_uuid) {
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/subscription_report_emails_sent/${subscription_uuid}/`;
-    return this.http.get(url);
-  }
-
   public checkValid(cycleLengthMinutes: number, targetCount: number) {
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/subscriptions/valid/`;
+    const url = `${this.settingsService.settings.apiUrl}/api/subscriptions/valid/`;
     const data = {
       target_count: targetCount,
       cycle_minutes: cycleLengthMinutes,
@@ -304,13 +233,7 @@ export class SubscriptionService {
     return this.http.post(url, data);
   }
   public async getTemplatesSelected() {
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/templates/select/`;
-    return this.http.get<TemplateSelected>(url).toPromise();
-  }
-
-  public getSubscriptionJSON(subscription_uuid) {
-    const headers = new HttpHeaders().set('content-type', 'application/json');
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/subscription/downloadjson/${subscription_uuid}/`;
-    return this.http.get(url, { headers, responseType: 'blob' });
+    const url = `${this.settingsService.settings.apiUrl}/api/templates/select/`;
+    return this.http.get<TemplateSelectedModel>(url).toPromise();
   }
 }

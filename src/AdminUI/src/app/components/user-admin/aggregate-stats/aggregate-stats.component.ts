@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AggregateReportModel } from 'src/app/models/reports.model';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { SettingsService } from 'src/app/services/settings.service';
 import { StatisticsService } from 'src/app/services/statistics.service';
@@ -8,7 +9,7 @@ import { StatisticsService } from 'src/app/services/statistics.service';
   templateUrl: './aggregate-stats.component.html',
 })
 export class AggregateStatsComponent implements OnInit {
-  detail: any;
+  detail: AggregateReportModel;
   avgTimeToClick: string;
 
   constructor(
@@ -21,7 +22,7 @@ export class AggregateStatsComponent implements OnInit {
 
   ngOnInit(): void {
     this.statsSvc.getAggregateStats().subscribe(
-      (result) => {
+      (result: AggregateReportModel) => {
         this.detail = result;
       },
       (error) => {

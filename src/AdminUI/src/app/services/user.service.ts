@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { SettingsService } from './settings.service';
 import { Observable } from 'rxjs';
 import { share } from 'rxjs/operators';
-import { RegisterUser } from 'src/app/models/registered-user.model';
+import { RegisterUserModel } from 'src/app/models/registered-user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -15,17 +15,17 @@ export class UserService {
   ) {}
 
   getUsers() {
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/users/`;
+    const url = `${this.settingsService.settings.apiUrl}/api/users/`;
     return this.http.get(url);
   }
 
   deleteUser(username: string) {
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/user/${username}/`;
+    const url = `${this.settingsService.settings.apiUrl}/api/user/${username}/`;
     return this.http.delete(url);
   }
 
   confirmUser(username: string) {
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/user/${username}/confirm/`;
+    const url = `${this.settingsService.settings.apiUrl}/api/user/${username}/confirm/`;
     return this.http.get(url);
   }
 
@@ -40,8 +40,8 @@ export class UserService {
     return 'Hello';
   }
 
-  postCreateUser(user: RegisterUser): Observable<any> {
-    const url = `${this.settingsService.settings.apiUrl}/auth/register/`;
+  postCreateUser(user: RegisterUserModel): Observable<any> {
+    const url = `${this.settingsService.settings.apiUrl}/api/auth/register/`;
     return this.http.post(url, user).pipe(share());
   }
 }

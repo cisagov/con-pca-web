@@ -52,7 +52,7 @@
         {{ detail?.customer.city }}, {{ detail?.customer.state }}
         {{ detail?.customer.zip_code }}
       </div>
-      <div id="dhsContactDetails">
+      <div>
         <div class="mb-2">
           Subscription Primary Contact<br />
           {{ detail?.primary_contact.first_name }}
@@ -60,8 +60,6 @@
           {{ detail?.primary_contact_email }}<br />
         </div>
         <div>
-          CISA Contact<br />
-          {{ detail?.dhs_contact_name }}<br />
           Phishing Assessment Team<br />
           vulnerability@cisa.dhs.gov
         </div>
@@ -294,26 +292,10 @@
                 }}% of target population)
               </td>
             </tr>
-            <!-- <tr>
-              <td># of user reports sent to helpdesk overall</td>
-              <td>
-                {{ detail?.metrics.number_of_reports_to_helpdesk }} ({{
-                  detail?.metrics.percent_report_rate
-                }}% report rate)
-              </td>
-            </tr> -->
-            <!-- <tr>
-              <td>Ratio of reports-to-clicks</td>
-              <td>{{ detail?.metrics.reports_to_clicks_ratio }}</td>
-            </tr> -->
             <tr>
               <td>Average time to first click</td>
               <td>{{ detail?.metrics.avg_time_to_first_click }}</td>
             </tr>
-            <!-- <tr>
-              <td>Average time to first report</td>
-              <td>{{ detail?.metrics.avg_time_to_first_report }}</td>
-            </tr> -->
             <tr>
               <td>Most successful phishing template</td>
               <td>{{ detail?.metrics.most_successful_template }}</td>

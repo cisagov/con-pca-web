@@ -67,24 +67,18 @@
         </div>
         <div>
           <mat-form-field appearance="outline">
-            <mat-label>CISA Contact</mat-label>
-            <mat-select
-              formControlName="dhsContact"
-              (selectionChange)="changeDhsContact($event)"
-            >
+            <mat-label>Admin Email</mat-label>
+            <mat-select formControlName="adminEmail">
               <mat-option [value]="null">--Select--</mat-option>
-              <mat-option
-                *ngFor="let c of dhsContacts"
-                [value]="c.dhs_contact_uuid"
-              >
-                {{ c.first_name }} {{ c.last_name }}</mat-option
+              <mat-option *ngFor="let c of adminEmails" [value]="c">
+                {{ c }}</mat-option
               >
             </mat-select>
             <mat-error
-              *ngIf="f.dhsContact.errors?.required"
+              *ngIf="f.adminEmail.errors?.required"
               class="invalid-feedback"
             >
-              CISA contact must be selected
+              Admin email contact must be selected
             </mat-error>
           </mat-form-field>
         </div>
@@ -214,7 +208,10 @@
           <mat-label>Sending Profile</mat-label>
           <mat-select formControlName="sendingProfile">
             <mat-option [value]="null">--Select--</mat-option>
-            <mat-option *ngFor="let sp of sendingProfiles" [value]="sp.name">
+            <mat-option
+              *ngFor="let sp of sendingProfiles"
+              [value]="sp.sending_profile_uuid"
+            >
               {{ sp.name }}</mat-option
             >
           </mat-select>
@@ -360,10 +357,7 @@
         </mat-error>
       </mat-form-field>
       <div class="text-muted mb-3">
-        <em
-          >Target Count:
-          {{ subscription.target_email_list_cached_copy.length }}</em
-        >
+        <em>Target Count: {{ subscription.target_email_list.length }}</em>
       </div>
       <!-- Email Sent Time -->
       <mat-label class="h6">Sending Strategy</mat-label>
@@ -516,7 +510,10 @@
             <button
               mat-menu-item
               (click)="stopSubscription()"
-              *ngIf="subscription?.status != 'stopped'"
+              *ngIf="
+                subscription?.status != 'stopped' &&
+                subscription?.status != 'created'
+              "
             >
               <mat-icon color="accent">stop</mat-icon>Stop
             </button>

@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { CustomerService } from 'src/app/services/customer.service';
-import { Contact, Customer } from 'src/app/models/customer.model';
+import { ContactModel, CustomerModel } from 'src/app/models/customer.model';
 
 interface ICustomer {
   customer_uuid: string;
   customer_name: string;
-  contact_list: Contact[];
+  contact_list: ContactModel[];
 }
 
 @Component({
@@ -26,7 +26,7 @@ export class AddContactDialogComponent implements OnInit {
     email: new FormControl(),
     notes: new FormControl(),
   });
-  customers: Customer[];
+  customers: CustomerModel[];
 
   constructor(
     public dialog_ref: MatDialogRef<AddContactDialogComponent>,
@@ -35,7 +35,7 @@ export class AddContactDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.customer_service.getCustomers().subscribe((data: any[]) => {
-      this.customers = data as Customer[];
+      this.customers = data as CustomerModel[];
     });
   }
 
@@ -60,8 +60,8 @@ export class AddContactDialogComponent implements OnInit {
     return this.form_group.controls['customer_uuid'].value;
   }
 
-  getContactFromForm(): Contact {
-    let contact: Contact = {
+  getContactFromForm(): ContactModel {
+    let contact: ContactModel = {
       first_name: this.form_group.controls['first_name'].value,
       last_name: this.form_group.controls['last_name'].value,
       title: this.form_group.controls['title'].value,
@@ -75,8 +75,8 @@ export class AddContactDialogComponent implements OnInit {
   }
 
   getContactsFromUuid(uuid: string) {
-    let contacts: Contact[] = [];
-    this.customers.map((customer: Customer) => {
+    let contacts: ContactModel[] = [];
+    this.customers.map((customer: CustomerModel) => {
       if (customer.customer_uuid == uuid) {
         contacts = customer.contact_list;
       }

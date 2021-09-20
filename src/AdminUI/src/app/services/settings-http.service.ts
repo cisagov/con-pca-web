@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { SettingsService } from './settings.service';
-import { Settings } from '../models/settings';
+import { SettingsModel } from '../models/settings';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +18,7 @@ export class SettingsHttpService {
         .get('assets/settings.json')
         .toPromise()
         .then((response) => {
-          this.settingsService.settings = <Settings>response;
+          this.settingsService.settings = <SettingsModel>response;
           resolve();
         });
     });

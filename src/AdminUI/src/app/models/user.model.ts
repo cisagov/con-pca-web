@@ -1,6 +1,8 @@
-export class User {
-  Username: string;
-  UserCreateDate: string;
-  Enabled: boolean;
-  UserStatus: string;
+export class UserModel {
+  username: string;
+  email: string;
+  status: string;
+  enabled: string;
+  created: string;
+  modified: string;
 }

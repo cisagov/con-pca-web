@@ -4,7 +4,7 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MyErrorStateMatcher } from 'src/app/helper/ErrorStateMatcher';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
-import { Subscription as PcaSubscription } from 'src/app/models/subscription.model';
+import { SubscriptionModel as PcaSubscription } from 'src/app/models/subscription.model';
 import { Subscription } from 'rxjs';
 import $ from 'jquery';
 import 'src/app/helper/csvToArray';
@@ -17,8 +17,9 @@ import { SettingsService } from 'src/app/services/settings.service';
 import { RetireTemplateDialogComponent } from '../template-manager/retire-template-dialog/retire-template-dialog.component';
 import { AlertComponent } from '../dialogs/alert/alert.component';
 import { LandingPageManagerService } from 'src/app/services/landing-page-manager.service';
-import { Landing_Page } from 'src/app/models/landing-page.models';
-import { Template } from 'src/app/models/template.model';
+import { LandingPageModel } from 'src/app/models/landing-page.models';
+import { TemplateModel } from 'src/app/models/template.model';
+import { TagSelectionComponent } from '../dialogs/tag-selection/tag-selection.component';
 
 @Component({
   selector: 'app-landing-pages-manager',
@@ -28,9 +29,10 @@ import { Template } from 'src/app/models/template.model';
 export class LandingPagesManagerComponent implements OnInit {
   dialogRefConfirm: MatDialogRef<ConfirmComponent>;
   dialogRefRetire: MatDialogRef<RetireTemplateDialogComponent>;
+  dialogRefTagSelection: MatDialogRef<TagSelectionComponent>;
 
   canDelete: boolean;
-  templates: Template[] = [];
+  templates: TemplateModel[] = [];
 
   //Full template list variables
   search_input: string;
@@ -53,7 +55,7 @@ export class LandingPagesManagerComponent implements OnInit {
   displayed_columns = ['name', 'deception_score'];
 
   //config vars
-  image_upload_url: string = `${this.settingsService.settings.apiUrl}/api/v1/imageupload/`;
+  image_upload_url: string = `${this.settingsService.settings.apiUrl}/api/imageupload/`;
 
   dateFormat = AppSettings.DATE_FORMAT;
 
@@ -86,7 +88,7 @@ export class LandingPagesManagerComponent implements OnInit {
       }
     });
     //this.setEmptyTemplateForm();
-    this.setTemplateForm(new Landing_Page());
+    this.setTemplateForm(new LandingPageModel());
     //this.getAllTemplates();
   }
   ngOnInit() {
@@ -129,6 +131,7 @@ export class LandingPagesManagerComponent implements OnInit {
 
   ngAfterViewInit() {
     this.configAngularEditor();
+    this.addInsertTagButtonIntoEditor();
     $('#toggleEditorMode-').on('mousedown', this.toggleEditorMode.bind(this));
   }
 
@@ -137,7 +140,7 @@ export class LandingPagesManagerComponent implements OnInit {
     //Get template and call setTemplateForm to initialize a form group using the selected template
     this.landingPageManagerSvc.getlandingpage(template_uuid).then(
       (success) => {
-        let t = <Landing_Page>success;
+        let t = <LandingPageModel>success;
 
         this.setTemplateForm(t);
         this.templateId = t.landing_page_uuid;
@@ -150,7 +153,7 @@ export class LandingPagesManagerComponent implements OnInit {
   }
 
   //Create a formgroup using a Template as initial data
-  setTemplateForm(template: Landing_Page) {
+  setTemplateForm(template: LandingPageModel) {
     this.currentTemplateFormGroup = new FormGroup({
       landingPageUUID: new FormControl(template.landing_page_uuid),
       templateName: new FormControl(template.name, [Validators.required]),
@@ -175,7 +178,7 @@ export class LandingPagesManagerComponent implements OnInit {
       form.controls['templateHTML'].value
     );
 
-    let saveTemplate = new Landing_Page({
+    let saveTemplate = new LandingPageModel({
       landing_page_uuid: form.controls['landingPageUUID'].value,
       name: form.controls['templateName'].value,
       html: htmlValue,
@@ -313,7 +316,7 @@ export class LandingPagesManagerComponent implements OnInit {
   setCanDelete() {
     this.landingPageManagerSvc
       .getLandingPageTemplates(this.templateId)
-      .subscribe((templates: Template[]) => {
+      .subscribe((templates: TemplateModel[]) => {
         this.templates = templates;
         if (templates.length === 0 && !this.IsDefaultTemplate) {
           this.canDelete = true;
@@ -416,4 +419,52 @@ export class LandingPagesManagerComponent implements OnInit {
     toolbarPosition: 'top',
     toolbarHiddenButtons: [['insertVideo']],
   };
+
+  /**
+   * Hack the angular-editor to add a new button after the "clear formatting" button.
+   * Clicking it clicks a hidden button to get us back into Angular.
+   */
+  addInsertTagButtonIntoEditor() {
+    let btnClearFormatting = $(this.angularEditorEle.doc).find(
+      "[title='Horizontal Line']"
+    )[0];
+    let attribs = btnClearFormatting.attributes;
+    // this assumes that the _ngcontent attribute occurs first
+    let ngcontent = attribs.item(0).name;
+    let newButtonHtml1 = `<button ${ngcontent} type="button" title="Insert Tag" tabindex="-1" class="angular-editor-button" id="insertTag-" `;
+    let newButtonHtml2 =
+      'onclick="var h = document.getElementsByClassName(\'hidden-insert-tag-button\'); h[0].click();">';
+    let newButtonHtml3 = `<i ${ngcontent} class="fa fa-tag"></i></button>`;
+    $(btnClearFormatting)
+      .closest('div')
+      .append(newButtonHtml1 + newButtonHtml2 + newButtonHtml3);
+  }
+
+  /**
+   * Opens a dialog that presents the tag options.
+   */
+  openTagChoice() {
+    this.angularEditorEle.textArea.nativeElement.focus();
+    const selection = window.getSelection().getRangeAt(0);
+    this.dialogRefTagSelection = this.dialog.open(TagSelectionComponent, {
+      disableClose: false,
+    });
+    this.dialogRefTagSelection.afterClosed().subscribe((result) => {
+      if (result) {
+        this.insertTag(selection, result);
+        $('.angular-editor-wrapper').removeClass('show-placeholder');
+      }
+      this.dialogRefTagSelection = null;
+    });
+  }
+
+  /**
+   * Inserts a span containing the tag at the location of the selection.
+   * @param selection
+   * @param tag
+   */
+  insertTag(selection, tagText: string) {
+    const newNode = document.createTextNode(tagText);
+    selection.insertNode(newNode);
+  }
 }

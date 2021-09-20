@@ -1,4 +1,5 @@
-<div style="width: 8.5in" class="p-0">
+<div [innerHTML]="reportHtml"></div>
+<div style="width: 8.5in" class="p-0" *ngIf="showOld">
   <article>
     <!-- Top blue banner -->
     <header>
@@ -46,8 +47,7 @@
               {{ detail?.primary_contact_email }}<br />
               <br />
               CISA Contact Information:<br />
-              {{ detail?.dhs_contact_email }}<br />
-              {{ detail?.dhs_contact_mobile_phone }}<br />
+              {{ detail?.admin_email }}<br />
             </div>
             <div id="numbersTitle">
               <h2>Overall Campaign Numbers</h2>

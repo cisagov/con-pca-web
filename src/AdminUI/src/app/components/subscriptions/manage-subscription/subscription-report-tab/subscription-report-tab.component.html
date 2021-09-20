@@ -41,30 +41,6 @@
         ></mat-spinner>
       </div>
       <div class="text-muted">View or send this subscription's reports</div>
-      <button
-        mat-raised-button
-        color="primary"
-        class="mb-3"
-        (click)="viewReport('monthly'); $event.preventDefault()"
-      >
-        View Monthly Report
-      </button>
-      <button
-        mat-raised-button
-        color="primary"
-        class="mb-3"
-        (click)="viewReport('cycle'); $event.preventDefault()"
-      >
-        View Cycle Report
-      </button>
-      <button
-        mat-raised-button
-        color="primary"
-        class="mb-3"
-        (click)="viewReport('yearly'); $event.preventDefault()"
-      >
-        View Yearly Report
-      </button>
       <br /><br />
       <button
         mat-raised-button
@@ -118,7 +94,7 @@
     </div>
   </mat-card>
   <mat-card>
-    <mat-label class="h6">Download Subscription Data</mat-label>
+    <mat-label class="h6">Download Set Cycle Reports</mat-label>
     <div>
       <div
         *ngIf="loading"
@@ -131,13 +107,37 @@
         ></mat-spinner>
       </div>
       <div class="text-muted">
-        Download all data associated with this subscription
+        Download a report for a specified set of cycles
       </div>
       <button
         mat-raised-button
         color="primary"
         class="mb-3"
-        (click)="downloadSubscriptionData(); $event.preventDefault()"
+        (click)="openCycleSelectionDialog()"
+      >
+        Open Cycle Selection
+      </button>
+    </div>
+  </mat-card>
+  <mat-card>
+    <mat-label class="h6">Download Cycle Data</mat-label>
+    <div>
+      <div
+        *ngIf="loading"
+        style="text-align: center; padding-top: 2rem; padding-bottom: 2rem"
+      >
+        <mat-spinner
+          class="spinner"
+          style="margin-left: auto; margin-right: auto"
+          diameter="50"
+        ></mat-spinner>
+      </div>
+      <div class="text-muted">Download all data associated with this cycle</div>
+      <button
+        mat-raised-button
+        color="primary"
+        class="mb-3"
+        (click)="downloadCycleData(); $event.preventDefault()"
       >
         Download Data
       </button>
@@ -162,7 +162,7 @@
           <mat-header-cell *matHeaderCellDef mat-sort-header
             >Report</mat-header-cell
           >
-          <mat-cell *matCellDef="let row">{{ row.report_type }}</mat-cell>
+          <mat-cell *matCellDef="let row">{{ row.message_type }}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="sent">
           <mat-header-cell *matHeaderCellDef mat-sort-header
@@ -183,18 +183,6 @@
             >From</mat-header-cell
           >
           <mat-cell *matCellDef="let row"> {{ row.email_from }}</mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="bcc">
-          <mat-header-cell *matHeaderCellDef mat-sort-header
-            >BCC</mat-header-cell
-          >
-          <mat-cell *matCellDef="let row">{{ row.bcc }}</mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="manual">
-          <mat-header-cell *matHeaderCellDef mat-sort-header
-            >Manual</mat-header-cell
-          >
-          <mat-cell *matCellDef="let row">{{ row.manual }}</mat-cell>
         </ng-container>
 
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

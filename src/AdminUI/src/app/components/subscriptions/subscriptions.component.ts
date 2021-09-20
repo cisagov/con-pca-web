@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
-import { Subscription } from 'src/app/models/subscription.model';
+import { SubscriptionModel } from 'src/app/models/subscription.model';
 import { MatTableDataSource } from '@angular/material/table';
-import { Customer } from 'src/app/models/customer.model';
+import { CustomerModel } from 'src/app/models/customer.model';
 import { Router } from '@angular/router';
 import { CustomerService } from 'src/app/services/customer.service';
 import { AppSettings } from 'src/app/AppSettings';
@@ -12,8 +12,8 @@ import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
 import { MatSort } from '@angular/material/sort';
 
 interface ICustomerSubscription {
-  customer: Customer;
-  subscription: Subscription;
+  customer: CustomerModel;
+  subscription: SubscriptionModel;
 
   // top-level primitives for column sortings
   name: string;
@@ -21,7 +21,6 @@ interface ICustomerSubscription {
   primaryContact: string;
   customerName: string;
   startDate: Date;
-  lastUpdated: Date;
 }
 
 @Component({
@@ -70,33 +69,34 @@ export class SubscriptionsComponent implements OnInit {
     this.loading = true;
     this.subscriptionSvc
       .getSubscriptions(this.showArchived)
-      .subscribe((subscriptions: Subscription[]) => {
-        this.customerSvc.getCustomers().subscribe((customers: Customer[]) => {
-          this.loading = false;
-          const customerSubscriptions: ICustomerSubscription[] = [];
-          subscriptions.map((s: Subscription) => {
-            const cc = customers.find(
-              (o) => o.customer_uuid === s.customer_uuid
-            );
-            const customerSubscription: ICustomerSubscription = {
-              customer: cc,
-              subscription: s,
-              name: s.name,
-              status: s.status,
-              primaryContact:
-                s.primary_contact.first_name +
-                ' ' +
-                s.primary_contact.last_name,
-              customerName: cc.name,
-              startDate: s.start_date,
-              lastUpdated: s.lub_timestamp,
-            };
-            customerSubscriptions.push(customerSubscription);
+      .subscribe((subscriptions: SubscriptionModel[]) => {
+        this.customerSvc
+          .getCustomers()
+          .subscribe((customers: CustomerModel[]) => {
+            this.loading = false;
+            const customerSubscriptions: ICustomerSubscription[] = [];
+            subscriptions.map((s: SubscriptionModel) => {
+              const cc = customers.find(
+                (o) => o.customer_uuid === s.customer_uuid
+              );
+              const customerSubscription: ICustomerSubscription = {
+                customer: cc,
+                subscription: s,
+                name: s.name,
+                status: s.status,
+                primaryContact:
+                  s.primary_contact.first_name +
+                  ' ' +
+                  s.primary_contact.last_name,
+                customerName: cc.name,
+                startDate: s.start_date,
+              };
+              customerSubscriptions.push(customerSubscription);
+            });
+            this.dataSource.data =
+              customerSubscriptions as ICustomerSubscription[];
+            this.dataSource.sort = this.sort;
           });
-          this.dataSource.data =
-            customerSubscriptions as ICustomerSubscription[];
-          this.dataSource.sort = this.sort;
-        });
       });
   }
 
@@ -107,12 +107,11 @@ export class SubscriptionsComponent implements OnInit {
     ) => {
       const words = filter.split(' ');
       const searchData = `${data.subscription.name.toLowerCase()} ${data.subscription.status.toLowerCase()} ${data.customer.name.toLowerCase()} ${data.subscription.primary_contact.first_name.toLowerCase()} ${data.subscription.primary_contact.last_name.toLowerCase()}`;
-      for (var i = 0; i < words.length; i++) {
-        if (words[i] === null || words[i] === '' || words[i] === ' ') {
+      for (const word of words) {
+        if (word === null || word === '' || word === ' ') {
           continue;
         }
-        const isMatch = searchData.indexOf(words[i].trim().toLowerCase()) > -1;
-
+        const isMatch = searchData.indexOf(word.trim().toLowerCase()) > -1;
         if (!isMatch) {
           return false;
         }
@@ -122,8 +121,7 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   public searchFilter(searchValue: string): void {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.dataSource.filter = searchValue.trim().toLowerCase();
   }
 
   public onArchiveToggle(): void {

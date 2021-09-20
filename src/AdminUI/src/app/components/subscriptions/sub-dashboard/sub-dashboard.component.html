@@ -46,34 +46,33 @@
       </div>
 
       <div class="mb-4">
-        Number of Templates in Use: {{ numberTemplatesInUse }}
+        Number of Templates in Use: {{ cycleStats.template_stats.length }}
       </div>
 
       <h4>Response Statistics</h4>
-      <div>Average Time to First Click: {{ avgTTFC }}</div>
-      <div>Average Time to First Report: {{ avgTTFR }}</div>
+      <div>
+        Average Time to First Click:
+        {{
+          cycleStats.stats.all.clicked.average * 1000
+            | date: "m 'minutes and' s 'seconds'"
+        }}
+      </div>
       <div>
         Aggregate Count:
         <ul>
-          <li>Sent: {{ aggregateCounts.sent.count }}</li>
-          <li>Opened: {{ aggregateCounts.opened.count }}</li>
-          <li>Clicked: {{ aggregateCounts.clicked.count }}</li>
-          <li>Reported: {{ aggregateCounts.reported.count }}</li>
+          <li>Sent: {{ cycleStats.stats.all.sent.count }}</li>
+          <li>Opened: {{ cycleStats.stats.all.opened.count }}</li>
+          <li>Clicked: {{ cycleStats.stats.all.clicked.count }}</li>
         </ul>
       </div>
       <div>
         Template Deception Breakdown:
         <ul>
-          <li *ngFor="let campaign of campaignsDetails">
-            Deception Score: {{ campaign.template.deception_score }} - Template
-            Subject:
-            <a
-              [routerLink]="[
-                '/templatemanager',
-                campaign.template.template_uuid
-              ]"
-              >{{ campaign.template.subject }}</a
-            >
+          <li *ngFor="let template of cycleStats.template_stats">
+            Deception Level: {{ template.deception_level }} - Template Subject:
+            <a [routerLink]="['/templatemanager', template.template_uuid]">{{
+              template.template.subject
+            }}</a>
           </li>
         </ul>
       </div>
@@ -81,17 +80,18 @@
         Template Performance Breakdown
         <div class="metric-button-container">
           <button
-            *ngFor="let metric of templatesByPerformance"
-            [style.border]="styleSelectedMetric(metric.type)"
-            (click)="selectTemplatePerformanceMetric(metric.type)"
+            *ngFor="let metric of ['clicked', 'opened']"
+            [style.border]="styleSelectedMetric(metric)"
+            (click)="selectTemplatePerformanceMetric(metric)"
             class="metric-button"
           >
-            {{ metric.type | titlecase }}</button
+            {{ metric | titlecase }}</button
           >:
         </div>
         <ul>
           <li *ngFor="let row of templatePerformanceByMetric">
-            {{ row.order }} - {{ getRatio(row.ratios) | percent }} -
+            {{ row[performanceMetricUsed]["rank"] }} -
+            {{ row[performanceMetricUsed]["ratio"] | percent }} -
             {{ row.template.name }}
             <a
               [routerLink]="['/templatemanager', row.template.template_uuid]"
@@ -111,7 +111,7 @@
             <th class="small-table-column">Clicks</th>
             <th class="non-human-column">Non-Human</th>
           </tr>
-          <tr *ngFor="let item of ipAsnStats">
+          <tr *ngFor="let item of cycleStats.maxmind_stats">
             <td class="asn-org">{{ item.asn_org }}</td>
             <td>
               <span *ngFor="let ip of item.ips; let last = last"
@@ -125,7 +125,7 @@
             </td>
             <td class="centered-text">{{ item.opens }}</td>
             <td class="centered-text">{{ item.clicks }}</td>
-            <td>{{ item.is_non_human }}</td>
+            <td>{{ item.is_nonhuman }}</td>
           </tr>
         </table>
       </div>

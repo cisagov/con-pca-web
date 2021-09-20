@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { MyErrorStateMatcher } from '../../../helper/ErrorStateMatcher';
-import { Tags } from 'src/app/models/tags.model';
+import { TagModel } from 'src/app/models/tags.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TagService } from 'src/app/services/tag.service';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
@@ -16,7 +16,7 @@ import { Subscription } from 'rxjs';
 })
 export class TagsManagerComponent implements OnInit {
   tagsId: string;
-  tags: Tags;
+  tags: TagModel;
   tagFormGroup: FormGroup;
   subscriptions = Array<Subscription>();
   tagTypes: string[] = ['con-pca-literal', 'con-pca-eval'];
@@ -39,7 +39,7 @@ export class TagsManagerComponent implements OnInit {
       }
     });
 
-    this.setTagsForm(new Tags());
+    this.setTagsForm(new TagModel());
   }
 
   /**
@@ -53,7 +53,7 @@ export class TagsManagerComponent implements OnInit {
     this.route.params.subscribe((params) => {
       this.tagsId = params['tagsId'];
       if (this.tagsId != undefined) {
-        this.tagsSvc.getTag(this.tagsId).subscribe((tagsData: Tags) => {
+        this.tagsSvc.getTag(this.tagsId).subscribe((tagsData: TagModel) => {
           this.tagsId = tagsData.tag_definition_uuid;
           console.log(tagsData);
           this.setTagsForm(tagsData);
@@ -73,7 +73,7 @@ export class TagsManagerComponent implements OnInit {
   }
 
   //Create a formgroup using a Tag as initial data
-  setTagsForm(tag: Tags) {
+  setTagsForm(tag: TagModel) {
     this.tagFormGroup = new FormGroup({
       tagUUID: new FormControl(tag.tag_definition_uuid),
       tagName: new FormControl(tag.tag, [
@@ -91,7 +91,7 @@ export class TagsManagerComponent implements OnInit {
    * @param decep_form
    */
   getTagsModelFromForm(rec_form: FormGroup) {
-    let saveTag = new Tags();
+    let saveTag = new TagModel();
     saveTag.tag = this.f.tagName.value;
     saveTag.description = this.f.tagDescription.value;
     saveTag.data_source = this.f.tagDataSource.value;

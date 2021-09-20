@@ -25,27 +25,19 @@ export class YearlyComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.subscriptionUuid = params.id;
-      this.reportsSvc
-        .getReport(
-          this.subscriptionUuid,
-          params.cycle_uuid,
-          'yearly',
-          params.nonhuman,
-          params.isHeadless
-        )
-        .subscribe(
-          (resp) => {
-            this.detail = resp;
-            this.detail.cycles = this.detail.cycles.sort((a, b) =>
-              a.increment > b.increment ? 1 : -1
-            );
-            this.renderReport();
-          },
-          (error) => {
-            console.log(error);
-            this.renderReport();
-          }
-        );
+      this.reportsSvc.getReport(params.cycle_uuid, 'yearly').subscribe(
+        (resp) => {
+          this.detail = resp;
+          this.detail.cycles = this.detail.cycles.sort((a, b) =>
+            a.increment > b.increment ? 1 : -1
+          );
+          this.renderReport();
+        },
+        (error) => {
+          console.log(error);
+          this.renderReport();
+        }
+      );
     });
   }
 
