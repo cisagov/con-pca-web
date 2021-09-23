@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CustomerModel, ContactModel } from '../models/customer.model';
-import {
-  SubscriptionModel,
-  TemplateSelectedModel,
-} from '../models/subscription.model';
+import { SubscriptionModel } from '../models/subscription.model';
 import { TemplateModel } from '../models/template.model';
 import { SettingsService } from './settings.service';
 import { Observable, BehaviorSubject } from 'rxjs';
@@ -234,6 +231,6 @@ export class SubscriptionService {
   }
   public async getTemplatesSelected() {
     const url = `${this.settingsService.settings.apiUrl}/api/templates/select/`;
-    return this.http.get<TemplateSelectedModel>(url).toPromise();
+    return this.http.get<string[]>(url).toPromise();
   }
 }

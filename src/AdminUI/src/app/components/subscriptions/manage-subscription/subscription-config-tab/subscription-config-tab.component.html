@@ -136,65 +136,37 @@
           >refresh</mat-icon
         >
       </mat-label>
+
       <div
         *ngIf="subscription.templates_selected"
         class="template-selction-container"
       >
         <div class="template-selection-level-container">
-          <div class="tslc-title">Low</div>
-          <ul class="template-selected-list">
-            <li
-              class="template-selction-row"
-              *ngFor="let item of templatesSelected['low']"
-            >
-              {{ item.name }}
-            </li>
-          </ul>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Template Name</th>
+                <th scope="col">Deception Level</th>
+                <th scope="col">Deception Score</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of templatesSelected">
+                <td>{{ item.name }}</td>
+                <td>
+                  {{ templateSvc.getDeceptionLevel(item.deception_score) }}
+                </td>
+                <td>{{ item.deception_score }}</td>
+              </tr>
+            </tbody>
+          </table>
           <button
-            class="change-template-btn"
-            (click)="changeTemplate('low')"
+            (click)="changeTemplate()"
             mat-raised-button
             color="primary"
-          >
-            Change Template
-          </button>
-        </div>
-        <div class="template-selection-level-container">
-          <div class="tslc-title">Moderate</div>
-          <ul class="template-selected-list">
-            <li
-              class="template-selction-row"
-              *ngFor="let item of templatesSelected['moderate']"
-            >
-              {{ item.name }}
-            </li>
-          </ul>
-          <button
             class="change-template-btn"
-            (click)="changeTemplate('moderate')"
-            mat-raised-button
-            color="primary"
           >
-            Change Template
-          </button>
-        </div>
-        <div class="template-selection-level-container">
-          <div class="tslc-title">High</div>
-          <ul class="template-selected-list">
-            <li
-              class="template-selction-row"
-              *ngFor="let item of templatesSelected['high']"
-            >
-              {{ item.name }}
-            </li>
-          </ul>
-          <button
-            class="change-template-btn"
-            (click)="changeTemplate('high')"
-            mat-raised-button
-            color="primary"
-          >
-            Change Template
+            Change Templates
           </button>
         </div>
       </div>

@@ -145,4 +145,14 @@ export class TemplateManagerService {
     }/api/templates/?${parameters.join('&')}`;
     return this.http.get(url, { headers, responseType: 'blob' });
   }
+
+  public getDeceptionLevel(deceptionScore: number) {
+    if (deceptionScore < 3) {
+      return 'low';
+    } else if (deceptionScore < 5) {
+      return 'moderate';
+    } else {
+      return 'high';
+    }
+  }
 }
