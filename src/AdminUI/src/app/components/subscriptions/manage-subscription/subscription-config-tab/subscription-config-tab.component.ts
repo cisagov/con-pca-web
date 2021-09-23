@@ -19,7 +19,6 @@ import { SubscriptionService } from 'src/app/services/subscription.service';
 import {
   SubscriptionModel,
   TargetModel,
-  TemplateSelectedModel,
 } from 'src/app/models/subscription.model';
 import { Guid } from 'guid-typescript';
 import { CustomerService } from 'src/app/services/customer.service';
@@ -63,8 +62,8 @@ export class SubscriptionConfigTab
   subscriptionPreviousTimeUnit = 'Minutes';
   reportPeriodPreviousTimeUnit = 'Minutes';
   cooldownPreviousTimeUnit = 'Minutes';
-  templatesSelected = new TemplateSelectedModel();
-  templatesAvailable = new TemplateSelectedModel();
+  templatesSelected = [];
+  templatesAvailable = [];
 
   // Valid configuration
   isValidConfig = true;
@@ -113,7 +112,7 @@ export class SubscriptionConfigTab
     private layoutSvc: LayoutMainService,
     public settingsService: SettingsService,
     private route: ActivatedRoute,
-    private templateSvc: TemplateManagerService,
+    public templateSvc: TemplateManagerService,
     private userSvc: UserService
   ) {
     this.loadAdminEmails();
@@ -135,7 +134,6 @@ export class SubscriptionConfigTab
    * INIT
    */
   ngOnInit(): void {
-    this.templatesSelected = this.initTemplatesSelected(this.templatesSelected);
     // build form
     this.subscribeForm = new FormGroup(
       {
@@ -445,17 +443,9 @@ export class SubscriptionConfigTab
     //  Get Templates Selected
     this.subscription.templates_selected =
       await this.subscriptionSvc.getTemplatesSelected();
-    this.templatesSelected.high = await this.templateSvc.getAllTemplates(
+    this.templatesSelected = await this.templateSvc.getAllTemplates(
       false,
-      this.subscription.templates_selected.high
-    );
-    this.templatesSelected.moderate = await this.templateSvc.getAllTemplates(
-      false,
-      this.subscription.templates_selected.moderate
-    );
-    this.templatesSelected.low = await this.templateSvc.getAllTemplates(
-      false,
-      this.subscription.templates_selected.low
+      this.subscription.templates_selected
     );
     this.getTemplates();
   }
@@ -505,17 +495,9 @@ export class SubscriptionConfigTab
         this.changePrimaryContact({ value: s.primary_contact?.email });
       });
 
-    this.templatesSelected.high = await this.templateSvc.getAllTemplates(
+    this.templatesSelected = await this.templateSvc.getAllTemplates(
       false,
-      s.templates_selected.high
-    );
-    this.templatesSelected.moderate = await this.templateSvc.getAllTemplates(
-      false,
-      s.templates_selected.moderate
-    );
-    this.templatesSelected.low = await this.templateSvc.getAllTemplates(
-      false,
-      s.templates_selected.low
+      s.templates_selected
     );
     this.setEndTimes();
   }
@@ -1134,14 +1116,13 @@ export class SubscriptionConfigTab
     this.ignoreConfigError = event.checked;
   }
 
-  changeTemplate(input) {
-    let templateData = {
-      selected: this.templatesSelected[input],
-      available: this.templatesAvailable[input],
-      decep_level: input,
+  changeTemplate() {
+    const templateData = {
+      selected: this.templatesSelected,
+      available: this.templatesAvailable,
     };
 
-    let dialogRef = this.dialog.open(TemplateSelectDialogComponent, {
+    const dialogRef = this.dialog.open(TemplateSelectDialogComponent, {
       data: templateData,
     });
     dialogRef.afterClosed().subscribe((result) => {
@@ -1154,61 +1135,27 @@ export class SubscriptionConfigTab
   }
 
   async getTemplates() {
-    let low = 2;
-    let moderate = 4;
-
-    let templates = await this.templateSvc.getAllTemplates();
-    this.templatesAvailable.low = templates.filter(
-      (template) => template.deception_score <= low
-    );
-    this.templatesAvailable.moderate = templates.filter(
-      (template) =>
-        template.deception_score <= moderate && template.deception_score > low
-    );
-    this.templatesAvailable.high = templates.filter(
-      (template) => template.deception_score > moderate
-    );
-    this.removeSelectedFromAvailable('low');
-    this.removeSelectedFromAvailable('moderate');
-    this.removeSelectedFromAvailable('high');
+    this.templatesAvailable = await this.templateSvc.getAllTemplates();
+    this.removeSelectedFromAvailable();
   }
 
-  removeSelectedFromAvailable(level) {
-    this.templatesSelected = this.initTemplatesSelected(this.templatesSelected);
-    this.templatesSelected[level].forEach((selec) => {
-      for (var i = 0; i < this.templatesAvailable[level].length; i++) {
-        if (
-          this.templatesAvailable[level][i]['template_uuid'] ==
-          selec['template_uuid']
-        ) {
-          this.templatesAvailable[level].splice(i, 1);
-          i = this.templatesAvailable[level].length;
+  removeSelectedFromAvailable() {
+    this.templatesSelected.forEach((selec) => {
+      for (let i = 0; i < this.templatesAvailable.length; i++) {
+        if (this.templatesAvailable[i].template_uuid === selec.template_uuid) {
+          this.templatesAvailable.splice(i, 1);
+          i = this.templatesAvailable.length;
         }
       }
     });
   }
-  initTemplatesSelected(data) {
-    if (!('low' in data)) {
-      // @ts-ignore
-      data['low'] = [];
-    }
-    if (!('moderate' in data)) {
-      // @ts-ignore
-      data['moderate'] = [];
-    }
-    if (!('high' in data)) {
-      // @ts-ignore
-      data['high'] = [];
-    }
-    return data;
-  }
 
   setTemplatesSelected() {
     // Loop through keys in templatesSelected
-    Object.keys(this.templatesSelected).forEach((key: string) => {
-      this.subscription.templates_selected[key] = this.templatesSelected[
-        key
-      ].map((item: any) => item['template_uuid']);
+    this.templatesSelected.forEach((templateUuid: string) => {
+      this.subscription.templates_selected = this.templatesSelected.map(
+        (item: any) => item.template_uuid
+      );
     });
   }
 
