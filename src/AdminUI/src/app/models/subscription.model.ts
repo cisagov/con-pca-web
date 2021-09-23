@@ -18,15 +18,6 @@ export class TargetModel {
   email: string;
 }
 
-export class TemplateSelectedModel {
-  // These are any arrays, because 2 options need covered
-  // ["uuid1", "uuid2"]
-  // [template1, template2]
-  high: any[] = [];
-  moderate: any[] = [];
-  low: any[] = [];
-}
-
 export class SubscriptionNotificationModel {
   message_type: string;
   sent: Date;
@@ -44,7 +35,7 @@ export class SubscriptionModel {
   admin_email: string;
   status: string;
   target_email_list: TargetModel[] = [];
-  templates_selected: TemplateSelectedModel;
+  templates_selected: string[];
   sending_profile_uuid: string;
   active: boolean;
   continuous_subscription: boolean;
