@@ -100,7 +100,6 @@ export class TemplateSelectDialogComponent {
   }
 
   toggleLevel() {
-    console.log(this.selectedToggleLevel);
     if (this.selectedToggleLevel === 'all') {
       this.availableList.data = this.availableArray;
     } else {
