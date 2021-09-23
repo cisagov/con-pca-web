@@ -23,7 +23,7 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
   // average time to first click
   avgTTFC: number;
 
-  //Total stats
+  // Total stats
   aggregateCounts = {
     sent: { count: null },
     opened: { count: null },
@@ -43,12 +43,7 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
   selected_cycle: CycleModel;
 
   temp_angular_subs = [];
-  templatePerformanceByMetric = [];
-  performanceMetricUsed = 'clicked';
 
-  /**
-   *
-   */
   constructor(
     public cycleSvc: CycleService,
     public chartsSvc: ChartsService,
@@ -140,7 +135,7 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
           this.chart.chartResults = this.chartsSvc.formatStatistics(stats);
 
           this.avgTTFC = stats.stats.all.clicked.average;
-          this.selectTemplatePerformanceMetric();
+          this.sortTemplateStats();
           if (!this.avgTTFC) {
             this.avgTTFC = 0;
           }
@@ -148,6 +143,12 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
           this.aggregateCounts = stats['aggregate_stats'];
         });
     }
+  }
+
+  sortTemplateStats() {
+    this.cycleStats.template_stats = this.cycleStats.template_stats.sort(
+      (first, second) => 0 - (first.clicked.rank > second.clicked.rank ? -1 : 1)
+    );
   }
 
   /**
@@ -159,20 +160,5 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
     } else {
       return '';
     }
-  }
-
-  selectTemplatePerformanceMetric(metric = 'clicked') {
-    this.performanceMetricUsed = metric;
-    this.templatePerformanceByMetric = this.cycleStats.template_stats.sort(
-      (first, second) => 0 - (first[metric].rank > second[metric].rank ? -1 : 1)
-    );
-  }
-  styleSelectedMetric(metric) {
-    if (this.performanceMetricUsed == metric) {
-      return 'solid 2px #D6C0C5';
-    }
-  }
-  getRatio(templateStat) {
-    return templateStat[this.performanceMetricUsed]['ratio'];
   }
 }
