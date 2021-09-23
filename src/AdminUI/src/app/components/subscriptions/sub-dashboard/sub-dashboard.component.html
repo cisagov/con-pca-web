@@ -66,42 +66,24 @@
         </ul>
       </div>
       <div>
-        Template Deception Breakdown:
+        <h4>Template Statistics</h4>
         <ul>
           <li *ngFor="let template of cycleStats.template_stats">
-            Deception Level: {{ template.deception_level }} - Template Subject:
+            {{ template.clicked.rank }} - {{ template.template.name }}
             <a [routerLink]="['/templatemanager', template.template_uuid]">{{
               template.template.subject
             }}</a>
+            ({{ template.deception_level }})
+            <ul>
+              <li>Sent: {{ template.sent.count }}</li>
+              <li>Clicks: {{ template.clicked.count }}</li>
+              <li>Click Rate: {{ template.clicked.ratio * 100 }}%</li>
+            </ul>
           </li>
         </ul>
       </div>
-      <div>
-        Template Performance Breakdown
-        <div class="metric-button-container">
-          <button
-            *ngFor="let metric of ['clicked', 'opened']"
-            [style.border]="styleSelectedMetric(metric)"
-            (click)="selectTemplatePerformanceMetric(metric)"
-            class="metric-button"
-          >
-            {{ metric | titlecase }}</button
-          >:
-        </div>
-        <ul>
-          <li *ngFor="let row of templatePerformanceByMetric">
-            {{ row[performanceMetricUsed]["rank"] }} -
-            {{ row[performanceMetricUsed]["ratio"] | percent }} -
-            {{ row.template.name }}
-            <a
-              [routerLink]="['/templatemanager', row.template.template_uuid]"
-              >{{ row.template.subject }}</a
-            >
-          </li>
-        </ul>
-      </div>
-      <div>
-        IP Address / ASN Org Breakdown:
+      <div *ngIf="cycleStats.maxmind_stats.length > 0">
+        <h4>IP Statistics</h4>
         <table class="table">
           <tr>
             <th class="asn-org">ASN Org</th>
