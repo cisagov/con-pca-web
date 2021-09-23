@@ -339,6 +339,7 @@
           The time that all emails will be sent within. (Must be between 15
           minutes and 360 days)
         </div>
+
         <mat-form-field appearance="outline">
           <mat-label>Time</mat-label>
           <input
@@ -368,6 +369,17 @@
             >
           </mat-select>
         </mat-form-field>
+        <div class="text-muted">
+          <p>
+            This subscription's hourly sending rate will be {{ hourlyRate }} and
+            daily rate will be {{ dailyRate }}.
+          </p>
+
+          <p>
+            The current daily rate across all subscriptions is
+            {{ currentDailyRate }}.
+          </p>
+        </div>
         <div class="error-color mb-3" *ngIf="!isValidConfig">
           {{ validConfigMessage }}
         </div>
@@ -410,8 +422,10 @@
           </mat-select>
         </mat-form-field>
         <div class="text-muted">
-          All emails will be sent by {{ sendBy | date: "long" }} and the cycle
-          will be completed on {{ endDate | date: "long" }}.
+          <p>
+            All emails will be sent by {{ sendBy | date: "long" }} and the cycle
+            will be completed on {{ endDate | date: "long" }}.
+          </p>
         </div>
       </div>
       <!-- Status Report Frequency -->

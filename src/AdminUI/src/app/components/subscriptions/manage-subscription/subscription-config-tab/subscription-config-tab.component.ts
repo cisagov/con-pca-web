@@ -64,6 +64,9 @@ export class SubscriptionConfigTab
   cooldownPreviousTimeUnit = 'Minutes';
   templatesSelected = [];
   templatesAvailable = [];
+  dailyRate = '';
+  hourlyRate = '';
+  currentDailyRate = '';
 
   // Valid configuration
   isValidConfig = true;
@@ -500,6 +503,7 @@ export class SubscriptionConfigTab
       s.templates_selected
     );
     this.setEndTimes();
+    this.checkValid(false);
   }
 
   /**
@@ -1097,19 +1101,25 @@ export class SubscriptionConfigTab
     });
   }
 
-  checkValid() {
+  checkValid(setError = true) {
     const cycleLength: number = +this.f.cycle_length_minutes.value;
     const targetCount = this.f.csvText.value.trim().split('\n').length;
-    this.subscriptionSvc.checkValid(cycleLength, targetCount).subscribe(
-      () => {
-        this.isValidConfig = true;
-      },
-      (error) => {
-        this.isValidConfig = false;
-        console.log(error);
-        this.validConfigMessage = error.error.error;
-      }
-    );
+    this.subscriptionSvc
+      .checkValid(cycleLength, targetCount)
+      .subscribe((resp: any) => {
+        this.hourlyRate = resp.hourly_rate;
+        this.dailyRate = resp.daily_rate;
+        this.currentDailyRate = resp.current_daily_rate;
+        if (setError) {
+          if (resp.success) {
+            this.isValidConfig = true;
+          } else {
+            this.isValidConfig = false;
+            console.log(resp.message);
+            this.validConfigMessage = resp.message;
+          }
+        }
+      });
   }
 
   setIgnoreConfigError(event: MatCheckboxChange) {
