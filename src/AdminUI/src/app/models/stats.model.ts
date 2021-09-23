@@ -27,6 +27,9 @@ export class TemplateStatsModel extends CycleStatsLevelModel {
   template_uuid: string;
   template: TemplateModel;
   deception_level: string;
+  clicked: CycleStatsEventMetricsModel;
+  opened: CycleStatsEventMetricsModel;
+  sent: CycleStatsEventMetricsModel;
 }
 
 export class MaxmindStatsModel {
