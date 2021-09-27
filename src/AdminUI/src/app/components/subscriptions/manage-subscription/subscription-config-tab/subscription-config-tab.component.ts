@@ -372,9 +372,6 @@ export class SubscriptionConfigTab
     if (typeof start === 'string') {
       start = new Date(this.f.startDate.value);
     }
-    if (start < new Date()) {
-      start = new Date();
-    }
     const cycleLength: number = +this.f.cycle_length_minutes.value;
     const cooldownLength: number = +this.f.cooldown_minutes.value;
     this.sendBy = new Date(start);
