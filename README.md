@@ -1,62 +1,17 @@
 # Con-PCA Client #
 
-[![GitHub Build Status](https://github.com/cisagov/skeleton-docker/workflows/build/badge.svg)](https://github.com/cisagov/skeleton-docker/actions/workflows/build.yml)
-[![CodeQL](https://github.com/cisagov/skeleton-docker/workflows/CodeQL/badge.svg)](https://github.com/cisagov/skeleton-docker/actions/workflows/codeql-analysis.yml)
-[![Known Vulnerabilities](https://snyk.io/test/github/cisagov/skeleton-docker/badge.svg)](https://snyk.io/test/github/cisagov/skeleton-docker)
-
-## Requirements ##
-
-* For local setup, Get the right flavor of Docker for your OS...
-  * [Docker for Mac](https://docs.docker.com/docker-for-mac/install/)
-  * [Docker for Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
-  * [Docker for Windows](https://docs.docker.com/docker-for-windows/install/)
-
-  **Note:** The recommended requirement for deployment of this project is 4 GB RAM.
-  For Docker for Mac, this can be set by following these steps:
-
-  Open Docker > Preferences > Advanced tab, then set memory to 4.0 GiB
-
-## Additional Suggestions ##
-
-Here are some additional software to use along with develpment.
-These items are not required for development.
-
-* [VS Code](https://code.visualstudio.com/ "VS Code")
-* [MongoDB Compass](https://www.mongodb.com/products/compass "MongoDB Compass")
-
-## Local Install and Deployment ##
-
-Use `Makefile` to install and run all services.
+[![GitHub Build Status](https://github.com/cisagov/con-pca-web/workflows/build/badge.svg)](https://github.com/cisagov/con-pca-web/actions/workflows/build.yml)
+[![CodeQL](https://github.com/cisagov/con-pca-web/workflows/CodeQL/badge.svg)](https://github.com/cisagov/con-pca-web/actions/workflows/codeql-analysis.yml)
+[![Known Vulnerabilities](https://snyk.io/test/github/cisagov/con-pca-web/badge.svg)](https://snyk.io/test/github/cisagov/con-pca-web)
 
 ## Setup and Build ##
 
-Create your .env files
-
-* `cp ./etc/env.dist .env`
-
-Build containers:
-
-* `make build`
-
-To run the containers, use:
-
-* `make up`
-
-Your output will look like:
-
-```shell
--> % make up
-docker-compose up -d
-Creating network "client_default" with the default driver
-Creating cpa-web      ... done
-```
-
 ### Running with Docker ###
 
-To run the `cisagov/example` image via Docker:
+To run the `cisagov/con-pca-web` image via Docker:
 
 ```console
-docker run cisagov/example:0.0.1
+docker run cisagov/con-pca-web:0.0.1
 ```
 
 ### Running with Docker Compose ###
@@ -68,8 +23,8 @@ docker run cisagov/example:0.0.1
     version: "3.7"
 
     services:
-      example:
-        image: cisagov/example:0.0.1
+      pca-web:
+        image: cisagov/con-pca-web:0.0.1
         volumes:
           - type: bind
             source: <your_log_dir>
@@ -113,8 +68,8 @@ environment variables.  See the
         file: quote.txt
 
     services:
-      example:
-        image: cisagov/example:0.0.1
+      web:
+        image: cisagov/con-pca-web:0.0.1
         volumes:
           - type: bind
             source: <your_log_dir>
@@ -122,8 +77,8 @@ environment variables.  See the
         environment:
           - ECHO_MESSAGE="Hello from docker-compose"
         ports:
-          - target: 8080
-            published: 8080
+          - target: 80
+            published: 4200
             protocol: tcp
         secrets:
           - source: quote_txt
@@ -134,7 +89,7 @@ environment variables.  See the
 
 ### Docker Compose ###
 
-1. Pull the new image from Docker hub:
+1. Pull the new image from Docker Hub:
 
     ```console
     docker-compose pull
@@ -157,7 +112,7 @@ environment variables.  See the
 1. Pull the new image:
 
     ```console
-    docker pull cisagov/example:0.0.1
+    docker pull cisagov/con-pca-web:0.0.1
     ```
 
 1. Recreate and run the container by following the [previous instructions](#running-with-docker).
@@ -165,30 +120,21 @@ environment variables.  See the
 ## Image tags ##
 
 The images of this container are tagged with [semantic
-versions](https://semver.org) of the underlying example project that they
+versions](https://semver.org) of the underlying con-pca-web project that they
 containerize.  It is recommended that most users use a version tag (e.g.
 `:0.0.1`).
 
 | Image:tag | Description |
 |-----------|-------------|
-|`cisagov/example:1.2.3`| An exact release version. |
-|`cisagov/example:1.2`| The most recent release matching the major and minor version numbers. |
-|`cisagov/example:1`| The most recent release matching the major version number. |
-|`cisagov/example:edge` | The most recent image built from a merge into the `develop` branch of this repository. |
-|`cisagov/example:nightly` | A nightly build of the `develop` branch of this repository. |
-|`cisagov/example:latest`| The most recent release image pushed to a container registry.  Pulling an image using the `:latest` tag [should be avoided.](https://vsupalov.com/docker-latest-tag/) |
+|`cisagov/con-pca-web:1.2.3`| An exact release version. |
+|`cisagov/con-pca-web:1.2`| The most recent release matching the major and minor version numbers. |
+|`cisagov/con-pca-web:1`| The most recent release matching the major version number. |
+|`cisagov/con-pca-web:edge` | The most recent image built from a merge into the `develop` branch of this repository. |
+|`cisagov/con-pca-web:nightly` | A nightly build of the `develop` branch of this repository. |
+|`cisagov/con-pca-web:latest`| The most recent release image pushed to a container registry.  Pulling an image using the `:latest` tag [should be avoided.](https://vsupalov.com/docker-latest-tag/) |
 
-See the [tags tab](https://hub.docker.com/r/cisagov/example/tags) on Docker
+See the [tags tab](https://hub.docker.com/r/cisagov/con-pca-web/tags) on Docker
 Hub for a list of all the supported tags.
-
-Stop containers
-
-* `make stop`
-
-Remove containers
-| Mount point | Purpose        |
-|-------------|----------------|
-| `/var/log`  |  Log storage   |
 
 ## Ports ##
 
@@ -196,10 +142,10 @@ The following ports are exposed by this container:
 
 | Port | Purpose        |
 |------|----------------|
-| 8080 | Example only; nothing is actually listening on the port |
+| 80 | The http listener for nginx. |
 
-The sample [Docker composition](docker-compose.yml) publishes the
-exposed port at 8080.
+The [Docker composition](docker-compose.yml) publishes the
+exposed port at 4200.
 
 ## Environment variables ##
 
@@ -207,23 +153,9 @@ exposed port at 8080.
 
 There are no required environment variables.
 
-<!--
 | Name  | Purpose | Default |
 |-------|---------|---------|
-| `REQUIRED_VARIABLE` | Describe its purpose. | `null` |
--->
-
-### Optional ###
-
-| Name  | Purpose | Default |
-|-------|---------|---------|
-| `ECHO_MESSAGE` | Sets the message echoed by this container.  | `Hello World from Dockerfile` |
-
-## Secrets ##
-
-| Filename     | Purpose |
-|--------------|---------|
-| `quote.txt` | Replaces the secret stored in the example library's package data. |
+| `API_URL` | The url for the api. | `http://localhost:5000` |
 
 ## Building from source ##
 
@@ -232,8 +164,8 @@ Build the image locally using this git repository as the [build context](https:/
 ```console
 docker build \
   --build-arg VERSION=0.0.1 \
-  --tag cisagov/example:0.0.1 \
-  https://github.com/cisagov/example.git#develop
+  --tag cisagov/con-pca-web:0.0.1 \
+  https://github.com/cisagov/con-pca-web.git#develop
 ```
 
 ## Cross-platform builds ##
@@ -246,8 +178,8 @@ Docker:
    or the command line:
 
     ```console
-    git clone https://github.com/cisagov/example.git
-    cd example
+    git clone https://github.com/cisagov/con-pca-web.git
+    cd con-pca-web
     ```
 
 1. Create the `Dockerfile-x` file with `buildx` platform support:
@@ -264,13 +196,5 @@ Docker:
       --platform linux/amd64 \
       --build-arg VERSION=0.0.1 \
       --output type=docker \
-      --tag cisagov/example:0.0.1 .
+      --tag cisagov/con-pca-web:0.0.1 .
     ```
-
-## New repositories from a skeleton ##
-
-* `make down`
-
-## To access the Angular app ##
-
-Angular app located at [localhost:4200](http://localhost:4200)
