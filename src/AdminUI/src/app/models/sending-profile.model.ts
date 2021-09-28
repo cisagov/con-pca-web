@@ -1,20 +1,23 @@
-export class SendingProfile {
-  id: number;
-  interface_type: string;
+export class SendingProfileModel {
+  sending_profile_uuid: string;
   name: string;
-  host: string;
   username: string;
   password: string;
+  host: string;
+  interface_type: string = 'SMTP';
   from_address: string;
   ignore_cert_errors: boolean;
-  headers: SendingProfileHeader[];
-  modified_date: Date;
+  headers: SendingProfileHeaderModel[];
+
+  public constructor(init?: Partial<SendingProfileModel>) {
+    Object.assign(this, init);
+  }
 }
 
 /**
  *
  */
-export class SendingProfileHeader {
+export class SendingProfileHeaderModel {
   key: string;
   value: string;
 }

@@ -1,30 +1,29 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { ChartsService } from 'src/app/services/charts.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
-import { humanTiming } from 'src/app/helper/utilities';
-import { Cycle } from 'src/app/models/subscription.model';
+import { CycleModel } from 'src/app/models/cycle.model';
+import { CycleService } from 'src/app/services/cycle.service';
+import { CycleStatsModel } from 'src/app/models/stats.model';
 
 @Component({
   selector: 'app-sub-dashboard',
   templateUrl: './sub-dashboard.component.html',
+  styleUrls: ['./sub-dashboard.component.scss'],
 })
 export class SubDashboardComponent implements OnInit, OnDestroy {
   @Input()
   subscriptionUuid: string;
   dataAvailable = false;
   cycle_selected = false;
+  cycleStats = new CycleStatsModel();
 
   chart: any = {};
   chartSent: any = {};
 
-  numberTemplatesInUse = 0;
-
   // average time to first click
-  avgTTFC: string;
-  // average time to first report
-  avgTTFR: string;
+  avgTTFC: number;
 
-  //Total stats
+  // Total stats
   aggregateCounts = {
     sent: { count: null },
     opened: { count: null },
@@ -33,7 +32,6 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
     reported: { count: null },
   };
   campaignsDetails;
-  ipAsnStats = [];
 
   schemeLowMedHigh = {
     domain: ['#064875', '#fcbf10', '#007bc1'],
@@ -42,14 +40,12 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
   schemeSent = {
     domain: ['#336600', '#eeeeee'],
   };
-  selected_cycle: Cycle;
+  selected_cycle: CycleModel;
 
   temp_angular_subs = [];
 
-  /**
-   *
-   */
   constructor(
+    public cycleSvc: CycleService,
     public chartsSvc: ChartsService,
     private subscriptionSvc: SubscriptionService
   ) {}
@@ -71,11 +67,10 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
     this.temp_angular_subs.push(
       this.subscriptionSvc
         .getCycleBehaviorSubject()
-        .subscribe((data: Cycle) => {
+        .subscribe((data: CycleModel) => {
           this.selected_cycle = data;
           if (Object.keys(data).length > 0) {
             this.cycle_selected = true;
-            this.numberTemplatesInUse = data.campaigns_in_cycle.length;
           }
           this.drawGraphs();
         })
@@ -125,32 +120,35 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
       this.chartSent.colorScheme = this.schemeSent;
 
       // get content
-      this.chartsSvc
-        .getStatisticsReport(
-          this.subscriptionUuid,
+      this.cycleSvc
+        .getCycleStats(
           this.selected_cycle.cycle_uuid,
           this.selected_cycle.nonhuman
         )
-        .subscribe((stats: any) => {
+        .subscribe((stats: CycleStatsModel) => {
+          this.cycleStats = stats;
+          this.chartSent.chartResults = this.chartsSvc.getSentEmailNumbers(
+            this.selected_cycle,
+            stats
+          );
+
           this.chart.chartResults = this.chartsSvc.formatStatistics(stats);
-          this.chartSent.chartResults =
-            this.chartsSvc.getSentEmailNumbers(stats);
 
-          this.avgTTFC = stats.avg_time_to_first_click;
+          this.avgTTFC = stats.stats.all.clicked.average;
+          this.sortTemplateStats();
           if (!this.avgTTFC) {
-            this.avgTTFC = '(no emails clicked yet)';
+            this.avgTTFC = 0;
           }
 
-          this.avgTTFR = stats.avg_time_to_first_report;
-          if (!this.avgTTFR) {
-            this.avgTTFR = '(no emails reported yet)';
-          }
           this.aggregateCounts = stats['aggregate_stats'];
-          this.campaignsDetails = stats['campaign_details'];
-          this.ipAsnStats = stats.asn_stats;
-          console.log(this.ipAsnStats);
         });
     }
+  }
+
+  sortTemplateStats() {
+    this.cycleStats.template_stats = this.cycleStats.template_stats.sort(
+      (first, second) => 0 - (first.clicked.rank > second.clicked.rank ? -1 : 1)
+    );
   }
 
   /**

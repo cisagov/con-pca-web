@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { SettingsService } from './settings.service';
 import { toTitleCase } from 'src/app/helper/utilities';
+import { CycleModel } from '../models/cycle.model';
+import { CycleStatsModel } from '../models/stats.model';
 
 @Injectable({
   providedIn: 'root',
@@ -16,40 +18,26 @@ export class ChartsService {
   ) {}
 
   /**
-   * Gets the subscriptions's statistics
-   */
-  getStatisticsReport(
-    subscriptionUuid: string,
-    cycle_uuid: string,
-    nonhuman = false
-  ) {
-    let url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${subscriptionUuid}/subscription-stats-page/${cycle_uuid}/`;
-    if (nonhuman) {
-      url += `?nonhuman=${nonhuman}`;
-    }
-    return this.http.get(url);
-  }
-
-  /**
    * Converts the API response into an object that the chart expects.
    * Refactor idea -- this could be done more programatically
    */
-  formatStatistics(reportResponse: any) {
+  formatStatistics(stats: CycleStatsModel) {
     const chartObject = [
       {
         name: 'Sent',
         series: [
           {
             name: 'Low',
-            value: reportResponse.levels.find((x) => x.level_number === 1).sent,
+            value: stats.stats.low.sent.count,
+            // value: reportResponse.levels.find((x) => x.level_number === 1).sent,
           },
           {
             name: 'Moderate',
-            value: reportResponse.levels.find((x) => x.level_number === 2).sent,
+            value: stats.stats.moderate.sent.count,
           },
           {
             name: 'High',
-            value: reportResponse.levels.find((x) => x.level_number === 3).sent,
+            value: stats.stats.high.sent.count,
           },
         ],
       },
@@ -58,18 +46,15 @@ export class ChartsService {
         series: [
           {
             name: 'Low',
-            value: reportResponse.levels.find((x) => x.level_number === 1)
-              .opened,
+            value: stats.stats.low.opened.count,
           },
           {
             name: 'Moderate',
-            value: reportResponse.levels.find((x) => x.level_number === 2)
-              .opened,
+            value: stats.stats.moderate.opened.count,
           },
           {
             name: 'High',
-            value: reportResponse.levels.find((x) => x.level_number === 3)
-              .opened,
+            value: stats.stats.high.opened.count,
           },
         ],
       },
@@ -78,18 +63,15 @@ export class ChartsService {
         series: [
           {
             name: 'Low',
-            value: reportResponse.levels.find((x) => x.level_number === 1)
-              .clicked,
+            value: stats.stats.low.clicked.count,
           },
           {
             name: 'Moderate',
-            value: reportResponse.levels.find((x) => x.level_number === 2)
-              .clicked,
+            value: stats.stats.moderate.clicked.count,
           },
           {
             name: 'High',
-            value: reportResponse.levels.find((x) => x.level_number === 3)
-              .clicked,
+            value: stats.stats.high.clicked.count,
           },
         ],
       },
@@ -105,7 +87,8 @@ export class ChartsService {
   formatReportStatsForChart(reportResponse: any) {
     const stats = reportResponse.subscription_stats;
     const levels = ['low', 'mid', 'high'];
-    const groups = ['sent', 'opened', 'clicked', 'reported'];
+    // const groups = ['sent', 'opened', 'clicked', 'reported'];
+    const groups = ['sent', 'opened', 'clicked'];
     const obj = [];
 
     groups.forEach((g) => {
@@ -130,18 +113,18 @@ export class ChartsService {
   /**
    * Returns the percentage of emails sent thus far in the cycle.
    */
-  getSentEmailNumbers(reportResponse: any) {
+  getSentEmailNumbers(cycle: CycleModel, stats: CycleStatsModel) {
     return [
       {
         name: '',
         series: [
           {
             name: 'Number Sent',
-            value: reportResponse.sent,
+            value: stats.stats.all.sent.count,
           },
           {
             name: 'Number Not Sent',
-            value: reportResponse.target_count - reportResponse.sent,
+            value: cycle.target_count - stats.stats.all.sent.count,
           },
         ],
       },

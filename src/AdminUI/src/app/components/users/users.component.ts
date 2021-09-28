@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { User } from 'src/app/models/user.model';
+import { UserModel } from 'src/app/models/user.model';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { UserService } from 'src/app/services/user.service';
 import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
@@ -14,8 +14,8 @@ import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
 })
 export class UsersComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
-  displayedColumns = ['Username', 'UserStatus', 'UserCreateDate', 'delete'];
-  users = new MatTableDataSource<User>();
+  displayedColumns = ['username', 'email', 'status', 'created', 'delete'];
+  users = new MatTableDataSource<UserModel>();
   loading = true;
 
   constructor(
@@ -32,8 +32,9 @@ export class UsersComponent implements OnInit {
 
   getUsers() {
     return this.userService.getUsers().subscribe(
-      (success: User[]) => {
-        this.users = new MatTableDataSource<User>(success);
+      (success: UserModel[]) => {
+        console.log(success);
+        this.users = new MatTableDataSource<UserModel>(success);
         this.users.sort = this.sort;
         this.loading = false;
       },

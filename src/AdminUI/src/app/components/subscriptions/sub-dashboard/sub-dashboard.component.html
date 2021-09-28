@@ -46,55 +46,68 @@
       </div>
 
       <div class="mb-4">
-        Number of Templates in Use: {{ numberTemplatesInUse }}
+        Number of Templates in Use: {{ cycleStats.template_stats.length }}
       </div>
 
       <h4>Response Statistics</h4>
-      <div>Average Time to First Click: {{ avgTTFC }}</div>
-      <div>Average Time to First Report: {{ avgTTFR }}</div>
+      <div>
+        Average Time to First Click:
+        {{
+          cycleStats.stats.all.clicked.average * 1000
+            | date: "m 'minutes and' s 'seconds'"
+        }}
+      </div>
       <div>
         Aggregate Count:
         <ul>
-          <li>Sent: {{ aggregateCounts.sent.count }}</li>
-          <li>Opened: {{ aggregateCounts.opened.count }}</li>
-          <li>Clicked: {{ aggregateCounts.clicked.count }}</li>
-          <li>Reported: {{ aggregateCounts.reported.count }}</li>
+          <li>Sent: {{ cycleStats.stats.all.sent.count }}</li>
+          <li>Opened: {{ cycleStats.stats.all.opened.count }}</li>
+          <li>Clicked: {{ cycleStats.stats.all.clicked.count }}</li>
         </ul>
       </div>
       <div>
-        Template Deception Breakdown:
+        <h4>Template Statistics</h4>
         <ul>
-          <li *ngFor="let campaign of campaignsDetails">
-            Deception Score: {{ campaign.template.deception_score }} - Template
-            Subject:
-            <a
-              [routerLink]="[
-                '/templatemanager',
-                campaign.template.template_uuid
-              ]"
-              >{{ campaign.template.subject }}</a
-            >
+          <li *ngFor="let template of cycleStats.template_stats">
+            {{ template.clicked.rank }} - {{ template.template.name }}
+            <a [routerLink]="['/templatemanager', template.template_uuid]">{{
+              template.template.subject
+            }}</a>
+            ({{ template.deception_level }})
+            <ul>
+              <li>Sent: {{ template.sent.count }}</li>
+              <li>Clicks: {{ template.clicked.count }}</li>
+              <li>Click Rate: {{ template.clicked.ratio * 100 }}%</li>
+            </ul>
           </li>
         </ul>
       </div>
-      <div>
-        IP Address / ASN Org Breakdown:
+      <div *ngIf="cycleStats.maxmind_stats.length > 0">
+        <h4>IP Statistics</h4>
         <table class="table">
           <tr>
-            <th>ASN Org</th>
-            <th>Ip Addresses</th>
-            <th>Cities</th>
-            <th>Opens</th>
-            <th>Clicks</th>
-            <th>Non-Human</th>
+            <th class="asn-org">ASN Org</th>
+            <th class="large-column">Ip Addresses</th>
+            <th class="large-column">Cities</th>
+            <th class="small-table-column">Opens</th>
+            <th class="small-table-column">Clicks</th>
+            <th class="non-human-column">Non-Human</th>
           </tr>
-          <tr *ngFor="let item of ipAsnStats">
-            <td>{{ item.asn_org }}</td>
-            <td>{{ item.ips }}</td>
-            <td>{{ item.cities }}</td>
-            <td>{{ item.opens }}</td>
-            <td>{{ item.clicks }}</td>
-            <td>{{ item.is_non_human }}</td>
+          <tr *ngFor="let item of cycleStats.maxmind_stats">
+            <td class="asn-org">{{ item.asn_org }}</td>
+            <td>
+              <span *ngFor="let ip of item.ips; let last = last"
+                >{{ ip }}{{ last ? "" : "," }}
+              </span>
+            </td>
+            <td>
+              <span *ngFor="let city of item.cities; let last = last"
+                >{{ city }}{{ last ? "" : "," }}
+              </span>
+            </td>
+            <td class="centered-text">{{ item.opens }}</td>
+            <td class="centered-text">{{ item.clicks }}</td>
+            <td>{{ item.is_nonhuman }}</td>
           </tr>
         </table>
       </div>

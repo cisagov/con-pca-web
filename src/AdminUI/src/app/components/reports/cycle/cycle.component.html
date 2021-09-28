@@ -52,7 +52,7 @@
         {{ detail?.customer.city }}, {{ detail?.customer.state }}
         {{ detail?.customer.zip_code }}
       </div>
-      <div id="dhsContactDetails">
+      <div>
         <div class="mb-2">
           Subscription Primary Contact<br />
           {{ detail?.primary_contact.first_name }}
@@ -60,8 +60,6 @@
           {{ detail?.primary_contact_email }}<br />
         </div>
         <div>
-          CISA Contact<br />
-          {{ detail?.dhs_contact_name }}<br />
           Phishing Assessment Team<br />
           vulnerability@cisa.dhs.gov
         </div>
@@ -182,12 +180,13 @@
               </p>
               <p class="mb-0">
                 Each of these individuals here after referred to as targets are
-                tracked on 4 potential actions.
+                tracked on two potential actions.
               </p>
               <ol>
                 <li>Opening the email</li>
-                <li>Clicked a malicious link, or</li>
-                <li>Reported the email</li>
+                <li>Clicked a malicious link</li>
+                <!-- <li>Clicked a malicious link, or</li> -->
+                <!-- <li>Reported the email</li> -->
               </ol>
               <p>
                 To track statistics on the reported email, that information must
@@ -294,24 +293,8 @@
               </td>
             </tr>
             <tr>
-              <td># of user reports sent to helpdesk overall</td>
-              <td>
-                {{ detail?.metrics.number_of_reports_to_helpdesk }} ({{
-                  detail?.metrics.percent_report_rate
-                }}% report rate)
-              </td>
-            </tr>
-            <tr>
-              <td>Ratio of reports-to-clicks</td>
-              <td>{{ detail?.metrics.reports_to_clicks_ratio }}</td>
-            </tr>
-            <tr>
               <td>Average time to first click</td>
               <td>{{ detail?.metrics.avg_time_to_first_click }}</td>
-            </tr>
-            <tr>
-              <td>Average time to first report</td>
-              <td>{{ detail?.metrics.avg_time_to_first_report }}</td>
             </tr>
             <tr>
               <td>Most successful phishing template</td>
@@ -343,7 +326,7 @@
     </div>
   </article>
 
-  <article id="pageFour">
+  <!-- <article id="pageFour">
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
@@ -417,7 +400,7 @@
         </div>
       </div>
     </div>
-  </article>
+  </article> -->
 
   <article id="pageFive">
     <div class="container-fluid">
@@ -426,7 +409,7 @@
           <h2 id="summaryTitle">Summary</h2>
         </div>
       </div>
-      <div class="row">
+      <!-- <div class="row">
         <div class="col-12">
           <div id="summary">
             <p>
@@ -435,10 +418,10 @@
             </p>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
 
-    <div class="row mb-2" id="statFlexContainer">
+    <!-- <div class="row mb-2" id="statFlexContainer">
       <div id="companyAverageText">
         <div id="companyAverageBox">
           {{ detail?.metrics.customer_clicked_avg }}%
@@ -475,7 +458,7 @@
           </td>
         </tr>
       </table>
-    </div>
+    </div> -->
 
     <div class="row d-none">
       <div class="col-12">
@@ -496,10 +479,10 @@
     <div class="row">
       <div class="col-12">
         <table id="trendStatistics">
-          <tr>
+          <!-- <tr>
             <th>Time from start of Quarterly Campaign until first reported:</th>
             <td>{{ detail?.metrics.shortest_time_to_report }}</td>
-          </tr>
+          </tr> -->
           <tr>
             <th style="padding: 0 75px 0 0">
               Median Time to open email from first sent:
@@ -532,10 +515,10 @@
                 <sup>*</sup>Comparing median time and first reported time is the
                 attacker window.
               </li>
-              <li>
+              <!-- <li>
                 <sup>*</sup>Shortest time to open compared to first report
                 indicates the window of time the attacker has before detection.
-              </li>
+              </li> -->
               <li>
                 <sup>*</sup>An indicator of how long a phishing campaign could
                 potentially be viable.
@@ -920,7 +903,7 @@
   </article>
 
   <article id="pageTen">
-    <div class="row mb-5">
+    <!-- <div class="row mb-5">
       <div class="col-12">
         <h2 id="timeComparisonTitle">Click Time vs. Report Time</h2>
         <div id="timeComparisonText">
@@ -943,7 +926,7 @@
           </p>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <div class="row mb-5">
       <div class="col-12">

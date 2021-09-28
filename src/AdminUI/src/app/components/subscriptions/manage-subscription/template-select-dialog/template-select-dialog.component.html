@@ -1,11 +1,29 @@
 <div class="modal-container">
-  <h1 mat-dialog-title>Select {{ decep_level | titlecase }} Tempalates</h1>
+  <div class="d-flex w-100">
+    <h1 class="d-flex" mat-dialog-title>Select Tempalates</h1>
+
+    <mat-form-field
+      [style.width.px]="container.offsetWidth"
+      class="template-select-search-bar d-flex flex-column"
+      appearance="outline"
+    >
+      <mat-label>Search</mat-label>
+      <input
+        (keyup)="filterList($event.target.value)"
+        matInput
+        placeholder="Search"
+      />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </div>
   <div mat-dialog-content style="overflow: visible">
     <!-- Dialog Here -->
     <div class="section-container">
       <div class="left-section">
         <div class="template-selected-list">
-          <div class="template-table-title">Selected</div>
+          <div class="template-table-title">
+            Selected ({{ this.selectedArray.length }})
+          </div>
           <mat-table class="header-table" [dataSource]="emptyList">
             <!-- Template Name -->
             <ng-container matColumnDef="name">
@@ -82,8 +100,22 @@
             ></mat-row>
           </mat-table>
         </div>
+
+        <mat-radio-group
+          style="margin-bottom: 1em; margin-top: 1em"
+          (change)="toggleLevel()"
+          [(ngModel)]="selectedToggleLevel"
+        >
+          <mat-radio-button value="all">All</mat-radio-button>
+          <mat-radio-button value="low">Low</mat-radio-button>
+          <mat-radio-button value="moderate">Moderate</mat-radio-button>
+          <mat-radio-button value="high">High</mat-radio-button>
+        </mat-radio-group>
+
         <div class="template-available-list">
-          <div class="template-table-title">Available</div>
+          <div class="template-table-title">
+            Available ({{ this.availableList.data.length }})
+          </div>
           <mat-table class="header-table" [dataSource]="emptyList">
             <!-- Template Name -->
             <ng-container matColumnDef="name">
@@ -118,7 +150,7 @@
               *matRowDef="let row; columns: displayedColumnsAvailable"
             ></mat-row>
           </mat-table>
-          <mat-table class="template-mat-table" [dataSource]="avaiableList">
+          <mat-table class="template-mat-table" [dataSource]="availableList">
             <!-- Template Name -->
             <ng-container matColumnDef="name">
               <mat-header-cell *matHeaderCellDef>Template Name</mat-header-cell>
@@ -155,9 +187,9 @@
           </mat-table>
         </div>
       </div>
-      <div class="right-section">
+      <div #container class="right-section">
         <div *ngIf="!templateSelected" class="template-information">
-          Please click a template to view a preview of it
+          Please click a template to view a preview of it.
         </div>
         <div *ngIf="templateSelected" class="template-information">
           <div>

@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { Tags } from 'src/app/models/tags.model';
+import { TagModel } from 'src/app/models/tags.model';
 import { SettingsService } from './settings.service';
 
 const headers = {
@@ -25,7 +25,7 @@ export class TagService {
    * @param retired
    */
   getAllTags() {
-    let url = `${this.settingsService.settings.apiUrl}/api/v1/tags/`;
+    let url = `${this.settingsService.settings.apiUrl}/api/tags/`;
     return this.http.get(url, headers);
   }
 
@@ -35,7 +35,7 @@ export class TagService {
    */
   getTag(uuid: string) {
     return this.http.get(
-      `${this.settingsService.settings.apiUrl}/api/v1/tag/${uuid}`
+      `${this.settingsService.settings.apiUrl}/api/tag/${uuid}`
     );
   }
 
@@ -43,9 +43,9 @@ export class TagService {
    * POST a new tag
    * @param tag
    */
-  saveNewTag(tag: Tags) {
+  saveNewTag(tag: TagModel) {
     return this.http.post(
-      `${this.settingsService.settings.apiUrl}/api/v1/tags/`,
+      `${this.settingsService.settings.apiUrl}/api/tags/`,
       tag
     );
   }
@@ -54,9 +54,9 @@ export class TagService {
    * PATCH an existing tag with partial data
    * @param tag
    */
-  updateTag(tag: Tags) {
-    return this.http.patch(
-      `${this.settingsService.settings.apiUrl}/api/v1/tag/${tag.tag_definition_uuid}/`,
+  updateTag(tag: TagModel) {
+    return this.http.put(
+      `${this.settingsService.settings.apiUrl}/api/tag/${tag.tag_definition_uuid}/`,
       tag
     );
   }
@@ -65,9 +65,9 @@ export class TagService {
    *
    * @param tag
    */
-  deleteTag(tag: Tags) {
+  deleteTag(tag: TagModel) {
     return this.http.delete(
-      `${this.settingsService.settings.apiUrl}/api/v1/tag/${tag.tag_definition_uuid}/`
+      `${this.settingsService.settings.apiUrl}/api/tag/${tag.tag_definition_uuid}/`
     );
   }
 }

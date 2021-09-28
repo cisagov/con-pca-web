@@ -12,7 +12,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 
-import { RegisterUser } from 'src/app/models/registered-user.model';
+import { RegisterUserModel } from 'src/app/models/registered-user.model';
 
 // Third party imports
 import { faBan, faCheck } from '@fortawesome/free-solid-svg-icons';
@@ -41,7 +41,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   styleUrls: ['./register-user.component.scss'],
 })
 export class RegisterUserComponent implements OnInit {
-  model = new RegisterUser();
+  model = new RegisterUserModel();
   faBan = faBan;
   faCheck = faCheck;
 

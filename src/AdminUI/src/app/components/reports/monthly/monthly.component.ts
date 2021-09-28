@@ -12,6 +12,7 @@ import { ChartsService } from 'src/app/services/charts.service';
 })
 export class MonthlyComponent implements OnInit {
   subscriptionUuid: string;
+  showOld = false;
   detail: any;
 
   avgTTFC: any;
@@ -26,6 +27,9 @@ export class MonthlyComponent implements OnInit {
     domain: ['#064875', '#fcbf10', '#007bc1'],
   };
 
+  reportHtml = '';
+  cycleUuid: string;
+
   constructor(
     public sanitizer: DomSanitizer,
     public reportsSvc: ReportsService,
@@ -34,23 +38,11 @@ export class MonthlyComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.subscriptionUuid = this.route.snapshot.params.id;
-
     this.route.params.subscribe((params) => {
-      this.subscriptionUuid = params.id;
-      this.reportsSvc
-        .getReport(
-          this.subscriptionUuid,
-          params.cycle_uuid,
-          'monthly',
-          params.nonhuman,
-          params.isHeadless
-        )
-        .subscribe((resp) => {
-          this.detail = resp;
-          this.sanatize_template_indicators();
-          this.renderReport();
-        });
+      this.cycleUuid = params.cycle_uuid;
+      this.reportsSvc.getReport(this.cycleUuid, 'monthly').subscribe((resp) => {
+        this.reportHtml = resp;
+      });
     });
   }
   sanatize_template_indicators() {
@@ -83,10 +75,6 @@ export class MonthlyComponent implements OnInit {
     // format the 'time to first X' text
     this.avgTTFC = this.secondsToDay(
       this.detail.metrics.avg_time_to_first_click
-    );
-    // this.avgTTFCFormatted = this.formatTTF(this.detail.metrics.avg_time_to_first_click);
-    this.avgTTFR = this.secondsToDay(
-      this.detail.metrics.avg_time_to_first_report
     );
 
     // build statistics by level chart

@@ -66,7 +66,7 @@
   margin: auto;
 }
 .template-table-title {
-  width: 5em;
+  width: 6em;
   display: flex;
 }
 .mat-dialog-container {
@@ -91,4 +91,13 @@
 
 .mat-dialog-container {
   overflow: visible !important;
+}
+
+.template-select-search-bar {
+  margin-left: auto;
+}
+
+.mat-radio-button {
+  margin-left: 16px;
+  font-weight: bold;
 }

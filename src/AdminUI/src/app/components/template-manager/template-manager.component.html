@@ -201,32 +201,6 @@
                 </span>
               </mat-label>
 
-              <div class="d-flex flex-column pb-3 mt-3">
-                <mat-form-field appearance="outline">
-                  <mat-label>Description</mat-label>
-                  <input
-                    type="text"
-                    trim="blur"
-                    matInput
-                    placeholder="Template Description..."
-                    formControlName="templateDescription"
-                  />
-                </mat-form-field>
-              </div>
-              <div class="d-flex flex-column pb-3">
-                <mat-form-field appearance="outline" class="flex-grow-1">
-                  <mat-label>Descriptive Words (CSV)</mat-label>
-                  <textarea
-                    trim="blur"
-                    matInput
-                    cdkTextareaAutosize
-                    cdkAutosizeMinRows="5"
-                    cdkAutosizeMaxRows="10"
-                    placeholder="Template Descriptive Words Seperated By A Comma"
-                    formControlName="templateDescriptiveWords"
-                  ></textarea>
-                </mat-form-field>
-              </div>
               <div class="d-flex flex-column pb-3">
                 <mat-form-field appearance="outline" class="flex-grow-1 mb-2">
                   <mat-label>Sending Profile Selection</mat-label>
@@ -469,16 +443,6 @@
           >
             Restore Template
           </button>
-          <button
-            id="stop-button"
-            class="d-flex"
-            mat-raised-button
-            color="warn"
-            (click)="stopTemplate()"
-            *ngIf="templateId && canStop"
-          >
-            Stop Template
-          </button>
           <div [matTooltip]="deleteTooltip">
             <button
               id="stop-button"
@@ -564,7 +528,7 @@
               >0 = Unrelated</mat-radio-button
             >
             <mat-radio-button [value]="1" radioGroup="linkRadioGroup"
-              >1 = Related / Hidden / Spoofed</mat-radio-button
+              >1 = Related/Hidden/Spoofed</mat-radio-button
             >
           </mat-radio-group>
         </div>
@@ -576,10 +540,10 @@
             formControlName="logo_graphics"
           >
             <mat-radio-button [value]="0" radioGroup="graphicsRadioGroup"
-              >0 = Fake / None</mat-radio-button
+              >0 = Plain Text</mat-radio-button
             >
             <mat-radio-button [value]="1" radioGroup="graphicsRadioGroup"
-              >1 = Spoofed / HTML</mat-radio-button
+              >1 = Visual Appeal</mat-radio-button
             >
           </mat-radio-group>
         </div>
@@ -592,7 +556,7 @@
             formControlName="external"
           >
             <mat-radio-button [value]="0" radioGroup="senderExternalRadioGroup"
-              >0 = Not External / Unspecified</mat-radio-button
+              >0 = Not External/Unpsecified</mat-radio-button
             >
             <mat-radio-button [value]="1" radioGroup="senderExternalRadioGroup"
               >1 = Specified</mat-radio-button
@@ -607,10 +571,10 @@
             formControlName="internal"
           >
             <mat-radio-button [value]="0" radioGroup="internalRadioGroup"
-              >0 = Not Internal / Unspecified</mat-radio-button
+              >0 = Not Internal/Unspecified</mat-radio-button
             >
             <mat-radio-button [value]="1" radioGroup="internalRadioGroup"
-              >1 = Generic</mat-radio-button
+              >1 = Generic/Close</mat-radio-button
             >
             <mat-radio-button [value]="2" radioGroup="internalRadioGroup"
               >2 = Spoofed</mat-radio-button

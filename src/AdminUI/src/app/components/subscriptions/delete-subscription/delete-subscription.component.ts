@@ -5,13 +5,13 @@ import {
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Subscription } from 'src/app/models/subscription.model';
+import { SubscriptionModel } from 'src/app/models/subscription.model';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { Router } from '@angular/router';
 
 export interface DialogData {
   confirmName: string;
-  subscription: Subscription;
+  subscription: SubscriptionModel;
 }
 
 @Component({
@@ -21,7 +21,7 @@ export interface DialogData {
 })
 export class DeleteSubscription {
   @Input()
-  subscription: Subscription;
+  subscription: SubscriptionModel;
 
   constructor(
     public dialog: MatDialog,
@@ -60,7 +60,7 @@ export class DeleteSubscription {
   templateUrl: 'delete-subscription-dialog.html',
 })
 export class DeleteSubscriptionDialog {
-  subscription: Subscription;
+  subscription: SubscriptionModel;
   canDelete: boolean;
 
   constructor(

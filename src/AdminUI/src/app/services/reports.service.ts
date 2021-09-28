@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { SettingsService } from './settings.service';
 
@@ -11,21 +11,12 @@ export class ReportsService {
     private settingsService: SettingsService
   ) {}
 
-  public getReport(
-    subscriptionUuid: string,
-    cycleUuid: string,
-    reportType: string,
-    nonhuman = false,
-    isHeadless = 'false'
-  ) {
-    const apiUrl =
-      isHeadless === 'false'
-        ? this.settingsService.settings.apiUrl
-        : this.settingsService.settings.apiUrlHeadless;
-    let url = `${apiUrl}/api/v1/reports/${subscriptionUuid}/${reportType}/${cycleUuid}/`;
+  public getReport(cycleUuid: string, reportType: string, nonhuman = false) {
+    let url = `${this.settingsService.settings.apiUrl}/api/cycle/${cycleUuid}/reports/${reportType}/`;
     if (nonhuman) {
       url += `?nonhuman=${nonhuman}`;
     }
-    return this.http.get(url);
+    const headers = new HttpHeaders().set('content-type', 'text/html');
+    return this.http.get(url, { headers, responseType: 'text' });
   }
 }

@@ -1,7 +1,7 @@
 import { Component, ViewChild, OnInit, Input } from '@angular/core';
 import { SubscriptionService } from 'src/app/services/subscription.service';
-import { Subscription } from 'src/app/models/subscription.model';
-import { Customer } from 'src/app/models/customer.model';
+import { SubscriptionModel } from 'src/app/models/subscription.model';
+import { CustomerModel } from 'src/app/models/customer.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { AppSettings } from 'src/app/AppSettings';
@@ -25,16 +25,9 @@ export class CustomerSubscriptionsComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
 
-  subscriptions = new MatTableDataSource<Subscription>();
+  subscriptions = new MatTableDataSource<SubscriptionModel>();
 
-  displayedColumns = [
-    'name',
-    'status',
-    'active',
-    'start_date',
-    'lub_timestamp',
-    'inspect',
-  ];
+  displayedColumns = ['name', 'status', 'active', 'start_date', 'inspect'];
 
   constructor(public subscriptionSvc: SubscriptionService) {}
 
@@ -46,7 +39,7 @@ export class CustomerSubscriptionsComponent implements OnInit {
     this.subscriptionSvc
       .getSubscriptionsByCustomer(this._customer)
       .subscribe((data: any[]) => {
-        this.subscriptions.data = data as Subscription[];
+        this.subscriptions.data = data as SubscriptionModel[];
         this.subscriptions.sort = this.sort;
       });
   }

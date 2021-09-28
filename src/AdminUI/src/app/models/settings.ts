@@ -1,4 +1,4 @@
-export class Settings {
+export class SettingsModel {
   apiUrl: string;
   apiUrlHeadless: string;
   domainManagementURL: string;

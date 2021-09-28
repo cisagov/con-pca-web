@@ -1,9 +1,11 @@
 import { Component, Inject, ViewChild } from '@angular/core';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Template } from 'src/app/models/template.model';
+import { TemplateModel } from 'src/app/models/template.model';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertComponent } from 'src/app/components/dialogs/alert/alert.component';
+import { TemplateManagerService } from 'src/app/services/template-manager.service';
+import { MatRadioChange } from '@angular/material/radio';
 
 @Component({
   selector: 'app-template-select-dialog',
@@ -11,51 +13,52 @@ import { AlertComponent } from 'src/app/components/dialogs/alert/alert.component
   styleUrls: ['./template-select-dialog.component.scss'],
 })
 export class TemplateSelectDialogComponent {
-  decep_level: '';
+  selectedArray: Array<TemplateModel>;
+  availableArray: Array<TemplateModel>;
 
-  selectedArray: Array<Template>;
-  availableArray: Array<Template>;
+  selectedList = new MatTableDataSource<TemplateModel>();
+  availableList = new MatTableDataSource<TemplateModel>();
+  emptyList: MatTableDataSource<TemplateModel>;
 
-  selectedList: MatTableDataSource<Template>;
-  avaiableList: MatTableDataSource<Template>;
-  emptyList: MatTableDataSource<Template>;
-  // @ViewChild('selectedSort') selectedSort: MatSort;
-  // @ViewChild('availableSort') availableSort: MatSort;
+  selectedToggleLevel = 'all';
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: Object,
-    public dialog: MatDialog
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialog: MatDialog,
+    public templateSvc: TemplateManagerService
   ) {
-    this.decep_level = data['decep_level'];
-    this.selectedArray = data['selected'];
-    this.availableArray = data['available'];
+    this.selectedArray = data.selected;
+    this.availableArray = data.available;
     this.initMatTables();
   }
   displayHTML = '';
   templateName = '';
   templateSubject = '';
   templateFromName = '';
-  templateSelected: Boolean = false;
+  templateSelected = false;
 
   displayedColumnsSelected = ['name', 'deception_score', 'remove'];
   displayedColumnsAvailable = ['name', 'deception_score', 'add'];
 
   initMatTables() {
-    this.selectedList = new MatTableDataSource<Template>(
-      this.selectedArray as Template[]
+    // Remove selected elements from the avaiable list to avoid duplicates
+    this.selectedArray.forEach((selected) => {
+      this.availableArray.forEach((available, index) => {
+        if (selected.template_uuid === available.template_uuid) {
+          this.availableArray.splice(index, 1);
+        }
+      });
+    });
+    this.selectedList = new MatTableDataSource<TemplateModel>(
+      this.selectedArray as TemplateModel[]
     );
-    // this.selectedList.sort = this.selectedSort;
-    this.avaiableList = new MatTableDataSource<Template>(
-      this.availableArray as Template[]
-    );
-    // this.selectedList.sort = this.availableSort;
+    this.toggleLevel();
   }
-  ngOnInit(): void {}
 
   remove(template) {
     if (this.selectedArray.length > 1) {
-      for (var i = 0; i < this.selectedArray.length; i++) {
-        if (this.selectedArray[i]['template_uuid'] == template.template_uuid) {
+      for (let i = 0; i < this.selectedArray.length; i++) {
+        if (this.selectedArray[i].template_uuid === template.template_uuid) {
           this.availableArray.push(template);
           this.selectedArray.splice(i, 1);
           i = this.selectedArray.length;
@@ -73,8 +76,8 @@ export class TemplateSelectDialogComponent {
   }
 
   add(template) {
-    for (var i = 0; i < this.availableArray.length; i++) {
-      if (this.availableArray[i]['template_uuid'] == template.template_uuid) {
+    for (let i = 0; i < this.availableArray.length; i++) {
+      if (this.availableArray[i].template_uuid === template.template_uuid) {
         this.selectedArray.push(template);
         this.availableArray.splice(i, 1);
         i = this.availableArray.length;
@@ -83,24 +86,28 @@ export class TemplateSelectDialogComponent {
     }
   }
 
-  test() {
-    console.log(this.data);
-    console.log('test from modal');
-  }
-
   public filterList = (value: string) => {
     this.selectedList.filter = value.trim().toLocaleLowerCase();
-    this.avaiableList.filter = value.trim().toLocaleLowerCase();
+    this.availableList.filter = value.trim().toLocaleLowerCase();
   };
 
-  display(template: Template) {
+  display(template: TemplateModel) {
     this.templateSelected = true;
-    console.log(template);
-    var re = '<%URL%>';
-    this.displayHTML = template.html.replace(re, 'javascript:void(0)');
-
+    this.displayHTML = template.html;
     this.templateName = template.name;
     this.templateSubject = template.subject;
     this.templateFromName = template.from_address;
+  }
+
+  toggleLevel() {
+    if (this.selectedToggleLevel === 'all') {
+      this.availableList.data = this.availableArray;
+    } else {
+      this.availableList.data = this.availableArray.filter(
+        (t) =>
+          this.templateSvc.getDeceptionLevel(t.deception_score) ===
+          this.selectedToggleLevel
+      );
+    }
   }
 }

@@ -20,10 +20,10 @@ import {
   MatDialog,
 } from '@angular/material/dialog';
 import { SendingProfileService } from 'src/app/services/sending-profile.service';
-import { SendingProfile } from 'src/app/models/sending-profile.model';
+import { SendingProfileModel } from 'src/app/models/sending-profile.model';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { TestEmail } from 'src/app/models/test-email.model';
+import { TestEmailModel } from 'src/app/models/test-email.model';
 import { AlertComponent } from '../dialogs/alert/alert.component';
 
 @Component({
@@ -39,8 +39,8 @@ export class SendingProfileDetailComponent implements OnInit {
   testEmail = '';
 
   profileForm: FormGroup;
-  profile: SendingProfile;
-  id: number;
+  profile: SendingProfileModel;
+  uuid: string;
 
   @ViewChild(MatSort) sort: MatSort;
   displayedColumns = ['header', 'value', 'actions'];
@@ -59,7 +59,7 @@ export class SendingProfileDetailComponent implements OnInit {
     public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.id = data.sendingProfileId;
+    this.uuid = data.sending_profile_uuid;
   }
 
   /**
@@ -90,11 +90,11 @@ export class SendingProfileDetailComponent implements OnInit {
       newHeaderValue: new FormControl(''),
     });
 
-    if (!!this.id) {
+    if (!!this.uuid) {
       this.mode = 'edit';
-      this.sendingProfileSvc.getProfile(this.id).subscribe(
+      this.sendingProfileSvc.getProfile(this.uuid).subscribe(
         (data: any) => {
-          this.profile = data as SendingProfile;
+          this.profile = data as SendingProfileModel;
 
           this.f.name.setValue(this.profile.name);
           this.f.interfaceType.setValue(this.profile.interface_type);
@@ -157,7 +157,7 @@ export class SendingProfileDetailComponent implements OnInit {
    *
    */
   onSaveClick() {
-    let sp: SendingProfile;
+    let sp: SendingProfileModel;
     this.submitted = true;
 
     if (this.profileForm.valid) {
@@ -198,7 +198,7 @@ export class SendingProfileDetailComponent implements OnInit {
       return;
     }
 
-    const sp = new SendingProfile();
+    const sp = new SendingProfileModel();
     sp.name = this.f.name.value;
     sp.username = this.f.username.value;
     sp.password = this.f.password.value;
@@ -218,8 +218,8 @@ export class SendingProfileDetailComponent implements OnInit {
       }
     }
 
-    if (this.id) {
-      sp.id = this.id;
+    if (this.uuid) {
+      sp.sending_profile_uuid = this.uuid;
     }
     return sp;
   }
@@ -232,17 +232,11 @@ export class SendingProfileDetailComponent implements OnInit {
   }
 
   onSendTestClick() {
-    let sp: SendingProfile;
+    let sp: SendingProfileModel;
     sp = this.save();
     sp.from_address = this.getEmailFromBrackets(sp.from_address);
-    let email_for_test: TestEmail = {
-      template: {
-        attachments: [],
-        html: null,
-        text: null,
-        name: null,
-        subject: null,
-      }, //template name to be used in the test
+    let email_for_test: TestEmailModel = {
+      template: null, //template name to be used in the test
       first_name: 'test',
       last_name: 'test',
       email: this.testEmail,

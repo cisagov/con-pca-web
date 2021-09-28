@@ -11,6 +11,7 @@ import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { MaterialModule } from './material.module';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSortModule } from '@angular/material/sort';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -27,7 +28,6 @@ import { SubscriptionTasksTabComponent } from './components/subscriptions/manage
 import { UserAuthService } from './services/user-auth.service';
 import { TemplateManagerComponent } from './components/template-manager/template-manager.component';
 import { TemplateManagerService } from './services/template-manager.service';
-import { RecommendationsManagerComponent } from './components/recommendations/recommendations-manager/recommendations-manager.component';
 import { TagsManagerComponent } from './components/tags-page/tags-manager/tags-manager.component';
 import { ListFilterPipe } from './pipes/list-filter.pipe';
 import { NullishCoalescePipe } from './pipes/nullish-coalesce.pipe';
@@ -36,24 +36,20 @@ import { AddCustomerComponent } from './components/customer/add-customer/add-cus
 import { SubscriptionService } from './services/subscription.service';
 import { ThemeService } from './services/theme.service';
 import { LayoutMainService } from './services/layout-main.service';
+import { CycleSelect } from './components/dialogs/cycle-select/cycle-select.component';
 
-import { ContactsComponent } from './components/contacts/contacts.component';
-import { DomainsComponent } from './components/domains/domains.component';
 import { TemplatesPageComponent } from './components/templates-page/templates-page.component';
-import { RecommendationsComponent } from './components/recommendations/recommendations.component';
 import { TagsPageComponent } from './components/tags-page/tags-page.component';
 import { UserAdminComponent } from './components/user-admin/user-admin.component';
 import { HelpFilesComponent } from './components/help-files/help-files.component';
 import { CustomerService } from './services/customer.service';
 import { CustomersComponent } from './components/customers/customers.component';
-import { AddCustomerDialogComponent } from './components/customers/add-customer-dialog/add-customer-dialog.component';
 import { AddContactDialogComponent } from './components/contacts/add-contact-dialog/add-contact-dialog.component';
 import { ViewContactDialogComponent } from './components/contacts/view-contact-dialog/view-contact-dialog.component';
 import {
   DeleteSubscription,
   DeleteSubscriptionDialog,
 } from 'src/app/components/subscriptions/delete-subscription/delete-subscription.component';
-import { StopTemplateDialogComponent } from './components/template-manager/stop-template-dialog/stop-template-dialog.component';
 import { SendingProfilesComponent } from './components/sending-profiles/sending-profiles.component';
 import { SendingProfileDetailComponent } from './components/sending-profiles/sending-profile-detail.component';
 import { CustomerSubscriptionsComponent } from './components/subscriptions/customer-subscriptions/customer-subscriptions.component';
@@ -71,11 +67,8 @@ import { UTCtoReadableTime } from './helper/utcTimeReadable.pipe';
 import { SvgTimelineComponent } from './components/subscriptions/svg-timeline/svg-timeline.component';
 import { AuthAppendInterceptor } from './helper/AuthAppendInterceptor';
 import { UnauthorizedInterceptor } from './helper/UnauthorizedInterceptor';
-import { DhsPocComponent } from './components/user-admin/dhs-poc/dhs-poc.component';
-import { DhsPocDetailComponent } from './components/user-admin/dhs-poc/dhs-poc-detail.component';
 import { InputTrimDirective } from './helper/input-trim.directive';
 import { DatePipe } from '@angular/common';
-import { RecommendationsService } from './services/recommendations.service';
 import { TagService } from './services/tag.service';
 import { MonthlyComponent } from './components/reports/monthly/monthly.component';
 import { CycleComponent } from './components/reports/cycle/cycle.component';
@@ -100,6 +93,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LoginService } from 'src/app/services/login.service';
 import { LayoutLoginComponent } from './components/layout/layout-login/layout-login.component';
 import { UnsavedComponent } from './components/dialogs/unsaved/unsaved.component';
+import { InvalidEmailDialogComponent } from './components/subscriptions/invalid-email-dialog/invalid-email-dialog.component';
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
   return () => settingsHttpService.initializeApp();
@@ -119,24 +113,19 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     SubscriptionTasksTabComponent,
     SubscriptionStatsTab,
     TemplateManagerComponent,
-    RecommendationsManagerComponent,
     TagsManagerComponent,
     ListFilterPipe,
     NullishCoalescePipe,
-    ContactsComponent,
-    DomainsComponent,
     TemplatesPageComponent,
-    RecommendationsComponent,
+    CycleSelect,
     TagsPageComponent,
     UserAdminComponent,
     HelpFilesComponent,
     CustomersComponent,
-    AddCustomerDialogComponent,
     AddContactDialogComponent,
     ViewContactDialogComponent,
     DeleteSubscription,
     DeleteSubscriptionDialog,
-    StopTemplateDialogComponent,
     SendingProfilesComponent,
     SendingProfileDetailComponent,
     CustomerSubscriptionsComponent,
@@ -149,8 +138,6 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     SafePipe,
     UTCtoReadableTime,
     SvgTimelineComponent,
-    DhsPocComponent,
-    DhsPocDetailComponent,
     InputTrimDirective,
     MonthlyComponent,
     CycleComponent,
@@ -172,6 +159,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     LoginComponent,
     LayoutLoginComponent,
     UnsavedComponent,
+    InvalidEmailDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -180,6 +168,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,
+    MatExpansionModule,
     MatSortModule,
     FormsModule,
     FontAwesomeModule,
@@ -193,7 +182,6 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     CustomerService,
     TemplateManagerService,
     LandingPageManagerService,
-    RecommendationsService,
     TagService,
     ThemeService,
     LayoutMainService,
