@@ -1,14 +1,25 @@
+# This file specifies intentionally untracked files that Git should ignore.
+# Files already tracked by Git are not affected.
+# See: https://git-scm.com/docs/gitignore
+
+## Development Environments ##
 .env
 .idea/
+.vscode
+src/.env
+
+## Docker ##
+Dockerfile-x
+
+## Node ##
+/node_modules
+src/AdminUI/dist
+src/AdminUI/node_modules
+src/AdminUI/node_modules/*
+
+## Python ##
+__pycache__
 .mypy_cache
 .pytest_cache
 .python-version
 .venv
-.vscode
-/node_modules
-Dockerfile-x
-__pycache__
-src/.env
-src/AdminUI/dist
-src/AdminUI/node_modules
-src/AdminUI/node_modules/*
