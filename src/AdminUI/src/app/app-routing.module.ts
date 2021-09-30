@@ -27,6 +27,8 @@ import { LandingPagesManagerComponent } from './components/landing-pages-manager
 import { UsersComponent } from './components/users/users.component';
 import { LayoutLoginComponent } from './components/layout/layout-login/layout-login.component';
 import { UnsavedChangesGuard } from './guards/unsaved-changes.guard';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { PasswordResetComponent } from './components/password-reset/password-reset.component';
 
 const routes: Routes = [
   {
@@ -98,6 +100,8 @@ const routes: Routes = [
     children: [
       { path: '', component: LoginComponent },
       { path: 'registeruser', component: RegisterUserComponent },
+      { path: 'forgotpassword', component: ForgotPasswordComponent },
+      { path: 'resetpassword/:username', component: PasswordResetComponent },
     ],
   },
   {
