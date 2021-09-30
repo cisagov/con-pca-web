@@ -94,6 +94,7 @@ import { LoginService } from 'src/app/services/login.service';
 import { LayoutLoginComponent } from './components/layout/layout-login/layout-login.component';
 import { UnsavedComponent } from './components/dialogs/unsaved/unsaved.component';
 import { InvalidEmailDialogComponent } from './components/subscriptions/invalid-email-dialog/invalid-email-dialog.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
   return () => settingsHttpService.initializeApp();
@@ -160,6 +161,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     LayoutLoginComponent,
     UnsavedComponent,
     InvalidEmailDialogComponent,
+    ForgotPasswordComponent,
   ],
   imports: [
     BrowserModule,
@@ -210,4 +212,4 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
   exports: [MatSortModule],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
