@@ -1,8 +1,8 @@
 export class ResetPassword {
-    confirmation_code: string;
-    password: String;
+  confirmation_code: string;
+  password: String;
 }
 
 export class ForgotPassword {
-    Username: string;
+  Username: string;
 }

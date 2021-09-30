@@ -212,4 +212,4 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
   exports: [MatSortModule],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

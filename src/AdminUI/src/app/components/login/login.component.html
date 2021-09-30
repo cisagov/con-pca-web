@@ -12,8 +12,14 @@
       </div>
       <p>
         <mat-form-field appearance="outline">
-          <input type="text" matInput placeholder="Username" [formControl]="username" autocomplete="off"
-            [errorStateMatcher]="matcherusername" />
+          <input
+            type="text"
+            matInput
+            placeholder="Username"
+            [formControl]="username"
+            autocomplete="off"
+            [errorStateMatcher]="matcherusername"
+          />
           <mat-icon matPrefix style="margin-right: 10px">face</mat-icon>
           <mat-error *ngIf="username.hasError('required')">
             Username is <strong>required</strong>
@@ -23,8 +29,14 @@
 
       <p>
         <mat-form-field appearance="outline">
-          <input type="password" matInput placeholder="Password" [formControl]="password" autocomplete="off"
-            [errorStateMatcher]="matcherpassword" />
+          <input
+            type="password"
+            matInput
+            placeholder="Password"
+            [formControl]="password"
+            autocomplete="off"
+            [errorStateMatcher]="matcherpassword"
+          />
           <mat-icon matPrefix style="margin-right: 10px">lock</mat-icon>
           <mat-error *ngIf="password.hasError('required')">
             Password is <strong>required</strong>
@@ -37,14 +49,31 @@
       </p>
 
       <div class="button">
-        <button class="button-left" type="button" [routerLink]="['/login/forgotpassword']" mat-flat-button color="link">
+        <button
+          class="button-left"
+          type="button"
+          [routerLink]="['/login/forgotpassword']"
+          mat-flat-button
+          color="link"
+        >
           Forgot Password?
         </button>
-        <button class="button-right" type="submit" [disabled]="password.hasError('required')" mat-raised-button
-          color="accent" (click)="submit()">
+        <button
+          class="button-right"
+          type="submit"
+          [disabled]="password.hasError('required')"
+          mat-raised-button
+          color="accent"
+          (click)="submit()"
+        >
           Login
         </button>
-        <button class="button-right" [routerLink]="['/login/registeruser']" mat-button color="accent">
+        <button
+          class="button-right"
+          [routerLink]="['/login/registeruser']"
+          mat-button
+          color="accent"
+        >
           Register User
         </button>
       </div>
