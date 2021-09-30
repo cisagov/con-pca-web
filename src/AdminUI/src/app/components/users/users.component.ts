@@ -33,7 +33,6 @@ export class UsersComponent implements OnInit {
   getUsers() {
     return this.userService.getUsers().subscribe(
       (success: UserModel[]) => {
-        console.log(success);
         this.users = new MatTableDataSource<UserModel>(success);
         this.users.sort = this.sort;
         this.loading = false;
