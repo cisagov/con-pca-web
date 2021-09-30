@@ -26,6 +26,15 @@ mat-card-content {
 
 .button {
   display: flex;
+}
+
+.button-left {
+  justify-content: flex-start;
+  margin-right: 20px;
+}
+
+.button-right {
+  margin-left: 10px;
   justify-content: flex-end;
 }
 
