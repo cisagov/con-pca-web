@@ -2,7 +2,8 @@
 <div mat-dialog-content class="d-flex flex-column">
   <div class="d-flex flex-row">
     <mat-dialog-content class="mt-2 mb-2">
-      Select the report type, and the cycles you would like to include in your report.
+      Select the report type, and the cycles you would like to include in your
+      report.
     </mat-dialog-content>
   </div>
 </div>
@@ -10,18 +11,15 @@
 <div class="mt-2 mb-2 d-flex flex-column justify-content-end">
   <div class="cycle-select-wrapper">
     <mat-form-field
-    style="width:100%;"
+      style="width: 100%"
       class="cycle-select-dropdown"
       appearance="outline"
     >
       <mat-label>Report Type</mat-label>
-      <mat-select
-        [(value)]="reportType"
-      >
+      <mat-select [(value)]="reportType">
         <mat-option *ngFor="let t of reportTypes" [value]="t.value">
-          {{t.displayName}}
-          </mat-option
-        >
+          {{ t.displayName }}
+        </mat-option>
       </mat-select>
     </mat-form-field>
   </div>

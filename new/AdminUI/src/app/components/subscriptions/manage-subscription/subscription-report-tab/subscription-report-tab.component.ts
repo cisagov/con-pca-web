@@ -139,7 +139,9 @@ export class SubscriptionReportTab implements OnInit {
       sub_name: this.subscription.name,
     };
 
-    let dialogRef = this.dialog.open(CycleSelectReports, { data: dialogOptions });
+    let dialogRef = this.dialog.open(CycleSelectReports, {
+      data: dialogOptions,
+    });
 
     let cycle_uuids = [];
     dialogRef.afterClosed().subscribe((val) => {

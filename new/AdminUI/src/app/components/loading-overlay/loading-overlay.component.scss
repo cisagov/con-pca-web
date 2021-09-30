@@ -1,54 +1,54 @@
-.loading-container{
-    width: 100%;
-    position: absolute;
-    height: 100%;
-    z-index: 100;
+.loading-container {
+  width: 100%;
+  position: absolute;
+  height: 100%;
+  z-index: 100;
 }
-.loading-overlay{
-    width: 100%;
-    position: absolute;
-    height: 100%;
-    z-index: 100;
-    background-color: rgba(0,0,0,0.03);
-    border-radius: 12px;
+.loading-overlay {
+  width: 100%;
+  position: absolute;
+  height: 100%;
+  z-index: 100;
+  background-color: rgba(0, 0, 0, 0.03);
+  border-radius: 12px;
 }
-.loading-layer-one{
+.loading-layer-one {
 }
-.loading-layer-two{
-    width: calc(100% - 2px);
-    height: calc(100% - 2px);
-    margin-left: 1px;
-    margin-top: 1px;
+.loading-layer-two {
+  width: calc(100% - 2px);
+  height: calc(100% - 2px);
+  margin-left: 1px;
+  margin-top: 1px;
 }
-.loading-layer-three{
-    width: calc(100% - 4px);
-    height: calc(100% - 4px);
-    margin-left: 2px;
-    margin-top: 2px;
+.loading-layer-three {
+  width: calc(100% - 4px);
+  height: calc(100% - 4px);
+  margin-left: 2px;
+  margin-top: 2px;
 }
-.loading-layer-four{
-    width: calc(100% - 6px);
-    height: calc(100% - 6px);
-    margin-left: 3px;
-    margin-top: 3px;
+.loading-layer-four {
+  width: calc(100% - 6px);
+  height: calc(100% - 6px);
+  margin-left: 3px;
+  margin-top: 3px;
 }
-.loading-layer-five{
-    width: calc(100% - 8px);
-    height: calc(100% - 8px);
-    margin-left: 4px;
-    margin-top: 4px;
+.loading-layer-five {
+  width: calc(100% - 8px);
+  height: calc(100% - 8px);
+  margin-left: 4px;
+  margin-top: 4px;
 }
 
-.loading-text{
-    position:fixed;
-    width:100%;
-    display:flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    margin-top: 75px;
-    z-index: 2000;
+.loading-text {
+  position: fixed;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 75px;
+  z-index: 2000;
 }
-.loading-spinner{
-    display:flex;
+.loading-spinner {
+  display: flex;
 }

@@ -79,7 +79,7 @@ export class SubscriptionConfigTab
   primaryContact: ContactModel = new ContactModel();
   adminEmails = [];
 
-  startAt = new Date()
+  startAt = new Date();
   sendBy = new Date();
   endDate = new Date();
 
@@ -98,10 +98,9 @@ export class SubscriptionConfigTab
   };
 
   loading = true;
-  loadingText = "Loading Subscription"
-  
+  loadingText = 'Loading Subscription';
+
   submitted = false;
-  
 
   exprEmail =
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -207,9 +206,9 @@ export class SubscriptionConfigTab
       }
     });
   }
-  public test(){
+  public test() {
     this.loading = !this.loading;
-    console.log(this.loading)
+    console.log(this.loading);
   }
 
   public canDeactivate(): Promise<boolean> {
@@ -685,7 +684,7 @@ export class SubscriptionConfigTab
     this.submitted = true;
     // stop here if form is invalid
     if (this.subscribeForm.invalid) {
-      console.log(this.f)
+      console.log(this.f);
       return false;
     }
 
@@ -700,7 +699,7 @@ export class SubscriptionConfigTab
       return;
     }
     this.loading = true;
-    this.loadingText = "Starting subscription"
+    this.loadingText = 'Starting subscription';
 
     this.dialogRefConfirm = this.dialog.open(ConfirmComponent, {
       disableClose: false,
@@ -809,10 +808,10 @@ export class SubscriptionConfigTab
     if (!this.subValid()) {
       return;
     }
-    
-    console.log(this.loading)
+
+    console.log(this.loading);
     this.loading = !this.loading;
-    this.loadingText = "Saving Subscription"
+    this.loadingText = 'Saving Subscription';
 
     const sub = this.subscriptionSvc.subscription;
 
@@ -891,7 +890,7 @@ export class SubscriptionConfigTab
             messageText: 'Your subscription has been saved',
           },
         });
-        this.processing = false;       
+        this.processing = false;
         this.loading = !this.loading;
       },
       (error) => {
