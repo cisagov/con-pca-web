@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 import { AlertComponent } from 'src/app/components/dialogs/alert/alert.component';
 import { MatDialog } from '@angular/material/dialog';
 import { CycleService } from 'src/app/services/cycle.service';
-import { CycleSelect } from 'src/app/components/dialogs/cycle-select/cycle-select.component';
+import { CycleSelectReports } from 'src/app/components/dialogs/cycle-select-reports/cycle-select.component';
 
 @Component({
   selector: 'subscription-report-tab',
@@ -139,13 +139,14 @@ export class SubscriptionReportTab implements OnInit {
       sub_name: this.subscription.name,
     };
 
-    let dialogRef = this.dialog.open(CycleSelect, { data: dialogOptions });
+    let dialogRef = this.dialog.open(CycleSelectReports, { data: dialogOptions });
 
     let cycle_uuids = [];
     dialogRef.afterClosed().subscribe((val) => {
-      cycle_uuids = val;
+      cycle_uuids = val.cycles;
+      var reportType = val.reportType;
       if (cycle_uuids.length > 0) {
-        this.subscriptionSvc.downloadReport(cycle_uuids, 'monthly').subscribe(
+        this.subscriptionSvc.downloadReport(cycle_uuids, reportType).subscribe(
           (success) => {
             this.downloadObject(`subscription_cycleset_report.pdf`, success);
           },

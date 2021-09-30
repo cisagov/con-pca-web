@@ -79,7 +79,7 @@ export class SubscriptionConfigTab
   primaryContact: ContactModel = new ContactModel();
   adminEmails = [];
 
-  startAt = new Date();
+  startAt = new Date()
   sendBy = new Date();
   endDate = new Date();
 
@@ -96,6 +96,12 @@ export class SubscriptionConfigTab
   validationErrors = {
     emailDoesntMatchDomain: '',
   };
+
+  loading = true;
+  loadingText = "Loading Subscription"
+  
+  submitted = false;
+  
 
   exprEmail =
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -193,12 +199,17 @@ export class SubscriptionConfigTab
     this.routeSub = this.route.params.subscribe((params) => {
       if (!params.id) {
         this.loadPageForCreate(params);
+        this.loading = false;
       } else {
         this.subscriptionSvc.subBehaviorSubject.subscribe((data) => {
           this.loadPageForEdit(data);
         });
       }
     });
+  }
+  public test(){
+    this.loading = !this.loading;
+    console.log(this.loading)
   }
 
   public canDeactivate(): Promise<boolean> {
@@ -440,6 +451,7 @@ export class SubscriptionConfigTab
     this.enableDisableFields();
     this.getRandomTemplates();
     this.setEndTimes();
+    this.loading = false;
   }
   async getRandomTemplates() {
     //  Get Templates Selected
@@ -518,6 +530,8 @@ export class SubscriptionConfigTab
       s.templates_selected.low
     );
     this.setEndTimes();
+
+    this.loading = false;
   }
 
   /**
@@ -668,8 +682,10 @@ export class SubscriptionConfigTab
    * Tests the form for validity.
    */
   subValid() {
+    this.submitted = true;
     // stop here if form is invalid
     if (this.subscribeForm.invalid) {
+      console.log(this.f)
       return false;
     }
 
@@ -683,6 +699,8 @@ export class SubscriptionConfigTab
     if (!this.subValid()) {
       return;
     }
+    this.loading = true;
+    this.loadingText = "Starting subscription"
 
     this.dialogRefConfirm = this.dialog.open(ConfirmComponent, {
       disableClose: false,
@@ -787,9 +805,14 @@ export class SubscriptionConfigTab
    * Submits the form to create or save a Subscription.
    */
   save() {
+    this.submitted = true;
     if (!this.subValid()) {
       return;
     }
+    
+    console.log(this.loading)
+    this.loading = !this.loading;
+    this.loadingText = "Saving Subscription"
 
     const sub = this.subscriptionSvc.subscription;
 
@@ -843,8 +866,10 @@ export class SubscriptionConfigTab
         });
         this.processing = false;
         this.router.navigate(['subscriptions']);
+        this.loading = !this.loading;
       },
       (error) => {
+        this.loading = !this.loading;
         this.processing = false;
         this.dialog.open(AlertComponent, {
           data: {
@@ -866,9 +891,11 @@ export class SubscriptionConfigTab
             messageText: 'Your subscription has been saved',
           },
         });
-        this.processing = false;
+        this.processing = false;       
+        this.loading = !this.loading;
       },
       (error) => {
+        this.loading = !this.loading;
         this.processing = false;
         console.log(error);
         this.dialog.open(AlertComponent, {
@@ -1116,6 +1143,7 @@ export class SubscriptionConfigTab
   }
 
   checkValid() {
+    this.submitted = true;
     const cycleLength: number = +this.f.cycle_length_minutes.value;
     const targetCount = this.f.csvText.value.trim().split('\n').length;
     this.subscriptionSvc.checkValid(cycleLength, targetCount).subscribe(
