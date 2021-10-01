@@ -99,6 +99,11 @@ export class SubscriptionConfigTab
     emailDoesntMatchDomain: '',
   };
 
+  loading = true;
+  loadingText = "Loading Subscription"
+
+  submitted = false;
+
   exprEmail =
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -194,6 +199,7 @@ export class SubscriptionConfigTab
     this.routeSub = this.route.params.subscribe((params) => {
       if (!params.id) {
         this.loadPageForCreate(params);
+        this.loading = false;
       } else {
         this.subscriptionSvc.subBehaviorSubject.subscribe((data) => {
           this.loadPageForEdit(data);
@@ -363,6 +369,7 @@ export class SubscriptionConfigTab
     );
     valueFormControl.setValue(convertedVal);
     this.setEndTimes();
+    
     return valueFormControl.value;
   }
 
@@ -438,6 +445,7 @@ export class SubscriptionConfigTab
     this.enableDisableFields();
     this.getRandomTemplates();
     this.setEndTimes();
+    this.loading = false;
   }
   async getRandomTemplates() {
     //  Get Templates Selected
@@ -500,6 +508,7 @@ export class SubscriptionConfigTab
       s.templates_selected
     );
     this.setEndTimes();
+    this.loading = false;
     this.checkValid(false);
   }
 
@@ -651,6 +660,7 @@ export class SubscriptionConfigTab
    * Tests the form for validity.
    */
   subValid() {
+    this.submitted = true;
     // stop here if form is invalid
     if (this.subscribeForm.invalid) {
       return false;
@@ -666,6 +676,9 @@ export class SubscriptionConfigTab
     if (!this.subValid()) {
       return;
     }
+  
+    this.loading = true;
+    this.loadingText = "Starting subscription"
 
     this.dialogRefConfirm = this.dialog.open(ConfirmComponent, {
       disableClose: false,
@@ -695,6 +708,7 @@ export class SubscriptionConfigTab
                     });
                   this.enableDisableFields();
                   this.processing = false;
+                  this.loading = false;
                   this.dialog.open(AlertComponent, {
                     data: {
                       title: '',
@@ -773,6 +787,9 @@ export class SubscriptionConfigTab
     if (!this.subValid()) {
       return;
     }
+  
+    this.loading = true;
+    this.loadingText = "Saving subscription"
 
     const sub = this.subscriptionSvc.subscription;
 
@@ -818,6 +835,7 @@ export class SubscriptionConfigTab
   createSubscription(sub: SubscriptionModel) {
     this.subscriptionSvc.submitSubscription(sub).subscribe(
       (resp: any) => {
+        this.loading = false;
         this.dialog.open(AlertComponent, {
           data: {
             title: '',
@@ -829,6 +847,7 @@ export class SubscriptionConfigTab
       },
       (error) => {
         this.processing = false;
+        this.loading = false;
         this.dialog.open(AlertComponent, {
           data: {
             title: 'Error',
@@ -843,6 +862,7 @@ export class SubscriptionConfigTab
   updateSubscription(sub: SubscriptionModel) {
     this.subscriptionSvc.patchSubscription(sub).subscribe(
       (resp: any) => {
+        this.loading = false;
         this.dialog.open(AlertComponent, {
           data: {
             title: '',
@@ -853,6 +873,7 @@ export class SubscriptionConfigTab
       },
       (error) => {
         this.processing = false;
+        this.loading = false;
         console.log(error);
         this.dialog.open(AlertComponent, {
           data: {
