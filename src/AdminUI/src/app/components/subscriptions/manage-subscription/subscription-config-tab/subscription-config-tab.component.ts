@@ -1,4 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  Input,
+  SimpleChanges,
+} from '@angular/core';
 import {
   MatDialogConfig,
   MatDialog,
@@ -98,6 +104,18 @@ export class SubscriptionConfigTab
   validationErrors = {
     emailDoesntMatchDomain: '',
   };
+
+  loading = true;
+  loadingText = 'Loading Subscription';
+
+  @Input() showLoading: boolean;
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.showLoading) {
+      this.loading = changes.showLoading.currentValue;
+    }
+  }
+
+  submitted = false;
 
   exprEmail =
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -363,6 +381,7 @@ export class SubscriptionConfigTab
     );
     valueFormControl.setValue(convertedVal);
     this.setEndTimes();
+
     return valueFormControl.value;
   }
 
@@ -438,6 +457,7 @@ export class SubscriptionConfigTab
     this.enableDisableFields();
     this.getRandomTemplates();
     this.setEndTimes();
+    this.loading = false;
   }
   async getRandomTemplates() {
     //  Get Templates Selected
@@ -651,6 +671,7 @@ export class SubscriptionConfigTab
    * Tests the form for validity.
    */
   subValid() {
+    this.submitted = true;
     // stop here if form is invalid
     if (this.subscribeForm.invalid) {
       return false;
@@ -675,6 +696,8 @@ export class SubscriptionConfigTab
 
     this.dialogRefConfirm.afterClosed().subscribe((result) => {
       if (result) {
+        this.loading = true;
+        this.loadingText = 'Starting subscription';
         this.processing = true;
         this.setTemplatesSelected();
         this.subscription.target_email_list =
@@ -695,6 +718,7 @@ export class SubscriptionConfigTab
                     });
                   this.enableDisableFields();
                   this.processing = false;
+                  this.loading = false;
                   this.dialog.open(AlertComponent, {
                     data: {
                       title: '',
@@ -731,6 +755,8 @@ export class SubscriptionConfigTab
 
     this.dialogRefConfirm.afterClosed().subscribe((result) => {
       if (result) {
+        this.loading = true;
+        this.loadingText = 'Stopping subscription';
         this.processing = true;
         this.subscriptionSvc
           .stopSubscription(this.subscription.subscription_uuid)
@@ -743,6 +769,7 @@ export class SubscriptionConfigTab
                 });
               this.enableDisableFields();
               this.processing = false;
+              this.loading = false;
               this.dialog.open(AlertComponent, {
                 data: {
                   title: '',
@@ -773,6 +800,9 @@ export class SubscriptionConfigTab
     if (!this.subValid()) {
       return;
     }
+
+    this.loading = true;
+    this.loadingText = 'Saving subscription';
 
     const sub = this.subscriptionSvc.subscription;
 
@@ -818,6 +848,7 @@ export class SubscriptionConfigTab
   createSubscription(sub: SubscriptionModel) {
     this.subscriptionSvc.submitSubscription(sub).subscribe(
       (resp: any) => {
+        this.loading = false;
         this.dialog.open(AlertComponent, {
           data: {
             title: '',
@@ -829,6 +860,7 @@ export class SubscriptionConfigTab
       },
       (error) => {
         this.processing = false;
+        this.loading = false;
         this.dialog.open(AlertComponent, {
           data: {
             title: 'Error',
@@ -843,6 +875,7 @@ export class SubscriptionConfigTab
   updateSubscription(sub: SubscriptionModel) {
     this.subscriptionSvc.patchSubscription(sub).subscribe(
       (resp: any) => {
+        this.loading = false;
         this.dialog.open(AlertComponent, {
           data: {
             title: '',
@@ -853,6 +886,7 @@ export class SubscriptionConfigTab
       },
       (error) => {
         this.processing = false;
+        this.loading = false;
         console.log(error);
         this.dialog.open(AlertComponent, {
           data: {

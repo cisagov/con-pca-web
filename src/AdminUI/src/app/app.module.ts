@@ -32,11 +32,14 @@ import { TagsManagerComponent } from './components/tags-page/tags-manager/tags-m
 import { ListFilterPipe } from './pipes/list-filter.pipe';
 import { NullishCoalescePipe } from './pipes/nullish-coalesce.pipe';
 import { AutosizeModule } from 'node_modules/ngx-autosize';
+
 import { AddCustomerComponent } from './components/customer/add-customer/add-customer.component';
 import { SubscriptionService } from './services/subscription.service';
 import { ThemeService } from './services/theme.service';
 import { LayoutMainService } from './services/layout-main.service';
-import { CycleSelect } from './components/dialogs/cycle-select/cycle-select.component';
+import { CycleSelect } from './components/dialogs/cycle-select-default/cycle-select.component';
+import { CycleSelectReports } from './components/dialogs/cycle-select-reports/cycle-select-reports.component';
+import { LoadingOverlayComponent } from './components/loading-overlay/loading-overlay.component';
 
 import { TemplatesPageComponent } from './components/templates-page/templates-page.component';
 import { TagsPageComponent } from './components/tags-page/tags-page.component';
@@ -164,6 +167,8 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     InvalidEmailDialogComponent,
     ForgotPasswordComponent,
     PasswordResetComponent,
+    LoadingOverlayComponent,
+    CycleSelectReports,
   ],
   imports: [
     BrowserModule,

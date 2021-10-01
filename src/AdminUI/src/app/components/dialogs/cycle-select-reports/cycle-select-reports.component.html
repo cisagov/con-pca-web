@@ -1,0 +1,51 @@
+<h1 mat-dialog-title>{{ title }}</h1>
+<div mat-dialog-content class="d-flex flex-column">
+  <div class="d-flex flex-row">
+    <mat-dialog-content class="mt-2 mb-2">
+      Select the report type, and the cycles you would like to include in your
+      report.
+    </mat-dialog-content>
+  </div>
+</div>
+
+<div class="mt-2 mb-2 d-flex flex-column justify-content-end">
+  <div class="cycle-select-wrapper">
+    <mat-form-field
+      style="width: 100%"
+      class="cycle-select-dropdown"
+      appearance="outline"
+    >
+      <mat-label>Report Type</mat-label>
+      <mat-select [(value)]="reportType">
+        <mat-option *ngFor="let t of reportTypes" [value]="t.value">
+          {{ t.displayName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <mat-dialog-actions class="mt-2 mb-2 d-flex flex-column">
+    <div style="display: flex; max-height: 60vw; overflow: scroll">
+      <mat-selection-list #cycles>
+        <mat-list-option
+          style="width: 20em"
+          [value]="cycle.cycle_uuid"
+          [selected]="true"
+          *ngFor="let cycle of cycleList"
+        >
+          {{ cycle.start_date | UTCtoReadableTime }} - {{ cycle.target_count }}
+        </mat-list-option>
+      </mat-selection-list>
+    </div>
+    <div class="d-flex" style="align-self: end">
+      <button mat-raised-button color="secondary" (click)="this.deselectAll()">
+        Deslect All
+      </button>
+      <button mat-raised-button color="secondary" (click)="this.selectAll()">
+        Select All
+      </button>
+      <button mat-raised-button color="primary" (click)="this.selectCycles()">
+        Select
+      </button>
+    </div>
+  </mat-dialog-actions>
+</div>
