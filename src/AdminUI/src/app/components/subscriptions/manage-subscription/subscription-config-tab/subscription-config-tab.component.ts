@@ -677,9 +677,6 @@ export class SubscriptionConfigTab
       return;
     }
 
-    this.loading = true;
-    this.loadingText = 'Starting subscription';
-
     this.dialogRefConfirm = this.dialog.open(ConfirmComponent, {
       disableClose: false,
     });
@@ -688,6 +685,8 @@ export class SubscriptionConfigTab
 
     this.dialogRefConfirm.afterClosed().subscribe((result) => {
       if (result) {
+        this.loading = true;
+        this.loadingText = 'Starting subscription';
         this.processing = true;
         this.setTemplatesSelected();
         this.subscription.target_email_list =
@@ -745,6 +744,8 @@ export class SubscriptionConfigTab
 
     this.dialogRefConfirm.afterClosed().subscribe((result) => {
       if (result) {
+        this.loading = true;
+        this.loadingText = 'Stopping subscription';
         this.processing = true;
         this.subscriptionSvc
           .stopSubscription(this.subscription.subscription_uuid)
@@ -757,6 +758,7 @@ export class SubscriptionConfigTab
                 });
               this.enableDisableFields();
               this.processing = false;
+              this.loading = false;
               this.dialog.open(AlertComponent, {
                 data: {
                   title: '',
