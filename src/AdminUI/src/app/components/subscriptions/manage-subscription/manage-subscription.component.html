@@ -3,7 +3,7 @@
   [selectedIndex]="selectedTabIndex"
 >
   <mat-tab label="Subscription Configuration">
-    <subscription-config-tab></subscription-config-tab>
+    <subscription-config-tab [showLoading]="loading"></subscription-config-tab>
   </mat-tab>
   <mat-tab label="Statistics">
     <subscription-stats-tab></subscription-stats-tab>

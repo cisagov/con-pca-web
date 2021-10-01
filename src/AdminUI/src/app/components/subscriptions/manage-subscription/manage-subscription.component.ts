@@ -22,6 +22,7 @@ export class ManageSubscriptionComponent
   subscription: SubscriptionModel;
 
   sub_subscription: any;
+  loading = true;
 
   selectedTabIndex: number;
 
@@ -74,6 +75,7 @@ export class ManageSubscriptionComponent
     const sub = this.subscriptionSvc.subscription;
     sub.subscription_uuid = params.id;
 
+    console.log('loading');
     this.sub_subscription = this.subscriptionSvc
       .getSubscription(sub.subscription_uuid)
       .subscribe(
@@ -82,11 +84,14 @@ export class ManageSubscriptionComponent
             .getSubscriptionCycles(sub.subscription_uuid)
             .subscribe((cycles) => {
               success.cycles = cycles;
+              console.log('loaded');
+              this.loading = false;
               this.setPageForEdit(success);
             });
         },
         (error) => {
           console.log(error);
+          this.loading = false;
           this.router.navigate(['/subscriptions']);
           this.dialog.open(AlertComponent, {
             // Parse error here

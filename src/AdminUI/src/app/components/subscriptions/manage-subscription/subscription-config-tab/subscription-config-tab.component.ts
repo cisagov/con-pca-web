@@ -1,4 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  Input,
+  SimpleChanges,
+} from '@angular/core';
 import {
   MatDialogConfig,
   MatDialog,
@@ -102,6 +108,13 @@ export class SubscriptionConfigTab
   loading = true;
   loadingText = 'Loading Subscription';
 
+  @Input() showLoading: boolean;
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.showLoading) {
+      this.loading = changes.showLoading.currentValue;
+    }
+  }
+
   submitted = false;
 
   exprEmail =
@@ -199,7 +212,6 @@ export class SubscriptionConfigTab
     this.routeSub = this.route.params.subscribe((params) => {
       if (!params.id) {
         this.loadPageForCreate(params);
-        this.loading = false;
       } else {
         this.subscriptionSvc.subBehaviorSubject.subscribe((data) => {
           this.loadPageForEdit(data);
@@ -508,7 +520,6 @@ export class SubscriptionConfigTab
       s.templates_selected
     );
     this.setEndTimes();
-    this.loading = false;
     this.checkValid(false);
   }
 
