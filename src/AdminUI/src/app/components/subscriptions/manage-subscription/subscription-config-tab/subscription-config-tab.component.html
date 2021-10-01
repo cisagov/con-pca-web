@@ -1,4 +1,7 @@
-<app-loading-overlay [showLoading]="loading" [displayText]="loadingText"></app-loading-overlay>
+<app-loading-overlay
+  [showLoading]="loading"
+  [displayText]="loadingText"
+></app-loading-overlay>
 <div [className]="pageMode == 'CREATE' ? 'inactive' : 'active_subscription'">
   <form *ngIf="subscription" [formGroup]="subscribeForm">
     <div class="d-flex flex-column mb-5">
@@ -537,108 +540,134 @@
           </button>
         </div>
         <div class="bottom-errors">
-          <mat-error style="display: flex;"
+          <mat-error
+            style="display: flex"
             *ngIf="f.selectedCustomerUuid.errors?.required && this.submitted"
             class="invalid-feedback"
           >
             A Customer must be selected
           </mat-error>
-          <mat-error style="display: flex;"
+          <mat-error
+            style="display: flex"
             *ngIf="f.primaryContact.errors?.required && this.submitted"
             class="invalid-feedback"
           >
             A primary contact must be selected
           </mat-error>
-          <mat-error style="display: flex;"
+          <mat-error
+            style="display: flex"
             *ngIf="f.adminEmail.errors?.required && this.submitted"
             class="invalid-feedback"
           >
             Admin email contact must be selected
           </mat-error>
-          <mat-error style="display: flex;"
+          <mat-error
+            style="display: flex"
             *ngIf="f.startDate.errors?.required && this.submitted"
             class="invalid-feedback"
           >
             Start Date is required
           </mat-error>
-          <mat-error style="display: flex;"
+          <mat-error
+            style="display: flex"
             *ngIf="f.startDate.errors?.matDatepickerMin && this.submitted"
             class="invalid-feedback"
           >
             Start Date cannot be in the past
           </mat-error>
-          <mat-error style="display: flex;"
+          <mat-error
+            style="display: flex"
             *ngIf="f.sendingProfile.errors?.required && this.submitted"
             class="invalid-feedback"
           >
             Sending Profile required
           </mat-error>
-          <mat-error style="display: flex;"
+          <mat-error
+            style="display: flex"
             *ngIf="f.targetDomain.errors?.required && this.submitted"
             class="invalid-feedback"
           >
             Target Email Domain is a a required field
           </mat-error>
-          <mat-error style="display: flex;"
+          <mat-error
+            style="display: flex"
             *ngIf="f.targetDomain.errors?.invalidDomain && this.submitted"
             class="invalid-feedback"
           >
             Must be a valid domain format - '@example.com'
           </mat-error>
-          <mat-error style="display: flex;"
+          <mat-error
+            style="display: flex"
             *ngIf="f.csvText.errors?.invalidEmailFormat && this.submitted"
             class="invalid-feedback"
           >
             One or more email addresses are invalid
           </mat-error>
-          <mat-error style="display: flex;" *ngIf="f.csvText.errors?.required && this.submitted" class="invalid-feedback">
+          <mat-error
+            style="display: flex"
+            *ngIf="f.csvText.errors?.required && this.submitted"
+            class="invalid-feedback"
+          >
             At least 1 target must be defined
           </mat-error>
-          <mat-error style="display: flex;"
+          <mat-error
+            style="display: flex"
             *ngIf="
-              f.csvText.errors?.invalidTargetCsv && !f.csvText.errors?.required && this.submitted
+              f.csvText.errors?.invalidTargetCsv &&
+              !f.csvText.errors?.required &&
+              this.submitted
             "
             class="invalid-feedback"
           >
             All target lines must have an email and contain only 4 parts.
           </mat-error>
-          <mat-error style="display: flex;"
+          <mat-error
+            style="display: flex"
             *ngIf="
               f.csvText.errors?.emailDoesntMatchDomain &&
-              !f.csvText.errors?.required && this.submitted
+              !f.csvText.errors?.required &&
+              this.submitted
             "
             class="invalid-feedback"
           >
-            The email {{ this.validationErrors.emailDoesntMatchDomain }} does not
-            match any of the domain targets specified in the domain targets field
+            The email {{ this.validationErrors.emailDoesntMatchDomain }} does
+            not match any of the domain targets specified in the domain targets
+            field
           </mat-error>
-          <mat-error style="display: flex;"
+          <mat-error
+            style="display: flex"
             *ngIf="
-              f.csvText.errors?.noTargetDomain && !f.csvText.errors?.required && this.submitted
+              f.csvText.errors?.noTargetDomain &&
+              !f.csvText.errors?.required &&
+              this.submitted
             "
             class="invalid-feedback"
           >
             A Target Email Domain must be specified
           </mat-error>
-          <mat-error style="display: flex;"
+          <mat-error
+            style="display: flex"
             *ngIf="f.subDisplayTime.errors?.required && this.submitted"
             class="invalid-feedback"
           >
             Run time is a required field
           </mat-error>
-          <mat-error style="display: flex;"
+          <mat-error
+            style="display: flex"
             *ngIf="f.subDisplayTime.errors?.outOfRange && this.submitted"
             class="invalid-feedback"
           >
             Send time must be between 15 minutes and 360 days
           </mat-error>
-          <mat-error style="display: flex;"
+          <mat-error
+            style="display: flex"
             *ngIf="f.cooldownDisplayTime.errors?.outOfRange && this.submitted"
             class="invalid-feedback"
           >
             Cooldown time must be between 15 minutes and 360 days
           </mat-error>
-          <mat-error style="display: flex;"
+          <mat-error
+            style="display: flex"
             *ngIf="f.reportDisplayTime.errors?.outOfRange && this.submitted"
             class="invalid-feedback"
           >

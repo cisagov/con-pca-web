@@ -11,13 +11,13 @@ export class CycleSelectReports implements OnInit {
   public title = 'Cycles for subscription - ';
   public confirmMessage: string;
   public cycleList: any = [];
-  public reportType = "monthly";
+  public reportType = 'monthly';
 
   public reportTypes = [
-    {'displayName': 'Monthly', 'value':'monthly'},
-    {'displayName': 'Cycle', 'value':'cycle'},
-    {'displayName': 'Yearly', 'value':'yearly'}
-  ]
+    { displayName: 'Monthly', value: 'monthly' },
+    { displayName: 'Cycle', value: 'cycle' },
+    { displayName: 'Yearly', value: 'yearly' },
+  ];
 
   @ViewChild('cycles') cycleSelectionList: MatSelectionList;
 
@@ -41,10 +41,11 @@ export class CycleSelectReports implements OnInit {
 
   selectCycles() {
     this.dialogRef.close({
-      'cycles':this.cycleSelectionList.selectedOptions.selected.map((item) => item.value),
-      'reportType':this.reportType
-    }
-    );
+      cycles: this.cycleSelectionList.selectedOptions.selected.map(
+        (item) => item.value
+      ),
+      reportType: this.reportType,
+    });
   }
 
   /**

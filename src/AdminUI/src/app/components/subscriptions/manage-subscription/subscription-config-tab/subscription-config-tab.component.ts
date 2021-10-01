@@ -100,7 +100,7 @@ export class SubscriptionConfigTab
   };
 
   loading = true;
-  loadingText = "Loading Subscription"
+  loadingText = 'Loading Subscription';
 
   submitted = false;
 
@@ -369,7 +369,7 @@ export class SubscriptionConfigTab
     );
     valueFormControl.setValue(convertedVal);
     this.setEndTimes();
-    
+
     return valueFormControl.value;
   }
 
@@ -676,9 +676,9 @@ export class SubscriptionConfigTab
     if (!this.subValid()) {
       return;
     }
-  
+
     this.loading = true;
-    this.loadingText = "Starting subscription"
+    this.loadingText = 'Starting subscription';
 
     this.dialogRefConfirm = this.dialog.open(ConfirmComponent, {
       disableClose: false,
@@ -787,9 +787,9 @@ export class SubscriptionConfigTab
     if (!this.subValid()) {
       return;
     }
-  
+
     this.loading = true;
-    this.loadingText = "Saving subscription"
+    this.loadingText = 'Saving subscription';
 
     const sub = this.subscriptionSvc.subscription;
 
