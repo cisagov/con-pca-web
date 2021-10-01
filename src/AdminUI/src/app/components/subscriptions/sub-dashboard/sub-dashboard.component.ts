@@ -44,6 +44,9 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
 
   temp_angular_subs = [];
 
+  loading = false;
+  loadingText = '';
+
   constructor(
     public cycleSvc: CycleService,
     public chartsSvc: ChartsService,
@@ -120,6 +123,8 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
       this.chartSent.colorScheme = this.schemeSent;
 
       // get content
+      this.loading = true;
+      this.loadingText = 'Loading stats';
       this.cycleSvc
         .getCycleStats(
           this.selected_cycle.cycle_uuid,
@@ -141,6 +146,7 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
           }
 
           this.aggregateCounts = stats['aggregate_stats'];
+          this.loading = false;
         });
     }
   }
