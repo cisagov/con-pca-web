@@ -16,10 +16,8 @@
         >
           <mat-option *ngFor="let c of subscription.cycles" [value]="c">
             {{ c.start_date | UTCtoReadableTime }} -
-            {{ c.end_date | UTCtoReadableTime }} ({{
-              c.target_count
-            }})</mat-option
-          >
+            {{ c.end_date | UTCtoReadableTime }} ({{ c.target_count }})
+          </mat-option>
         </mat-select>
       </mat-form-field>
     </div>
@@ -62,8 +60,9 @@
       </button>
       <button
         mat-raised-button
-        color="primary"
+        color="gray"
         class="mb-3"
+        [disabled]="true"
         (click)="downloadReport('yearly'); $event.preventDefault()"
       >
         Download Yearly Report
@@ -87,8 +86,9 @@
       </button>
       <button
         mat-raised-button
-        color="accent"
+        color="gray"
         class="mb-3"
+        [disabled]="true"
         (click)="sendReport('yearly'); $event.preventDefault()"
       >
         Send Yearly Report</button
