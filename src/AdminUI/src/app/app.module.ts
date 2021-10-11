@@ -99,6 +99,8 @@ import { UnsavedComponent } from './components/dialogs/unsaved/unsaved.component
 import { InvalidEmailDialogComponent } from './components/subscriptions/invalid-email-dialog/invalid-email-dialog.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { PasswordResetComponent } from './components/password-reset/password-reset.component';
+import { RecommendationsComponent } from './components/recommendations/recommendations.component';
+import { RecommendationsService } from './services/recommendations.service';
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
   return () => settingsHttpService.initializeApp();
@@ -169,6 +171,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     PasswordResetComponent,
     LoadingOverlayComponent,
     CycleSelectReports,
+    RecommendationsComponent,
   ],
   imports: [
     BrowserModule,
@@ -197,6 +200,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     HttpClient,
     UserAuthService,
     LoginService,
+    RecommendationsService,
     [DatePipe],
     { provide: MAT_DIALOG_DATA, useValue: [] },
     {

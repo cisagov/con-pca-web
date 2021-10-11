@@ -29,6 +29,7 @@ import { LayoutLoginComponent } from './components/layout/layout-login/layout-lo
 import { UnsavedChangesGuard } from './guards/unsaved-changes.guard';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { PasswordResetComponent } from './components/password-reset/password-reset.component';
+import { RecommendationsComponent } from './components/recommendations/recommendations.component';
 
 const routes: Routes = [
   {
@@ -157,6 +158,12 @@ const routes: Routes = [
     component: LayoutMainComponent,
     canActivate: [AuthGuard],
     children: [{ path: '', component: LandingPagesManagerComponent }],
+  },
+  {
+    path: 'recommendations',
+    component: LayoutMainComponent,
+    canActivate: [AuthGuard],
+    children: [{ path: '', component: RecommendationsComponent }],
   },
   {
     path: '',
