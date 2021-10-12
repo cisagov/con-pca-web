@@ -1,25 +1,25 @@
 export class TemplateAppearanceModel {
-  grammar: number;
-  link_domain: number;
-  logo_graphics: number;
+  grammar: any;
+  link_domain: any;
+  logo_graphics: any;
 }
 
 export class TemplateSenderModel {
-  external: number;
-  internal: number;
-  authoritative: number;
+  external: any;
+  internal: any;
+  authoritative: any;
 }
 
 export class TemplateRelevancyModel {
-  organization: number;
-  public_news: number;
+  organization: any;
+  public_news: any;
 }
 
 export class TemplateBehaviorModel {
-  fear: number;
-  duty_obligation: number;
-  curiosity: number;
-  greed: number;
+  fear: any;
+  duty_obligation: any;
+  curiosity: any;
+  greed: any;
 }
 
 export class TemplateImageModel {
