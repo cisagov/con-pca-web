@@ -1,5 +1,5 @@
 export class SendingProfileModel {
-  sending_profile_uuid: string;
+  _id: string;
   name: string;
   username: string;
   password: string;

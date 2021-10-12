@@ -18,25 +18,25 @@ export class SendingProfileService {
     return this.http.get(url);
   }
 
-  public getProfile(uuid: string) {
-    const url = `${this.settingsService.settings.apiUrl}/api/sendingprofile/${uuid}/`;
+  public getProfile(id: string) {
+    const url = `${this.settingsService.settings.apiUrl}/api/sendingprofile/${id}/`;
     return this.http.get(url);
   }
 
   public saveProfile(sp: SendingProfileModel) {
-    if (!sp.sending_profile_uuid) {
+    if (!sp._id) {
       // if new, post
       const url = `${this.settingsService.settings.apiUrl}/api/sendingprofiles/`;
       return this.http.post(url, sp);
     } else {
       // else patch
-      const url = `${this.settingsService.settings.apiUrl}/api/sendingprofile/${sp.sending_profile_uuid}/`;
+      const url = `${this.settingsService.settings.apiUrl}/api/sendingprofile/${sp._id}/`;
       return this.http.put(url, sp);
     }
   }
 
-  public deleteProfile(uuid: string) {
-    const url = `${this.settingsService.settings.apiUrl}/api/sendingprofile/${uuid}`;
+  public deleteProfile(id: string) {
+    const url = `${this.settingsService.settings.apiUrl}/api/sendingprofile/${id}`;
     return this.http.delete(url);
   }
 

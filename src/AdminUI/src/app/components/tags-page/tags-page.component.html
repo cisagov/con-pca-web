@@ -11,13 +11,6 @@
       />
       <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
-
-    <!-- CREATE Tags -->
-    <!-- <div class="d-inline-flex flex-column ml-2">
-      <button mat-raised-button color="primary" routerLink="/tagsmanager">
-        New Tag
-      </button>
-    </div> -->
   </div>
   <div class="col p-0 w-100">
     <div
@@ -56,38 +49,6 @@
           >tag_type</mat-header-cell
         >
         <mat-cell *matCellDef="let row">{{ row.tag_type }}</mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="action">
-        <mat-header-cell *matHeaderCellDef>Edit/Delete</mat-header-cell>
-        <mat-cell *matCellDef="let row">
-          <button
-            class="table-btn-icon"
-            mat-flat-button
-            color="primary"
-            *ngIf="canEditDelete(row)"
-          >
-            <mat-icon
-              class="
-                mat-icon
-                table-btn-icon-size
-                material-icons
-                mat-icon-no-color
-              "
-              (click)="editTags(row)"
-              >edit</mat-icon
-            >
-          </button>
-          <button
-            class="table-btn-icon"
-            mat-flat-button
-            color="warn"
-            (click)="confirmDeleteTags(row)"
-            *ngIf="canEditDelete(row)"
-          >
-            <mat-icon>delete</mat-icon>
-          </button>
-        </mat-cell>
       </ng-container>
 
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

@@ -10,5 +10,5 @@ export class TestEmailModel {
   position: string;
   url: string;
   smtp: SendingProfileModel;
-  customer_uuid: string;
+  customer_id: string;
 }

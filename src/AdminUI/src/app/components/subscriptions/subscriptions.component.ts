@@ -76,9 +76,7 @@ export class SubscriptionsComponent implements OnInit {
             this.loading = false;
             const customerSubscriptions: ICustomerSubscription[] = [];
             subscriptions.map((s: SubscriptionModel) => {
-              const cc = customers.find(
-                (o) => o.customer_uuid === s.customer_uuid
-              );
+              const cc = customers.find((o) => o._id === s.customer_id);
               const customerSubscription: ICustomerSubscription = {
                 customer: cc,
                 subscription: s,
@@ -129,10 +127,7 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   public editSubscription(row) {
-    this.router.navigate([
-      '/view-subscription',
-      row.subscription.subscription_uuid,
-    ]);
+    this.router.navigate(['/view-subscription', row.subscription._id]);
   }
   public createSubscription() {
     this.router.navigate(['/create-subscription']);

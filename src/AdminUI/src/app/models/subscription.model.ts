@@ -26,9 +26,10 @@ export class SubscriptionNotificationModel {
 }
 
 export class SubscriptionModel {
-  subscription_uuid: string;
+  _id: string;
   name: string;
-  customer_uuid: string;
+  customer_id: string;
+  sending_profile_id: string;
   target_domain: string;
   start_date: Date;
   primary_contact: ContactModel;
@@ -36,7 +37,6 @@ export class SubscriptionModel {
   status: string;
   target_email_list: TargetModel[] = [];
   templates_selected: string[];
-  sending_profile_uuid: string;
   active: boolean;
   continuous_subscription: boolean;
   cycle_length_minutes: number;

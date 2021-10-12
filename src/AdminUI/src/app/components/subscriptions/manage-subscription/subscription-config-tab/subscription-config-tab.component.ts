@@ -158,7 +158,7 @@ export class SubscriptionConfigTab
     // build form
     this.subscribeForm = new FormGroup(
       {
-        selectedCustomerUuid: new FormControl('', {
+        selectedCustomerId: new FormControl('', {
           validators: Validators.required,
         }),
         primaryContact: new FormControl(null, {
@@ -255,7 +255,7 @@ export class SubscriptionConfigTab
     );
     this.angular_subs.push(
       this.f.sendingProfile.valueChanges.subscribe((val) => {
-        this.subscription.sending_profile_uuid = val;
+        this.subscription.sending_profile_id = val;
       })
     );
     this.angular_subs.push(
@@ -453,7 +453,7 @@ export class SubscriptionConfigTab
     this.action = this.actionCREATE;
     this.subscription = new SubscriptionModel();
     this.subscription.templates_selected = this.templatesSelected;
-    this.subscription.subscription_uuid = Guid.create().toString();
+    this.subscription._id = Guid.create().toString();
     this.enableDisableFields();
     this.getRandomTemplates();
     this.setEndTimes();
@@ -477,7 +477,7 @@ export class SubscriptionConfigTab
     this.subscription = s as SubscriptionModel;
     this.getTemplates();
     this.subscriptionSvc.subscription = this.subscription;
-    this.f.selectedCustomerUuid.setValue(s.customer_uuid);
+    this.f.selectedCustomerId.setValue(s.customer_id);
     this.f.primaryContact.setValue(s.primary_contact?.email);
     this.f.adminEmail.setValue(s.admin_email);
     this.f.startDate.setValue(s.start_date);
@@ -485,7 +485,7 @@ export class SubscriptionConfigTab
       emitEvent: false,
     });
 
-    this.f.sendingProfile.setValue(s.sending_profile_uuid);
+    this.f.sendingProfile.setValue(s.sending_profile_id);
     this.f.targetDomain.setValue(s?.target_domain);
     this.f.cycle_length_minutes.setValue(s.cycle_length_minutes, {
       emitEvent: false,
@@ -509,7 +509,7 @@ export class SubscriptionConfigTab
     this.enableDisableFields();
 
     this.customerSvc
-      .getCustomer(s.customer_uuid)
+      .getCustomer(s.customer_id)
       .subscribe((c: CustomerModel) => {
         this.customer = c;
         this.changePrimaryContact({ value: s.primary_contact?.email });
@@ -529,7 +529,7 @@ export class SubscriptionConfigTab
   setCustomer() {
     if (this.customerSvc.selectedCustomer.length > 0) {
       this.subscribeForm.patchValue({
-        selectedCustomerUuid: this.customerSvc.selectedCustomer,
+        selectedCustomerId: this.customerSvc.selectedCustomer,
       });
       this.customerSvc
         .getCustomer(this.customerSvc.selectedCustomer)
@@ -538,7 +538,7 @@ export class SubscriptionConfigTab
           this.customer.contact_list = this.customer.contact_list.filter(
             (contact) => contact.active === true
           );
-          this.f.selectedCustomerUuid.setValue(this.customer.customer_uuid);
+          this.f.selectedCustomerId.setValue(this.customer._id);
         });
     }
   }
@@ -554,9 +554,9 @@ export class SubscriptionConfigTab
     });
   }
 
-  loadContactsForCustomer(customerUuid: string) {
+  loadContactsForCustomer(customerId: string) {
     // get the customer and contacts from the API
-    this.customerSvc.getCustomer(customerUuid).subscribe((c: CustomerModel) => {
+    this.customerSvc.getCustomer(customerId).subscribe((c: CustomerModel) => {
       this.customer = c;
 
       this.customer.contact_list = this.customerSvc.getContactsForCustomer(c);
@@ -708,11 +708,11 @@ export class SubscriptionConfigTab
           .subscribe((x) => {
             // restart
             this.subscriptionSvc
-              .restartSubscription(this.subscription.subscription_uuid)
+              .restartSubscription(this.subscription._id)
               .subscribe(
                 () => {
                   this.subscriptionSvc
-                    .getSubscription(this.subscription.subscription_uuid)
+                    .getSubscription(this.subscription._id)
                     .subscribe((resp: SubscriptionModel) => {
                       this.subscription = resp;
                     });
@@ -758,37 +758,34 @@ export class SubscriptionConfigTab
         this.loading = true;
         this.loadingText = 'Stopping subscription';
         this.processing = true;
-        this.subscriptionSvc
-          .stopSubscription(this.subscription.subscription_uuid)
-          .subscribe(
-            () => {
-              this.subscriptionSvc
-                .getSubscription(this.subscription.subscription_uuid)
-                .subscribe((resp: SubscriptionModel) => {
-                  this.subscription = resp;
-                });
-              this.enableDisableFields();
-              this.processing = false;
-              this.loading = false;
-              this.dialog.open(AlertComponent, {
-                data: {
-                  title: '',
-                  messageText: `Subscription ${this.subscription.name} was stopped`,
-                },
+        this.subscriptionSvc.stopSubscription(this.subscription._id).subscribe(
+          () => {
+            this.subscriptionSvc
+              .getSubscription(this.subscription._id)
+              .subscribe((resp: SubscriptionModel) => {
+                this.subscription = resp;
               });
-            },
-            (error) => {
-              this.processing = false;
-              this.dialog.open(AlertComponent, {
-                data: {
-                  title: 'Error',
-                  messageText:
-                    'An error occurred stopping the subscription: ' +
-                    error.error,
-                },
-              });
-            }
-          );
+            this.enableDisableFields();
+            this.processing = false;
+            this.loading = false;
+            this.dialog.open(AlertComponent, {
+              data: {
+                title: '',
+                messageText: `Subscription ${this.subscription.name} was stopped`,
+              },
+            });
+          },
+          (error) => {
+            this.processing = false;
+            this.dialog.open(AlertComponent, {
+              data: {
+                title: 'Error',
+                messageText:
+                  'An error occurred stopping the subscription: ' + error.error,
+              },
+            });
+          }
+        );
       }
     });
   }
@@ -806,7 +803,7 @@ export class SubscriptionConfigTab
 
     const sub = this.subscriptionSvc.subscription;
 
-    sub.customer_uuid = this.customer.customer_uuid;
+    sub.customer_id = this.customer._id;
     sub.primary_contact = this.primaryContact;
     sub.admin_email = this.f.adminEmail.value;
     sub.active = true;
@@ -824,7 +821,7 @@ export class SubscriptionConfigTab
       sub.target_email_list = sub.target_email_list;
     }
     sub.target_domain = this.target_email_domain.value;
-    sub.sending_profile_uuid = this.f.sendingProfile.value;
+    sub.sending_profile_id = this.f.sendingProfile.value;
 
     sub.continuous_subscription = this.f.continuousSubscription.value;
     const cycleLength: number = +this.f.cycle_length_minutes.value;
@@ -1183,7 +1180,7 @@ export class SubscriptionConfigTab
   removeSelectedFromAvailable() {
     this.templatesSelected.forEach((selec) => {
       for (let i = 0; i < this.templatesAvailable.length; i++) {
-        if (this.templatesAvailable[i].template_uuid === selec.template_uuid) {
+        if (this.templatesAvailable[i]._id === selec._id) {
           this.templatesAvailable.splice(i, 1);
           i = this.templatesAvailable.length;
         }
@@ -1193,9 +1190,9 @@ export class SubscriptionConfigTab
 
   setTemplatesSelected() {
     // Loop through keys in templatesSelected
-    this.templatesSelected.forEach((templateUuid: string) => {
+    this.templatesSelected.forEach(() => {
       this.subscription.templates_selected = this.templatesSelected.map(
-        (item: any) => item.template_uuid
+        (item: any) => item._id
       );
     });
   }

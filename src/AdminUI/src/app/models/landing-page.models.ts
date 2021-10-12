@@ -1,5 +1,5 @@
 export class LandingPageModel {
-  landing_page_uuid: string;
+  _id: string;
   name: string;
   is_default_template: boolean;
   html: string;

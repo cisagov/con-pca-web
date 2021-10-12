@@ -69,12 +69,12 @@ export class CustomersComponent implements OnInit {
     });
   }
 
-  public setCustomer(uuid) {
-    this.customerSvc.selectedCustomer = uuid;
+  public setCustomer(id) {
+    this.customerSvc.selectedCustomer = id;
     this.dialog.closeAll();
   }
-  public editCustomer(customer_uuid) {
-    if (!this.insideDialog) this.router.navigate(['/customer', customer_uuid]);
-    else this.setCustomer(customer_uuid);
+  public editCustomer(customer_id) {
+    if (!this.insideDialog) this.router.navigate(['/customer', customer_id]);
+    else this.setCustomer(customer_id);
   }
 }

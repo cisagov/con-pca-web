@@ -13,18 +13,18 @@ export class CycleService {
     private SettingsService: SettingsService
   ) {}
 
-  public getSubscriptionCycles(subscriptionUuid: string) {
-    const url = `${this.SettingsService.settings.apiUrl}/api/cycles/?subscription_uuid=${subscriptionUuid}`;
+  public getSubscriptionCycles(subscriptionId: string) {
+    const url = `${this.SettingsService.settings.apiUrl}/api/cycles/?subscription_id=${subscriptionId}`;
     return this.http.get<CycleModel[]>(url);
   }
 
-  public getCycle(cycleUuid: string) {
-    const url = `${this.SettingsService.settings.apiUrl}/api/cycle/${cycleUuid}/`;
+  public getCycle(cycleId: string) {
+    const url = `${this.SettingsService.settings.apiUrl}/api/cycle/${cycleId}/`;
     return this.http.get<CycleModel>(url);
   }
 
-  public getCycleStats(cycleUuid: string, nonhuman = false) {
-    let url = `${this.SettingsService.settings.apiUrl}/api/cycle/${cycleUuid}/stats/`;
+  public getCycleStats(cycleId: string, nonhuman = false) {
+    let url = `${this.SettingsService.settings.apiUrl}/api/cycle/${cycleId}/stats/`;
     if (nonhuman) {
       url += `?nonhuman=${nonhuman}`;
     }

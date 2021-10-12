@@ -52,7 +52,7 @@ export class ViewContactDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.customer_service
-      .getCustomer(this.data.customer_uuid)
+      .getCustomer(this.data.customer_id)
       .subscribe((data: any) => {
         this.customer = data as CustomerModel;
       });
@@ -85,7 +85,7 @@ export class ViewContactDialogComponent implements OnInit {
 
     this.subscription_service
       .getPrimaryContactSubscriptions(
-        this.customer.customer_uuid,
+        this.customer._id,
         this.customer.contact_list[index]
       )
       .subscribe((subscriptions: any[]) => {
@@ -127,7 +127,7 @@ export class ViewContactDialogComponent implements OnInit {
   ): void {
     // Get all subs of the contact then update
     this.subscription_service
-      .getPrimaryContactSubscriptions(this.customer.customer_uuid, old_contact)
+      .getPrimaryContactSubscriptions(this.customer._id, old_contact)
       .subscribe((subscriptions: SubscriptionModel[]) => {
         this.contactSubs = subscriptions as SubscriptionModel[];
         if (this.contactSubs.length > 0) {
@@ -135,7 +135,7 @@ export class ViewContactDialogComponent implements OnInit {
           for (let index in this.contactSubs) {
             let contsub: SubscriptionModel = this.contactSubs[index];
             this.subscription_service
-              .changePrimaryContact(contsub.subscription_uuid, updated_contact)
+              .changePrimaryContact(contsub._id, updated_contact)
               .subscribe();
           }
         }
@@ -148,7 +148,7 @@ export class ViewContactDialogComponent implements OnInit {
 
   saveContacts(): void {
     this.customer_service
-      .setContacts(this.customer.customer_uuid, this.customer.contact_list)
+      .setContacts(this.customer._id, this.customer.contact_list)
       .subscribe();
   }
 

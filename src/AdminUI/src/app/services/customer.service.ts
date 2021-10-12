@@ -39,7 +39,7 @@ export class CustomerService {
     customers.map((customer: CustomerModel) => {
       customer.contact_list.map((contact: ContactModel) => {
         const customerContact: ICustomerContact = {
-          customer_uuid: customer.customer_uuid,
+          customer_id: customer._id,
           customer_name: customer.name,
           first_name: contact.first_name,
           last_name: contact.last_name,
@@ -56,8 +56,8 @@ export class CustomerService {
     return customerContacts;
   }
 
-  public getCustomer(uuid: string) {
-    const url = `${this.settingsService.settings.apiUrl}/api/customer/${uuid}/`;
+  public getCustomer(id: string) {
+    const url = `${this.settingsService.settings.apiUrl}/api/customer/${id}/`;
     return this.http.get(url);
   }
 
@@ -89,20 +89,20 @@ export class CustomerService {
     return a;
   }
 
-  public setContacts(uuid: string, contacts: ContactModel[]) {
+  public setContacts(id: string, contacts: ContactModel[]) {
     const data = {
       contact_list: contacts,
     };
 
     return this.http.put(
-      `${this.settingsService.settings.apiUrl}/api/customer/${uuid}/`,
+      `${this.settingsService.settings.apiUrl}/api/customer/${id}/`,
       data
     );
   }
 
   public patchCustomer(data: CustomerModel) {
     return this.http.put(
-      `${this.settingsService.settings.apiUrl}/api/customer/${data.customer_uuid}/`,
+      `${this.settingsService.settings.apiUrl}/api/customer/${data._id}/`,
       data
     );
   }
@@ -121,7 +121,7 @@ export class CustomerService {
 
   public deleteCustomer(data: CustomerModel) {
     return this.http.delete(
-      `${this.settingsService.settings.apiUrl}/api/customer/${data.customer_uuid}/`
+      `${this.settingsService.settings.apiUrl}/api/customer/${data._id}/`
     );
   }
 }

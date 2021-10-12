@@ -24,14 +24,10 @@ export class LandingPageManagerService {
     return this.http.get(url);
   }
 
-  /**
-   * GET a single landingpage using the provided temlpate_uuid
-   * @param uuid
-   */
-  getlandingpage(uuid: string) {
+  getlandingpage(id: string) {
     return new Promise((resolve, reject) => {
       this.http
-        .get(`${this.settingsService.settings.apiUrl}/api/landingpage/${uuid}`)
+        .get(`${this.settingsService.settings.apiUrl}/api/landingpage/${id}`)
         .subscribe(
           (success) => {
             resolve(success);
@@ -44,10 +40,6 @@ export class LandingPageManagerService {
     });
   }
 
-  /**
-   * POST a new landingpage
-   * @param landingpage
-   */
   saveNewlandingpage(landingpage: LandingPageModel) {
     return this.http.post(
       `${this.settingsService.settings.apiUrl}/api/landingpages/`,
@@ -55,15 +47,11 @@ export class LandingPageManagerService {
     );
   }
 
-  /**
-   * PATCH an existing landingpage with partial data
-   * @param landingpage
-   */
   updatelandingpage(landingpage: LandingPageModel) {
     return new Promise((resolve, reject) => {
       this.http
         .put(
-          `${this.settingsService.settings.apiUrl}/api/landingpage/${landingpage.landing_page_uuid}/`,
+          `${this.settingsService.settings.apiUrl}/api/landingpage/${landingpage._id}/`,
           landingpage
         )
         .subscribe(
@@ -78,15 +66,11 @@ export class LandingPageManagerService {
     });
   }
 
-  /**
-   *
-   * @param landingpage
-   */
   deletelandingpage(landingpage: LandingPageModel) {
     return new Promise((resolve, reject) => {
       this.http
         .delete(
-          `${this.settingsService.settings.apiUrl}/api/landingpage/${landingpage.landing_page_uuid}/`
+          `${this.settingsService.settings.apiUrl}/api/landingpage/${landingpage._id}/`
         )
         .subscribe(
           (success) => {
@@ -99,19 +83,15 @@ export class LandingPageManagerService {
     });
   }
 
-  /**
-   *
-   * @param landingpage
-   */
   stoplandingpage(landingpage: LandingPageModel) {
     return this.http.get(
-      `${this.settingsService.settings.apiUrl}/api/landingpage/stop/${landingpage.landing_page_uuid}/`
+      `${this.settingsService.settings.apiUrl}/api/landingpage/stop/${landingpage._id}/`
     );
   }
 
-  getLandingPageTemplates(landingPageUuid: string) {
+  getLandingPageTemplates(landingPageId: string) {
     return this.http.get(
-      `${this.settingsService.settings.apiUrl}/api/templates/?landing_page_uuid=${landingPageUuid}`
+      `${this.settingsService.settings.apiUrl}/api/templates/?landing_page_id=${landingPageId}`
     );
   }
 }

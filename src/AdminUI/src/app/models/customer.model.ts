@@ -1,5 +1,5 @@
 export class CustomerModel {
-  customer_uuid: string;
+  _id: string;
   name: string;
   identifier: string;
   address_1: string;
@@ -49,7 +49,7 @@ export class ContactModel {
 }
 
 export interface ICustomerContact {
-  customer_uuid: string;
+  customer_id: string;
   customer_name: string;
   first_name: string;
   last_name: string;

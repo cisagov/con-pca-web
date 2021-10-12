@@ -28,7 +28,6 @@ import { SubscriptionTasksTabComponent } from './components/subscriptions/manage
 import { UserAuthService } from './services/user-auth.service';
 import { TemplateManagerComponent } from './components/template-manager/template-manager.component';
 import { TemplateManagerService } from './services/template-manager.service';
-import { TagsManagerComponent } from './components/tags-page/tags-manager/tags-manager.component';
 import { ListFilterPipe } from './pipes/list-filter.pipe';
 import { NullishCoalescePipe } from './pipes/nullish-coalesce.pipe';
 import { AutosizeModule } from 'node_modules/ngx-autosize';
@@ -73,9 +72,6 @@ import { UnauthorizedInterceptor } from './helper/UnauthorizedInterceptor';
 import { InputTrimDirective } from './helper/input-trim.directive';
 import { DatePipe } from '@angular/common';
 import { TagService } from './services/tag.service';
-import { MonthlyComponent } from './components/reports/monthly/monthly.component';
-import { CycleComponent } from './components/reports/cycle/cycle.component';
-import { YearlyComponent } from './components/reports/yearly/yearly.component';
 import { StatsByLevelComponent } from './components/reports/stats-by-level/stats-by-level.component';
 import { AggregateStatsComponent } from './components/user-admin/aggregate-stats/aggregate-stats.component';
 import { ChartComplexityLevelComponent } from './components/charts/chart-complexity-level/chart-complexity-level.component';
@@ -120,7 +116,6 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     SubscriptionTasksTabComponent,
     SubscriptionStatsTab,
     TemplateManagerComponent,
-    TagsManagerComponent,
     ListFilterPipe,
     NullishCoalescePipe,
     TemplatesPageComponent,
@@ -146,9 +141,6 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     UTCtoReadableTime,
     SvgTimelineComponent,
     InputTrimDirective,
-    MonthlyComponent,
-    CycleComponent,
-    YearlyComponent,
     StatsByLevelComponent,
     AggregateStatsComponent,
     ChartComplexityLevelComponent,

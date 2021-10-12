@@ -57,7 +57,7 @@ export class TemplatesPageComponent implements OnInit, AfterViewInit {
     this.templatesData.filter = value.trim().toLocaleLowerCase();
   };
   public editTemplate(template: TemplateModel) {
-    this.router.navigate(['/templatemanager', template.template_uuid]);
+    this.router.navigate(['/templatemanager', template._id]);
   }
 
   onRetiredToggle() {

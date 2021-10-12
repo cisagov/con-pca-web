@@ -5,7 +5,6 @@ import { SubscriptionsComponent } from './components/subscriptions/subscriptions
 import { ManageSubscriptionComponent } from './components/subscriptions/manage-subscription/manage-subscription.component';
 import { SubscriptionConfigTab } from './components/subscriptions/manage-subscription/subscription-config-tab/subscription-config-tab.component';
 import { TemplateManagerComponent } from './components/template-manager/template-manager.component';
-import { TagsManagerComponent } from './components/tags-page/tags-manager/tags-manager.component';
 import { SearchPanelComponent } from './components/search-panel/search-panel.component';
 import { TemplatesPageComponent } from './components/templates-page/templates-page.component';
 import { UserAdminComponent } from './components/user-admin/user-admin.component';
@@ -17,10 +16,6 @@ import { LoginComponent } from 'src/app/components/login/login.component';
 import { RegisterUserComponent } from 'src/app/components/register/register-user.component';
 import { HelpFilesComponent } from './components/help-files/help-files.component';
 import { TagsPageComponent } from './components/tags-page/tags-page.component';
-import { LayoutBlankComponent } from './components/layout/layout-blank/layout-blank.component';
-import { MonthlyComponent } from './components/reports/monthly/monthly.component';
-import { CycleComponent } from './components/reports/cycle/cycle.component';
-import { YearlyComponent } from './components/reports/yearly/yearly.component';
 import { AggregateStatsComponent } from './components/user-admin/aggregate-stats/aggregate-stats.component';
 import { LandingPagesComponent } from './components/landing-pages/landing-pages.component';
 import { LandingPagesManagerComponent } from './components/landing-pages-manager/landing-pages-manager.component';
@@ -32,24 +27,6 @@ import { PasswordResetComponent } from './components/password-reset/password-res
 import { RecommendationsComponent } from './components/recommendations/recommendations.component';
 
 const routes: Routes = [
-  {
-    path: 'reports',
-    component: LayoutBlankComponent,
-    children: [
-      {
-        path: 'monthly/:cycle_uuid',
-        component: MonthlyComponent,
-      },
-      {
-        path: 'cycle/:cycle_uuid',
-        component: CycleComponent,
-      },
-      {
-        path: 'yearly/:cycle_uuid',
-        component: YearlyComponent,
-      },
-    ],
-  },
   {
     path: 'subscriptions',
     component: LayoutMainComponent,
@@ -154,7 +131,7 @@ const routes: Routes = [
     children: [{ path: '', component: LandingPagesManagerComponent }],
   },
   {
-    path: 'landingpagesmanager/:landing_page_uuid',
+    path: 'landingpagesmanager/:landing_page_id',
     component: LayoutMainComponent,
     canActivate: [AuthGuard],
     children: [{ path: '', component: LandingPagesManagerComponent }],
@@ -176,18 +153,6 @@ const routes: Routes = [
     component: LayoutMainComponent,
     canActivate: [AuthGuard],
     children: [{ path: '', component: TagsPageComponent }],
-  },
-  {
-    path: 'tagsmanager',
-    component: LayoutMainComponent,
-    canActivate: [AuthGuard],
-    children: [{ path: '', component: TagsManagerComponent }],
-  },
-  {
-    path: 'tagsmanager/:tagsId',
-    component: LayoutMainComponent,
-    canActivate: [AuthGuard],
-    children: [{ path: '', component: TagsManagerComponent }],
   },
   {
     path: 'users',

@@ -35,10 +35,10 @@ export class TemplateIndicatorsModel {
 }
 
 export class TemplateModel {
-  template_uuid: string;
+  _id: string;
   name: string;
-  landing_page_uuid: string;
-  sending_profile_uuid: string;
+  landing_page_id: string;
+  sending_profile_id: string;
   deception_score: number;
   from_address: string;
   retired: boolean;

@@ -38,7 +38,7 @@ export class SubscriptionReportTab implements OnInit {
   ngOnInit() {
     this.subscriptionSvc.subBehaviorSubject.subscribe(
       (data: SubscriptionModel) => {
-        if ('subscription_uuid' in data && data.cycles) {
+        if ('_id' in data && data.cycles) {
           this.subscription = data;
           this.emailsSent.sort = this.sort;
           const selectedCycleIndex = 0;
@@ -64,16 +64,14 @@ export class SubscriptionReportTab implements OnInit {
   cycleChange(event) {}
 
   viewReport(reportType: string) {
-    this.router.navigate([
-      `/reports/${reportType}/${this.selectedCycle.cycle_uuid}`,
-    ]);
+    this.router.navigate([`/reports/${reportType}/${this.selectedCycle._id}`]);
   }
 
   downloadReport(reportType: string) {
     this.loading = true;
     this.subscriptionSvc
       .downloadReport(
-        [this.selectedCycle.cycle_uuid],
+        [this.selectedCycle._id],
         reportType,
         this.includeNonhuman
       )
@@ -91,11 +89,7 @@ export class SubscriptionReportTab implements OnInit {
   sendReport(reportType: string) {
     this.loading = true;
     this.subscriptionSvc
-      .sendReport(
-        [this.selectedCycle.cycle_uuid],
-        reportType,
-        this.includeNonhuman
-      )
+      .sendReport([this.selectedCycle._id], reportType, this.includeNonhuman)
       .subscribe(
         () => {
           this.loading = false;
@@ -122,9 +116,9 @@ export class SubscriptionReportTab implements OnInit {
   }
 
   downloadCycleData() {
-    this.cycleSvc.getCycle(this.selectedCycle.cycle_uuid).subscribe((cycle) => {
+    this.cycleSvc.getCycle(this.selectedCycle._id).subscribe((cycle) => {
       this.subscriptionSvc
-        .getSubscription(cycle.subscription_uuid)
+        .getSubscription(cycle.subscription_id)
         .subscribe((subscription) => {
           const data = { cycle, subscription };
           const filename = `${subscription.name}_cycle_data.json`;
@@ -143,12 +137,12 @@ export class SubscriptionReportTab implements OnInit {
       data: dialogOptions,
     });
 
-    let cycle_uuids = [];
+    let cycle_ids = [];
     dialogRef.afterClosed().subscribe((val) => {
-      cycle_uuids = val.cycles;
+      cycle_ids = val.cycles;
       var reportType = val.reportType;
-      if (cycle_uuids.length > 0) {
-        this.subscriptionSvc.downloadReport(cycle_uuids, reportType).subscribe(
+      if (cycle_ids.length > 0) {
+        this.subscriptionSvc.downloadReport(cycle_ids, reportType).subscribe(
           (success) => {
             this.downloadObject(`subscription_cycleset_report.pdf`, success);
           },
