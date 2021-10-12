@@ -115,7 +115,7 @@
                 <mat-row
                   *matRowDef="let row; columns: displayed_columns"
                   class="table-row cursor-pointer"
-                  [routerLink]="['/templatemanager', row.template_uuid]"
+                  [routerLink]="['/templatemanager', row._id]"
                 ></mat-row>
               </mat-table>
               <div *ngIf="this.templates.length == 0" class="p-3 text-center">

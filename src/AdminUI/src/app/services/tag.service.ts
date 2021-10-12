@@ -11,63 +11,13 @@ const headers = {
 
 @Injectable()
 export class TagService {
-  /**
-   * Constructor.
-   * @param http
-   */
   constructor(
     private http: HttpClient,
     private settingsService: SettingsService
   ) {}
 
-  /**
-   * GET a list of all tags
-   * @param retired
-   */
   getAllTags() {
-    let url = `${this.settingsService.settings.apiUrl}/api/tags/`;
-    return this.http.get(url, headers);
-  }
-
-  /**
-   * GET a single recommendation using the provided tag_definition_uuid
-   * @param uuid
-   */
-  getTag(uuid: string) {
-    return this.http.get(
-      `${this.settingsService.settings.apiUrl}/api/tag/${uuid}`
-    );
-  }
-
-  /**
-   * POST a new tag
-   * @param tag
-   */
-  saveNewTag(tag: TagModel) {
-    return this.http.post(
-      `${this.settingsService.settings.apiUrl}/api/tags/`,
-      tag
-    );
-  }
-
-  /**
-   * PATCH an existing tag with partial data
-   * @param tag
-   */
-  updateTag(tag: TagModel) {
-    return this.http.put(
-      `${this.settingsService.settings.apiUrl}/api/tag/${tag.tag_definition_uuid}/`,
-      tag
-    );
-  }
-
-  /**
-   *
-   * @param tag
-   */
-  deleteTag(tag: TagModel) {
-    return this.http.delete(
-      `${this.settingsService.settings.apiUrl}/api/tag/${tag.tag_definition_uuid}/`
-    );
+    const url = `${this.settingsService.settings.apiUrl}/api/tags/`;
+    return this.http.get<TagModel[]>(url, headers);
   }
 }

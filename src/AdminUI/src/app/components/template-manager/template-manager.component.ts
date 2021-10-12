@@ -233,15 +233,15 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
     });
   }
 
-  //Select a template based on template_uuid, returns the full template
-  selectTemplate(template_uuid: string) {
+  //Select a template based on template_id, returns the full template
+  selectTemplate(template_id: string) {
     //Get template and call setTemplateForm to initialize a form group using the selected template
-    this.templateManagerSvc.getTemplate(template_uuid).then((success) => {
+    this.templateManagerSvc.getTemplate(template_id).then((success) => {
       let t = <TemplateModel>success;
 
       this.setTemplateForm(t);
       this.testEmail = this.getRecommendedEmail();
-      this.templateId = t.template_uuid;
+      this.templateId = t._id;
       this.retired = t.retired;
       this.retiredReason = t.retired_description;
       this.subscriptionSvc
@@ -273,7 +273,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
 
     this.setTemplateFrom(template.from_address);
     this.currentTemplateFormGroup = new FormGroup({
-      templateUUID: new FormControl(template.template_uuid),
+      templateId: new FormControl(template._id),
       templateName: new FormControl(template.name, [Validators.required]),
       templateDeceptionScore: new FormControl(template.deception_score),
       templateFromDisplayName: new FormControl(this.fromDisplayName),
@@ -284,8 +284,8 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
       templateSubject: new FormControl(template.subject, [Validators.required]),
       templateText: new FormControl(template.text),
       templateHTML: new FormControl(template.html, [Validators.required]),
-      landingPage: new FormControl(template.landing_page_uuid),
-      templateSendingProfile: new FormControl(template.sending_profile_uuid),
+      landingPage: new FormControl(template.landing_page_id),
+      templateSendingProfile: new FormControl(template.sending_profile_id),
       authoritative: new FormControl(
         template.indicators.sender?.authoritative ?? 0
       ),
@@ -355,10 +355,10 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
       form.controls['templateHTML'].value
     );
     return new TemplateModel({
-      template_uuid: this.templateId,
+      _id: this.templateId,
       name: form.controls['templateName'].value,
-      landing_page_uuid: form.controls['landingPage'].value,
-      sending_profile_uuid: form.controls['templateSendingProfile'].value,
+      landing_page_id: form.controls['landingPage'].value,
+      sending_profile_id: form.controls['templateSendingProfile'].value,
       deception_score: form.controls['final_deception_score'].value,
       from_address: this.getTemplateFrom(),
       subject: form.controls['templateSubject'].value,
@@ -406,7 +406,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
         this.currentTemplateFormGroup
       );
       //PATCH - existing template update
-      if (this.currentTemplateFormGroup.controls['templateUUID'].value) {
+      if (this.currentTemplateFormGroup.controls['templateId'].value) {
         this.templateManagerSvc.updateTemplate(templateToSave).then(
           (success) => {
             this.dialog.open(AlertComponent, {
@@ -705,7 +705,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
       position: this.role,
       url: '',
       smtp: this.f.sendingProfile.value,
-      customer_uuid: this.f.customer.value,
+      customer_id: this.f.customer.value,
     };
 
     this.sendingProfileSvc.sendTestEmail(email_for_test).subscribe(

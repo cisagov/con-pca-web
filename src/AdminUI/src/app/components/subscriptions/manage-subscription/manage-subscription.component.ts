@@ -73,21 +73,19 @@ export class ManageSubscriptionComponent
   loadPageForEdit(params: any) {
     this.subscriptionSvc.subscription = new SubscriptionModel();
     const sub = this.subscriptionSvc.subscription;
-    sub.subscription_uuid = params.id;
+    sub._id = params.id;
 
     console.log('loading');
     this.sub_subscription = this.subscriptionSvc
-      .getSubscription(sub.subscription_uuid)
+      .getSubscription(sub._id)
       .subscribe(
         (success: SubscriptionModel) => {
-          this.cycleSvc
-            .getSubscriptionCycles(sub.subscription_uuid)
-            .subscribe((cycles) => {
-              success.cycles = cycles;
-              console.log('loaded');
-              this.loading = false;
-              this.setPageForEdit(success);
-            });
+          this.cycleSvc.getSubscriptionCycles(sub._id).subscribe((cycles) => {
+            success.cycles = cycles;
+            console.log('loaded');
+            this.loading = false;
+            this.setPageForEdit(success);
+          });
         },
         (error) => {
           console.log(error);

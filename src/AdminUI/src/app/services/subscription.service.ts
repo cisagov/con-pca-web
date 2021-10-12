@@ -53,9 +53,6 @@ export class SubscriptionService {
     );
   }
 
-  /**
-   *
-   */
   public getSubscriptions(archived = false) {
     let url = `${this.settingsService.settings.apiUrl}/api/subscriptions/`;
 
@@ -66,23 +63,19 @@ export class SubscriptionService {
   }
 
   /**
-   * Call to search subs for custumer uuid and primary contact.
+   * Call to search subs for custumer id and primary contact.
    */
   public getPrimaryContactSubscriptions(
-    customer_uuid: string,
+    customerId: string,
     contact: ContactModel
   ) {
     const c = { primary_contact: contact };
-    let url = `${this.settingsService.settings.apiUrl}/api/subscription/customer/${customer_uuid}/`;
+    let url = `${this.settingsService.settings.apiUrl}/api/subscription/customer/${customerId}/`;
     return this.http.post(url, c);
   }
 
-  /**
-   *
-   * @param subscription_uuid
-   */
-  public getSubscription(subscription_uuid: string) {
-    let url = `${this.settingsService.settings.apiUrl}/api/subscription/${subscription_uuid}/`;
+  public getSubscription(subscriptionId: string) {
+    let url = `${this.settingsService.settings.apiUrl}/api/subscription/${subscriptionId}/`;
     return this.http.get<SubscriptionModel>(url);
   }
 
@@ -90,7 +83,7 @@ export class SubscriptionService {
     return new Promise((resolve, reject) => {
       this.http
         .delete(
-          `${this.settingsService.settings.apiUrl}/api/subscription/${subscription.subscription_uuid}/`
+          `${this.settingsService.settings.apiUrl}/api/subscription/${subscription._id}/`
         )
         .subscribe(
           (success) => {
@@ -103,10 +96,6 @@ export class SubscriptionService {
     });
   }
 
-  /**
-   * Sends all information to the API to start a new subscription.
-   * @param s
-   */
   submitSubscription(subscription: SubscriptionModel) {
     return this.http.post(
       `${this.settingsService.settings.apiUrl}/api/subscriptions/`,
@@ -114,13 +103,9 @@ export class SubscriptionService {
     );
   }
 
-  /**
-   * Restarts a subscription
-   * @param uuid The uuid of the subscription to restart.
-   */
-  restartSubscription(uuid: string) {
+  restartSubscription(id: string) {
     return this.http.get(
-      `${this.settingsService.settings.apiUrl}/api/subscription/${uuid}/launch/`
+      `${this.settingsService.settings.apiUrl}/api/subscription/${id}/launch/`
     );
   }
 
@@ -132,7 +117,7 @@ export class SubscriptionService {
       admin_email: subscription.admin_email,
       start_date: subscription.start_date,
       target_email_list: subscription.target_email_list,
-      sending_profile_uuid: subscription.sending_profile_uuid,
+      sending_profile_id: subscription.sending_profile_id,
       target_domain: subscription.target_domain,
       continuous_subscription: subscription.continuous_subscription,
       templates_selected: subscription.templates_selected,
@@ -142,79 +127,64 @@ export class SubscriptionService {
     };
 
     return this.http.put(
-      `${this.settingsService.settings.apiUrl}/api/subscription/${subscription.subscription_uuid}/`,
+      `${this.settingsService.settings.apiUrl}/api/subscription/${subscription._id}/`,
       data
     );
   }
 
-  /**
-   * Patches the subscription with the new primary contact.
-   */
-  changePrimaryContact(subscriptUuid: string, contact: ContactModel) {
+  changePrimaryContact(subscriptionId: string, contact: ContactModel) {
     const c = { primary_contact: contact };
     return this.http.put(
-      `${this.settingsService.settings.apiUrl}/api/subscription/${subscriptUuid}/`,
+      `${this.settingsService.settings.apiUrl}/api/subscription/${subscriptionId}/`,
       c
     );
   }
 
-  /**
-   * Gets all subscriptions for a given template.
-   * @param template
-   */
   public getSubscriptionsByTemplate(template: TemplateModel) {
     return this.http.get(
-      `${this.settingsService.settings.apiUrl}/api/subscriptions/?template=${template.template_uuid}`
+      `${this.settingsService.settings.apiUrl}/api/subscriptions/?template=${template._id}`
     );
   }
 
-  /**
-   * Gets all subscriptions for a given customer.
-   * @param template
-   */
   public getSubscriptionsByCustomer(customer: CustomerModel) {
     return this.http.get(
-      `${this.settingsService.settings.apiUrl}/api/subscriptions/?customer_uuid=${customer.customer_uuid}`
+      `${this.settingsService.settings.apiUrl}/api/subscriptions/?customer_id=${customer._id}`
     );
   }
 
-  public stopSubscription(subscription_uuid: string) {
+  public stopSubscription(subscriptionId: string) {
     return this.http.delete(
-      `${this.settingsService.settings.apiUrl}/api/subscription/${subscription_uuid}/launch/`
+      `${this.settingsService.settings.apiUrl}/api/subscription/${subscriptionId}/launch/`
     );
   }
 
   /**
    * Gets timeline items for the subscription.
    */
-  public getTimelineItems(subscription_uuid) {
-    let url = `${this.settingsService.settings.apiUrl}/api/subscription/timeline/${subscription_uuid}/`;
+  public getTimelineItems(subscriptionId) {
+    const url = `${this.settingsService.settings.apiUrl}/api/subscription/timeline/${subscriptionId}/`;
     return this.http.get(url);
   }
 
   public downloadReport(
-    cycleUuids: any[],
+    cycleIds: any[],
     reportType: string,
     nonhuman = false
   ): Observable<Blob> {
     const headers = new HttpHeaders().set('Accept', 'application/pdf');
     let url = `${
       this.settingsService.settings.apiUrl
-    }/api/cycle/reports/${reportType}/pdf/?cycles=${cycleUuids.join(',')}`;
+    }/api/cycle/reports/${reportType}/pdf/?cycles=${cycleIds.join(',')}`;
     if (nonhuman) {
       url += `?nonhuman=${nonhuman}`;
     }
     return this.http.get(url, { headers, responseType: 'blob' });
   }
 
-  public sendReport(
-    cycleUuids: string[],
-    reportType: string,
-    nonhuman = false
-  ) {
+  public sendReport(cycleIds: string[], reportType: string, nonhuman = false) {
     let url = `${
       this.settingsService.settings.apiUrl
-    }/api/cycle/reports/${reportType}/email/?cycles=${cycleUuids.join(',')}`;
+    }/api/cycle/reports/${reportType}/email/?cycles=${cycleIds.join(',')}`;
     if (nonhuman) {
       url += `?nonhuman=${nonhuman}`;
     }

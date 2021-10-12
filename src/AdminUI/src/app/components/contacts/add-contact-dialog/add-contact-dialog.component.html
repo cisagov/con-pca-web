@@ -42,8 +42,8 @@
   <!-- CUSTOMER -->
   <mat-form-field appearance="outline">
     <mat-label>Customer</mat-label>
-    <mat-select formControlName="customer_uuid">
-      <mat-option *ngFor="let c of customers" [value]="c.customer_uuid">
+    <mat-select formControlName="customer_id">
+      <mat-option *ngFor="let c of customers" [value]="c._id">
         {{ c.name }}
       </mat-option>
     </mat-select>

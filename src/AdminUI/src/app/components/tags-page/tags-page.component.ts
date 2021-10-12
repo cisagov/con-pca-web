@@ -14,13 +14,7 @@ import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
   styleUrls: ['./tags-page.component.scss'],
 })
 export class TagsPageComponent implements OnInit, AfterViewInit {
-  displayedColumns = [
-    'tag',
-    'description',
-    'data_source',
-    'tag_type',
-    // 'action',
-  ];
+  displayedColumns = ['tag', 'description', 'data_source', 'tag_type'];
   tagsData = new MatTableDataSource<TagModel>();
   search_input = '';
   @ViewChild(MatSort) sort: MatSort;
@@ -30,11 +24,10 @@ export class TagsPageComponent implements OnInit, AfterViewInit {
 
   constructor(
     private tagsSvc: TagService,
-    private router: Router,
     public dialog: MatDialog,
     private layoutSvc: LayoutMainService
   ) {
-    layoutSvc.setTitle('Tags');
+    this.layoutSvc.setTitle('Tags');
   }
 
   ngOnInit() {
@@ -57,49 +50,4 @@ export class TagsPageComponent implements OnInit, AfterViewInit {
   public filterTags = (value: string) => {
     this.tagsData.filter = value.trim().toLocaleLowerCase();
   };
-
-  public editTags(row: TagModel) {
-    if (this.canEditDelete(row)) {
-      this.router.navigate(['/tagsmanager', row.tag_definition_uuid]);
-    }
-  }
-
-  /**
-   *
-   * @param row
-   */
-  deleteTag(row: any) {
-    this.tagsSvc.deleteTag(row).subscribe(() => {
-      this.refresh();
-    });
-  }
-  /**
-   * Confirm that they want to delete the profile.
-   * @param row
-   */
-  confirmDeleteTags(row: any): void {
-    this.dialogRefConfirm = this.dialog.open(ConfirmComponent, {
-      disableClose: false,
-    });
-    this.dialogRefConfirm.componentInstance.confirmMessage = `This will delete Tag '${row.tag}'.  Do you want to continue?`;
-    this.dialogRefConfirm.componentInstance.title = 'Confirm Delete';
-
-    this.dialogRefConfirm.afterClosed().subscribe((result) => {
-      if (result) {
-        this.deleteTag(row);
-        this.router.navigate(['/tags']);
-      }
-      this.dialogRefConfirm = null;
-    });
-  }
-
-  canEditDelete(row: TagModel) {
-    if (row.tag_type === 'gophish') {
-      return false;
-    } else if (row.tag.startsWith('<%FAKER_')) {
-      return false;
-    } else {
-      return true;
-    }
-  }
 }

@@ -99,7 +99,7 @@ export class SendingProfilesComponent implements OnInit {
       const dialogConfig = new MatDialogConfig();
       dialogConfig.width = '60vw';
       dialogConfig.data = {
-        sending_profile_uuid: row.sending_profile_uuid,
+        sending_profile_id: row._id,
       };
       const dialogRef = this.dialog.open(
         SendingProfileDetailComponent,

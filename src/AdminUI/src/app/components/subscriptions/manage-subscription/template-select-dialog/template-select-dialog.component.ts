@@ -44,7 +44,7 @@ export class TemplateSelectDialogComponent {
     // Remove selected elements from the avaiable list to avoid duplicates
     this.selectedArray.forEach((selected) => {
       this.availableArray.forEach((available, index) => {
-        if (selected.template_uuid === available.template_uuid) {
+        if (selected._id === available._id) {
           this.availableArray.splice(index, 1);
         }
       });
@@ -58,7 +58,7 @@ export class TemplateSelectDialogComponent {
   remove(template) {
     if (this.selectedArray.length > 1) {
       for (let i = 0; i < this.selectedArray.length; i++) {
-        if (this.selectedArray[i].template_uuid === template.template_uuid) {
+        if (this.selectedArray[i]._id === template._id) {
           this.availableArray.push(template);
           this.selectedArray.splice(i, 1);
           i = this.selectedArray.length;
@@ -77,7 +77,7 @@ export class TemplateSelectDialogComponent {
 
   add(template) {
     for (let i = 0; i < this.availableArray.length; i++) {
-      if (this.availableArray[i].template_uuid === template.template_uuid) {
+      if (this.availableArray[i]._id === template._id) {
         this.selectedArray.push(template);
         this.availableArray.splice(i, 1);
         i = this.availableArray.length;

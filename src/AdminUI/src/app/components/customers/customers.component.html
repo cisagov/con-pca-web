@@ -85,7 +85,7 @@
             class="table-btn-icon"
             mat-flat-button
             color="primary"
-            [routerLink]="['/customer', row.customer_uuid]"
+            [routerLink]="['/customer', row._id]"
           >
             <mat-icon class="table-btn-icon-size">edit</mat-icon>
           </button>
@@ -96,7 +96,7 @@
       <mat-row
         class="table-row cursor-pointer"
         *matRowDef="let row; columns: displayed_columns"
-        (click)="editCustomer(row.customer_uuid)"
+        (click)="editCustomer(row._id)"
       ></mat-row>
     </mat-table>
   </div>

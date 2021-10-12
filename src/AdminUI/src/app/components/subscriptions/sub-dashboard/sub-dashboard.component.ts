@@ -12,7 +12,7 @@ import { CycleStatsModel } from 'src/app/models/stats.model';
 })
 export class SubDashboardComponent implements OnInit, OnDestroy {
   @Input()
-  subscriptionUuid: string;
+  subscriptionId: string;
   dataAvailable = false;
   cycle_selected = false;
   cycleStats = new CycleStatsModel();
@@ -61,8 +61,8 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
     this.chartSent = {};
     this.temp_angular_subs.push(
       this.subscriptionSvc.getSubBehaviorSubject().subscribe((data) => {
-        if ('subscription_uuid' in data && !this.subscriptionUuid) {
-          this.subscriptionUuid = data.subscription_uuid;
+        if ('_id' in data && !this.subscriptionId) {
+          this.subscriptionId = data._id;
           this.dataAvailable = true;
         }
       })
@@ -88,7 +88,7 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
     this.chartSent = {};
     this.dataAvailable = false;
     this.cycle_selected = false;
-    this.subscriptionUuid = null;
+    this.subscriptionId = null;
   }
 
   /**
@@ -126,10 +126,7 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
       this.loading = true;
       this.loadingText = 'Loading stats';
       this.cycleSvc
-        .getCycleStats(
-          this.selected_cycle.cycle_uuid,
-          this.selected_cycle.nonhuman
-        )
+        .getCycleStats(this.selected_cycle._id, this.selected_cycle.nonhuman)
         .subscribe((stats: CycleStatsModel) => {
           this.cycleStats = stats;
           this.chartSent.chartResults = this.chartsSvc.getSentEmailNumbers(

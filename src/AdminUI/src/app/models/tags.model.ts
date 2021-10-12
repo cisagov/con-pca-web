@@ -1,5 +1,4 @@
 export class TagModel {
-  tag_definition_uuid: string;
   tag: string;
   description: string;
   data_source: string;

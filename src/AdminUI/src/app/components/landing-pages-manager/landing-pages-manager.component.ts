@@ -79,7 +79,7 @@ export class LandingPagesManagerComponent implements OnInit {
   ) {
     // Set title of page
     route.params.subscribe((params) => {
-      this.templateId = params['landing_page_uuid'];
+      this.templateId = params['landing_page_id'];
       if (this.templateId != undefined) {
         layoutSvc.setTitle('Edit Landing Page');
       } else {
@@ -112,7 +112,7 @@ export class LandingPagesManagerComponent implements OnInit {
     //Check if template ID was included in the route, open template identified if so
     this.subscriptions.push(
       this.route.params.subscribe((params) => {
-        this.templateId = params['landing_page_uuid'];
+        this.templateId = params['landing_page_id'];
         if (this.templateId != undefined) {
           this.selectTemplate(this.templateId);
         } else {
@@ -135,15 +135,15 @@ export class LandingPagesManagerComponent implements OnInit {
     $('#toggleEditorMode-').on('mousedown', this.toggleEditorMode.bind(this));
   }
 
-  //Select a template based on template_uuid, returns the full template
-  selectTemplate(template_uuid: string) {
+  //Select a template based on template_id, returns the full template
+  selectTemplate(template_id: string) {
     //Get template and call setTemplateForm to initialize a form group using the selected template
-    this.landingPageManagerSvc.getlandingpage(template_uuid).then(
+    this.landingPageManagerSvc.getlandingpage(template_id).then(
       (success) => {
         let t = <LandingPageModel>success;
 
         this.setTemplateForm(t);
-        this.templateId = t.landing_page_uuid;
+        this.templateId = t._id;
         this.IsDefaultTemplate = t.is_default_template ? true : false;
 
         this.setCanDelete();
@@ -155,7 +155,7 @@ export class LandingPagesManagerComponent implements OnInit {
   //Create a formgroup using a Template as initial data
   setTemplateForm(template: LandingPageModel) {
     this.currentTemplateFormGroup = new FormGroup({
-      landingPageUUID: new FormControl(template.landing_page_uuid),
+      landingPageId: new FormControl(template._id),
       templateName: new FormControl(template.name, [Validators.required]),
       templateHTML: new FormControl(template.html, [Validators.required]),
       IsDefaultTemplate: new FormControl(
@@ -179,7 +179,7 @@ export class LandingPagesManagerComponent implements OnInit {
     );
 
     let saveTemplate = new LandingPageModel({
-      landing_page_uuid: form.controls['landingPageUUID'].value,
+      _id: form.controls['landingPageId'].value,
       name: form.controls['templateName'].value,
       html: htmlValue,
       is_default_template: form.controls['IsDefaultTemplate'].value,
@@ -188,7 +188,7 @@ export class LandingPagesManagerComponent implements OnInit {
       saveTemplate.is_default_template = false;
     }
 
-    saveTemplate.landing_page_uuid = this.templateId;
+    saveTemplate._id = this.templateId;
     return saveTemplate;
   }
 
@@ -229,7 +229,7 @@ export class LandingPagesManagerComponent implements OnInit {
         this.currentTemplateFormGroup
       );
       //PATCH - existing template update
-      if (this.currentTemplateFormGroup.controls['landingPageUUID'].value) {
+      if (this.currentTemplateFormGroup.controls['landingPageId'].value) {
         this.landingPageManagerSvc.updatelandingpage(templateToSave).then(
           (success) => {
             this.router.navigate(['/landing-pages']);

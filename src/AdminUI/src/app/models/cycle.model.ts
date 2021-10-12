@@ -11,8 +11,8 @@ export class CycleTargetTimelineModel {
 }
 
 export class CycleTargetModel {
-  target_uuid: string;
-  template_uuid: string;
+  _id: string;
+  template_id: string;
   deception_level: string;
   send_date: Date;
   sent: boolean;
@@ -22,9 +22,9 @@ export class CycleTargetModel {
 }
 
 export class CycleModel {
-  cycle_uuid: string;
-  subscription_uuid: string;
-  template_uuids: string[];
+  _id: string;
+  subscription_id: string;
+  template_ids: string[];
   start_date: Date;
   end_date: Date;
   send_by_date: Date;

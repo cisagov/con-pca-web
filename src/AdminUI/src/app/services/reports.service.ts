@@ -11,8 +11,8 @@ export class ReportsService {
     private settingsService: SettingsService
   ) {}
 
-  public getReport(cycleUuid: string, reportType: string, nonhuman = false) {
-    let url = `${this.settingsService.settings.apiUrl}/api/cycle/${cycleUuid}/reports/${reportType}/`;
+  public getReport(cycleId: string, reportType: string, nonhuman = false) {
+    let url = `${this.settingsService.settings.apiUrl}/api/cycle/${cycleId}/reports/${reportType}/`;
     if (nonhuman) {
       url += `?nonhuman=${nonhuman}`;
     }

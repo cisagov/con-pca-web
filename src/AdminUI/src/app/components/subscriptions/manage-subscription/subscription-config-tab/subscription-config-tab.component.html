@@ -9,11 +9,11 @@
       <div *ngIf="customer" class="d-flex flex-row mb-4">
         <div>
           <mat-card
-            *ngIf="!!customer.customer_uuid"
+            *ngIf="!!customer._id"
             class="mt-0 mr-3 mb-1 ml-0 customer-card"
             appearance="outline"
           >
-            <input type="hidden" formControlName="selectedCustomerUuid" />
+            <input type="hidden" formControlName="selectedCustomerId" />
             <div>
               <div>{{ customer?.name }}</div>
               <div>{{ customer?.identifier }}</div>
@@ -26,7 +26,7 @@
             </div>
           </mat-card>
 
-          <div class="mb-3" [class.mt-2]="!customer.customer_uuid">
+          <div class="mb-3" [class.mt-2]="!customer._id">
             <button
               mat-raised-button
               color="primary"
@@ -37,7 +37,7 @@
               <i class="fa fa-search" style="font-size: 1rem"></i>
             </button>
             <mat-error
-              *ngIf="f.selectedCustomerUuid.errors?.required"
+              *ngIf="f.selectedCustomerId.errors?.required"
               class="invalid-feedback"
             >
               A Customer must be selected
@@ -45,7 +45,7 @@
           </div>
         </div>
 
-        <div *ngIf="!!customer.customer_uuid">
+        <div *ngIf="!!customer._id">
           <mat-form-field appearance="outline">
             <mat-label>Primary Contact</mat-label>
 
@@ -124,7 +124,7 @@
             <tr>
               <td>CISA-PHISH Header Value</td>
               <td class="text-right" style="color: grey; cursor: default">
-                {{ subscription.subscription_uuid }}
+                {{ subscription._id }}
               </td>
             </tr>
           </table>
@@ -184,10 +184,7 @@
           <mat-label>Sending Profile</mat-label>
           <mat-select formControlName="sendingProfile">
             <mat-option [value]="null">--Select--</mat-option>
-            <mat-option
-              *ngFor="let sp of sendingProfiles"
-              [value]="sp.sending_profile_uuid"
-            >
+            <mat-option *ngFor="let sp of sendingProfiles" [value]="sp._id">
               {{ sp.name }}</mat-option
             >
           </mat-select>
@@ -542,7 +539,7 @@
         <div class="bottom-errors">
           <mat-error
             style="display: flex"
-            *ngIf="f.selectedCustomerUuid.errors?.required && this.submitted"
+            *ngIf="f.selectedCustomerId.errors?.required && this.submitted"
             class="invalid-feedback"
           >
             A Customer must be selected

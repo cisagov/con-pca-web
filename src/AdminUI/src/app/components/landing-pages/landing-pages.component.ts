@@ -49,6 +49,6 @@ export class LandingPagesComponent implements OnInit, AfterViewInit {
     this.landingPageData.filter = value.trim().toLocaleLowerCase();
   };
   public editTemplate(template: LandingPageModel) {
-    this.router.navigate(['/landingpagesmanager', template.landing_page_uuid]);
+    this.router.navigate(['/landingpagesmanager', template._id]);
   }
 }

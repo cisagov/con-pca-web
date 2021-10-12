@@ -11,28 +11,20 @@ const headers = {
 
 @Injectable()
 export class TemplateManagerService {
-  /**
-   * Constructor.
-   * @param http
-   */
   constructor(
     private http: HttpClient,
     private settingsService: SettingsService
   ) {}
 
-  /**
-   * GET a list of all templates
-   * @param retired
-   */
-  async getAllTemplates(retired: boolean = false, templateUuids = []) {
+  async getAllTemplates(retired: boolean = false, templateIds = []) {
     let url = `${this.settingsService.settings.apiUrl}/api/templates/`;
     const parameters = [];
     if (retired) {
       parameters.push('retired=true');
     }
 
-    if (templateUuids) {
-      parameters.push(`templates=${templateUuids.join(',')}`);
+    if (templateIds) {
+      parameters.push(`templates=${templateIds.join(',')}`);
     }
 
     if (parameters) {
@@ -42,14 +34,10 @@ export class TemplateManagerService {
     return this.http.get<TemplateModel[]>(url, headers).toPromise();
   }
 
-  /**
-   * GET a single template using the provided temlpate_uuid
-   * @param uuid
-   */
-  getTemplate(uuid: string) {
+  getTemplate(id: string) {
     return new Promise((resolve, reject) => {
       this.http
-        .get(`${this.settingsService.settings.apiUrl}/api/template/${uuid}`)
+        .get(`${this.settingsService.settings.apiUrl}/api/template/${id}`)
         .subscribe(
           (success) => {
             resolve(success);
@@ -62,10 +50,6 @@ export class TemplateManagerService {
     });
   }
 
-  /**
-   * POST a new template
-   * @param template
-   */
   saveNewTemplate(template: TemplateModel) {
     return this.http.post(
       `${this.settingsService.settings.apiUrl}/api/templates/`,
@@ -73,15 +57,11 @@ export class TemplateManagerService {
     );
   }
 
-  /**
-   * PATCH an existing template with partial data
-   * @param template
-   */
   updateTemplate(template: TemplateModel) {
     return new Promise((resolve, reject) => {
       this.http
         .put(
-          `${this.settingsService.settings.apiUrl}/api/template/${template.template_uuid}/`,
+          `${this.settingsService.settings.apiUrl}/api/template/${template._id}/`,
           template
         )
         .subscribe(
@@ -96,15 +76,11 @@ export class TemplateManagerService {
     });
   }
 
-  /**
-   *
-   * @param template
-   */
   deleteTemplate(template: TemplateModel) {
     return new Promise((resolve, reject) => {
       this.http
         .delete(
-          `${this.settingsService.settings.apiUrl}/api/template/${template.template_uuid}/`
+          `${this.settingsService.settings.apiUrl}/api/template/${template._id}/`
         )
         .subscribe(
           (success) => {
@@ -117,13 +93,9 @@ export class TemplateManagerService {
     });
   }
 
-  /**
-   *
-   * @param template
-   */
   stopTemplate(template: TemplateModel) {
     return this.http.get(
-      `${this.settingsService.settings.apiUrl}/api/template/stop/${template.template_uuid}/`
+      `${this.settingsService.settings.apiUrl}/api/template/stop/${template._id}/`
     );
   }
 

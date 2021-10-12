@@ -5,7 +5,7 @@ import { CustomerService } from 'src/app/services/customer.service';
 import { ContactModel, CustomerModel } from 'src/app/models/customer.model';
 
 interface ICustomer {
-  customer_uuid: string;
+  customer_id: string;
   customer_name: string;
   contact_list: ContactModel[];
 }
@@ -17,7 +17,7 @@ interface ICustomer {
 })
 export class AddContactDialogComponent implements OnInit {
   form_group = new FormGroup({
-    customer_uuid: new FormControl(),
+    customer_id: new FormControl(),
     first_name: new FormControl(),
     last_name: new FormControl(),
     title: new FormControl(),
@@ -48,16 +48,16 @@ export class AddContactDialogComponent implements OnInit {
   }
 
   onSaveClick(): void {
-    let uuid = this.getUuidFromForm();
+    let id = this.getIdFromForm();
     let contact = this.getContactFromForm();
-    let contacts = this.getContactsFromUuid(uuid);
+    let contacts = this.getContactsFromId(id);
     contacts.push(contact);
-    this.customer_service.setContacts(uuid, contacts).subscribe();
+    this.customer_service.setContacts(id, contacts).subscribe();
     this.dialog_ref.close();
   }
 
-  getUuidFromForm(): string {
-    return this.form_group.controls['customer_uuid'].value;
+  getIdFromForm(): string {
+    return this.form_group.controls['customer_id'].value;
   }
 
   getContactFromForm(): ContactModel {
@@ -74,10 +74,10 @@ export class AddContactDialogComponent implements OnInit {
     return contact;
   }
 
-  getContactsFromUuid(uuid: string) {
+  getContactsFromId(id: string) {
     let contacts: ContactModel[] = [];
     this.customers.map((customer: CustomerModel) => {
-      if (customer.customer_uuid == uuid) {
+      if (customer._id == id) {
         contacts = customer.contact_list;
       }
     });

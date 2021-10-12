@@ -80,8 +80,8 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
 
   // List of angular subscriptions, unsubscribed to on delete
   angularSubscriptions = Array<Subscription>();
-  // Customer_uuid if not new
-  customer_uuid: string;
+  // Customer_id if not new
+  customer_id: string;
   customer: CustomerModel;
   subscriptions = new MatTableDataSource<Subscription>();
   hasSubs = true;
@@ -127,8 +127,8 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
 
     this.angularSubscriptions.push(
       this.route.params.subscribe((params) => {
-        this.customer_uuid = params['customerId'];
-        if (this.customer_uuid !== undefined) {
+        this.customer_id = params['customerId'];
+        if (this.customer_id !== undefined) {
           this.layoutSvc.setTitle('Edit Customer');
           this.getCustomer();
         } else {
@@ -141,9 +141,9 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
   }
 
   getCustomer() {
-    this.customerSvc.getCustomer(this.customer_uuid).subscribe(
-      (data: any) => {
-        if (data.customer_uuid != null) {
+    this.customerSvc.getCustomer(this.customer_id).subscribe(
+      (data: CustomerModel) => {
+        if (data._id != null) {
           this.customer = data as CustomerModel;
           this.setCustomerForm(this.customer);
           this.setContacts(this.customer.contact_list as ContactModel[]);
@@ -160,7 +160,7 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
               }
             });
         } else {
-          this.orgError = 'Specified customer UUID not found';
+          this.orgError = 'Specified customer ID not found';
         }
       },
       (error) => {
@@ -220,7 +220,7 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
   }
 
   isExistingCustomer(): boolean {
-    if (this.customer_uuid) {
+    if (this.customer_id) {
       return true;
     }
     return false;
@@ -255,7 +255,7 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
         industry = this.customerFormGroup.controls['industry'].value;
       }
       const customer: CustomerModel = {
-        customer_uuid: '',
+        _id: '',
         name: this.customerFormGroup.controls['customerName'].value,
         identifier: this.customerFormGroup.controls['customerIdentifier'].value,
         address_1: this.customerFormGroup.controls['address1'].value,
@@ -269,9 +269,9 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
         contact_list: this.contacts.data,
       };
 
-      if (this.customer_uuid != null) {
+      if (this.customer_id != null) {
         // If editing existing customer
-        customer.customer_uuid = this.customer_uuid;
+        customer._id = this.customer_id;
         this.angularSubscriptions.push(
           this.customerSvc.patchCustomer(customer).subscribe((data: any) => {
             this.router.navigate(['/customers']);
@@ -284,7 +284,7 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
             // if this customer was added inside a dialog, then we are in the
             // middle of a subscription -- selected the customer
             if (this.inDialog) {
-              this.customerSvc.selectedCustomer = data.customer_uuid;
+              this.customerSvc.selectedCustomer = data._id;
             } else {
               this.cancelCustomer();
             }
@@ -381,7 +381,7 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
   }
 
   cancelCustomer() {
-    if (this.customer_uuid) {
+    if (this.customer_id) {
       this.router.navigate(['/customers']);
     } else {
       this.clearCustomer();

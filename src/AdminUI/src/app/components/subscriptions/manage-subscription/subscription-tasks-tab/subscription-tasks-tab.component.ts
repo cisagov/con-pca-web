@@ -36,7 +36,7 @@ export class SubscriptionTasksTabComponent implements OnInit {
 
   ngOnInit() {
     this.subscriptionSvc.subBehaviorSubject.subscribe((data) => {
-      if ('subscription_uuid' in data) {
+      if ('_id' in data) {
         this.subscription = data;
         this.tasks.data = data.tasks;
       }

@@ -22,7 +22,7 @@ export class SubscriptionStatsTab implements OnInit {
   //   subscription: Subscription
 
   subscription: SubscriptionModel;
-  subscription_uuid: string;
+  subscription_id: string;
   selectedCycle: CycleModel;
   timelineItems: any[] = [];
   display_timeline = false;
@@ -36,21 +36,18 @@ export class SubscriptionStatsTab implements OnInit {
   }
 
   pageRefresh(): void {
-    this.router.navigate(
-      ['/view-subscription', this.subscription.subscription_uuid],
-      {
-        queryParams: {
-          tab: 1,
-        },
-      }
-    );
+    this.router.navigate(['/view-subscription', this.subscription._id], {
+      queryParams: {
+        tab: 1,
+      },
+    });
   }
 
   ngOnInit() {
     this.subscriptionSvc.getSubBehaviorSubject().subscribe((data) => {
       this.subscription = data;
-      if (data.subscription_uuid && !this.subscription_uuid) {
-        this.subscription_uuid = data.subscription_uuid;
+      if (data._id && !this.subscription_id) {
+        this.subscription_id = data._id;
       }
       if ('cycles' in data) {
         this.buildSubscriptionTimeline(this.subscription);

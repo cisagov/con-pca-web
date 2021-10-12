@@ -219,7 +219,7 @@
                     <mat-option [value]="null"></mat-option>
                     <mat-option
                       *ngFor="let page of pagesList"
-                      [value]="page.landing_page_uuid"
+                      [value]="page._id"
                       >{{ page.name }}</mat-option
                     >
                   </mat-select>
@@ -264,7 +264,7 @@
                 <mat-row
                   *matRowDef="let row; columns: displayed_columns"
                   class="table-row cursor-pointer"
-                  [routerLink]="['/view-subscription', row.subscription_uuid]"
+                  [routerLink]="['/view-subscription', row._id]"
                 ></mat-row>
               </mat-table>
               <div
@@ -315,10 +315,7 @@
                 <mat-label>Customer</mat-label>
                 <mat-select formControlName="customer">
                   <mat-option [value]="null">--Select--</mat-option>
-                  <mat-option
-                    *ngFor="let c of customers"
-                    [value]="c.customer_uuid"
-                  >
+                  <mat-option *ngFor="let c of customers" [value]="c._id">
                     {{ c.name }}</mat-option
                   >
                 </mat-select>
