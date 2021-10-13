@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { RecommendationsModel } from '../../models/recommendations.model';
 import { MatRadioChange } from '@angular/material/radio';
 import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
+import { AlertsService } from 'src/app/services/alerts.service';
 
 @Component({
   selector: 'app-recommendations',
@@ -22,7 +23,8 @@ export class RecommendationsComponent implements OnInit {
     public recommendationsSvc: RecommendationsService,
     public router: Router,
     public layoutSvc: LayoutMainService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public alertSvc: AlertsService
   ) {
     this.layoutSvc.setTitle('Recommendations');
   }
@@ -62,8 +64,11 @@ export class RecommendationsComponent implements OnInit {
         this.recommendationsSvc
           .saveRecommendations(this.recommendations)
           .subscribe(
-            () => {},
+            () => {
+              this.alertSvc.alert('Recommendations saved successfully.');
+            },
             (error) => {
+              this.alertSvc.alert('Error saving recommendations. Check Logs.');
               console.log(error);
             }
           );
