@@ -74,7 +74,7 @@
         <ul>
           <li *ngFor="let template of cycleStats.template_stats">
             {{ template.clicked.rank }} - {{ template.template.name }}
-            <a [routerLink]="['/templatemanager', template._id]">{{
+            <a [routerLink]="['/templatemanager', template.template_id]">{{
               template.template.subject
             }}</a>
             ({{ template.deception_level }})

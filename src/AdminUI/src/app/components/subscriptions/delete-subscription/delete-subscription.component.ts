@@ -38,7 +38,7 @@ export class DeleteSubscription {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.subscriptionsrv.deleteSubscription(this.subscription).then(
+        this.subscriptionsrv.deleteSubscription(this.subscription).subscribe(
           (success) => {
             this.router.navigate(['/subscriptions']);
           },

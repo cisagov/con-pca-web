@@ -62,51 +62,33 @@ export class SubscriptionService {
     return this.http.get(url);
   }
 
-  /**
-   * Call to search subs for custumer id and primary contact.
-   */
   public getPrimaryContactSubscriptions(
     customerId: string,
     contact: ContactModel
   ) {
     const c = { primary_contact: contact };
-    let url = `${this.settingsService.settings.apiUrl}/api/subscription/customer/${customerId}/`;
+    const url = `${this.settingsService.settings.apiUrl}/api/subscription/customer/${customerId}/`;
     return this.http.post(url, c);
   }
 
   public getSubscription(subscriptionId: string) {
-    let url = `${this.settingsService.settings.apiUrl}/api/subscription/${subscriptionId}/`;
+    const url = `${this.settingsService.settings.apiUrl}/api/subscription/${subscriptionId}/`;
     return this.http.get<SubscriptionModel>(url);
   }
 
   public deleteSubscription(subscription: SubscriptionModel) {
-    return new Promise((resolve, reject) => {
-      this.http
-        .delete(
-          `${this.settingsService.settings.apiUrl}/api/subscription/${subscription._id}/`
-        )
-        .subscribe(
-          (success) => {
-            resolve(success);
-          },
-          (error) => {
-            reject(error);
-          }
-        );
-    });
+    const url = `${this.settingsService.settings.apiUrl}/api/subscription/${subscription._id}/`;
+    return this.http.delete(url);
   }
 
   submitSubscription(subscription: SubscriptionModel) {
-    return this.http.post(
-      `${this.settingsService.settings.apiUrl}/api/subscriptions/`,
-      subscription
-    );
+    const url = `${this.settingsService.settings.apiUrl}/api/subscriptions/`;
+    return this.http.post(url, subscription);
   }
 
   restartSubscription(id: string) {
-    return this.http.get(
-      `${this.settingsService.settings.apiUrl}/api/subscription/${id}/launch/`
-    );
+    const url = `${this.settingsService.settings.apiUrl}/api/subscription/${id}/launch/`;
+    return this.http.get(url);
   }
 
   patchSubscription(subscription: SubscriptionModel) {
@@ -156,14 +138,6 @@ export class SubscriptionService {
     return this.http.delete(
       `${this.settingsService.settings.apiUrl}/api/subscription/${subscriptionId}/launch/`
     );
-  }
-
-  /**
-   * Gets timeline items for the subscription.
-   */
-  public getTimelineItems(subscriptionId) {
-    const url = `${this.settingsService.settings.apiUrl}/api/subscription/timeline/${subscriptionId}/`;
-    return this.http.get(url);
   }
 
   public downloadReport(

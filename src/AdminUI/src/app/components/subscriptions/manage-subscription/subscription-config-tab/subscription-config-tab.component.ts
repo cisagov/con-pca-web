@@ -214,7 +214,9 @@ export class SubscriptionConfigTab
         this.loadPageForCreate(params);
       } else {
         this.subscriptionSvc.subBehaviorSubject.subscribe((data) => {
-          this.loadPageForEdit(data);
+          if (data._id) {
+            this.loadPageForEdit(data);
+          }
         });
       }
     });

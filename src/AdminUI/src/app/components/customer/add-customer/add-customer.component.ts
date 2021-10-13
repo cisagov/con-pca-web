@@ -152,7 +152,6 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
             .getSubscriptionsByCustomer(this.customer)
             .subscribe((data: any[]) => {
               this.subscriptions.data = data as Subscription[];
-              console.log(this.subscriptions.data.length);
               if (this.subscriptions.data.length < 1) {
                 this.hasSubs = false;
               } else {
@@ -308,14 +307,12 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
       let duplicateEmailName = '';
       //Check for existing contact with the same email
       this.contacts.data.forEach((element) => {
-        console.log('Checking emails');
         if (
           element.email.toLocaleLowerCase() ==
           String(
             this.contactFormGroup.controls['email'].value
           ).toLocaleLowerCase()
         ) {
-          console.log('SET FORM CONTROL INVALID HERE, EMAILS DUPLICATED');
           isNotDuplicateEmail = false;
           duplicateEmailName = element.first_name + ' ' + element.last_name;
         }
@@ -425,7 +422,7 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
       const sector = this.sectorList.filter(
         (x) => x.name === this.customerFormGroup.controls['sector'].value
       );
-      this.industryList = sector[0].industries;
+      this.industryList = sector[0]?.industries;
     }
   }
 
