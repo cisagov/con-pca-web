@@ -74,15 +74,12 @@ export class ManageSubscriptionComponent
     this.subscriptionSvc.subscription = new SubscriptionModel();
     const sub = this.subscriptionSvc.subscription;
     sub._id = params.id;
-
-    console.log('loading');
     this.sub_subscription = this.subscriptionSvc
       .getSubscription(sub._id)
       .subscribe(
         (success: SubscriptionModel) => {
           this.cycleSvc.getSubscriptionCycles(sub._id).subscribe((cycles) => {
             success.cycles = cycles;
-            console.log('loaded');
             this.loading = false;
             this.setPageForEdit(success);
           });
@@ -113,7 +110,7 @@ export class ManageSubscriptionComponent
 
     if (s.cycles) {
       // Need to use let here. Compiler raises an error if not.
-      let i = 0;
+      const i = 0;
       this.subscriptionSvc.setCycleBehaviorSubject(s.cycles[i]);
     }
 

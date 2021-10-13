@@ -43,7 +43,6 @@ export class SubscriptionReportTab implements OnInit {
           this.emailsSent.sort = this.sort;
           const selectedCycleIndex = 0;
           this.selectedCycle = this.subscription.cycles[selectedCycleIndex];
-          console.log(this.subscription.notification_history);
           this.emailsSent.data = this.subscription.notification_history;
         }
       }
