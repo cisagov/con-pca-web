@@ -97,6 +97,7 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
 import { PasswordResetComponent } from './components/password-reset/password-reset.component';
 import { RecommendationsComponent } from './components/recommendations/recommendations.component';
 import { RecommendationsService } from './services/recommendations.service';
+import { AlertsService } from './services/alerts.service';
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
   return () => settingsHttpService.initializeApp();
@@ -182,17 +183,18 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     NgxChartsModule,
   ],
   providers: [
-    SubscriptionService,
+    AlertsService,
     CustomerService,
-    TemplateManagerService,
-    LandingPageManagerService,
-    TagService,
-    ThemeService,
-    LayoutMainService,
     HttpClient,
-    UserAuthService,
+    LandingPageManagerService,
+    LayoutMainService,
     LoginService,
     RecommendationsService,
+    SubscriptionService,
+    TagService,
+    TemplateManagerService,
+    ThemeService,
+    UserAuthService,
     [DatePipe],
     { provide: MAT_DIALOG_DATA, useValue: [] },
     {
