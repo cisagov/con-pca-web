@@ -127,6 +127,15 @@
                 {{ subscription._id }}
               </td>
             </tr>
+            <tr>
+              <td>Sending Domains</td>
+              <td class="text-right" style="color: grey; cursor: default">
+                {{ getSendingProfileDomain(f.sendingProfile.value) }}
+                <div *ngFor="let t of templatesSelected">
+                  {{ getSendingProfileDomain(t.sending_profile_id) }}
+                </div>
+              </td>
+            </tr>
           </table>
         </div>
       </div>

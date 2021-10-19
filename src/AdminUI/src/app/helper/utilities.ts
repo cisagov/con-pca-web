@@ -95,15 +95,3 @@ export function listToText(list: any[]) {
 
   return output;
 }
-
-/**
- * filterSendingProfiles()
- * Filters out auto gen named Sending profiles
- * Returns filtered list.
- */
-export function filterSendingProfiles(sendingProfiles: any[]): any[] {
-  return sendingProfiles.filter((sendingProfile) => {
-    const regex = /.*_[0-9]+.[0-9]+.[0-9]+.*/g;
-    return !sendingProfile.name.match(regex);
-  });
-}
