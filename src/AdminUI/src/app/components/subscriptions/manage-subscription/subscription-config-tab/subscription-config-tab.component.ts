@@ -37,7 +37,6 @@ import { SendingProfileService } from 'src/app/services/sending-profile.service'
 import { TemplateManagerService } from 'src/app/services/template-manager.service';
 import { SettingsService } from 'src/app/services/settings.service';
 import { BehaviorSubject } from 'rxjs';
-import { filterSendingProfiles } from '../../../../helper/utilities';
 import { TemplateSelectDialogComponent } from 'src/app/components/subscriptions/manage-subscription/template-select-dialog/template-select-dialog.component';
 import { InvalidEmailDialogComponent } from 'src/app/components/subscriptions/invalid-email-dialog/invalid-email-dialog.component';
 import { MatCheckboxChange } from '@angular/material/checkbox';
@@ -568,7 +567,7 @@ export class SubscriptionConfigTab
 
   loadSendingProfiles() {
     this.sendingProfileSvc.getAllProfiles().subscribe((data: any) => {
-      this.sendingProfiles = filterSendingProfiles(data);
+      this.sendingProfiles = data;
     });
   }
 
@@ -1235,5 +1234,12 @@ export class SubscriptionConfigTab
         }
       }
     });
+  }
+
+  getSendingProfileDomain(sendingProfileId) {
+    const sp = this.sendingProfiles.filter((s) => s._id === sendingProfileId);
+    if (sp.length > 0) {
+      return sp[0].from_address.split('@')[1];
+    }
   }
 }

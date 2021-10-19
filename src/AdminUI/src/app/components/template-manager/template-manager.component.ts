@@ -32,7 +32,6 @@ import Swal from 'sweetalert2';
 import { SendingProfileService } from 'src/app/services/sending-profile.service';
 import { TestEmailModel } from 'src/app/models/test-email.model';
 import { DomSanitizer } from '@angular/platform-browser';
-import { filterSendingProfiles } from '../../helper/utilities';
 import { ImportTemplateDialogComponent } from './import-template-dialog/import-template-dialog.component';
 import { CustomerService } from 'src/app/services/customer.service';
 import { CustomerModel } from 'src/app/models/customer.model';
@@ -170,7 +169,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
       this.pagesList = data;
     });
     this.sendingProfileSvc.getAllProfiles().subscribe((data: any) => {
-      this.sendingProfiles = filterSendingProfiles(data);
+      this.sendingProfiles = data;
     });
     this.customerSvc.getCustomers().subscribe((data: CustomerModel[]) => {
       this.customers = data;
