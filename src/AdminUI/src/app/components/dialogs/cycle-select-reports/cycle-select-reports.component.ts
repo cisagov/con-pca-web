@@ -11,10 +11,10 @@ export class CycleSelectReports implements OnInit {
   public title = 'Cycles for subscription - ';
   public confirmMessage: string;
   public cycleList: any = [];
-  public reportType = 'monthly';
+  public reportType = 'status';
 
   public reportTypes = [
-    { displayName: 'Monthly', value: 'monthly' },
+    { displayName: 'Status', value: 'status' },
     { displayName: 'Cycle', value: 'cycle' },
     { displayName: 'Yearly', value: 'yearly' },
   ];
