@@ -16,6 +16,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { Subscription } from 'rxjs';
 import { AlertComponent } from '../../dialogs/alert/alert.component';
+import { ConfirmComponent } from '../../dialogs/confirm/confirm.component';
 
 @Component({
   selector: 'app-add-customer',
@@ -66,6 +67,7 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
     sector: new FormControl(null),
     industry: new FormControl(null),
     customerType: new FormControl('', [Validators.required]),
+    domain: new FormControl('', [Validators.required]),
   });
 
   contactFormGroup = new FormGroup({
@@ -196,6 +198,7 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
       zip: customer.zip_code,
       sector: customer.sector,
       industry: customer.industry,
+      domain: customer.domain,
     });
   }
 
@@ -266,6 +269,7 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
         industry: industry,
         customer_type: this.customerFormGroup.controls['customerType'].value,
         contact_list: this.contacts.data,
+        domain: this.customerFormGroup.controls['domain'].value,
       };
 
       if (this.customer_id != null) {
@@ -438,19 +442,29 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
   }
 
   deleteCustomer() {
-    this.customerSvc.deleteCustomer(this.customer).subscribe(
-      (success) => {
-        this.dialog.open(AlertComponent, {
-          data: {
-            title: 'Customer Deleted',
-            messageText: 'Your Customer Was Deleted',
+    const dialogRef = this.dialog.open(ConfirmComponent, {
+      disableClose: false,
+    });
+    dialogRef.componentInstance.confirmMessage = `Are you sure you want to delete ${this.customer.name}?`;
+    dialogRef.componentInstance.title = 'Confirm Delete';
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.customerSvc.deleteCustomer(this.customer).subscribe(
+          (success) => {
+            this.dialog.open(AlertComponent, {
+              data: {
+                title: 'Customer Deleted',
+                messageText: 'Your Customer Was Deleted',
+              },
+            });
+            this.router.navigate(['/customers']);
           },
-        });
-        this.router.navigate(['/customers']);
-      },
-      (error) => {
-        console.log(error);
+          (error) => {
+            console.log(error);
+          }
+        );
       }
-    );
+    });
   }
 }

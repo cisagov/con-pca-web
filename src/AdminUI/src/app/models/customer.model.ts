@@ -11,6 +11,7 @@ export class CustomerModel {
   industry: string;
   customer_type: string;
   contact_list: ContactModel[];
+  domain: string;
 
   public constructor(init?: Partial<CustomerModel>) {
     Object.assign(this, init);

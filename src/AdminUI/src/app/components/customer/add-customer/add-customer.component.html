@@ -76,6 +76,24 @@
           </mat-error>
         </mat-form-field>
       </div>
+
+      <!-- Domain -->
+      <div class="d-flex flex-row">
+        <mat-form-field
+          appearance="outline"
+          class="flex-grow-1"
+          [formGroup]="customerFormGroup"
+        >
+          <mat-label>Customer Domain*</mat-label>
+          <input
+            type="text"
+            trim="blur"
+            matInput
+            placeholder="Customer Domain"
+            formControlName="domain"
+          />
+        </mat-form-field>
+      </div>
       <!-- Place holder for Government Type -->
       <div class="d-flex flex-row">
         <mat-form-field
