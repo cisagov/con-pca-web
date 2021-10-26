@@ -120,7 +120,6 @@ export class CustomerService {
   }
 
   public deleteCustomer(data: CustomerModel) {
-    console.log(data);
     return this.http.delete(
       `${this.settingsService.settings.apiUrl}/api/customer/${data._id}/`
     );
