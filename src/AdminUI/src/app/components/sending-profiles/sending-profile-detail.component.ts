@@ -3,17 +3,10 @@ import {
   Component,
   OnInit,
   Inject,
-  ChangeDetectorRef,
   ChangeDetectionStrategy,
   ViewChild,
 } from '@angular/core';
-import {
-  FormControl,
-  Validators,
-  FormGroup,
-  ValidatorFn,
-  AbstractControl,
-} from '@angular/forms';
+import { FormControl, Validators, FormGroup } from '@angular/forms';
 import {
   MatDialogRef,
   MAT_DIALOG_DATA,
@@ -54,7 +47,6 @@ export class SendingProfileDetailComponent implements OnInit {
    */
   constructor(
     private sendingProfileSvc: SendingProfileService,
-    private changeDetector: ChangeDetectorRef,
     public dialogRef: MatDialogRef<SendingProfileDetailComponent>,
     public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -75,6 +67,7 @@ export class SendingProfileDetailComponent implements OnInit {
   ngOnInit(): void {
     this.profileForm = new FormGroup({
       name: new FormControl('', Validators.required),
+      landingPageDomain: new FormControl('', Validators.required),
       interfaceType: new FormControl({ value: 'SMTP', disabled: true }),
       from: new FormControl('', [
         Validators.required,
@@ -95,8 +88,8 @@ export class SendingProfileDetailComponent implements OnInit {
       this.sendingProfileSvc.getProfile(this.id).subscribe(
         (data: any) => {
           this.profile = data as SendingProfileModel;
-
           this.f.name.setValue(this.profile.name);
+          this.f.landingPageDomain.setValue(this.profile.landing_page_domain);
           this.f.interfaceType.setValue(this.profile.interface_type);
           this.f.from.setValue(this.profile.from_address);
           this.f.host.setValue(this.profile.host);
@@ -104,11 +97,13 @@ export class SendingProfileDetailComponent implements OnInit {
           this.f.password.setValue(this.profile.password);
           this.f.ignoreCertErrors.setValue(this.profile.ignore_cert_errors);
           this.headerList = new MatTableDataSource<CustomHeader>();
-          for (const h of this.profile.headers) {
-            const headerListItem = new CustomHeader();
-            headerListItem.header = h.key;
-            headerListItem.value = h.value;
-            this.headerList.data.push(headerListItem);
+          if (this.profile.headers) {
+            for (const h of this.profile.headers) {
+              const headerListItem = new CustomHeader();
+              headerListItem.header = h.key;
+              headerListItem.value = h.value;
+              this.headerList.data.push(headerListItem);
+            }
           }
           this.headerList.sort = this.sort;
         },
@@ -200,6 +195,7 @@ export class SendingProfileDetailComponent implements OnInit {
 
     const sp = new SendingProfileModel();
     sp.name = this.f.name.value;
+    sp.landing_page_domain = this.f.landingPageDomain.value;
     sp.username = this.f.username.value;
     sp.password = this.f.password.value;
     sp.host = this.f.host.value;

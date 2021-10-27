@@ -8,6 +8,7 @@ export class SendingProfileModel {
   from_address: string;
   ignore_cert_errors: boolean;
   headers: SendingProfileHeaderModel[];
+  landing_page_domain: string;
 
   public constructor(init?: Partial<SendingProfileModel>) {
     Object.assign(this, init);
