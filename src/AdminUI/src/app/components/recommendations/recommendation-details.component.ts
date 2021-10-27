@@ -101,7 +101,7 @@ export class RecommendationDetailComponent implements OnInit {
 
     if (this.recommendForm.valid) {
       rm = this.save();
-      this.recommendationSvc.saveRecommendations(rm).subscribe(() => {
+      this.recommendationSvc.updateRecommendation(rm._id, rm).subscribe(() => {
         this.dialogRef.close();
       });
     } else {

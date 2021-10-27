@@ -57,9 +57,6 @@ export class RecommendationsListComponent implements OnInit, AfterViewInit {
   public filterRecommendations = (value: string) => {
     this.recommendationsData.filter = value.trim().toLocaleLowerCase();
   };
-  public editRecommendation(recommendation: RecommendationModel) {
-    this.router.navigate(['/recommendationmanager', recommendation._id]);
-  }
 
   openRecDialog(row: any): void {
     if (this.dialog.openDialogs.length === 0) {
@@ -77,5 +74,25 @@ export class RecommendationsListComponent implements OnInit, AfterViewInit {
         this.refresh();
       });
     }
+  }
+
+  deleteRec(row: any) {
+    console.log(row);
+    this.recommendationSvc.deleteRecommendation(row._id).subscribe(
+      () => {
+        this.refresh();
+      },
+      (failure) => {
+        this.dialog.open(AlertComponent, {
+          data: {
+            title: 'Error Trying To Delete',
+            messageText:
+              'An error occurred deleting the Recommendation: ' +
+              failure.error.error,
+            list: failure.error.fields,
+          },
+        });
+      }
+    );
   }
 }

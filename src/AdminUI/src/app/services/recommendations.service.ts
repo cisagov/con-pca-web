@@ -35,9 +35,19 @@ export class RecommendationsService {
     );
   }
 
+  updateRecommendation(
+    id: string,
+    recommendations: RecommendationModel
+  ): Observable<RecommendationModel> {
+    return this.http.put<RecommendationModel>(
+      `${this.settingsService.settings.apiUrl}/api/recommendation/${id}/`,
+      recommendations
+    );
+  }
+
   deleteRecommendation(id: string) {
     return this.http.delete(
-      `${this.settingsService.settings.apiUrl}/api/recommendations/${id}/`
+      `${this.settingsService.settings.apiUrl}/api/recommendation/${id}/`
     );
   }
 }
