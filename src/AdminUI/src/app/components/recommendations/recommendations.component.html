@@ -1,274 +1,82 @@
 <div class="container-fluid">
-  <div class="row h-100">
-    <div class="col-8 h-100 d-flex flex-column mt-2">
-      <div class="p-3">
-        <div class="d-flex flex-row mb-3">
-          <mat-form-field appearance="outline" class="flex-grow-1">
-            <mat-label>Recommendation</mat-label>
-            <textarea
-              trim="blur"
-              matInput
-              cdkTextareaAutosize
-              cdkAutosizeMinRows="10"
-              cdkAutosizeMaxRows="20"
-              placeholder="Description"
-              [(ngModel)]="selected.recommendation"
-            ></textarea>
-          </mat-form-field>
-        </div>
+  <div class="d-flex flex-row flex-grow-1">
+    <!-- SEARCH BAR -->
+    <mat-form-field class="d-flex flex-column w-100" appearance="outline">
+      <mat-label>Search</mat-label>
+      <input
+        [(ngModel)]="search_input"
+        (keyup)="filterRecommendations($event.target.value)"
+        matInput
+        placeholder="Search"
+      />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <!-- CREATE TEMPLATE -->
+    <div class="d-inline-flex flex-column ml-2">
+      <div class="d-flex">
+        <button mat-raised-button color="primary" routerLink="/templatemanager">
+          New Recommendation
+        </button>
       </div>
-      <div class="d-flex flex-row justify-content-end">
-        <div>
+    </div>
+  </div>
+
+  <div class="col p-0 w-100">
+    <div
+      *ngIf="loading"
+      style="text-align: center; padding-top: 2rem; padding-bottom: 2rem"
+    >
+      <mat-spinner
+        class="spinner"
+        style="margin-left: auto; margin-right: auto"
+        diameter="50"
+      ></mat-spinner>
+    </div>
+
+    <!-- TEMPLATES TABLE -->
+    <mat-table [hidden]="loading" [dataSource]="recommendationsData" matSort>
+      <!-- NAME -->
+      <ng-container matColumnDef="title">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Title</mat-header-cell
+        >
+        <mat-cell *matCellDef="let row">{{ row.title }}</mat-cell>
+      </ng-container>
+      <!-- DECEPTION SCORE -->
+      <ng-container matColumnDef="type">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Type</mat-header-cell
+        >
+        <mat-cell *matCellDef="let row">{{ row.type }}</mat-cell>
+      </ng-container>
+      <!-- CREATED BY -->
+      <ng-container matColumnDef="created_by">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Created By</mat-header-cell
+        >
+        <mat-cell *matCellDef="let row">{{ row.created_by }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="edit">
+        <mat-header-cell *matHeaderCellDef>Edit</mat-header-cell>
+        <mat-cell *matCellDef="let row">
           <button
-            id="save-button-cancel"
+            class="table-btn-icon"
             mat-flat-button
-            (click)="onCancelClick()"
-            color="accent"
-          >
-            Revert
-          </button>
-          <button
-            id="save-button"
-            mat-raised-button
-            (click)="saveRecommendations()"
             color="primary"
+            (click)="editRecommendation(row)"
           >
-            Save Recommendations
+            <mat-icon class="table-btn-icon-size">edit</mat-icon>
           </button>
-        </div>
-      </div>
-    </div>
-    <div class="col-4 h-100 testing overflow-auto border-left">
-      <div class="p-3">
-        <div class="mb-3">
-          <div class="row">
-            <!-- Left Column Calcs -->
-            <div class="d-flex flex-column col-md-12 col-lg-5">
-              <mat-radio-group appearance="outline" (change)="onChange($event)">
-                <div class="h6 mt-2">Deception Levels</div>
-                <div class="row radio_selection_group">
-                  <mat-radio-button [value]="recommendations.levels[1]"
-                    >Level 1</mat-radio-button
-                  >
-                  <mat-radio-button [value]="recommendations?.levels[2]"
-                    >Level 2</mat-radio-button
-                  >
-                  <mat-radio-button [value]="recommendations?.levels[3]"
-                    >Level 3</mat-radio-button
-                  >
-                  <mat-radio-button [value]="recommendations?.levels[4]"
-                    >Level 4</mat-radio-button
-                  >
-                  <mat-radio-button [value]="recommendations?.levels[5]"
-                    >Level 5</mat-radio-button
-                  >
-                  <mat-radio-button [value]="recommendations?.levels[6]"
-                    >Level 6</mat-radio-button
-                  >
-                </div>
-                <div class="h6 mt-2">Appearance</div>
-                <div>
-                  <mat-label class="mb-3">Grammar</mat-label>
-                  <div class="row radio_selection_group">
-                    <mat-radio-button
-                      [value]="
-                        recommendations.indicators.appearance.grammar.values[0]
-                      "
-                      >0 = Poor
-                    </mat-radio-button>
-                    <mat-radio-button
-                      [value]="
-                        recommendations.indicators.appearance.grammar.values[1]
-                      "
-                      >1 = Decent
-                    </mat-radio-button>
-                    <mat-radio-button
-                      [value]="
-                        recommendations.indicators.appearance.grammar.values[2]
-                      "
-                      >2 = Proper
-                    </mat-radio-button>
-                  </div>
-                </div>
-                <div>
-                  <mat-label class="mb-3">Link / Domain</mat-label>
-                  <div class="row radio_selection_group">
-                    <mat-radio-button
-                      [value]="
-                        recommendations.indicators.appearance.link_domain
-                          .values[0]
-                      "
-                      >0 = Unrelated
-                    </mat-radio-button>
-                    <mat-radio-button
-                      [value]="
-                        recommendations.indicators.appearance.link_domain
-                          .values[1]
-                      "
-                      >1 = Related / Hidden / Spoofed
-                    </mat-radio-button>
-                  </div>
-                </div>
-                <div>
-                  <mat-label class="mb-3">Logo / Graphics</mat-label>
-                  <div class="row radio_selection_group">
-                    <mat-radio-button
-                      [value]="
-                        recommendations.indicators.appearance.logo_graphics
-                          .values[0]
-                      "
-                      >0 = Fake / None
-                    </mat-radio-button>
-                    <mat-radio-button
-                      [value]="
-                        recommendations.indicators.appearance.logo_graphics
-                          .values[1]
-                      "
-                      >1 = Spoofed / HTML
-                    </mat-radio-button>
-                  </div>
-                </div>
-                <div class="h6 mt-2">Sender</div>
-                <div>
-                  <mat-label class="mb-3">External</mat-label>
-                  <div class="row radio_selection_group">
-                    <mat-radio-button
-                      [value]="
-                        recommendations.indicators.sender.external.values[0]
-                      "
-                      >0 = Not External / Unspecified
-                    </mat-radio-button>
-                    <mat-radio-button
-                      [value]="
-                        recommendations.indicators.sender.external.values[1]
-                      "
-                      >1 = Specified
-                    </mat-radio-button>
-                  </div>
-                </div>
-                <div>
-                  <mat-label class="mb-3">Internal</mat-label>
-                  <div class="row radio_selection_group">
-                    <mat-radio-button
-                      [value]="
-                        recommendations.indicators.sender.internal.values[0]
-                      "
-                      >0 = Not Internal / Unspecified
-                    </mat-radio-button>
-                    <mat-radio-button
-                      [value]="
-                        recommendations.indicators.sender.internal.values[1]
-                      "
-                      >1 = Generic
-                    </mat-radio-button>
-                    <mat-radio-button
-                      [value]="
-                        recommendations.indicators.sender.internal.values[2]
-                      "
-                      >2 = Spoofed
-                    </mat-radio-button>
-                  </div>
-                </div>
-                <div>
-                  <mat-label class="mb-3">Authoritative</mat-label>
-                  <div class="row radio_selection_group">
-                    <mat-radio-button
-                      [value]="
-                        recommendations.indicators.sender.authoritative
-                          .values[0]
-                      "
-                      >0 = None
-                    </mat-radio-button>
-                    <mat-radio-button
-                      [value]="
-                        recommendations.indicators.sender.authoritative
-                          .values[1]
-                      "
-                      >1 = Peer
-                    </mat-radio-button>
-                    <mat-radio-button
-                      [value]="
-                        recommendations.indicators.sender.authoritative
-                          .values[2]
-                      "
-                      >2 = Superior
-                    </mat-radio-button>
-                  </div>
-                </div>
-                <div class="h6 mt-2">Relevancy</div>
-                <div>
-                  <mat-label class="mb-3">Organization</mat-label>
-                  <div class="row radio_selection_group">
-                    <mat-radio-button
-                      [value]="
-                        recommendations.indicators.relevancy.organization
-                          .values[0]
-                      "
-                      >0 = No
-                    </mat-radio-button>
-                    <mat-radio-button
-                      [value]="
-                        recommendations.indicators.relevancy.organization
-                          .values[1]
-                      "
-                      >1 = Yes
-                    </mat-radio-button>
-                  </div>
-                </div>
-                <div>
-                  <mat-label class="mb-3">Public News</mat-label>
-                  <div class="row radio_selection_group">
-                    <mat-radio-button
-                      [value]="
-                        recommendations.indicators.relevancy.public_news
-                          .values[0]
-                      "
-                      >0 = No</mat-radio-button
-                    >
-                    <mat-radio-button
-                      [value]="
-                        recommendations.indicators.relevancy.public_news
-                          .values[1]
-                      "
-                      >1 = Yes
-                    </mat-radio-button>
-                  </div>
-                </div>
-                <div class="check-box-wrapper">
-                  <mat-label class="mb-3 h6">Behavior</mat-label>
-                  <div class="deception_checkboxes mt-2 ml-3">
-                    <mat-radio-button
-                      [value]="
-                        recommendations.indicators.behavior.fear.values[1]
-                      "
-                      >Fear</mat-radio-button
-                    >
-                    <mat-radio-button
-                      [value]="
-                        recommendations.indicators.behavior.duty_obligation
-                          .values[1]
-                      "
-                      >Duty or Obligation</mat-radio-button
-                    >
-                    <mat-radio-button
-                      [value]="
-                        recommendations.indicators.behavior.curiosity.values[1]
-                      "
-                      >Curiosity</mat-radio-button
-                    >
-                    <mat-radio-button
-                      [value]="
-                        recommendations.indicators.behavior.greed.values[1]
-                      "
-                      >Greed</mat-radio-button
-                    >
-                  </div>
-                </div>
-              </mat-radio-group>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row
+        class="table-row cursor-pointer"
+        *matRowDef="let row; columns: displayedColumns"
+        (click)="editRecommendation(row)"
+      ></mat-row>
+    </mat-table>
   </div>
 </div>
