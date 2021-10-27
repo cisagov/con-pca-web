@@ -1,0 +1,61 @@
+<h1>{{ mode | titlecase }} Recommendation</h1>
+
+<form [formGroup]="recommendForm">
+  <div
+    style="
+      max-height: 50vh;
+      max-width: 40vw;
+      overflow-y: auto;
+      overflow-x: hidden;
+    "
+  >
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Title*</mat-label>
+      <input
+        formControlName="title"
+        matInput
+        [ngClass]="{ 'is-invalid': submitted && f.title.errors }"
+      />
+      <div *ngIf="submitted && f.title.errors" class="invalid-feedback">
+        <div *ngIf="f.title.errors.required">
+          Recommendation title is required
+        </div>
+      </div>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Type</mat-label>
+      <mat-select formControlName="type">
+        <mat-option value="red_flag">Red Flag</mat-option>
+        <mat-option value="sophisticated">Sophisticated</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Description</mat-label>
+      <textarea
+        matInput
+        formControlName="description"
+        cdkAutosizeMinRows="3"
+      ></textarea>
+    </mat-form-field>
+  </div>
+  <div class="text-right mt-3">
+    <button
+      mat-flat-button
+      class="add-button"
+      color="basic"
+      (click)="onCancelClick()"
+    >
+      Cancel
+    </button>
+    <button
+      mat-raised-button
+      class="add-button"
+      color="primary"
+      (click)="onSaveClick()"
+    >
+      Save Recommendation
+    </button>
+  </div>
+</form>

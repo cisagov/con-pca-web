@@ -1,78 +1,98 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators, FormGroup } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
-import { RecommendationsService } from 'src/app/services/recommendations.service';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
-import { MatDialog } from '@angular/material/dialog';
-import { Subscription } from 'rxjs';
-import { RecommendationsModel } from '../../models/recommendations.model';
-import { MatRadioChange } from '@angular/material/radio';
-import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
-import { AlertsService } from 'src/app/services/alerts.service';
+import { RecommendationModel } from 'src/app/models/recommendations.model';
+import { RecommendationsService } from 'src/app/services/recommendations.service';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort, Sort } from '@angular/material/sort';
+import {
+  MatDialog,
+  MatDialogConfig,
+  MatDialogRef,
+} from '@angular/material/dialog';
+import { AlertComponent } from 'src/app/components/dialogs/alert/alert.component';
+import { RecommendationDetailComponent } from './recommendation-details.component';
 
 @Component({
-  selector: 'app-recommendations',
+  selector: '',
   templateUrl: './recommendations.component.html',
   styleUrls: ['./recommendations.component.scss'],
 })
-export class RecommendationsComponent implements OnInit {
-  recommendations = new RecommendationsModel();
-  selected: any = {};
+export class RecommendationsListComponent implements OnInit, AfterViewInit {
+  displayedColumns = ['title', 'type', 'created_by', 'edit'];
+  recommendationsData = new MatTableDataSource<RecommendationModel>();
+  search_input = '';
+  @ViewChild(MatSort) sort: MatSort;
+
+  loading = true;
 
   constructor(
-    public recommendationsSvc: RecommendationsService,
-    public router: Router,
-    public layoutSvc: LayoutMainService,
-    public dialog: MatDialog,
-    public alertSvc: AlertsService
+    private recommendationSvc: RecommendationsService,
+    private router: Router,
+    private layoutSvc: LayoutMainService,
+    public dialog: MatDialog
   ) {
-    this.layoutSvc.setTitle('Recommendations');
+    layoutSvc.setTitle('Recommendations');
   }
 
-  async ngOnInit() {
-    await this.getRecommendations();
+  ngOnInit() {
+    this.refresh();
   }
 
-  async getRecommendations() {
-    this.recommendations = await this.recommendationsSvc
+  async refresh() {
+    this.loading = true;
+    this.recommendationSvc
       .getRecommendations()
-      .toPromise();
+      .subscribe((data: RecommendationModel[]) => {
+        this.recommendationsData.data = data;
+      });
+    this.recommendationsData.sort = this.sort;
+    this.loading = false;
   }
 
-  onChange(change: MatRadioChange) {
-    this.selected = change.value;
+  ngAfterViewInit(): void {
+    this.recommendationsData.sort = this.sort;
   }
 
-  onCancelClick() {
-    const dialogRef = this.dialog.open(ConfirmComponent);
-    dialogRef.componentInstance.confirmMessage =
-      'Are you sure you want to revert changes?';
-    dialogRef.componentInstance.title = 'Revert Changes';
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        window.location.reload();
+  public filterRecommendations = (value: string) => {
+    this.recommendationsData.filter = value.trim().toLocaleLowerCase();
+  };
+
+  openRecDialog(row: any): void {
+    if (this.dialog.openDialogs.length === 0) {
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.width = '60vw';
+      dialogConfig.data = {
+        recommendation_id: row._id,
+      };
+      const dialogRef = this.dialog.open(
+        RecommendationDetailComponent,
+        dialogConfig
+      );
+
+      dialogRef.afterClosed().subscribe((value) => {
+        this.refresh();
+      });
+    }
+  }
+
+  deleteRec(row: any) {
+    console.log(row);
+    this.recommendationSvc.deleteRecommendation(row._id).subscribe(
+      () => {
+        this.refresh();
+      },
+      (failure) => {
+        this.dialog.open(AlertComponent, {
+          data: {
+            title: 'Error Trying To Delete',
+            messageText:
+              'An error occurred deleting the Recommendation: ' +
+              failure.error.error,
+            list: failure.error.fields,
+          },
+        });
       }
-    });
-  }
-
-  saveRecommendations() {
-    const dialogRef = this.dialog.open(ConfirmComponent);
-    dialogRef.componentInstance.confirmMessage = `Are you sure you want to save all recommendations?`;
-    dialogRef.componentInstance.title = 'Save Recommendations';
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.recommendationsSvc
-          .saveRecommendations(this.recommendations)
-          .subscribe(
-            () => {
-              this.alertSvc.alert('Recommendations saved successfully.');
-            },
-            (error) => {
-              this.alertSvc.alert('Error saving recommendations. Check Logs.');
-              console.log(error);
-            }
-          );
-      }
-    });
+    );
   }
 }

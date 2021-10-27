@@ -95,7 +95,8 @@ import { UnsavedComponent } from './components/dialogs/unsaved/unsaved.component
 import { InvalidEmailDialogComponent } from './components/subscriptions/invalid-email-dialog/invalid-email-dialog.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { PasswordResetComponent } from './components/password-reset/password-reset.component';
-import { RecommendationsComponent } from './components/recommendations/recommendations.component';
+import { RecommendationsListComponent } from './components/recommendations/recommendations.component';
+import { RecommendationDetailComponent } from './components/recommendations/recommendation-details.component';
 import { RecommendationsService } from './services/recommendations.service';
 import { AlertsService } from './services/alerts.service';
 
@@ -164,7 +165,8 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     PasswordResetComponent,
     LoadingOverlayComponent,
     CycleSelectReports,
-    RecommendationsComponent,
+    RecommendationsListComponent,
+    RecommendationDetailComponent,
   ],
   imports: [
     BrowserModule,
