@@ -48,7 +48,6 @@ export class RecommendationsListComponent implements OnInit, AfterViewInit {
       });
     this.recommendationsData.sort = this.sort;
     this.loading = false;
-    console.log(this.recommendationsData.data);
   }
 
   ngAfterViewInit(): void {

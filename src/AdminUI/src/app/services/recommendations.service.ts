@@ -31,7 +31,7 @@ export class RecommendationsService {
 
   getRecommendation(id: string): Observable<RecommendationModel> {
     return this.http.get<RecommendationModel>(
-      `${this.settingsService.settings.apiUrl}/api/recommendations/${id}/`
+      `${this.settingsService.settings.apiUrl}/api/recommendation/${id}/`
     );
   }
 
