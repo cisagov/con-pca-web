@@ -15,7 +15,7 @@
     <!-- CREATE TEMPLATE -->
     <div class="d-inline-flex flex-column ml-2">
       <div class="d-flex">
-        <button mat-raised-button color="primary" routerLink="/templatemanager">
+        <button mat-raised-button color="primary" (click)="openRecDialog(0)">
           New Recommendation
         </button>
       </div>
@@ -64,9 +64,12 @@
             class="table-btn-icon"
             mat-flat-button
             color="primary"
-            (click)="editRecommendation(row)"
+            (click)="openRecDialog(row)"
           >
             <mat-icon class="table-btn-icon-size">edit</mat-icon>
+          </button>
+          <button class="table-btn-icon" mat-flat-button color="warn">
+            <mat-icon>delete</mat-icon>
           </button>
         </mat-cell>
       </ng-container>

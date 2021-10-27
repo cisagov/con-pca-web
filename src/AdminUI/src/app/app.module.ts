@@ -96,6 +96,7 @@ import { InvalidEmailDialogComponent } from './components/subscriptions/invalid-
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { PasswordResetComponent } from './components/password-reset/password-reset.component';
 import { RecommendationsListComponent } from './components/recommendations/recommendations.component';
+import { RecommendationDetailComponent } from './components/recommendations/recommendation-details.component';
 import { RecommendationsService } from './services/recommendations.service';
 import { AlertsService } from './services/alerts.service';
 
@@ -165,6 +166,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     LoadingOverlayComponent,
     CycleSelectReports,
     RecommendationsListComponent,
+    RecommendationDetailComponent,
   ],
   imports: [
     BrowserModule,
