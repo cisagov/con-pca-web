@@ -1,14 +1,7 @@
 <h1>{{ mode | titlecase }} Recommendation</h1>
 
 <form [formGroup]="recommendForm">
-  <div
-    style="
-      max-height: 50vh;
-      max-width: 40vw;
-      overflow-y: auto;
-      overflow-x: hidden;
-    "
-  >
+  <div style="max-height: 50vh; overflow-y: auto; overflow-x: hidden">
     <mat-form-field appearance="outline" class="w-100">
       <mat-label>Title*</mat-label>
       <input

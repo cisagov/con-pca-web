@@ -61,7 +61,7 @@ export class RecommendationsListComponent implements OnInit, AfterViewInit {
   openRecDialog(row: any): void {
     if (this.dialog.openDialogs.length === 0) {
       const dialogConfig = new MatDialogConfig();
-      dialogConfig.width = '60vw';
+      dialogConfig.width = '30vw';
       dialogConfig.data = {
         recommendation_id: row._id,
       };
