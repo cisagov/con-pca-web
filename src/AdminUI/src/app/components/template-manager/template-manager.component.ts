@@ -289,6 +289,8 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
       templateDeceptionScore: new FormControl(template.deception_score),
       templateFromDisplayName: new FormControl(this.fromDisplayName),
       templateFromSender: new FormControl(this.fromSender),
+      sophisticatedRecs: new FormControl(template.sophisticated),
+      redFlagRecs: new FormControl(template.red_flag),
       templateFromAddress: new FormControl(template.from_address),
       sendingProfile: new FormControl(''),
       customer: new FormControl(''),
@@ -365,9 +367,12 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
     let htmlValue = this.replaceEscapeSequence(
       form.controls['templateHTML'].value
     );
+    console.log(form.controls['sophisticatedRecs'].value);
     return new TemplateModel({
       _id: this.templateId,
       name: form.controls['templateName'].value,
+      sophisticated: form.controls['sophisticatedRecs'].value,
+      red_flag: form.controls['redFlagRecs'].value,
       landing_page_id: form.controls['landingPage'].value,
       sending_profile_id: form.controls['templateSendingProfile'].value,
       deception_score: form.controls['final_deception_score'].value,
