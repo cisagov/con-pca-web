@@ -20,11 +20,6 @@
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="w-100">
-      <mat-label>Interface Type</mat-label>
-      <input formControlName="interfaceType" matInput />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" class="w-100">
       <mat-label>From*</mat-label>
       <input
         formControlName="from"
@@ -40,32 +35,48 @@
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="w-100">
-      <mat-label>Host*</mat-label>
-      <input
-        formControlName="host"
-        matInput
-        [ngClass]="{ 'is-invalid': submitted && f.host.errors }"
-      />
-      <div *ngIf="submitted && f.host.errors" class="invalid-feedback">
-        <div *ngIf="f.host.errors.required">Host is required</div>
-      </div>
+      <mat-label>Interface Type*</mat-label>
+      <mat-select formControlName="interfaceType">
+        <mat-option value="SMTP">SMTP</mat-option>
+        <mat-option value="Mailgun">Mailgun</mat-option>
+      </mat-select>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="w-100">
-      <mat-label>Username</mat-label>
-      <input formControlName="username" matInput />
-    </mat-form-field>
+    <!-- SMTP Fields -->
+    <div *ngIf="f.interfaceType.value === 'SMTP'">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>SMTP Host</mat-label>
+        <input
+          formControlName="host"
+          matInput
+          [ngClass]="{ 'is-invalid': submitted && f.host.errors }"
+        />
+      </mat-form-field>
 
-    <mat-form-field appearance="outline" class="w-100">
-      <mat-label>Password</mat-label>
-      <input formControlName="password" matInput type="password" />
-    </mat-form-field>
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>SMTP Username</mat-label>
+        <input formControlName="username" matInput />
+      </mat-form-field>
 
-    <div class="valign-bottom mb-3">
-      <mat-checkbox formControlName="ignoreCertErrors" color="primary">
-        Ignore Certificate Errors
-      </mat-checkbox>
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>SMTP Password</mat-label>
+        <input formControlName="password" matInput type="password" />
+      </mat-form-field>
     </div>
+
+    <!-- Mailgun Fields -->
+    <div *ngIf="f.interfaceType.value === 'Mailgun'">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Mailgun API Key</mat-label>
+        <input formControlName="mailgunApiKey" matInput />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Mailgun Domain</mat-label>
+        <input formControlName="mailgunDomain" matInput />
+      </mat-form-field>
+    </div>
+
     <div>
       <h2>Email Headers</h2>
       <div class="d-flex flex-row align-items-center w-100">
