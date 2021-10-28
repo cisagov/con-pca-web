@@ -68,17 +68,23 @@ export class SendingProfileDetailComponent implements OnInit {
     this.profileForm = new FormGroup({
       name: new FormControl('', Validators.required),
       landingPageDomain: new FormControl('', Validators.required),
-      interfaceType: new FormControl({ value: 'SMTP', disabled: true }),
+      interfaceType: new FormControl('SMTP', Validators.required),
       from: new FormControl('', [
         Validators.required,
         Validators.pattern(
           '^\\s*([A-Za-z\\d\\s]+?)\\s*<([\\w.!#$%&’*+\\/=?^_`{|}~-]+@[\\w-]+(?:\\.[\\w-]+)+)>\\s*$|^\\s*([\\w.!#$%&’*+\\/=?^_`{|}~-]+@[\\w-]+(?:\\.[\\w-]+)+)\\s*$'
         ),
       ]),
-      host: new FormControl('', Validators.required),
+      // SMTP
+      host: new FormControl(''),
       username: new FormControl(''),
       password: new FormControl(''),
-      ignoreCertErrors: new FormControl(false),
+
+      // Mailgun
+      mailgunApiKey: new FormControl(''),
+      mailgunDomain: new FormControl(''),
+
+      // For adding headers
       newHeaderName: new FormControl(''),
       newHeaderValue: new FormControl(''),
     });
@@ -92,10 +98,14 @@ export class SendingProfileDetailComponent implements OnInit {
           this.f.landingPageDomain.setValue(this.profile.landing_page_domain);
           this.f.interfaceType.setValue(this.profile.interface_type);
           this.f.from.setValue(this.profile.from_address);
-          this.f.host.setValue(this.profile.host);
-          this.f.username.setValue(this.profile.username);
-          this.f.password.setValue(this.profile.password);
-          this.f.ignoreCertErrors.setValue(this.profile.ignore_cert_errors);
+          if (this.profile.interface_type === 'SMTP') {
+            this.f.host.setValue(this.profile.smtp_host);
+            this.f.username.setValue(this.profile.smtp_username);
+            this.f.password.setValue(this.profile.smtp_password);
+          } else if (this.profile.interface_type === 'Mailgun') {
+            this.f.mailgunApiKey.setValue(this.profile.mailgun_api_key);
+            this.f.mailgunDomain.setValue(this.profile.mailgun_domain);
+          }
           this.headerList = new MatTableDataSource<CustomHeader>();
           if (this.profile.headers) {
             for (const h of this.profile.headers) {
@@ -196,13 +206,18 @@ export class SendingProfileDetailComponent implements OnInit {
     const sp = new SendingProfileModel();
     sp.name = this.f.name.value;
     sp.landing_page_domain = this.f.landingPageDomain.value;
-    sp.username = this.f.username.value;
-    sp.password = this.f.password.value;
-    sp.host = this.f.host.value;
     sp.interface_type = this.f.interfaceType.value;
     sp.from_address = this.f.from.value;
-    sp.ignore_cert_errors = this.f.ignoreCertErrors.value;
     sp.headers = [];
+
+    if (sp.interface_type === 'SMTP') {
+      sp.smtp_username = this.f.username.value;
+      sp.smtp_password = this.f.password.value;
+      sp.smtp_host = this.f.host.value;
+    } else if (sp.interface_type === 'Mailgun') {
+      sp.mailgun_api_key = this.f.mailgunApiKey.value;
+      sp.mailgun_domain = this.f.mailgunDomain.value;
+    }
 
     if (!!this.headerList.data) {
       for (const ch of this.headerList.data) {
@@ -244,16 +259,11 @@ export class SendingProfileDetailComponent implements OnInit {
 
     this.sendingProfileSvc.sendTestEmail(email_for_test).subscribe(
       (data: any) => {
-        console.log(data);
-        Swal.fire(data.message);
+        Swal.fire('Email Sent.');
       },
       (error) => {
-        console.log(
-          'Error sending test email: ' +
-            (<Error>error).name +
-            (<Error>error).message
-        );
         console.log(error);
+        Swal.fire(error);
       }
     );
   }

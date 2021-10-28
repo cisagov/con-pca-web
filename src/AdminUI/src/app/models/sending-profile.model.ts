@@ -1,23 +1,25 @@
 export class SendingProfileModel {
   _id: string;
   name: string;
-  username: string;
-  password: string;
-  host: string;
   interface_type: string = 'SMTP';
   from_address: string;
-  ignore_cert_errors: boolean;
   headers: SendingProfileHeaderModel[];
   landing_page_domain: string;
+
+  // SMTP
+  smtp_username: string;
+  smtp_password: string;
+  smtp_host: string;
+
+  // Mailgun
+  mailgun_api_key: string;
+  mailgun_domain: string;
 
   public constructor(init?: Partial<SendingProfileModel>) {
     Object.assign(this, init);
   }
 }
 
-/**
- *
- */
 export class SendingProfileHeaderModel {
   key: string;
   value: string;
