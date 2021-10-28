@@ -36,6 +36,9 @@ import { ImportTemplateDialogComponent } from './import-template-dialog/import-t
 import { CustomerService } from 'src/app/services/customer.service';
 import { CustomerModel } from 'src/app/models/customer.model';
 import { TagModel } from 'src/app/models/tags.model';
+import { RecommendationsService } from 'src/app/services/recommendations.service';
+import { RecommendationModel } from 'src/app/models/recommendations.model';
+import { RecommendationsListComponent } from '../recommendations/recommendations.component';
 
 @Component({
   selector: 'app-template-manager',
@@ -50,6 +53,8 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
   // Full template list variables
   sendingProfiles = [];
   customers = [];
+  sophisticated = [];
+  redFlag = [];
   testEmail = '';
   firstName = '';
   lastName = '';
@@ -103,6 +108,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
 
   constructor(
     private layoutSvc: LayoutMainService,
+    private recommendationSvc: RecommendationsService,
     private templateManagerSvc: TemplateManagerService,
     private subscriptionSvc: SubscriptionService,
     private landingPageSvc: LandingPageManagerService,
@@ -174,6 +180,12 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
     this.customerSvc.getCustomers().subscribe((data: CustomerModel[]) => {
       this.customers = data;
     });
+    this.recommendationSvc
+      .getRecommendations()
+      .subscribe((data: RecommendationModel[]) => {
+        this.sophisticated = data.filter((rec) => rec.type === 'sophisticated');
+        this.redFlag = data.filter((rec) => rec.type === 'red_flag');
+      });
   }
 
   toggleEditorMode(event) {
