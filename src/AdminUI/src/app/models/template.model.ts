@@ -43,6 +43,8 @@ export class TemplateModel {
   from_address: string;
   retired: boolean;
   retired_description: string;
+  sophisticated: string[];
+  red_flag: string[];
   subject: string;
   text: string;
   html: string;

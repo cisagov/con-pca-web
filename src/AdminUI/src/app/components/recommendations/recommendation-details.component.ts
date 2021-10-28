@@ -21,7 +21,6 @@ import {
 import { RecommendationModel } from 'src/app/models/recommendations.model';
 import { RecommendationsService } from 'src/app/services/recommendations.service';
 import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
 import { AlertComponent } from '../dialogs/alert/alert.component';
 
 @Component({
