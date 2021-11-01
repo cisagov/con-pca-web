@@ -72,7 +72,6 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
         .getCycleBehaviorSubject()
         .subscribe((data: CycleModel) => {
           this.selected_cycle = data;
-          console.log(this.selected_cycle);
           if (Object.keys(data).length > 0) {
             this.cycle_selected = true;
           }
