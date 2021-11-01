@@ -45,6 +45,7 @@ export class SubscriptionModel {
   archived: boolean;
   tasks: TaskModel[];
   notification_history: SubscriptionNotificationModel[];
+  phish_header: string;
 
   // Helper attributes
   cycles: CycleModel[];

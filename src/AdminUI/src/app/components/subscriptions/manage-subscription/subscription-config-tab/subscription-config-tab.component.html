@@ -122,10 +122,18 @@
         <div class="mb-4">
           <table class="table" style="max-width: 33rem">
             <tr>
-              <td>CISA-PHISH Header Value</td>
+              <td>Cisa-Phish</td>
               <td class="text-right" style="color: grey; cursor: default">
-                {{ subscription._id }}
+                {{ subscription.phish_header }}
               </td>
+              <button
+                mat-raised-button
+                color="primary"
+                class="rotate-header-btn"
+                (click)="rotateHeader()"
+              >
+                <mat-icon>refresh</mat-icon>
+              </button>
             </tr>
             <tr>
               <td>Sending Domains</td>
