@@ -32,6 +32,7 @@ export class CycleModel {
   target_count: number;
   targets: CycleTargetModel[];
   processing: boolean;
+  phish_header: string;
 
   // Helper Attributes
   nonhuman: boolean;

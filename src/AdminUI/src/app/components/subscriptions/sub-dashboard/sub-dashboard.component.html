@@ -9,6 +9,10 @@
     </mat-card-title>
   </mat-card-header> -->
   <mat-card-content>
+    <div style="margin-bottom: 1rem">
+      <h4>Cycle Information</h4>
+      <div>Phish Header: {{ selected_cycle.phish_header }}</div>
+    </div>
     <div *ngIf="chart && chartSent" class="d-flex flex-column">
       <div style="max-height: 200px; margin-bottom: 1rem">
         <h4>Statistics By Level</h4>

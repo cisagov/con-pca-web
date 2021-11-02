@@ -177,4 +177,9 @@ export class SubscriptionService {
     const url = `${this.settingsService.settings.apiUrl}/api/templates/select/`;
     return this.http.get<string[]>(url).toPromise();
   }
+
+  public rotateHeader(subscriptionId) {
+    const url = `${this.settingsService.settings.apiUrl}/api/subscription/${subscriptionId}/header/`;
+    return this.http.get<SubscriptionModel>(url);
+  }
 }

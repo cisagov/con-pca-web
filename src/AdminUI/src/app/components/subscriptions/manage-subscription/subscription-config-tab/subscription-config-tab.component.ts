@@ -1242,4 +1242,22 @@ export class SubscriptionConfigTab
       return sp[0].from_address.split('@')[1];
     }
   }
+
+  rotateHeader() {
+    const dialogRef = this.dialog.open(ConfirmComponent, {
+      disableClose: false,
+    });
+    dialogRef.componentInstance.confirmMessage = `Are you sure you want to rotate the header?<br /><br />Note: This will not affect currently running cycles, but you will need to provide the new value to the customer for future cycles.`;
+    dialogRef.componentInstance.title = `Rotate Header`;
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.subscriptionSvc
+          .rotateHeader(this.subscription._id)
+          .subscribe((data) => {
+            this.subscription.phish_header = data.phish_header;
+          });
+      }
+    });
+  }
 }

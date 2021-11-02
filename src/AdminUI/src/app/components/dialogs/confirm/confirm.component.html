@@ -2,7 +2,7 @@
 <div mat-dialog-content class="d-flex flex-column">
   <div class="d-flex flex-row">
     <mat-dialog-content class="mt-2 mb-2">
-      {{ confirmMessage }}
+      <div style="max-width: 400px" [innerHTML]="confirmMessage | safe"></div>
     </mat-dialog-content>
   </div>
 </div>
