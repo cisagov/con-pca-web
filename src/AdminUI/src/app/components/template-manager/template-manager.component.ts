@@ -433,10 +433,11 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
             });
           },
           (error) => {
+            console.log(error);
             this.dialog.open(AlertComponent, {
               data: {
                 title: 'Template Error',
-                messageText: error.error,
+                messageText: JSON.stringify(error.error),
               },
             });
           }
@@ -455,11 +456,12 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
             this.router.navigate(['/templates']);
           },
           (error: any) => {
+            console.log(error);
             this.dialog.open(AlertComponent, {
               // Parse error here
               data: {
                 title: `Template Error - ${error.statusText}`,
-                messageText: error.error.error,
+                messageText: JSON.stringify(error.error),
               },
             });
           }
