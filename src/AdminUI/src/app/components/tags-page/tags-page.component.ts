@@ -14,7 +14,7 @@ import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
   styleUrls: ['./tags-page.component.scss'],
 })
 export class TagsPageComponent implements OnInit, AfterViewInit {
-  displayedColumns = ['tag', 'description', 'data_source', 'tag_type'];
+  displayedColumns = ['tag', 'description'];
   tagsData = new MatTableDataSource<TagModel>();
   search_input = '';
   @ViewChild(MatSort) sort: MatSort;

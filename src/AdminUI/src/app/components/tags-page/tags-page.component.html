@@ -37,20 +37,6 @@
         <mat-cell *matCellDef="let row">{{ row.description }}</mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="data_source">
-        <mat-header-cell *matHeaderCellDef mat-sort-header
-          >data_source</mat-header-cell
-        >
-        <mat-cell *matCellDef="let row">{{ row.data_source }}</mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="tag_type">
-        <mat-header-cell *matHeaderCellDef mat-sort-header
-          >tag_type</mat-header-cell
-        >
-        <mat-cell *matCellDef="let row">{{ row.tag_type }}</mat-cell>
-      </ng-container>
-
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row
         class="table-row"
