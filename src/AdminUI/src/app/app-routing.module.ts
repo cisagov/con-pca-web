@@ -7,7 +7,7 @@ import { SubscriptionConfigTab } from './components/subscriptions/manage-subscri
 import { TemplateManagerComponent } from './components/template-manager/template-manager.component';
 import { SearchPanelComponent } from './components/search-panel/search-panel.component';
 import { TemplatesPageComponent } from './components/templates-page/templates-page.component';
-import { UserAdminComponent } from './components/user-admin/user-admin.component';
+import { ConfigComponent } from './components/config/config.component';
 import { CustomersComponent } from './components/customers/customers.component';
 import { AddCustomerComponent } from './components/customer/add-customer/add-customer.component';
 import { SendingProfilesComponent } from './components/sending-profiles/sending-profiles.component';
@@ -16,7 +16,7 @@ import { LoginComponent } from 'src/app/components/login/login.component';
 import { RegisterUserComponent } from 'src/app/components/register/register-user.component';
 import { HelpFilesComponent } from './components/help-files/help-files.component';
 import { TagsPageComponent } from './components/tags-page/tags-page.component';
-import { AggregateStatsComponent } from './components/user-admin/aggregate-stats/aggregate-stats.component';
+import { AggregateStatsComponent } from './components/config/aggregate-stats/aggregate-stats.component';
 import { LandingPagesComponent } from './components/landing-pages/landing-pages.component';
 import { LandingPagesManagerComponent } from './components/landing-pages-manager/landing-pages-manager.component';
 import { UsersComponent } from './components/users/users.component';
@@ -95,10 +95,10 @@ const routes: Routes = [
     children: [{ path: '', component: AddCustomerComponent }],
   },
   {
-    path: 'useradmin',
+    path: 'config',
     component: LayoutMainComponent,
     canActivate: [AuthGuard],
-    children: [{ path: '', component: UserAdminComponent }],
+    children: [{ path: '', component: ConfigComponent }],
   },
   {
     path: 'help',

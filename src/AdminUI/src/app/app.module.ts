@@ -42,7 +42,7 @@ import { LoadingOverlayComponent } from './components/loading-overlay/loading-ov
 
 import { TemplatesPageComponent } from './components/templates-page/templates-page.component';
 import { TagsPageComponent } from './components/tags-page/tags-page.component';
-import { UserAdminComponent } from './components/user-admin/user-admin.component';
+import { ConfigComponent } from './components/config/config.component';
 import { HelpFilesComponent } from './components/help-files/help-files.component';
 import { CustomerService } from './services/customer.service';
 import { CustomersComponent } from './components/customers/customers.component';
@@ -73,7 +73,7 @@ import { InputTrimDirective } from './helper/input-trim.directive';
 import { DatePipe } from '@angular/common';
 import { TagService } from './services/tag.service';
 import { StatsByLevelComponent } from './components/reports/stats-by-level/stats-by-level.component';
-import { AggregateStatsComponent } from './components/user-admin/aggregate-stats/aggregate-stats.component';
+import { AggregateStatsComponent } from './components/config/aggregate-stats/aggregate-stats.component';
 import { ChartComplexityLevelComponent } from './components/charts/chart-complexity-level/chart-complexity-level.component';
 import { ChartStatsByLevelComponent } from './components/charts/chart-stats-by-level/chart-stats-by-level.component';
 import { ChartTimeIntervalsComponent } from './components/charts/chart-time-intervals/chart-time-intervals.component';
@@ -99,6 +99,7 @@ import { RecommendationsListComponent } from './components/recommendations/recom
 import { RecommendationDetailComponent } from './components/recommendations/recommendation-details.component';
 import { RecommendationsService } from './services/recommendations.service';
 import { AlertsService } from './services/alerts.service';
+import { ConfigService } from './services/config.service';
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
   return () => settingsHttpService.initializeApp();
@@ -123,7 +124,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     TemplatesPageComponent,
     CycleSelect,
     TagsPageComponent,
-    UserAdminComponent,
+    ConfigComponent,
     HelpFilesComponent,
     CustomersComponent,
     AddContactDialogComponent,
@@ -186,6 +187,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
   ],
   providers: [
     AlertsService,
+    ConfigService,
     CustomerService,
     HttpClient,
     LandingPageManagerService,

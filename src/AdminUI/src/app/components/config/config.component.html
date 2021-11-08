@@ -1,0 +1,94 @@
+<mat-card>
+  <h2>Reporting Emails</h2>
+  <!-- From Address -->
+  <mat-form-field appearance="outline" class="w-100">
+    <mat-label>From Address*</mat-label>
+    <input matInput [(ngModel)]="config.REPORTING_FROM_ADDRESS" />
+  </mat-form-field>
+
+  <!-- Interface Type -->
+  <mat-form-field appearance="outline" class="w-100">
+    <mat-label>Interface Type*</mat-label>
+    <mat-select [(ngModel)]="config.REPORTING_INTERFACE_TYPE">
+      <mat-option value="SMTP">SMTP</mat-option>
+      <mat-option value="Mailgun">Mailgun</mat-option>
+      <mat-option value="SES">SES</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- SMTP Fields -->
+  <div *ngIf="config.REPORTING_INTERFACE_TYPE == 'SMTP'">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>SMTP Host*</mat-label>
+      <input matInput [(ngModel)]="config.REPORTING_SMTP_HOST" />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>SMTP Username</mat-label>
+      <input matInput [(ngModel)]="config.REPORTING_SMTP_USERNAME" />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>SMTP Password</mat-label>
+      <input
+        matInput
+        [(ngModel)]="config.REPORTING_SMTP_PASSWORD"
+        type="password"
+      />
+    </mat-form-field>
+  </div>
+
+  <!-- Mailgun Fields -->
+  <div *ngIf="config.REPORTING_INTERFACE_TYPE == 'Mailgun'">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Mailgun Domain*</mat-label>
+      <input matInput [(ngModel)]="config.REPORTING_MAILGUN_DOMAIN" />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Mailgun API Key*</mat-label>
+      <input
+        matInput
+        [(ngModel)]="config.REPORTING_MAILGUN_API_KEY"
+        type="password"
+      />
+    </mat-form-field>
+  </div>
+
+  <!-- SES Fields -->
+  <div *ngIf="config.REPORTING_INTERFACE_TYPE == 'SES'">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>SES Arn</mat-label>
+      <input matInput [(ngModel)]="config.REPORTING_SES_ARN" />
+    </mat-form-field>
+  </div>
+
+  <div class="text-right">
+    <button mat-raised-button color="primary" (click)="saveConfig()">
+      Save Config
+    </button>
+  </div>
+</mat-card>
+<mat-card>
+  <h2>Non-Human Orgs</h2>
+  <table class="table table-striped">
+    <tbody>
+      <tr *ngFor="let org of orgs">
+        <td>{{ org }}</td>
+        <td>
+          <button mat-raised-button color="warn" (click)="deleteOrg(org)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <mat-form-field appearance="outline">
+    <mat-label>ASN Org</mat-label>
+    <input matInput trim="blur" type="text" [(ngModel)]="newOrg" />
+  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="addOrg()">Add Org</button>
+</mat-card>
+<mat-card>
+  <h2>Other Pages</h2>
+  <button mat-raised-button color="primary" routerLink="/aggreg-stats">
+    Aggregate Statistics
+  </button>
+</mat-card>
