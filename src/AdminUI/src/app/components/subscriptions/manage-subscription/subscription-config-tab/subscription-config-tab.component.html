@@ -138,10 +138,13 @@
             <tr>
               <td>Sending Domains</td>
               <td class="text-right" style="color: grey; cursor: default">
-                {{ getSendingProfileDomain(f.sendingProfile.value) }}
-                <div *ngFor="let t of templatesSelected">
-                  {{ getSendingProfileDomain(t.sending_profile_id) }}
-                </div>
+                <div *ngFor="let d of getSendingProfileDomains()">{{ d }}</div>
+              </td>
+            </tr>
+            <tr>
+              <td>Sending Ip[s]</td>
+              <td class="text-right" style="color: grey; cursor: default">
+                <div *ngFor="let i of getSendingProfileIps()">{{ i }}</div>
               </td>
             </tr>
           </table>

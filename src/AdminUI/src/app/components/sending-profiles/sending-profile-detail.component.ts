@@ -75,6 +75,7 @@ export class SendingProfileDetailComponent implements OnInit {
           '^\\s*([A-Za-z\\d\\s]+?)\\s*<([\\w.!#$%&’*+\\/=?^_`{|}~-]+@[\\w-]+(?:\\.[\\w-]+)+)>\\s*$|^\\s*([\\w.!#$%&’*+\\/=?^_`{|}~-]+@[\\w-]+(?:\\.[\\w-]+)+)\\s*$'
         ),
       ]),
+      sendingIpAddress: new FormControl(''),
       // SMTP
       host: new FormControl(''),
       username: new FormControl(''),
@@ -98,6 +99,7 @@ export class SendingProfileDetailComponent implements OnInit {
           this.f.landingPageDomain.setValue(this.profile.landing_page_domain);
           this.f.interfaceType.setValue(this.profile.interface_type);
           this.f.from.setValue(this.profile.from_address);
+          this.f.sendingIpAddress.setValue(this.profile.sending_ips);
           if (this.profile.interface_type === 'SMTP') {
             this.f.host.setValue(this.profile.smtp_host);
             this.f.username.setValue(this.profile.smtp_username);
@@ -208,6 +210,7 @@ export class SendingProfileDetailComponent implements OnInit {
     sp.landing_page_domain = this.f.landingPageDomain.value;
     sp.interface_type = this.f.interfaceType.value;
     sp.from_address = this.f.from.value;
+    sp.sending_ips = this.f.sendingIpAddress.value;
     sp.headers = [];
 
     if (sp.interface_type === 'SMTP') {

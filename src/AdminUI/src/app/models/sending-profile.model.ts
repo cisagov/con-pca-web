@@ -5,6 +5,7 @@ export class SendingProfileModel {
   from_address: string;
   headers: SendingProfileHeaderModel[];
   landing_page_domain: string;
+  sending_ips: string;
 
   // SMTP
   smtp_username: string;
