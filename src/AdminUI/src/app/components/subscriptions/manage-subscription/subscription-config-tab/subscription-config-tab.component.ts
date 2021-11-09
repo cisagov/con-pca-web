@@ -1236,11 +1236,32 @@ export class SubscriptionConfigTab
     });
   }
 
-  getSendingProfileDomain(sendingProfileId) {
-    const sp = this.sendingProfiles.filter((s) => s._id === sendingProfileId);
-    if (sp.length > 0) {
-      return sp[0].from_address.split('@')[1];
-    }
+  getSendingProfileDomains() {
+    const sendingProfileIds = this.templatesSelected.map(
+      (t) => t.sending_profile_id
+    );
+    sendingProfileIds.push(this.f.sendingProfile.value);
+    const profiles = this.sendingProfiles.filter((s) =>
+      sendingProfileIds.includes(s._id)
+    );
+    return new Set(profiles.map((p) => p.from_address.split('@')[1]));
+  }
+
+  getSendingProfileIps() {
+    const sendingProfileIds = this.templatesSelected.map(
+      (t) => t.sending_profile_id
+    );
+    sendingProfileIds.push(this.f.sendingProfile.value);
+    const profiles = this.sendingProfiles.filter((s) =>
+      sendingProfileIds.includes(s._id)
+    );
+    const ips = new Set();
+    profiles.forEach((p) => {
+      p.sending_ips.split(',').forEach((i) => {
+        ips.add(i);
+      });
+    });
+    return ips;
   }
 
   rotateHeader() {
