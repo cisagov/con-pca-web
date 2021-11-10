@@ -1257,9 +1257,11 @@ export class SubscriptionConfigTab
     );
     const ips = new Set();
     profiles.forEach((p) => {
-      p.sending_ips.split(',').forEach((i) => {
-        ips.add(i);
-      });
+      if (p.sending_ips) {
+        p.sending_ips.split(',').forEach((i) => {
+          ips.add(i);
+        });
+      }
     });
     return ips;
   }
