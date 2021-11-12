@@ -86,6 +86,7 @@
       <mat-row
         class="table-row cursor-pointer"
         *matRowDef="let row; columns: displayedColumns"
+        (click)="openRecDialog(row)"
       ></mat-row>
     </mat-table>
   </div>
