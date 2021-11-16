@@ -38,7 +38,6 @@ import { CustomerModel } from 'src/app/models/customer.model';
 import { TagModel } from 'src/app/models/tags.model';
 import { RecommendationsService } from 'src/app/services/recommendations.service';
 import { RecommendationModel } from 'src/app/models/recommendations.model';
-import { RecommendationsListComponent } from '../recommendations/recommendations.component';
 
 @Component({
   selector: 'app-template-manager',
