@@ -38,7 +38,6 @@ import { CustomerModel } from 'src/app/models/customer.model';
 import { TagModel } from 'src/app/models/tags.model';
 import { RecommendationsService } from 'src/app/services/recommendations.service';
 import { RecommendationModel } from 'src/app/models/recommendations.model';
-import { RecommendationsListComponent } from '../recommendations/recommendations.component';
 
 @Component({
   selector: 'app-template-manager',
@@ -326,7 +325,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
       ),
       greed: new FormControl(template.indicators.behavior?.greed ?? false),
       final_deception_score: new FormControl({
-        value: this.calcDeceptionScore(template),
+        value: this.calcDeceptionScore(template.indicators),
         disabled: true,
       }),
     });
@@ -334,16 +333,16 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
     this.onValueChanges();
   }
 
-  calcDeceptionScore(formValues) {
+  calcDeceptionScore(indicators) {
     return (
-      (formValues.sender?.authoritative ?? 0) +
-      (formValues.sender?.external ?? 0) +
-      (formValues.sender?.internal ?? 0) +
-      (formValues.appearance?.grammar ?? 0) +
-      (formValues.appearance?.link_domain ?? 0) +
-      (formValues.appearance?.logo_graphics ?? 0) +
-      (formValues.relevancy?.public_news ?? 0) +
-      (formValues.relevancy?.organization ?? 0)
+      (indicators.sender?.authoritative ?? 0) +
+      (indicators.sender?.external ?? 0) +
+      (indicators.sender?.internal ?? 0) +
+      (indicators.appearance?.grammar ?? 0) +
+      (indicators.appearance?.link_domain ?? 0) +
+      (indicators.appearance?.logo_graphics ?? 0) +
+      (indicators.relevancy?.public_news ?? 0) +
+      (indicators.relevancy?.organization ?? 0)
     );
   }
 
@@ -704,10 +703,6 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
   insertTag(selection, tagText: string) {
     const newNode = document.createTextNode(tagText);
     selection.insertNode(newNode);
-  }
-
-  openLandingPageEditor() {
-    this.router.navigate(['/landing-pages']);
   }
 
   onSendTestClick() {
