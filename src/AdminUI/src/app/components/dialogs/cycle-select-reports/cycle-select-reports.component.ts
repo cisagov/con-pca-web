@@ -26,7 +26,6 @@ export class CycleSelectReports implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     if (data) {
-      console.log(data);
       this.cycleList = data.cycles;
       this.title += data.sub_name;
     }
@@ -48,9 +47,6 @@ export class CycleSelectReports implements OnInit {
     });
   }
 
-  /**
-   *
-   */
   ngOnInit() {
     if (!!this.dialogRef.componentInstance.title) {
       this.title = this.dialogRef.componentInstance.title;

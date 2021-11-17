@@ -22,8 +22,7 @@ import { LayoutMainComponent } from './components/layout/layout-main/layout-main
 import { SearchPanelComponent } from './components/search-panel/search-panel.component';
 import { ManageSubscriptionComponent } from './components/subscriptions/manage-subscription/manage-subscription.component';
 import { SubscriptionConfigTab } from './components/subscriptions/manage-subscription/subscription-config-tab/subscription-config-tab.component';
-import { SubscriptionStatsTab } from './components/subscriptions/manage-subscription/subscription-stats-tab/subscription-stats-tab.component';
-import { SubscriptionReportTab } from './components/subscriptions/manage-subscription/subscription-report-tab/subscription-report-tab.component';
+import { SubscriptionStatsTab } from './components/subscriptions/manage-subscription/subscription-cycles-tab/subscription-cycles-tab.component';
 import { SubscriptionTasksTabComponent } from './components/subscriptions/manage-subscription/subscription-tasks-tab/subscription-tasks-tab.component';
 import { UserAuthService } from './services/user-auth.service';
 import { TemplateManagerComponent } from './components/template-manager/template-manager.component';
@@ -115,7 +114,6 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     AddCustomerComponent,
     ManageSubscriptionComponent,
     SubscriptionConfigTab,
-    SubscriptionReportTab,
     SubscriptionTasksTabComponent,
     SubscriptionStatsTab,
     TemplateManagerComponent,
