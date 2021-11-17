@@ -29,7 +29,7 @@
         <mat-list-option
           style="width: 20em"
           [value]="cycle._id"
-          [selected]="true"
+          [selected]="false"
           *ngFor="let cycle of cycleList"
         >
           {{ cycle.start_date | UTCtoReadableTime }} - {{ cycle.target_count }}

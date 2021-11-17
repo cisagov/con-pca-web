@@ -3,16 +3,8 @@
   [displayText]="loadingText"
 ></app-loading-overlay>
 <mat-card *ngIf="dataAvailable" class="mb-4">
-  <!-- <mat-card-header>
-    <mat-card-title style="margin-left: -16px !important">
-      Statistics For Current Cycle
-    </mat-card-title>
-  </mat-card-header> -->
+  <mat-card-title style="margin-bottom: 1rem">Statistics</mat-card-title>
   <mat-card-content>
-    <div style="margin-bottom: 1rem">
-      <h4>Cycle Information</h4>
-      <div>Phish Header: {{ selected_cycle?.phish_header }}</div>
-    </div>
     <div *ngIf="chart && chartSent" class="d-flex flex-column">
       <div style="max-height: 200px; margin-bottom: 1rem">
         <h4>Statistics By Level</h4>

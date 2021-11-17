@@ -1,0 +1,136 @@
+<div *ngIf="subscription['cycles']" class="w-100">
+  <mat-card>
+    <mat-card-title>Cycles</mat-card-title>
+    <div class="cycle-select-wrapper" *ngIf="subscription">
+      <mat-form-field
+        class="cycle-select-dropdown"
+        *ngIf="subscription.cycles"
+        appearance="outline"
+      >
+        <mat-label>Cycle</mat-label>
+        <mat-select
+          [(value)]="selectedCycle"
+          (selectionChange)="cycleChange($event)"
+        >
+          <mat-option *ngFor="let c of subscription.cycles" [value]="c">
+            {{ c.start_date | UTCtoReadableTime }} -
+            {{ c.end_date | UTCtoReadableTime }} ({{
+              c.target_count
+            }})</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <button mat-raised-button color="primary" (click)="pageRefresh()">
+      Refresh
+      <mat-icon class="table-btn-icon-size">autorenew</mat-icon>
+    </button>
+
+    <div class="flex flex-row">
+      Include Non-Human Interactions:
+      <mat-slide-toggle
+        [(ngModel)]="includeNonhuman"
+        (change)="showNonHuman($event)"
+      ></mat-slide-toggle>
+    </div>
+  </mat-card>
+
+  <mat-card>
+    <app-loading-overlay
+      [showLoading]="downloading"
+      [displayText]="downloadingText"
+    ></app-loading-overlay>
+    <mat-card-title>Cycle Information</mat-card-title>
+    <table class="table" style="max-width: 33rem">
+      <tr>
+        <td>Cycle-Id</td>
+        <td>{{ selectedCycle?._id }}</td>
+      </tr>
+      <tr>
+        <td>Cisa-Phish</td>
+        <td>{{ selectedCycle?.phish_header }}</td>
+      </tr>
+    </table>
+    <div class="text-muted">Download all data associated with this cycle</div>
+    <button
+      mat-raised-button
+      color="primary"
+      class="mb-3"
+      (click)="downloadCycleData(); $event.preventDefault()"
+    >
+      Download Data
+    </button>
+  </mat-card>
+
+  <mat-card>
+    <app-loading-overlay
+      [showLoading]="generating"
+      [displayText]="generatingText"
+    ></app-loading-overlay>
+    <mat-card-title>Reporting</mat-card-title>
+
+    <table class="table" style="max-width: 14rem">
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Download</th>
+          <th>Send</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let t of ['status', 'cycle', 'yearly']">
+          <th>{{ t | titlecase }}</th>
+          <td>
+            <button
+              mat-raised-button
+              color="primary"
+              [disabled]="t === 'yearly'"
+              (click)="downloadReport(t); $event.preventDefault()"
+            >
+              <mat-icon>cloud_download</mat-icon>
+            </button>
+          </td>
+          <td>
+            <button
+              mat-raised-button
+              color="accent"
+              [disabled]="t === 'yearly'"
+              (click)="sendReport(t); $event.preventDefault()"
+            >
+              <mat-icon>email</mat-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="text-muted">
+      Download a report for a specified set of cycles
+    </div>
+    <button
+      mat-raised-button
+      color="primary"
+      class="mb-3"
+      (click)="openCycleSelectionDialog()"
+    >
+      Open Cycle Selection
+    </button>
+  </mat-card>
+
+  <app-sub-dashboard></app-sub-dashboard>
+
+  <mat-card *ngIf="display_timeline">
+    <div>
+      <h4>Subscription Timeline</h4>
+      <div style="margin: 0 2rem 2rem 2rem">
+        <app-svg-timeline [timelineItems]="timelineItems"></app-svg-timeline>
+      </div>
+    </div>
+  </mat-card>
+</div>
+<div *ngIf="!subscription['cycles']" class="w-100">
+  <mat-card>
+    <mat-card-title> Statistics </mat-card-title>
+    Statistics will be shown once a campaign has begun
+  </mat-card>
+</div>
