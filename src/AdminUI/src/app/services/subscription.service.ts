@@ -106,6 +106,7 @@ export class SubscriptionService {
       cycle_length_minutes: subscription.cycle_length_minutes,
       cooldown_minutes: subscription.cooldown_minutes,
       report_frequency_minutes: subscription.report_frequency_minutes,
+      reporting_password: subscription.reporting_password,
     };
 
     return this.http.put(

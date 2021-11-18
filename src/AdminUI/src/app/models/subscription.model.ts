@@ -46,6 +46,7 @@ export class SubscriptionModel {
   tasks: TaskModel[];
   notification_history: SubscriptionNotificationModel[];
   phish_header: string;
+  reporting_password: string;
 
   // Helper attributes
   cycles: CycleModel[];

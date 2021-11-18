@@ -151,6 +151,22 @@
         </div>
       </div>
 
+      <mat-form-field appearance="outline" style="max-width: 33rem">
+        <mat-label>Reporting Password</mat-label>
+        <input
+          matInput
+          formControlName="reportingPassword"
+          [type]="hideReportingPassword ? 'password' : 'text'"
+        />
+        <mat-icon
+          matSuffix
+          (click)="hideReportingPassword = !hideReportingPassword"
+          >{{
+            hideReportingPassword ? "visibility_off" : "visibility"
+          }}</mat-icon
+        >
+      </mat-form-field>
+
       <mat-label *ngIf="subscription.templates_selected" class="h6"
         >Template Selection
         <mat-icon
