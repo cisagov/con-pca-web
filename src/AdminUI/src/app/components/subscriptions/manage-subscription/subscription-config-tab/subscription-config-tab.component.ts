@@ -107,6 +107,8 @@ export class SubscriptionConfigTab
   loading = true;
   loadingText = 'Loading Subscription';
 
+  hideReportingPassword = true;
+
   @Input() showLoading: boolean;
   ngOnChanges(changes: SimpleChanges) {
     if (changes.showLoading) {
@@ -199,6 +201,7 @@ export class SubscriptionConfigTab
         reportTimeUnit: new FormControl('Minutes'),
         reportDisplayTime: new FormControl(43200),
         continuousSubscription: new FormControl(false, {}),
+        reportingPassword: new FormControl(''),
       },
       { updateOn: 'blur' }
     );
@@ -276,6 +279,11 @@ export class SubscriptionConfigTab
     this.angular_subs.push(
       this.f.continuousSubscription.valueChanges.subscribe((val) => {
         this.subscription.continuous_subscription = val;
+      })
+    );
+    this.angular_subs.push(
+      this.f.reportingPassword.valueChanges.subscribe((val) => {
+        this.subscription.reporting_password = val;
       })
     );
 
@@ -507,6 +515,7 @@ export class SubscriptionConfigTab
       emitEvent: false,
     });
     this.f.continuousSubscription.setValue(s.continuous_subscription);
+    this.f.reportingPassword.setValue(s.reporting_password);
     this.enableDisableFields();
 
     this.customerSvc
@@ -825,6 +834,7 @@ export class SubscriptionConfigTab
     sub.sending_profile_id = this.f.sendingProfile.value;
 
     sub.continuous_subscription = this.f.continuousSubscription.value;
+    sub.reporting_password = this.f.reportingPassword.value;
     const cycleLength: number = +this.f.cycle_length_minutes.value;
     const cooldownLength: number = +this.f.cooldown_minutes.value;
     const reportLength: number = +this.f.report_frequency_minutes.value;
