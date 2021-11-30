@@ -84,7 +84,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
   displayed_columns = ['name', 'start_date'];
 
   // config vars
-  image_upload_url: string = `${this.settingsService.settings.apiUrl}/api/imageupload/`;
+  image_upload_url: string = `${this.settingsService.settings.apiUrl}/api/util/imageencode/`;
 
   dateFormat = AppSettings.DATE_FORMAT;
 
