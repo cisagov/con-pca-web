@@ -308,6 +308,16 @@ $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
 
 // Specific component overrides, pieces that are not in line with the general theming
 
+// Handle sort header arrow
+.mat-sort-header-arrow {
+  .mat-sort-header-stem {
+    color: white;
+  }
+  .mat-sort-header-indicator {
+    color: white;
+  }
+}
+
 // Handle buttons appropriately, with respect to line-height
 .mat-raised-button,
 .mat-stroked-button,
