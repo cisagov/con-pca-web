@@ -585,7 +585,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
       mat_text_area_height -
       save_button_row_height;
     this.text_editor_height2 = this.text_editor_height;
-    this.iframe_height = this.text_editor_height - 220;
+    this.iframe_height = this.text_editor_height - 550;
 
     //Get the angular-editor toolbar height as it changes when the buttons wrap
     let angular_editor_tool_bar_height =
