@@ -84,7 +84,15 @@
       </div>
       <div *ngIf="cycleStats.maxmind_stats.length > 0">
         <h4>IP Statistics</h4>
-        <table class="table">
+        <table
+          class="table"
+          style="
+            position: relative;
+            max-height: 200px;
+            overflow: auto;
+            display: block;
+          "
+        >
           <tr>
             <th class="asn-org">ASN Org</th>
             <th class="large-column">Ip Addresses</th>
