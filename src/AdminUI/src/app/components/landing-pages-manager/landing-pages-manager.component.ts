@@ -55,7 +55,7 @@ export class LandingPagesManagerComponent implements OnInit {
   displayed_columns = ['name', 'deception_score'];
 
   //config vars
-  image_upload_url: string = `${this.settingsService.settings.apiUrl}/api/imageupload/`;
+  image_upload_url: string = `${this.settingsService.settings.apiUrl}/api/util/imageencode/`;
 
   dateFormat = AppSettings.DATE_FORMAT;
 
