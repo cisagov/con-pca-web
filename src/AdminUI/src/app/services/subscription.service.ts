@@ -142,24 +142,20 @@ export class SubscriptionService {
   }
 
   public downloadReport(
-    cycleIds: any[],
+    cycleId: string,
     reportType: string,
     nonhuman = false
   ): Observable<Blob> {
     const headers = new HttpHeaders().set('Accept', 'application/pdf');
-    let url = `${
-      this.settingsService.settings.apiUrl
-    }/api/cycle/reports/${reportType}/pdf/?cycles=${cycleIds.join(',')}`;
+    let url = `${this.settingsService.settings.apiUrl}/api/cycle/${cycleId}/reports/${reportType}/pdf/`;
     if (nonhuman) {
       url += `?nonhuman=${nonhuman}`;
     }
     return this.http.get(url, { headers, responseType: 'blob' });
   }
 
-  public sendReport(cycleIds: string[], reportType: string, nonhuman = false) {
-    let url = `${
-      this.settingsService.settings.apiUrl
-    }/api/cycle/reports/${reportType}/email/?cycles=${cycleIds.join(',')}`;
+  public sendReport(cycleId: string, reportType: string, nonhuman = false) {
+    let url = `${this.settingsService.settings.apiUrl}/api/cycle/${cycleId}/reports/${reportType}/email/`;
     if (nonhuman) {
       url += `?nonhuman=${nonhuman}`;
     }

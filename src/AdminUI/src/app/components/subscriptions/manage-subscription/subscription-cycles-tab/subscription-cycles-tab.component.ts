@@ -12,7 +12,6 @@ import { CycleModel } from 'src/app/models/cycle.model';
 import { AlertComponent } from 'src/app/components/dialogs/alert/alert.component';
 import { MatDialog } from '@angular/material/dialog';
 import { CycleService } from 'src/app/services/cycle.service';
-import { CycleSelectReports } from 'src/app/components/dialogs/cycle-select-reports/cycle-select-reports.component';
 
 @Component({
   selector: 'app-subscription-cycles-tab',
@@ -117,11 +116,7 @@ export class SubscriptionStatsTab implements OnInit {
     this.generating = true;
     this.generatingText = 'Downloading Report';
     this.subscriptionSvc
-      .downloadReport(
-        [this.selectedCycle._id],
-        reportType,
-        this.includeNonhuman
-      )
+      .downloadReport(this.selectedCycle._id, reportType, this.includeNonhuman)
       .subscribe(
         (blob) => {
           this.downloadObject(`subscription_${reportType}_report.pdf`, blob);
@@ -138,7 +133,7 @@ export class SubscriptionStatsTab implements OnInit {
     this.generating = true;
     this.generatingText = 'Sending Report';
     this.subscriptionSvc
-      .sendReport([this.selectedCycle._id], reportType, this.includeNonhuman)
+      .sendReport(this.selectedCycle._id, reportType, this.includeNonhuman)
       .subscribe(
         () => {
           this.generating = false;
@@ -184,38 +179,6 @@ export class SubscriptionStatsTab implements OnInit {
           this.downloading = false;
         }
       );
-    });
-  }
-
-  openCycleSelectionDialog() {
-    const dialogOptions = {
-      cycles: this.subscription.cycles,
-      sub_name: this.subscription.name,
-    };
-
-    const dialogRef = this.dialog.open(CycleSelectReports, {
-      data: dialogOptions,
-    });
-
-    dialogRef.afterClosed().subscribe((val) => {
-      if (val) {
-        const cycleIds = val.cycles;
-        const reportType = val.reportType;
-        if (cycleIds.length > 0) {
-          this.generating = true;
-          this.subscriptionSvc.downloadReport(cycleIds, reportType).subscribe(
-            (success) => {
-              this.generatingText = 'Downloading Multi-Cycle Report';
-              this.downloadObject(`subscription_cycleset_report.pdf`, success);
-              this.generating = false;
-            },
-            (error) => {
-              this.popupReportError(error, 'downloading', reportType);
-              this.generating = false;
-            }
-          );
-        }
-      }
     });
   }
 }
