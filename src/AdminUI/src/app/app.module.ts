@@ -36,7 +36,6 @@ import { SubscriptionService } from './services/subscription.service';
 import { ThemeService } from './services/theme.service';
 import { LayoutMainService } from './services/layout-main.service';
 import { CycleSelect } from './components/dialogs/cycle-select-default/cycle-select.component';
-import { CycleSelectReports } from './components/dialogs/cycle-select-reports/cycle-select-reports.component';
 import { LoadingOverlayComponent } from './components/loading-overlay/loading-overlay.component';
 
 import { TemplatesPageComponent } from './components/templates-page/templates-page.component';
@@ -163,7 +162,6 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     ForgotPasswordComponent,
     PasswordResetComponent,
     LoadingOverlayComponent,
-    CycleSelectReports,
     RecommendationsListComponent,
     RecommendationDetailComponent,
   ],
