@@ -22,10 +22,10 @@ export class RecommendationsService {
     );
   }
 
-  saveRecommendations(recommendations: RecommendationModel) {
+  saveRecommendation(recommendation: RecommendationModel) {
     return this.http.post(
       `${this.settingsService.settings.apiUrl}/api/recommendations/`,
-      recommendations
+      recommendation
     );
   }
 
