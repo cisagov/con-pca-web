@@ -100,9 +100,17 @@ export class RecommendationDetailComponent implements OnInit {
 
     if (this.recommendForm.valid) {
       rm = this.save();
-      this.recommendationSvc.updateRecommendation(rm._id, rm).subscribe(() => {
-        this.dialogRef.close();
-      });
+      if (rm._id) {
+        this.recommendationSvc
+          .updateRecommendation(rm._id, rm)
+          .subscribe(() => {
+            this.dialogRef.close();
+          });
+      } else {
+        this.recommendationSvc.saveRecommendation(rm).subscribe(() => {
+          this.dialogRef.close();
+        });
+      }
     } else {
       //non valid form, collect nonvalid fields and display to user
       const invalid = [];
