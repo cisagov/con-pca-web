@@ -252,16 +252,31 @@ export class SubscriptionConfigTab
    * Setup handlers for form field updates
    */
   onChanges(): void {
+    // On changes to start date
     this.angular_subs.push(
       this.f.startDate.valueChanges.subscribe((val) => {
-        this.subscription.start_date = val;
+        const startDate = new Date(val);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        if (startDate >= today) {
+          const now = new Date();
+          startDate.setMinutes(now.getMinutes());
+          startDate.setHours(now.getHours());
+        }
+        this.subscription.start_date = startDate;
+        this.setEndTimes();
       })
     );
+
+    // On changes to sending profile
     this.angular_subs.push(
       this.f.sendingProfile.valueChanges.subscribe((val) => {
         this.subscription.sending_profile_id = val;
       })
     );
+
+    // On changes to targets
     this.angular_subs.push(
       this.f.csvText.valueChanges.subscribe((val) => {
         this.evaluateTargetList(false);
@@ -269,6 +284,8 @@ export class SubscriptionConfigTab
         this.checkValid();
       })
     );
+
+    // On changes to target domain field
     this.angular_subs.push(
       this.f.targetDomain.valueChanges.subscribe((val) => {
         this.subscription.target_domain = val;
@@ -276,11 +293,15 @@ export class SubscriptionConfigTab
         this.f.csvText.updateValueAndValidity({ emitEvent: false });
       })
     );
+
+    // On changes to continuous subscription checkbox
     this.angular_subs.push(
       this.f.continuousSubscription.valueChanges.subscribe((val) => {
         this.subscription.continuous_subscription = val;
       })
     );
+
+    // On changes to reporting password
     this.angular_subs.push(
       this.f.reportingPassword.valueChanges.subscribe((val) => {
         this.subscription.reporting_password = val;
@@ -396,9 +417,9 @@ export class SubscriptionConfigTab
 
   setEndTimes() {
     // Calculate send by and end date
-    let start = this.f.startDate.value;
+    let start = this.subscription.start_date;
     if (typeof start === 'string') {
-      start = new Date(this.f.startDate.value);
+      start = new Date(this.subscription.start_date);
     }
     const cycleLength: number = +this.f.cycle_length_minutes.value;
     const cooldownLength: number = +this.f.cooldown_minutes.value;
