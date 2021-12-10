@@ -303,7 +303,7 @@
           </mat-tab>
           <mat-tab>
             <ng-template mat-tab-label> Template Testing </ng-template>
-            <div class="p-3">
+            <div class="p-3 flex-column" [style.height.px]="text_editor_height">
               <mat-label class="h6">Sending Profile</mat-label>
               <div class="mb-4">
                 <div class="text-muted" *ngIf="sendingProfiles.length > 0">
@@ -440,7 +440,7 @@
                   class="d-flex flex-grow-1"
                   [src]="mailtester_iframe_url"
                   title="Testing results"
-                  [style.height.px]="iframe_height"
+                  [style.height.px]="350"
                 ></iframe>
               </div>
             </div>
