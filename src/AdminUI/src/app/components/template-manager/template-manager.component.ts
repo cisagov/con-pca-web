@@ -95,7 +95,6 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
   body_content_height: number;
   text_editor_height: number;
   text_editor_height2: number;
-  iframe_height: number;
   text_area_bot_marg: number = 20; // based on the default text area padding on a mat textarea element
   angular_editor_mode: String = 'WYSIWYG';
 
@@ -585,7 +584,6 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
       mat_text_area_height -
       save_button_row_height;
     this.text_editor_height2 = this.text_editor_height;
-    this.iframe_height = this.text_editor_height - 550;
 
     //Get the angular-editor toolbar height as it changes when the buttons wrap
     let angular_editor_tool_bar_height =
