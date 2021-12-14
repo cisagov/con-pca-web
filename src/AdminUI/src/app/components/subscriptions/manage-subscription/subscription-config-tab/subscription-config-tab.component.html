@@ -185,18 +185,24 @@
           <table class="table table-striped">
             <thead>
               <tr>
-                <th scope="col">Template Name</th>
+                <th scope="col">Template Subject</th>
+                <th scope="col">From Address</th>
                 <th scope="col">Deception Level</th>
-                <th scope="col">Deception Score</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let item of templatesSelected">
-                <td>{{ item.name }}</td>
+              <tr
+                *ngFor="let item of templatesSelected"
+                (click)="changeTemplate(item)"
+              >
+                <td>{{ item.subject }}</td>
+                <td>{{ getTemplateFromAddress(item) }}</td>
                 <td>
-                  {{ templateSvc.getDeceptionLevel(item.deception_score) }}
+                  {{
+                    templateSvc.getDeceptionLevel(item.deception_score)
+                      | titlecase
+                  }}
                 </td>
-                <td>{{ item.deception_score }}</td>
               </tr>
             </tbody>
           </table>
