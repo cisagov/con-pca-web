@@ -36,7 +36,7 @@ import { ConfirmComponent } from '../../../dialogs/confirm/confirm.component';
 import { SendingProfileService } from 'src/app/services/sending-profile.service';
 import { TemplateManagerService } from 'src/app/services/template-manager.service';
 import { SettingsService } from 'src/app/services/settings.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, from } from 'rxjs';
 import { TemplateSelectDialogComponent } from 'src/app/components/subscriptions/manage-subscription/template-select-dialog/template-select-dialog.component';
 import { InvalidEmailDialogComponent } from 'src/app/components/subscriptions/invalid-email-dialog/invalid-email-dialog.component';
 import { MatCheckboxChange } from '@angular/material/checkbox';
@@ -44,6 +44,8 @@ import { CanComponentDeactivate } from 'src/app/guards/unsaved-changes.guard';
 import { UnsavedComponent } from 'src/app/components/dialogs/unsaved/unsaved.component';
 import { UserService } from 'src/app/services/user.service';
 import { UserModel } from 'src/app/models/user.model';
+import { TemplateModel } from 'src/app/models/template.model';
+import { SendingProfileModel } from 'src/app/models/sending-profile.model';
 
 @Component({
   selector: 'subscription-config-tab',
@@ -1186,10 +1188,11 @@ export class SubscriptionConfigTab
     this.ignoreConfigError = event.checked;
   }
 
-  changeTemplate() {
+  changeTemplate(template = null) {
     const templateData = {
       selected: this.templatesSelected,
       available: this.templatesAvailable,
+      template: template,
     };
 
     const dialogRef = this.dialog.open(TemplateSelectDialogComponent, {
@@ -1313,5 +1316,33 @@ export class SubscriptionConfigTab
           });
       }
     });
+  }
+
+  getTemplateFromAddress(template: TemplateModel) {
+    const fromAddress = template.from_address;
+    let sendingProfile = null;
+    if (template.sending_profile_id) {
+      const profiles = this.sendingProfiles.filter(
+        (s: SendingProfileModel) => s._id == template.sending_profile_id
+      );
+      if (profiles.length > 0) {
+        sendingProfile = profiles[0];
+      }
+    } else {
+      const profiles = this.sendingProfiles.filter(
+        (s: SendingProfileModel) => s._id == this.f.sendingProfile.value
+      );
+      if (profiles.length > 0) {
+        sendingProfile = profiles[0];
+      }
+    }
+
+    if (!sendingProfile) {
+      return fromAddress;
+    } else {
+      const fromArray = sendingProfile.from_address.split('@');
+      const domain = fromArray[fromArray.length - 1].replace('>', '');
+      return fromAddress.replace('@domain.com', `@${domain}`);
+    }
   }
 }

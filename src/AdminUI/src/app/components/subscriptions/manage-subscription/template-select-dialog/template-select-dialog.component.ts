@@ -30,6 +30,9 @@ export class TemplateSelectDialogComponent {
     this.selectedArray = data.selected;
     this.availableArray = data.available;
     this.initMatTables();
+    if (data.template) {
+      this.display(data.template);
+    }
   }
   displayHTML = '';
   templateName = '';

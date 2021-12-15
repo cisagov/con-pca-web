@@ -31,6 +31,9 @@
   margin: 0.5em;
   // max-width: 800px;
 }
+.template-selection-level-container > table > tbody > tr:hover {
+  background-color: #d6e9f2;
+}
 .tslc-title {
   margin-top: -1.5em;
   position: absolute;
