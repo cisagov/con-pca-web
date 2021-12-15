@@ -38,6 +38,7 @@ import { CustomerModel } from 'src/app/models/customer.model';
 import { TagModel } from 'src/app/models/tags.model';
 import { RecommendationsService } from 'src/app/services/recommendations.service';
 import { RecommendationModel } from 'src/app/models/recommendations.model';
+import { AlertsService } from 'src/app/services/alerts.service';
 
 @Component({
   selector: 'app-template-manager',
@@ -116,7 +117,8 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
     private router: Router,
     private settingsService: SettingsService,
     public dialog: MatDialog,
-    private domSanitizer: DomSanitizer
+    private domSanitizer: DomSanitizer,
+    public alertsService: AlertsService
   ) {
     this.setTemplateForm(new TemplateModel());
     // Here updating title on creation.
@@ -528,6 +530,10 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
         this.retired = result.retired;
         this.retiredReason = result.description;
         this.setCanDelete();
+      } else if (result.error) {
+        this.alertsService.alert(
+          `Error retiring template. ${result.error.error}`
+        );
       }
     });
   }

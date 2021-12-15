@@ -1,17 +1,14 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { RecommendationModel } from 'src/app/models/recommendations.model';
 import { RecommendationsService } from 'src/app/services/recommendations.service';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatSort, Sort } from '@angular/material/sort';
-import {
-  MatDialog,
-  MatDialogConfig,
-  MatDialogRef,
-} from '@angular/material/dialog';
+import { MatSort } from '@angular/material/sort';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AlertComponent } from 'src/app/components/dialogs/alert/alert.component';
 import { RecommendationDetailComponent } from './recommendation-details.component';
+import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
+import { AlertsService } from 'src/app/services/alerts.service';
 
 @Component({
   selector: '',
@@ -28,9 +25,9 @@ export class RecommendationsListComponent implements OnInit, AfterViewInit {
 
   constructor(
     private recommendationSvc: RecommendationsService,
-    private router: Router,
-    private layoutSvc: LayoutMainService,
-    public dialog: MatDialog
+    public layoutSvc: LayoutMainService,
+    public dialog: MatDialog,
+    public alertSvc: AlertsService
   ) {
     layoutSvc.setTitle('Recommendations');
   }
@@ -76,23 +73,27 @@ export class RecommendationsListComponent implements OnInit, AfterViewInit {
     }
   }
 
-  deleteRec(row: any) {
-    console.log(row);
-    this.recommendationSvc.deleteRecommendation(row._id).subscribe(
-      () => {
-        this.refresh();
-      },
-      (failure) => {
-        this.dialog.open(AlertComponent, {
-          data: {
-            title: 'Error Trying To Delete',
-            messageText:
-              'An error occurred deleting the Recommendation: ' +
-              failure.error.error,
-            list: failure.error.fields,
+  deleteRec(row: RecommendationModel) {
+    const dialogRef = this.dialog.open(ConfirmComponent, {
+      disableClose: false,
+    });
+    dialogRef.componentInstance.confirmMessage = `Are you sure you want to delete the recommendation: ${row.title}?`;
+    dialogRef.componentInstance.title = 'Confirm Delete';
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.recommendationSvc.deleteRecommendation(row._id).subscribe(
+          () => {
+            this.refresh();
           },
-        });
+          (failure) => {
+            console.error(failure.error);
+            this.alertSvc.alert(
+              `An error occurred deleting the Recommendation: ${failure.error.error}`
+            );
+          }
+        );
       }
-    );
+    });
   }
 }

@@ -38,16 +38,17 @@ export class RetireTemplateDialogComponent implements OnInit {
   retire(): void {
     this.template.retired = true;
     this.template.retired_description = this.retiredDescription;
-    if (this.template._id == null) {
-      let landingpage = this.template as unknown as LandingPageModel;
-      this.landingSvc.updatelandingpage(landingpage);
-    } else {
-      this.templateSvc.updateTemplate(this.template);
-    }
-    this.dialogRef.close({
-      retired: true,
-      description: this.retiredDescription,
-    });
+    this.templateSvc.updateTemplate(this.template).then(
+      () => {
+        this.dialogRef.close({
+          retired: true,
+          description: this.retiredDescription,
+        });
+      },
+      (error) => {
+        this.dialogRef.close({ error: error.error });
+      }
+    );
   }
 
   cancel(): void {
