@@ -14,7 +14,6 @@ import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
 import { AppSettings } from 'src/app/AppSettings';
 import { MatTableDataSource } from '@angular/material/table';
 import { SettingsService } from 'src/app/services/settings.service';
-import { RetireTemplateDialogComponent } from '../template-manager/retire-template-dialog/retire-template-dialog.component';
 import { AlertComponent } from '../dialogs/alert/alert.component';
 import { LandingPageManagerService } from 'src/app/services/landing-page-manager.service';
 import { LandingPageModel } from 'src/app/models/landing-page.models';
@@ -28,7 +27,6 @@ import { TagSelectionComponent } from '../dialogs/tag-selection/tag-selection.co
 })
 export class LandingPagesManagerComponent implements OnInit {
   dialogRefConfirm: MatDialogRef<ConfirmComponent>;
-  dialogRefRetire: MatDialogRef<RetireTemplateDialogComponent>;
   dialogRefTagSelection: MatDialogRef<TagSelectionComponent>;
 
   canDelete: boolean;
