@@ -192,11 +192,11 @@ export class SubscriptionConfigTab
         }),
         subTimeUnit: new FormControl('Minutes'),
         subDisplayTime: new FormControl(129600),
-        cooldown_minutes: new FormControl(2880, {
+        cooldown_minutes: new FormControl(43200, {
           validators: [Validators.required],
         }),
         cooldownTimeUnit: new FormControl('Minutes'),
-        cooldownDisplayTime: new FormControl(2880),
+        cooldownDisplayTime: new FormControl(43200),
         report_frequency_minutes: new FormControl(43200, {
           validators: [Validators.required],
         }),
