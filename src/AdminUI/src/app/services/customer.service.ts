@@ -58,7 +58,7 @@ export class CustomerService {
 
   public getCustomer(id: string) {
     const url = `${this.settingsService.settings.apiUrl}/api/customer/${id}/`;
-    return this.http.get(url);
+    return this.http.get<CustomerModel>(url);
   }
 
   public getContact(requestData: any) {

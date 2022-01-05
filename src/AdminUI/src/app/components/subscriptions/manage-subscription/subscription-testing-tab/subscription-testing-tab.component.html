@@ -1,0 +1,117 @@
+<app-loading-overlay
+  [showLoading]="launching"
+  [displayText]="launchingText"
+></app-loading-overlay>
+<mat-card>
+  <mat-card-title>Configuration</mat-card-title>
+  <p>
+    All templates will be sent to each of the following customer contacts. This
+    will help verify proper safelisting configuration (emails can land in the
+    targets' inboxes and that they can click on the links).
+  </p>
+  <mat-table [dataSource]="customer?.contact_list">
+    <!-- Email -->
+    <ng-container matColumnDef="email">
+      <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{ element.email }}
+      </mat-cell>
+    </ng-container>
+
+    <!-- First Name -->
+    <ng-container matColumnDef="firstName">
+      <mat-header-cell *matHeaderCellDef>First Name</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{ element.first_name }}
+      </mat-cell>
+    </ng-container>
+
+    <!-- Last Name -->
+    <ng-container matColumnDef="lastName">
+      <mat-header-cell *matHeaderCellDef>Last Name</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{ element.last_name }}
+      </mat-cell>
+    </ng-container>
+
+    <!-- Definitions -->
+    <mat-header-row *matHeaderRowDef="contactColumns"></mat-header-row>
+    <mat-row
+      *matRowDef="let row; columns: contactColumns"
+      class="table-row"
+    ></mat-row>
+  </mat-table>
+
+  <!-- Action Buttons -->
+  <div class="d-flex flex-row justify-content-end mt-3">
+    <!-- Change Contacts -->
+    <button mat-raised-button (click)="changeContacts()">
+      Change Contacts
+    </button>
+
+    <!-- Launch Test -->
+    <button mat-raised-button color="primary" (click)="launchTest()">
+      Launch Test
+    </button>
+  </div>
+</mat-card>
+
+<mat-card *ngIf="testResults && testResults.length > 0">
+  <mat-card-title
+    >Results<button
+      mat-raised-button
+      color="primary"
+      (click)="getResults()"
+      class="refresh-test-results-btn"
+    >
+      <mat-icon>refresh</mat-icon>
+    </button></mat-card-title
+  >
+  <p>
+    The following shows the results of the test (who has clicked on which
+    templates). Each row can be clicked for additional details.
+  </p>
+  <mat-table [dataSource]="testResults">
+    <!-- Template -->
+    <ng-container matColumnDef="template">
+      <mat-header-cell *matHeaderCellDef>Template</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{ element.template.name }}
+      </mat-cell>
+    </ng-container>
+
+    <!-- Email -->
+    <ng-container matColumnDef="email">
+      <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{ element.email }}
+      </mat-cell>
+    </ng-container>
+
+    <!-- Sent -->
+    <ng-container matColumnDef="sent">
+      <mat-header-cell *matHeaderCellDef>Sent</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <mat-icon *ngIf="element.sent" color="primary">check_circle</mat-icon
+        ><mat-icon *ngIf="!element.sent" color="warn">error</mat-icon>
+      </mat-cell>
+    </ng-container>
+
+    <!-- Clicked -->
+    <ng-container matColumnDef="clicked">
+      <mat-header-cell *matHeaderCellDef>Clicked</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <mat-icon *ngIf="element.clicked" color="primary">check_circle</mat-icon
+        ><mat-icon *ngIf="!element.clicked" color="warn">error</mat-icon>
+      </mat-cell>
+    </ng-container>
+
+    <!-- Definitions -->
+    <mat-header-row *matHeaderRowDef="resultColumns"></mat-header-row>
+    <mat-row
+      *matRowDef="let row; columns: resultColumns"
+      class="table-row cursor-pointer"
+      (click)="detailResults(row)"
+    ></mat-row>
+  </mat-table>
+</mat-card>
