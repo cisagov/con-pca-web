@@ -1,6 +1,7 @@
 import { ContactModel } from './customer.model';
-import { CycleModel } from './cycle.model';
+import { CycleModel, CycleTargetTimelineModel } from './cycle.model';
 import * as moment from 'node_modules/moment/moment';
+import { TemplateModel } from './template.model';
 
 export class TaskModel {
   task_uuid: string;
@@ -25,6 +26,20 @@ export class SubscriptionNotificationModel {
   email_from: string;
 }
 
+export class SubscriptionTestResultsModel {
+  test_uuid: string;
+  email: string;
+  template: TemplateModel;
+  first_name: string;
+  last_name: string;
+  sent: boolean;
+  sent_date: Date;
+  opened: boolean;
+  clicked: boolean;
+  error: string;
+  timeline: CycleTargetTimelineModel[];
+}
+
 export class SubscriptionModel {
   _id: string;
   name: string;
@@ -47,6 +62,7 @@ export class SubscriptionModel {
   notification_history: SubscriptionNotificationModel[];
   phish_header: string;
   reporting_password: string;
+  test_results: SubscriptionTestResultsModel[];
 
   // Helper attributes
   cycles: CycleModel[];

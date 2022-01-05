@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CustomerModel, ContactModel } from '../models/customer.model';
-import { SubscriptionModel } from '../models/subscription.model';
+import {
+  SubscriptionModel,
+  SubscriptionTestResultsModel,
+} from '../models/subscription.model';
 import { TemplateModel } from '../models/template.model';
 import { SettingsService } from './settings.service';
 import { Observable, BehaviorSubject } from 'rxjs';
@@ -178,5 +181,15 @@ export class SubscriptionService {
   public rotateHeader(subscriptionId) {
     const url = `${this.settingsService.settings.apiUrl}/api/subscription/${subscriptionId}/header/`;
     return this.http.get<SubscriptionModel>(url);
+  }
+
+  public testSubscription(subscriptionId) {
+    const url = `${this.settingsService.settings.apiUrl}/api/subscription/${subscriptionId}/test/`;
+    return this.http.post<SubscriptionTestResultsModel[]>(url, {});
+  }
+
+  public getTestResults(subscriptionId) {
+    const url = `${this.settingsService.settings.apiUrl}/api/subscription/${subscriptionId}/test/`;
+    return this.http.get<SubscriptionTestResultsModel[]>(url);
   }
 }

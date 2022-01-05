@@ -98,6 +98,8 @@ import { RecommendationDetailComponent } from './components/recommendations/reco
 import { RecommendationsService } from './services/recommendations.service';
 import { AlertsService } from './services/alerts.service';
 import { ConfigService } from './services/config.service';
+import { SubscriptionTestingTabComponent } from './components/subscriptions/manage-subscription/subscription-testing-tab/subscription-testing-tab.component';
+import { GenericViewComponent } from './components/dialogs/generic-view/generic-view.component';
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
   return () => settingsHttpService.initializeApp();
@@ -164,6 +166,8 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     LoadingOverlayComponent,
     RecommendationsListComponent,
     RecommendationDetailComponent,
+    SubscriptionTestingTabComponent,
+    GenericViewComponent,
   ],
   imports: [
     BrowserModule,
