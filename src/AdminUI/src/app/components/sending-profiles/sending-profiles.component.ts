@@ -51,7 +51,7 @@ export class SendingProfilesComponent implements OnInit {
     });
   }
 
-  confirmDeleteProfile(row: any): void {
+  confirmDeleteProfile(row: SendingProfileModel): void {
     if (this.dialog.openDialogs.length === 0) {
       this.dialogRefConfirm = this.dialog.open(ConfirmComponent, {
         disableClose: false,
@@ -68,8 +68,8 @@ export class SendingProfilesComponent implements OnInit {
     }
   }
 
-  deleteProfile(row: any) {
-    this.sendingProfileSvc.deleteProfile(row.id).subscribe(
+  deleteProfile(row: SendingProfileModel) {
+    this.sendingProfileSvc.deleteProfile(row._id).subscribe(
       () => {
         this.refresh();
       },
@@ -80,7 +80,7 @@ export class SendingProfilesComponent implements OnInit {
             messageText:
               'An error occurred deleting the Sending Profile: ' +
               failure.error.error,
-            list: failure.error.fields,
+            list: failure.error.subscriptions,
             listTitle: 'Subscriptions currently using:',
           },
         });
