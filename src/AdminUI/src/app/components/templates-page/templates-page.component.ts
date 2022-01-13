@@ -14,9 +14,16 @@ import { AlertComponent } from 'src/app/components/dialogs/alert/alert.component
   styleUrls: ['./templates-page.component.scss'],
 })
 export class TemplatesPageComponent implements OnInit, AfterViewInit {
-  displayedColumns = ['name', 'deception_score', 'created_by', 'select'];
+  displayedColumns = [
+    'checked',
+    'name',
+    'deception_score',
+    'created_by',
+    'select',
+  ];
   templatesData = new MatTableDataSource<TemplateModel>();
   search_input = '';
+  allChecked = false;
   @ViewChild(MatSort) sort: MatSort;
 
   showRetired: boolean = false;
@@ -58,6 +65,29 @@ export class TemplatesPageComponent implements OnInit, AfterViewInit {
   };
   public editTemplate(template: TemplateModel) {
     this.router.navigate(['/templatemanager', template._id]);
+  }
+
+  selectTemplates(templateList) {
+    if (templateList) {
+      templateList.forEach((group) => {
+        group['isChecked'] = true;
+      });
+    }
+    return templateList;
+  }
+
+  updateAllCheckboxComplete(event) {
+    let data = this.templatesData['_data']['_value'];
+    this.allChecked = data != null && data.every((t) => t.isChecked);
+  }
+
+  setAllCheckboxes(checked: boolean) {
+    let data = this.templatesData['_data']['_value'];
+    if (data == null || data == undefined) {
+      return false;
+    }
+    this.allChecked = checked;
+    data.forEach((t) => (t.isChecked = checked));
   }
 
   onRetiredToggle() {

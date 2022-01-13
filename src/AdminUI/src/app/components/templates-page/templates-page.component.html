@@ -51,6 +51,25 @@
 
     <!-- TEMPLATES TABLE -->
     <mat-table [hidden]="loading" [dataSource]="templatesData" matSort>
+      <!-- CHECKBOX -->
+      <ng-container matColumnDef="checked">
+        <mat-header-cell *matHeaderCellDef>
+          <mat-checkbox
+            [checked]="allChecked"
+            color="warn"
+            (change)="setAllCheckboxes($event.checked)"
+          >
+          </mat-checkbox>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <mat-checkbox
+            [(ngModel)]="row.isChecked"
+            color="primary"
+            (ngModelChange)="updateAllCheckboxComplete($event)"
+          >
+          </mat-checkbox>
+        </mat-cell>
+      </ng-container>
       <!-- NAME -->
       <ng-container matColumnDef="name">
         <mat-header-cell *matHeaderCellDef mat-sort-header
@@ -99,7 +118,6 @@
       <mat-row
         class="table-row cursor-pointer"
         *matRowDef="let row; columns: displayedColumns"
-        (click)="editTemplate(row)"
       ></mat-row>
     </mat-table>
   </div>
