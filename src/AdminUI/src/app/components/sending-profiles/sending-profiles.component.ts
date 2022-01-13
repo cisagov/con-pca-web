@@ -74,14 +74,23 @@ export class SendingProfilesComponent implements OnInit {
         this.refresh();
       },
       (failure) => {
+        let l = null;
+        let t = '';
+        if (failure.error.subscriptions) {
+          l = failure.error.subscriptions;
+          t = 'Subscriptions currently using:';
+        } else if (failure.error.templates) {
+          l = failure.error.templates;
+          t = 'Templates currently using:';
+        }
         this.dialog.open(AlertComponent, {
           data: {
             title: 'Error Trying To Delete',
             messageText:
               'An error occurred deleting the Sending Profile: ' +
               failure.error.error,
-            list: failure.error.subscriptions,
-            listTitle: 'Subscriptions currently using:',
+            list: l,
+            listTitle: t,
           },
         });
       }
