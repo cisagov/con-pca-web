@@ -26,6 +26,14 @@
         >
           <mat-icon>download</mat-icon>
         </button>
+        <button
+          [disabled]="!someChecked()"
+          mat-raised-button
+          color="warn"
+          (click)="retireTemplates()"
+        >
+          Retire
+        </button>
       </div>
       <mat-slide-toggle
         class="mt-3 ml-1 mb-2"

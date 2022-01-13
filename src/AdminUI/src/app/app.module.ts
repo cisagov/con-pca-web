@@ -100,6 +100,7 @@ import { AlertsService } from './services/alerts.service';
 import { ConfigService } from './services/config.service';
 import { SubscriptionTestingTabComponent } from './components/subscriptions/manage-subscription/subscription-testing-tab/subscription-testing-tab.component';
 import { GenericViewComponent } from './components/dialogs/generic-view/generic-view.component';
+import { RetireTemplatesDialogComponent } from './components/template-manager/retire-templates-dialog/retire-templates-dialog.component';
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
   return () => settingsHttpService.initializeApp();
@@ -137,6 +138,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     ConfirmComponent,
     TagSelectionComponent,
     RetireTemplateDialogComponent,
+    RetireTemplatesDialogComponent,
     CustomerDialogComponent,
     AlertComponent,
     SafePipe,
