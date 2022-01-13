@@ -5,8 +5,10 @@ import { TemplateManagerService } from 'src/app/services/template-manager.servic
 import { TemplateModel } from 'src/app/models/template.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort, Sort } from '@angular/material/sort';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AlertComponent } from 'src/app/components/dialogs/alert/alert.component';
+import { RetireTemplatesDialogComponent } from '../template-manager/retire-templates-dialog/retire-templates-dialog.component';
+import { AlertsService } from 'src/app/services/alerts.service';
 
 @Component({
   selector: '',
@@ -14,9 +16,17 @@ import { AlertComponent } from 'src/app/components/dialogs/alert/alert.component
   styleUrls: ['./templates-page.component.scss'],
 })
 export class TemplatesPageComponent implements OnInit, AfterViewInit {
-  displayedColumns = ['name', 'deception_score', 'created_by', 'select'];
+  displayedColumns = [
+    'checked',
+    'name',
+    'deception_score',
+    'created_by',
+    'select',
+  ];
   templatesData = new MatTableDataSource<TemplateModel>();
   search_input = '';
+  allChecked = false;
+  dialogRefRetire: MatDialogRef<RetireTemplatesDialogComponent>;
   @ViewChild(MatSort) sort: MatSort;
 
   showRetired: boolean = false;
@@ -27,7 +37,8 @@ export class TemplatesPageComponent implements OnInit, AfterViewInit {
     private templateSvc: TemplateManagerService,
     private router: Router,
     private layoutSvc: LayoutMainService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public alertsService: AlertsService
   ) {
     layoutSvc.setTitle('Templates');
   }
@@ -58,6 +69,59 @@ export class TemplatesPageComponent implements OnInit, AfterViewInit {
   };
   public editTemplate(template: TemplateModel) {
     this.router.navigate(['/templatemanager', template._id]);
+  }
+
+  selectTemplates(templateList) {
+    if (templateList) {
+      templateList.forEach((group) => {
+        group['isChecked'] = true;
+      });
+    }
+    return templateList;
+  }
+
+  updateAllCheckboxComplete(event) {
+    let data = this.templatesData['_data']['_value'];
+    this.allChecked = data != null && data.every((t) => t.isChecked);
+  }
+
+  setAllCheckboxes(checked: boolean) {
+    let data = this.templatesData['_data']['_value'];
+    if (data == null || data == undefined) {
+      return false;
+    }
+    this.allChecked = checked;
+    data.forEach((t) => (t.isChecked = checked));
+  }
+
+  someChecked() {
+    let data = this.templatesData['_data']['_value'];
+    if (data == null || data == undefined) {
+      return false;
+    }
+    return data.filter((t) => t.isChecked).length > 0 && !this.allChecked;
+  }
+
+  retireTemplates() {
+    const templatesToRetire = this.templatesData['_data']['_value'].filter(
+      (template) => template['isChecked'] == true
+    );
+
+    this.dialogRefRetire = this.dialog.open(RetireTemplatesDialogComponent, {
+      disableClose: false,
+      data: templatesToRetire,
+    });
+    this.dialogRefRetire.afterClosed().subscribe((result) => {
+      if (result.retired) {
+        this.templatesData.data = this.templatesData.data.filter(
+          (obj) => !templatesToRetire.includes(obj)
+        );
+      } else if (result.error) {
+        this.alertsService.alert(
+          `Error retiring template. ${result.error.error}`
+        );
+      }
+    });
   }
 
   onRetiredToggle() {
