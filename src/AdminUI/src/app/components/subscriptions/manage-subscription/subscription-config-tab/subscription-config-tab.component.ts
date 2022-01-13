@@ -380,6 +380,18 @@ export class SubscriptionConfigTab
     );
   }
 
+  setDefaultTimeUnit() {
+    if (this.f.subDisplayTime.value > 1440) {
+      this.f.subTimeUnit.setValue('Days');
+    }
+    if (this.f.cooldownDisplayTime.value > 1440) {
+      this.f.cooldownTimeUnit.setValue('Days');
+    }
+    if (this.f.reportDisplayTime.value > 1440) {
+      this.f.reportTimeUnit.setValue('Days');
+    }
+  }
+
   onTimeUnitChanges(
     displayFormControl: AbstractControl,
     previousTimeUnit: string,
@@ -488,6 +500,7 @@ export class SubscriptionConfigTab
     this.subscription._id = Guid.create().toString();
     this.enableDisableFields();
     this.getRandomTemplates();
+    this.setDefaultTimeUnit();
     this.setEndTimes();
     this.loading = false;
   }
@@ -552,6 +565,7 @@ export class SubscriptionConfigTab
       false,
       s.templates_selected
     );
+    this.setDefaultTimeUnit();
     this.setEndTimes();
     this.checkValid(false);
   }

@@ -195,7 +195,11 @@
           <div>
             <mat-label class="h6">Template Name</mat-label>
             <div>
-              {{ templateName }}
+              <a
+                [routerLink]="['/templatemanager', templateId]"
+                [mat-dialog-close]="true"
+                >{{ templateName }}</a
+              >
             </div>
           </div>
           <div>

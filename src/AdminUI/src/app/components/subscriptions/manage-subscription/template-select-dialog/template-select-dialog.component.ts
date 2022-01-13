@@ -6,6 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AlertComponent } from 'src/app/components/dialogs/alert/alert.component';
 import { TemplateManagerService } from 'src/app/services/template-manager.service';
 import { MatRadioChange } from '@angular/material/radio';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-template-select-dialog',
@@ -24,6 +25,7 @@ export class TemplateSelectDialogComponent {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
+    public router: Router,
     public dialog: MatDialog,
     public templateSvc: TemplateManagerService
   ) {
@@ -38,6 +40,7 @@ export class TemplateSelectDialogComponent {
   templateName = '';
   templateSubject = '';
   templateFromName = '';
+  templateId = '';
   templateSelected = false;
 
   displayedColumnsSelected = ['name', 'deception_score', 'remove'];
@@ -100,6 +103,7 @@ export class TemplateSelectDialogComponent {
     this.templateName = template.name;
     this.templateSubject = template.subject;
     this.templateFromName = template.from_address;
+    this.templateId = template._id;
   }
 
   toggleLevel() {
