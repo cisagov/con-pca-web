@@ -90,6 +90,14 @@ export class TemplatesPageComponent implements OnInit, AfterViewInit {
     data.forEach((t) => (t.isChecked = checked));
   }
 
+  someChecked() {
+    let data = this.templatesData['_data']['_value'];
+    if (data == null || data == undefined) {
+      return false;
+    }
+    return data.filter((t) => t.isChecked).length > 0 && !this.allChecked;
+  }
+
   onRetiredToggle() {
     if (this.displayedColumns.includes('retired')) {
       this.displayedColumns.pop();
