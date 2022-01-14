@@ -35,13 +35,31 @@
           Retire
         </button>
       </div>
-      <mat-slide-toggle
-        class="mt-3 ml-1 mb-2"
-        [(ngModel)]="showRetired"
-        (change)="onRetiredToggle()"
-      >
-        Show Retired
-      </mat-slide-toggle>
+      <div class="d-flex">
+        <mat-slide-toggle
+          class="mt-3 ml-1 mr-1 mb-2"
+          [(ngModel)]="showRetired"
+          (change)="onRetiredToggle()"
+        >
+          Show Retired
+        </mat-slide-toggle>
+        <!-- DROP DOWN MENU BUTTON -->
+        <button mat-raised-button color="accent" [matMenuTriggerFor]="menu">
+          Actions<mat-icon>arrow_drop_down</mat-icon>
+        </button>
+        <mat-menu xPosition="before" yPosition="below" #menu="matMenu">
+          <button mat-menu-item>
+            <mat-icon color="primary">keyboard_arrow_down</mat-icon>Launch
+          </button>
+          <button mat-menu-item>
+            <mat-icon color="accent">stop</mat-icon>Stop
+          </button>
+          <button mat-menu-item><mat-icon>archive</mat-icon>Archive</button>
+          <button mat-menu-item>
+            <mat-icon>unarchive</mat-icon>Unarchive Subscription
+          </button>
+        </mat-menu>
+      </div>
     </div>
   </div>
 
@@ -112,8 +130,8 @@
           >Retired</mat-header-cell
         >
         <mat-cell *matCellDef="let row" (click)="editTemplate(row)"
-          ><i *ngIf="row.retired" class="fa fa-check"></i
-        ></mat-cell>
+          ><i *ngIf="row.retired" class="fa fa-check"></i>
+        </mat-cell>
       </ng-container>
       <ng-container matColumnDef="select">
         <mat-header-cell *matHeaderCellDef>Edit</mat-header-cell>
