@@ -471,6 +471,16 @@
             Retire Template
           </button>
           <button
+            id="retire-button"
+            class="d-flex"
+            mat-raised-button
+            color="basic"
+            (click)="duplicateTemplate()"
+            *ngIf="templateId"
+          >
+            Duplicate Template
+          </button>
+          <button
             id="restore-button"
             class="d-flex"
             mat-raised-button
