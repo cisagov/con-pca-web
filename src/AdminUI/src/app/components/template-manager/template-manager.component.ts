@@ -832,38 +832,37 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
     });
   }
 
-  duplicateTemplate() {
+  async duplicateTemplate() {
     const dialogRef = this.dialog.open(ConfirmComponent, {
       disableClose: false,
     });
     dialogRef.componentInstance.confirmMessage = `Are you sure you want to create a duplicate template?`;
     dialogRef.componentInstance.title = 'Confirm';
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.templateManagerSvc.duplicateTemplate(this.templateId).then(
-          (success: any) => {
-            this.dialog.open(AlertComponent, {
-              data: {
-                title: '',
-                messageText: `'${this.templateName} COPY' template has been duplicated.`,
-              },
-            });
-
-            this.router.navigate(['/templates']);
+    const dialogResp = await dialogRef.afterClosed().toPromise();
+    if (dialogResp) {
+      try {
+        await this.templateManagerSvc
+          .duplicateTemplate(this.templateId)
+          .toPromise();
+        this.dialog.open(AlertComponent, {
+          data: {
+            title: '',
+            messageText: `'${this.templateName} COPY' template has been duplicated.`,
           },
-          (error: any) => {
-            console.log(error);
-            this.dialog.open(AlertComponent, {
-              // Parse error here
-              data: {
-                title: `Duplicate Template Error - ${error.statusText}`,
-                messageText: JSON.stringify(error.error),
-              },
-            });
-          }
-        );
+        });
+
+        this.router.navigate(['/templates']);
+      } catch (error) {
+        console.log(error);
+        this.dialog.open(AlertComponent, {
+          // Parse error here
+          data: {
+            title: `Duplicate Template Error - ${error.statusText}`,
+            messageText: JSON.stringify(error.error),
+          },
+        });
       }
-    });
+    }
   }
 }

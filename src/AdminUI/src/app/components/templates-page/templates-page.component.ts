@@ -118,48 +118,49 @@ export class TemplatesPageComponent implements OnInit, AfterViewInit {
     });
   }
 
-  duplicateTemplate() {
+  async duplicateTemplate() {
     const templatesToDuplicate = this.templatesData['_data']['_value'].filter(
       (template) => template['isChecked'] == true
     );
-
-    console.log(templatesToDuplicate);
     const dialogRef = this.dialog.open(ConfirmComponent, {
       disableClose: false,
     });
     dialogRef.componentInstance.confirmMessage = `Are you sure you want to create duplicate templates?`;
     dialogRef.componentInstance.title = 'Confirm';
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        for (const t of templatesToDuplicate) {
-          this.templateSvc
-            .duplicateTemplate(t._id)
-            .catch((error: HttpErrorResponse) => {
-              console.log(error);
-              this.dialog.open(AlertComponent, {
-                data: {
-                  title: `Duplicate Template Error - ${error.statusText}`,
-                  messageText: JSON.stringify(error.error),
-                },
-              });
-            });
+    const dialogResp = await dialogRef.afterClosed().toPromise();
+    const errors = [];
+    if (dialogResp) {
+      for (const t of templatesToDuplicate) {
+        try {
+          await this.templateSvc.duplicateTemplate(t._id).toPromise();
+        } catch (error) {
+          console.log(error);
+          errors.push(t);
         }
-
-        let dialogRef = this.dialog.open(AlertComponent, {
+      }
+      let resultRef = null;
+      if (errors.length > 0) {
+        resultRef = this.dialog.open(AlertComponent, {
           data: {
-            title: '',
-            messageText: `The following templates have been duplicated:\n\n${templatesToDuplicate
-              .map((obj) => obj.name)
-              .join(' COPY\n')} COPY`,
+            title: `Duplication Errors`,
+            messageText:
+              'The following templates have already been duplicated.',
+            list: errors,
           },
         });
-
-        dialogRef.afterClosed().subscribe((result) => {
-          location.reload();
+      } else {
+        resultRef = this.dialog.open(AlertComponent, {
+          data: {
+            title: 'Success',
+            messageText: 'All templates have been duplicated.',
+          },
         });
       }
-    });
+      resultRef.afterClosed().subscribe(() => {
+        location.reload();
+      });
+    }
   }
 
   onRetiredToggle() {

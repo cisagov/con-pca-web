@@ -129,20 +129,8 @@ export class TemplateManagerService {
   }
 
   duplicateTemplate(id: string) {
-    return new Promise((resolve, reject) => {
-      this.http
-        .get(
-          `${this.settingsService.settings.apiUrl}/api/template/${id}/duplicate/`
-        )
-        .subscribe(
-          (success) => {
-            resolve(success);
-          },
-          (error) => {
-            reject(error);
-          },
-          () => {}
-        );
-    });
+    return this.http.get(
+      `${this.settingsService.settings.apiUrl}/api/template/${id}/duplicate/`
+    );
   }
 }
