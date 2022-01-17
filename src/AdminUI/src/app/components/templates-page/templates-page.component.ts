@@ -143,9 +143,9 @@ export class TemplatesPageComponent implements OnInit, AfterViewInit {
       if (errors.length > 0) {
         resultRef = this.dialog.open(AlertComponent, {
           data: {
-            title: `Duplication Errors`,
-            messageText:
-              'The following templates have already been duplicated.',
+            title: `Duplication Results`,
+            messageText: 'All templates except the following have succeeded.',
+            listTitle: 'Templates Already Duplicated',
             list: errors,
           },
         });
