@@ -9,6 +9,9 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AlertComponent } from 'src/app/components/dialogs/alert/alert.component';
 import { RetireTemplatesDialogComponent } from '../template-manager/retire-templates-dialog/retire-templates-dialog.component';
 import { AlertsService } from 'src/app/services/alerts.service';
+import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
+import { HttpErrorResponse } from '@angular/common/http';
+import { elementEventFullName } from '@angular/compiler/src/view_compiler/view_compiler';
 
 @Component({
   selector: '',
@@ -85,15 +88,6 @@ export class TemplatesPageComponent implements OnInit, AfterViewInit {
     this.allChecked = data != null && data.every((t) => t.isChecked);
   }
 
-  setAllCheckboxes(checked: boolean) {
-    let data = this.templatesData['_data']['_value'];
-    if (data == null || data == undefined) {
-      return false;
-    }
-    this.allChecked = checked;
-    data.forEach((t) => (t.isChecked = checked));
-  }
-
   someChecked() {
     let data = this.templatesData['_data']['_value'];
     if (data == null || data == undefined) {
@@ -120,6 +114,50 @@ export class TemplatesPageComponent implements OnInit, AfterViewInit {
         this.alertsService.alert(
           `Error retiring template. ${result.error.error}`
         );
+      }
+    });
+  }
+
+  duplicateTemplate() {
+    const templatesToDuplicate = this.templatesData['_data']['_value'].filter(
+      (template) => template['isChecked'] == true
+    );
+
+    console.log(templatesToDuplicate);
+    const dialogRef = this.dialog.open(ConfirmComponent, {
+      disableClose: false,
+    });
+    dialogRef.componentInstance.confirmMessage = `Are you sure you want to create duplicate templates?`;
+    dialogRef.componentInstance.title = 'Confirm';
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        for (const t of templatesToDuplicate) {
+          this.templateSvc
+            .duplicateTemplate(t._id)
+            .catch((error: HttpErrorResponse) => {
+              console.log(error);
+              this.dialog.open(AlertComponent, {
+                data: {
+                  title: `Duplicate Template Error - ${error.statusText}`,
+                  messageText: JSON.stringify(error.error),
+                },
+              });
+            });
+        }
+
+        let dialogRef = this.dialog.open(AlertComponent, {
+          data: {
+            title: '',
+            messageText: `The following templates have been duplicated:\n\n${templatesToDuplicate
+              .map((obj) => obj.name)
+              .join(' COPY\n')} COPY`,
+          },
+        });
+
+        dialogRef.afterClosed().subscribe((result) => {
+          location.reload();
+        });
       }
     });
   }

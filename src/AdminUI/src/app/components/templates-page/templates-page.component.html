@@ -38,7 +38,7 @@
           <button mat-menu-item (click)="retireTemplates()">
             <mat-icon color="warn">archive</mat-icon>Retire
           </button>
-          <button mat-menu-item>
+          <button mat-menu-item (click)="duplicateTemplate()">
             <mat-icon color="basic">file_copy</mat-icon>Duplicate
           </button>
         </mat-menu>
@@ -72,13 +72,7 @@
       <!-- CHECKBOX -->
       <ng-container matColumnDef="checked">
         <mat-header-cell *matHeaderCellDef>
-          <mat-checkbox
-            [checked]="allChecked"
-            [indeterminate]="someChecked()"
-            color="warn"
-            (change)="setAllCheckboxes($event.checked)"
-          >
-          </mat-checkbox>
+          <mat-icon>check</mat-icon>
         </mat-header-cell>
         <mat-cell *matCellDef="let row">
           <mat-checkbox
