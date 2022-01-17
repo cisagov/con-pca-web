@@ -127,4 +127,10 @@ export class TemplateManagerService {
       return 'high';
     }
   }
+
+  duplicateTemplate(id: string) {
+    return this.http.get(
+      `${this.settingsService.settings.apiUrl}/api/template/${id}/duplicate/`
+    );
+  }
 }

@@ -62,6 +62,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
 
   // Body Form Variables
   templateId: string;
+  templateName: string;
   retired: boolean;
   canDelete: boolean = false;
   deleteTooltip: string = '';
@@ -253,6 +254,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
       this.setTemplateForm(t);
       this.testEmail = this.getRecommendedEmail();
       this.templateId = t._id;
+      this.templateName = t.name;
       this.retired = t.retired;
       this.retiredReason = t.retired_description;
       this.subscriptionSvc
@@ -828,5 +830,39 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
         }
       }
     });
+  }
+
+  async duplicateTemplate() {
+    const dialogRef = this.dialog.open(ConfirmComponent, {
+      disableClose: false,
+    });
+    dialogRef.componentInstance.confirmMessage = `Are you sure you want to create a duplicate template?`;
+    dialogRef.componentInstance.title = 'Confirm';
+
+    const dialogResp = await dialogRef.afterClosed().toPromise();
+    if (dialogResp) {
+      try {
+        await this.templateManagerSvc
+          .duplicateTemplate(this.templateId)
+          .toPromise();
+        this.dialog.open(AlertComponent, {
+          data: {
+            title: '',
+            messageText: `'${this.templateName} COPY' template has been duplicated.`,
+          },
+        });
+
+        this.router.navigate(['/templates']);
+      } catch (error) {
+        console.log(error);
+        this.dialog.open(AlertComponent, {
+          // Parse error here
+          data: {
+            title: `Duplicate Template Error - ${error.statusText}`,
+            messageText: JSON.stringify(error.error),
+          },
+        });
+      }
+    }
   }
 }

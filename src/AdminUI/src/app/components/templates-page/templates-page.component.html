@@ -29,19 +29,29 @@
         <button
           [disabled]="!someChecked()"
           mat-raised-button
-          color="warn"
-          (click)="retireTemplates()"
+          color="accent"
+          [matMenuTriggerFor]="menu"
         >
-          Retire
+          Actions<mat-icon>arrow_drop_down</mat-icon>
         </button>
+        <mat-menu xPosition="before" yPosition="below" #menu="matMenu">
+          <button mat-menu-item (click)="retireTemplates()">
+            <mat-icon color="warn">archive</mat-icon>Retire
+          </button>
+          <button mat-menu-item (click)="duplicateTemplate()">
+            <mat-icon color="basic">file_copy</mat-icon>Duplicate
+          </button>
+        </mat-menu>
       </div>
-      <mat-slide-toggle
-        class="mt-3 ml-1 mb-2"
-        [(ngModel)]="showRetired"
-        (change)="onRetiredToggle()"
-      >
-        Show Retired
-      </mat-slide-toggle>
+      <div class="d-flex flex-row-reverse mb-2">
+        <mat-slide-toggle
+          class="mt-1 ml-1 mr-1"
+          [(ngModel)]="showRetired"
+          (change)="onRetiredToggle()"
+        >
+          Show Retired
+        </mat-slide-toggle>
+      </div>
     </div>
   </div>
 
@@ -62,13 +72,7 @@
       <!-- CHECKBOX -->
       <ng-container matColumnDef="checked">
         <mat-header-cell *matHeaderCellDef>
-          <mat-checkbox
-            [checked]="allChecked"
-            [indeterminate]="someChecked()"
-            color="warn"
-            (change)="setAllCheckboxes($event.checked)"
-          >
-          </mat-checkbox>
+          <mat-icon>check</mat-icon>
         </mat-header-cell>
         <mat-cell *matCellDef="let row">
           <mat-checkbox
@@ -112,8 +116,8 @@
           >Retired</mat-header-cell
         >
         <mat-cell *matCellDef="let row" (click)="editTemplate(row)"
-          ><i *ngIf="row.retired" class="fa fa-check"></i
-        ></mat-cell>
+          ><i *ngIf="row.retired" class="fa fa-check"></i>
+        </mat-cell>
       </ng-container>
       <ng-container matColumnDef="select">
         <mat-header-cell *matHeaderCellDef>Edit</mat-header-cell>
