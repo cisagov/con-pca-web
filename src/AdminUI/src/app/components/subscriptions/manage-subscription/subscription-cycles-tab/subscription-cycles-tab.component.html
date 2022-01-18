@@ -67,7 +67,7 @@
       [showLoading]="generating"
       [displayText]="generatingText"
     ></app-loading-overlay>
-    <mat-card-title>Reporting</mat-card-title>
+    <mat-card-title>PDF Reports</mat-card-title>
 
     <table class="table" style="max-width: 14rem">
       <thead>
@@ -113,6 +113,51 @@
       <div style="margin: 0 2rem 2rem 2rem">
         <app-svg-timeline [timelineItems]="timelineItems"></app-svg-timeline>
       </div>
+    </div>
+  </mat-card>
+  <mat-card [formGroup]="reportedStatsForm">
+    <mat-card-title>Manual Reports</mat-card-title>
+    <div class="text-muted">
+      <em>Format: email@example.com, 6/15/19 10:54 PM (M/d/yy h:mm a)</em>
+    </div>
+    <mat-form-field class="w-100 flex-grow-1" appearance="outline">
+      <mat-label>Reports</mat-label>
+      <textarea
+        matInput
+        rows="10"
+        style="overflow: scroll"
+        formControlName="reportedItems"
+      ></textarea>
+      <mat-error
+        *ngIf="f.reportedItems.hasError('invalidEmailFormat')"
+        class="invalid-feedback"
+      >
+        Email address not in useable format :
+        {{ validationErrors.invalidEmailFormat }}
+      </mat-error>
+      <mat-error
+        *ngIf="f.reportedItems.hasError('invalidDateFormat')"
+        class="invalid-feedback"
+      >
+        Invalid Date Time : {{ validationErrors.invalidDateFormat }}
+      </mat-error>
+      <mat-error
+        *ngIf="f.reportedItems.hasError('invalidTargetCsv')"
+        class="invalid-feedback"
+      >
+        All target lines must have all parts: Line {{ reportListErrorLineNum }}
+      </mat-error>
+      <mat-error
+        *ngIf="f.reportedItems.hasError('duplicateEmail')"
+        class="invalid-feedback"
+      >
+        Cant not contain duplicate emails: {{ validationErrors.duplicateEmail }}
+      </mat-error>
+    </mat-form-field>
+    <div style="text-align: end">
+      <button mat-raised-button color="primary" (click)="saveManualReports()">
+        Save Reports
+      </button>
     </div>
   </mat-card>
 </div>

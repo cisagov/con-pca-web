@@ -4,14 +4,25 @@ import * as moment from 'node_modules/moment/moment';
 import { DatePipe } from '@angular/common';
 import {
   SubscriptionModel,
+  TargetModel,
   TimelineItem,
 } from 'src/app/models/subscription.model';
 import { Router } from '@angular/router';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
-import { CycleModel } from 'src/app/models/cycle.model';
+import {
+  CycleManualReportsModel,
+  CycleModel,
+} from 'src/app/models/cycle.model';
 import { AlertComponent } from 'src/app/components/dialogs/alert/alert.component';
 import { MatDialog } from '@angular/material/dialog';
 import { CycleService } from 'src/app/services/cycle.service';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  ValidatorFn,
+} from '@angular/forms';
+import { ConfirmComponent } from 'src/app/components/dialogs/confirm/confirm.component';
 
 @Component({
   selector: 'app-subscription-cycles-tab',
@@ -35,6 +46,16 @@ export class SubscriptionStatsTab implements OnInit {
 
   generating = false;
   generatingText = '';
+
+  // Manual reports form
+  reportedStatsForm = new FormGroup({ reportedItems: new FormControl('') });
+  validationErrors = {
+    invalidEmailFormat: '',
+    invalidDateFormat: '',
+    emailNotATarget: '',
+    duplicateEmail: '',
+  };
+  reportListErrorLineNum = 0;
 
   constructor(
     public subscriptionSvc: SubscriptionService,
@@ -67,12 +88,17 @@ export class SubscriptionStatsTab implements OnInit {
         let selectedCycleIndex = 0;
         this.selectedCycle = this.subscription.cycles[selectedCycleIndex];
         this.subscriptionSvc.setCycleBehaviorSubject(this.selectedCycle);
+        this.reportedStatsForm.controls.reportedItems.setValidators([
+          this.reportListValidator(),
+        ]);
+        this.convertReportsToCSV();
       }
     });
   }
 
   cycleChange(event) {
     this.subscriptionSvc.setCycleBehaviorSubject(event.value);
+    this.convertReportsToCSV();
   }
 
   showNonHuman(event: MatSlideToggleChange) {
@@ -180,5 +206,126 @@ export class SubscriptionStatsTab implements OnInit {
         }
       );
     });
+  }
+
+  convertReportsToCSV() {
+    let displayString = '';
+    if (this.selectedCycle.manual_reports) {
+      this.selectedCycle.manual_reports.forEach((element) => {
+        let newDate = '';
+        if (element.report_date) {
+          newDate = this.datePipe.transform(
+            new Date(element.report_date),
+            'M/d/yy h:mm a'
+          );
+        }
+        displayString += `${element.email},${newDate}\n`;
+        this.f.reportedItems.setValue(displayString);
+      });
+    } else {
+      this.f.reportedItems.setValue('');
+    }
+  }
+
+  convertReportsFromCSV() {
+    const lines = this.f.reportedItems.value.split('\n');
+    const reportVals: CycleManualReportsModel[] = [];
+    lines.forEach((element: string) => {
+      const reportItems = element.split(',');
+      if (reportItems.length === 2) {
+        reportVals.push({
+          email: reportItems[0].trim(),
+          report_date: new Date(reportItems[1].trim()),
+        });
+      }
+    });
+    return reportVals;
+  }
+
+  saveManualReports() {
+    if (this.reportedStatsForm.valid) {
+      const dialogRef = this.dialog.open(ConfirmComponent, {
+        disableClose: false,
+      });
+      dialogRef.componentInstance.confirmMessage =
+        'Are you sure you want to save the reports?';
+      dialogRef.componentInstance.title = 'Confirm Save';
+
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          const reports = this.convertReportsFromCSV();
+          this.cycleSvc
+            .saveManualReports(this.selectedCycle._id, reports)
+            .subscribe(
+              () => {
+                this.dialog.open(AlertComponent, {
+                  data: {
+                    title: 'Manual Reports Saved',
+                    messageText: 'The manual reports list was saved.',
+                  },
+                });
+              },
+              (error) => {
+                this.dialog.open(AlertComponent, {
+                  data: {
+                    title: 'Reports Saving Error',
+                    messageText: error.error,
+                  },
+                });
+              }
+            );
+        }
+      });
+    }
+  }
+
+  reportListValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: boolean } | null => {
+      const exprEmail =
+        /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+      if (control.value == '') {
+        return null;
+      }
+      const lines = control.value.split('\n');
+      let emails = [];
+      this.reportListErrorLineNum = 1;
+      for (const line of lines) {
+        if (line) {
+          const parts = line.split(',');
+          if (parts.length !== 2) {
+            return { invalidTargetCsv: true };
+          }
+
+          if (
+            !!parts[0] &&
+            !exprEmail.test(String(parts[0]).toLowerCase().trim())
+          ) {
+            return { invalidEmailFormat: parts[0] };
+          }
+          emails.push(parts[0]);
+          if (!!parts[1]) {
+            let date = new Date(parts[1]);
+            if (isNaN(date.valueOf())) {
+              return { invalidDateFormat: parts[1] };
+            }
+          }
+        }
+        this.reportListErrorLineNum++;
+      }
+      for (let i = 0; i < emails.length; i++) {
+        for (let h = i; h < emails.length; h++) {
+          if (emails[i] == emails[h] && i != h) {
+            return { duplicateEmail: true };
+          }
+        }
+      }
+
+      return null;
+    };
+  }
+
+  get f() {
+    return this.reportedStatsForm.controls;
   }
 }

@@ -21,6 +21,11 @@ export class CycleTargetModel {
   timeline: CycleTargetTimelineModel[];
 }
 
+export class CycleManualReportsModel {
+  email: string;
+  report_date: Date;
+}
+
 export class CycleModel {
   _id: string;
   subscription_id: string;
@@ -33,6 +38,7 @@ export class CycleModel {
   targets: CycleTargetModel[];
   processing: boolean;
   phish_header: string;
+  manual_reports: CycleManualReportsModel[];
 
   // Helper Attributes
   nonhuman: boolean;
