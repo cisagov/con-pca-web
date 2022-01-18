@@ -89,9 +89,7 @@ export class SubscriptionStatsTab implements OnInit {
         this.selectedCycle = this.subscription.cycles[selectedCycleIndex];
         this.subscriptionSvc.setCycleBehaviorSubject(this.selectedCycle);
         this.reportedStatsForm.controls.reportedItems.setValidators([
-          this.reportListValidator(
-            this.targetListSimple(this.subscription.target_email_list)
-          ),
+          this.reportListValidator(),
         ]);
         this.convertReportsToCSV();
       }
@@ -281,15 +279,7 @@ export class SubscriptionStatsTab implements OnInit {
     }
   }
 
-  targetListSimple(list: TargetModel[]) {
-    const retVal = [];
-    list.forEach((element) => {
-      retVal.push(element.email);
-    });
-    return retVal;
-  }
-
-  reportListValidator(targetList: any[]): ValidatorFn {
+  reportListValidator(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: boolean } | null => {
       const exprEmail =
         /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -299,7 +289,6 @@ export class SubscriptionStatsTab implements OnInit {
       }
       const lines = control.value.split('\n');
       let emails = [];
-      let matchFound = false;
       this.reportListErrorLineNum = 1;
       for (const line of lines) {
         if (line) {
@@ -315,16 +304,6 @@ export class SubscriptionStatsTab implements OnInit {
             return { invalidEmailFormat: parts[0] };
           }
           emails.push(parts[0]);
-          for (let i = 0; i < targetList.length; i++) {
-            if (targetList[i] == parts[0].trim()) {
-              matchFound = true;
-            }
-          }
-          if (!matchFound) {
-            return { emailNotATarget: parts[0] };
-          }
-          matchFound = false;
-
           if (!!parts[1]) {
             let date = new Date(parts[1]);
             if (isNaN(date.valueOf())) {

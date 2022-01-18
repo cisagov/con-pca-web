@@ -142,12 +142,6 @@
         Invalid Date Time : {{ validationErrors.invalidDateFormat }}
       </mat-error>
       <mat-error
-        *ngIf="f.reportedItems.hasError('emailNotATarget')"
-        class="invalid-feedback"
-      >
-        Email not in target users list : {{ validationErrors.emailNotATarget }}
-      </mat-error>
-      <mat-error
         *ngIf="f.reportedItems.hasError('invalidTargetCsv')"
         class="invalid-feedback"
       >
