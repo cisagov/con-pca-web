@@ -22,6 +22,7 @@ import {
   FormGroup,
   ValidatorFn,
 } from '@angular/forms';
+import { ConfirmComponent } from 'src/app/components/dialogs/confirm/confirm.component';
 
 @Component({
   selector: 'app-subscription-cycles-tab',
@@ -210,7 +211,6 @@ export class SubscriptionStatsTab implements OnInit {
   }
 
   convertReportsToCSV() {
-    console.log(this.selectedCycle);
     let displayString = '';
     if (this.selectedCycle.manual_reports) {
       this.selectedCycle.manual_reports.forEach((element) => {
@@ -246,17 +246,38 @@ export class SubscriptionStatsTab implements OnInit {
 
   saveManualReports() {
     if (this.reportedStatsForm.valid) {
-      const reports = this.convertReportsFromCSV();
-      this.cycleSvc
-        .saveManualReports(this.selectedCycle._id, reports)
-        .subscribe(
-          (result) => {
-            console.log(result);
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
+      const dialogRef = this.dialog.open(ConfirmComponent, {
+        disableClose: false,
+      });
+      dialogRef.componentInstance.confirmMessage =
+        'Are you sure you want to save the reports?';
+      dialogRef.componentInstance.title = 'Confirm Save';
+
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          const reports = this.convertReportsFromCSV();
+          this.cycleSvc
+            .saveManualReports(this.selectedCycle._id, reports)
+            .subscribe(
+              () => {
+                this.dialog.open(AlertComponent, {
+                  data: {
+                    title: 'Manual Reports Saved',
+                    messageText: 'The manual reports list was saved.',
+                  },
+                });
+              },
+              (error) => {
+                this.dialog.open(AlertComponent, {
+                  data: {
+                    title: 'Reports Saving Error',
+                    messageText: error.error,
+                  },
+                });
+              }
+            );
+        }
+      });
     }
   }
 
