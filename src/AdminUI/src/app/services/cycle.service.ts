@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { CycleModel } from '../models/cycle.model';
+import { CycleModel, CycleManualReportsModel } from '../models/cycle.model';
 import { CycleStatsModel } from '../models/stats.model';
 import { SettingsService } from './settings.service';
 
@@ -29,5 +29,13 @@ export class CycleService {
       url += `?nonhuman=${nonhuman}`;
     }
     return this.http.get<CycleStatsModel>(url);
+  }
+
+  public saveManualReports(
+    cycleId: string,
+    manualReports: CycleManualReportsModel[]
+  ) {
+    const url = `${this.SettingsService.settings.apiUrl}/api/cycle/${cycleId}/manual_reports/`;
+    return this.http.post(url, { manual_reports: manualReports });
   }
 }
