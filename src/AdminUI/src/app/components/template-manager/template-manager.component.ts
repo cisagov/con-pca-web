@@ -186,12 +186,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
     this.customerSvc.getCustomers().subscribe((data: CustomerModel[]) => {
       this.customers = data;
     });
-    this.recommendationSvc
-      .getRecommendations()
-      .subscribe((data: RecommendationModel[]) => {
-        this.sophisticated = data.filter((rec) => rec.type === 'sophisticated');
-        this.redFlag = data.filter((rec) => rec.type === 'red_flag');
-      });
+    this.getRecommendations();
   }
 
   toggleEditorMode(event) {
@@ -871,6 +866,15 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
     }
   }
 
+  getRecommendations() {
+    this.recommendationSvc
+      .getRecommendations()
+      .subscribe((data: RecommendationModel[]) => {
+        this.sophisticated = data.filter((rec) => rec.type === 'sophisticated');
+        this.redFlag = data.filter((rec) => rec.type === 'red_flag');
+      });
+  }
+
   newRecDialog(row: any): void {
     if (this.dialog.openDialogs.length === 0) {
       const dialogConfig = new MatDialogConfig();
@@ -884,6 +888,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
       );
 
       dialogRef.afterClosed().subscribe(() => {
+        this.getRecommendations();
         this.dialog.open(AlertComponent, {
           data: {
             title: 'Success',
