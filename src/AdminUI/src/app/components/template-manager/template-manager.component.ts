@@ -16,7 +16,11 @@ import { SubscriptionModel as PcaSubscription } from 'src/app/models/subscriptio
 import { Subscription } from 'rxjs';
 import $ from 'jquery';
 import 'src/app/helper/csvToArray';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogConfig,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
 import { AppSettings } from 'src/app/AppSettings';
@@ -39,6 +43,7 @@ import { TagModel } from 'src/app/models/tags.model';
 import { RecommendationsService } from 'src/app/services/recommendations.service';
 import { RecommendationModel } from 'src/app/models/recommendations.model';
 import { AlertsService } from 'src/app/services/alerts.service';
+import { RecommendationDetailComponent } from '../recommendations/recommendation-details.component';
 
 @Component({
   selector: 'app-template-manager',
@@ -181,12 +186,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
     this.customerSvc.getCustomers().subscribe((data: CustomerModel[]) => {
       this.customers = data;
     });
-    this.recommendationSvc
-      .getRecommendations()
-      .subscribe((data: RecommendationModel[]) => {
-        this.sophisticated = data.filter((rec) => rec.type === 'sophisticated');
-        this.redFlag = data.filter((rec) => rec.type === 'red_flag');
-      });
+    this.getRecommendations();
   }
 
   toggleEditorMode(event) {
@@ -863,6 +863,39 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
           },
         });
       }
+    }
+  }
+
+  getRecommendations() {
+    this.recommendationSvc
+      .getRecommendations()
+      .subscribe((data: RecommendationModel[]) => {
+        this.sophisticated = data.filter((rec) => rec.type === 'sophisticated');
+        this.redFlag = data.filter((rec) => rec.type === 'red_flag');
+      });
+  }
+
+  newRecDialog(row: any): void {
+    if (this.dialog.openDialogs.length === 0) {
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.width = '30vw';
+      dialogConfig.data = {
+        recommendation_id: row._id,
+      };
+      const dialogRef = this.dialog.open(
+        RecommendationDetailComponent,
+        dialogConfig
+      );
+
+      dialogRef.afterClosed().subscribe(() => {
+        this.getRecommendations();
+        this.dialog.open(AlertComponent, {
+          data: {
+            title: 'Success',
+            messageText: `Recommendation has been created.`,
+          },
+        });
+      });
     }
   }
 }
