@@ -63,6 +63,7 @@ export class SubscriptionModel {
   phish_header: string;
   reporting_password: string;
   test_results: SubscriptionTestResultsModel[];
+  landing_page_url: string;
 
   // Helper attributes
   cycles: CycleModel[];
