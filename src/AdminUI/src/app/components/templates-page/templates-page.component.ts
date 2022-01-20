@@ -1,4 +1,10 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  AfterViewInit,
+  OnDestroy,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { TemplateManagerService } from 'src/app/services/template-manager.service';
@@ -10,13 +16,17 @@ import { AlertComponent } from 'src/app/components/dialogs/alert/alert.component
 import { RetireTemplatesDialogComponent } from '../template-manager/retire-templates-dialog/retire-templates-dialog.component';
 import { AlertsService } from 'src/app/services/alerts.service';
 import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
+import { TemplatesDataService } from 'src/app/services/templates-data.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: '',
   templateUrl: './templates-page.component.html',
   styleUrls: ['./templates-page.component.scss'],
 })
-export class TemplatesPageComponent implements OnInit, AfterViewInit {
+export class TemplatesPageComponent
+  implements OnInit, AfterViewInit, OnDestroy
+{
   displayedColumns = [
     'checked',
     'name',
@@ -24,6 +34,8 @@ export class TemplatesPageComponent implements OnInit, AfterViewInit {
     'created_by',
     'select',
   ];
+  templatesList = [];
+  templatesSubscription: Subscription;
   templatesData = new MatTableDataSource<TemplateModel>();
   search_input = '';
   allChecked = false;
@@ -38,6 +50,7 @@ export class TemplatesPageComponent implements OnInit, AfterViewInit {
     private templateSvc: TemplateManagerService,
     private router: Router,
     private layoutSvc: LayoutMainService,
+    private templatesSortedData: TemplatesDataService,
     public dialog: MatDialog,
     public alertsService: AlertsService
   ) {
@@ -59,10 +72,18 @@ export class TemplatesPageComponent implements OnInit, AfterViewInit {
     this.sort.direction = sortState.direction;
     this.sort.sortChange.emit(sortState);
     this.loading = false;
+    this.templatesSubscription = this.templatesSortedData.currentData.subscribe(
+      (templates) => (this.templatesList = templates)
+    );
   }
 
   ngAfterViewInit(): void {
     this.templatesData.sort = this.sort;
+  }
+
+  ngOnDestroy() {
+    this.updateTemplateIds();
+    this.templatesSubscription.unsubscribe();
   }
 
   public filterTemplates = (value: string) => {
@@ -70,6 +91,12 @@ export class TemplatesPageComponent implements OnInit, AfterViewInit {
   };
   public editTemplate(template: TemplateModel) {
     this.router.navigate(['/templatemanager', template._id]);
+  }
+
+  updateTemplateIds() {
+    this.templatesSortedData.changeData(
+      this.templatesData.filteredData.map((obj) => obj._id)
+    );
   }
 
   selectTemplates(templateList) {
