@@ -95,7 +95,9 @@ export class TemplatesPageComponent
 
   updateTemplateIds() {
     this.templatesSortedData.changeData(
-      this.templatesData.filteredData.map((obj) => obj._id)
+      this.templatesData
+        .sortData(this.templatesData.filteredData, this.templatesData.sort)
+        .map((obj) => obj._id)
     );
   }
 
