@@ -10,8 +10,6 @@ import { AlertComponent } from 'src/app/components/dialogs/alert/alert.component
 import { RetireTemplatesDialogComponent } from '../template-manager/retire-templates-dialog/retire-templates-dialog.component';
 import { AlertsService } from 'src/app/services/alerts.service';
 import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
-import { HttpErrorResponse } from '@angular/common/http';
-import { elementEventFullName } from '@angular/compiler/src/view_compiler/view_compiler';
 
 @Component({
   selector: '',

@@ -55,6 +55,9 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
   dialogRefTagSelection: MatDialogRef<TagSelectionComponent>;
   dialogRefRetire: MatDialogRef<RetireTemplateDialogComponent>;
 
+  // Templates
+  templatesData: Promise<TemplateModel[]>;
+
   // Full template list variables
   sendingProfiles = [];
   customers = [];
@@ -187,6 +190,10 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
       this.customers = data;
     });
     this.getRecommendations();
+
+    this.templatesData = this.templateManagerSvc.getAllTemplates(false);
+
+    console.log(this.templatesData);
   }
 
   toggleEditorMode(event) {
