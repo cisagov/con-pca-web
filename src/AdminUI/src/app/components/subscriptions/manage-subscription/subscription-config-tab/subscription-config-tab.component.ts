@@ -187,7 +187,7 @@ export class SubscriptionConfigTab
           ],
           updateOn: 'blur',
         }),
-        cycle_length_minutes: new FormControl(129600, {
+        cycle_length_minutes: new FormControl(86400, {
           validators: [Validators.required],
         }),
         subTimeUnit: new FormControl('Minutes'),
