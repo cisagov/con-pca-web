@@ -321,12 +321,13 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
           duplicateEmailName = element.first_name + ' ' + element.last_name;
         }
       });
+      if (this.isEdit) {
+        this.removeContact(this.tempEditContact);
+        this.tempEditContact = null;
+        this.isEdit = false;
+        isNotDuplicateEmail = true;
+      }
       if (isNotDuplicateEmail) {
-        if (this.isEdit) {
-          this.removeContact(this.tempEditContact);
-          this.tempEditContact = null;
-          this.isEdit = false;
-        }
         const contact: ContactModel = {
           office_phone: this.contactFormGroup.controls['office_phone'].value,
           mobile_phone: this.contactFormGroup.controls['mobile_phone'].value,

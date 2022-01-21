@@ -242,6 +242,24 @@
           Create one or more Sending Profiles before proceeding.
         </div>
       </div>
+      <mat-label class="h6">Landing Page</mat-label>
+      <div class="mb-4">
+        <div class="text-muted">
+          If a customer hosted landing page is requested, an optional url can be
+          provided to redirect clicks after our server is hit for click
+          tracking.
+        </div>
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label>Landing Page URL</mat-label>
+          <mat-hint>https://internal.example.org/</mat-hint>
+          <input
+            matInput
+            type="text"
+            trim="blur"
+            formControlName="landingPageURL"
+          />
+        </mat-form-field>
+      </div>
       <div class="mb-3">
         <mat-label class="h6">Target Email Domain</mat-label>
         <div class="text-muted">

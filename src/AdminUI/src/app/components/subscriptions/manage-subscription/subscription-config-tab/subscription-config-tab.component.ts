@@ -187,7 +187,7 @@ export class SubscriptionConfigTab
           ],
           updateOn: 'blur',
         }),
-        cycle_length_minutes: new FormControl(129600, {
+        cycle_length_minutes: new FormControl(86400, {
           validators: [Validators.required],
         }),
         subTimeUnit: new FormControl('Minutes'),
@@ -204,6 +204,7 @@ export class SubscriptionConfigTab
         reportDisplayTime: new FormControl(43200),
         continuousSubscription: new FormControl(false, {}),
         reportingPassword: new FormControl(''),
+        landingPageURL: new FormControl(''),
       },
       { updateOn: 'blur' }
     );
@@ -307,6 +308,13 @@ export class SubscriptionConfigTab
     this.angular_subs.push(
       this.f.reportingPassword.valueChanges.subscribe((val) => {
         this.subscription.reporting_password = val;
+      })
+    );
+
+    // On changes to landing page url
+    this.angular_subs.push(
+      this.f.landingPageURL.valueChanges.subscribe((val) => {
+        this.subscription.landing_page_url = val;
       })
     );
 
@@ -552,6 +560,8 @@ export class SubscriptionConfigTab
     });
     this.f.continuousSubscription.setValue(s.continuous_subscription);
     this.f.reportingPassword.setValue(s.reporting_password);
+
+    this.f.landingPageURL.setValue(s.landing_page_url);
     this.enableDisableFields();
 
     this.customerSvc
@@ -872,6 +882,7 @@ export class SubscriptionConfigTab
 
     sub.continuous_subscription = this.f.continuousSubscription.value;
     sub.reporting_password = this.f.reportingPassword.value;
+    sub.landing_page_url = this.f.landingPageURL.value;
     const cycleLength: number = +this.f.cycle_length_minutes.value;
     const cooldownLength: number = +this.f.cooldown_minutes.value;
     const reportLength: number = +this.f.report_frequency_minutes.value;
