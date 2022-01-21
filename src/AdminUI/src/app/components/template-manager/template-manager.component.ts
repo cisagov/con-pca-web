@@ -62,6 +62,7 @@ export class TemplateManagerComponent
   // Templates sorted data
   templatesList = [];
   templateIndex = 0;
+  templateNextPrev = false;
 
   // Full template list variables
   sendingProfiles = [];
@@ -204,6 +205,8 @@ export class TemplateManagerComponent
       )
     );
     this.templateIndex = this.templatesList.indexOf(this.templateId);
+
+    this.templateNextPrev = false;
   }
 
   toggleEditorMode(event) {
@@ -215,7 +218,11 @@ export class TemplateManagerComponent
   }
 
   ngOnDestroy() {
-    //Unsubscribe from all subscriptions
+    if (!this.templateNextPrev) {
+      this.templatesSortedData.changeData([]);
+    }
+
+    // Unsubscribe from all subscriptions
     this.subscriptions.forEach((sub) => {
       sub.unsubscribe();
     });
@@ -238,6 +245,7 @@ export class TemplateManagerComponent
   }
 
   prevButton(): void {
+    this.templateNextPrev = true;
     this.templateIndex = this.templatesList.indexOf(this.templateId);
     if (this.templateIndex !== 0) {
       this.router.navigate([
@@ -247,6 +255,7 @@ export class TemplateManagerComponent
   }
 
   nextButton(): void {
+    this.templateNextPrev = true;
     this.templateIndex = this.templatesList.indexOf(this.templateId);
     if (this.templateIndex !== this.templatesList.length - 1) {
       this.router.navigate([
