@@ -143,6 +143,16 @@ export class TemplateManagerComponent
       if (this.templateId != undefined) {
         layoutSvc.setTitle('Edit Template');
         this.selectTemplate(this.templateId);
+
+        // Prev and next templates
+        this.subscriptions.push(
+          this.templatesSortedData.currentData.subscribe(
+            (templates) => (this.templatesList = templates)
+          )
+        );
+        this.templateIndex = this.templatesList.indexOf(this.templateId);
+
+        this.templateNextPrev = false;
       } else {
         // Use preset empty form
         layoutSvc.setTitle('New Template');
@@ -197,16 +207,6 @@ export class TemplateManagerComponent
       this.customers = data;
     });
     this.getRecommendations();
-
-    // Prev and next templates
-    this.subscriptions.push(
-      this.templatesSortedData.currentData.subscribe(
-        (templates) => (this.templatesList = templates)
-      )
-    );
-    this.templateIndex = this.templatesList.indexOf(this.templateId);
-
-    this.templateNextPrev = false;
   }
 
   toggleEditorMode(event) {
