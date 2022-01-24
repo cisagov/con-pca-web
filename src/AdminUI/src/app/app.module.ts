@@ -101,6 +101,7 @@ import { ConfigService } from './services/config.service';
 import { SubscriptionTestingTabComponent } from './components/subscriptions/manage-subscription/subscription-testing-tab/subscription-testing-tab.component';
 import { GenericViewComponent } from './components/dialogs/generic-view/generic-view.component';
 import { RetireTemplatesDialogComponent } from './components/template-manager/retire-templates-dialog/retire-templates-dialog.component';
+import { TemplatesDataService } from './services/templates-data.service';
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
   return () => settingsHttpService.initializeApp();
@@ -199,6 +200,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     SubscriptionService,
     TagService,
     TemplateManagerService,
+    TemplatesDataService,
     ThemeService,
     UserAuthService,
     [DatePipe],

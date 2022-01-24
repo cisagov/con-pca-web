@@ -4,6 +4,7 @@ import {
   ViewChild,
   ElementRef,
   AfterViewInit,
+  OnDestroy,
 } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
@@ -44,16 +45,24 @@ import { RecommendationsService } from 'src/app/services/recommendations.service
 import { RecommendationModel } from 'src/app/models/recommendations.model';
 import { AlertsService } from 'src/app/services/alerts.service';
 import { RecommendationDetailComponent } from '../recommendations/recommendation-details.component';
+import { TemplatesDataService } from 'src/app/services/templates-data.service';
 
 @Component({
   selector: 'app-template-manager',
   styleUrls: ['./template-manager.component.scss'],
   templateUrl: './template-manager.component.html',
 })
-export class TemplateManagerComponent implements OnInit, AfterViewInit {
+export class TemplateManagerComponent
+  implements OnInit, AfterViewInit, OnDestroy
+{
   dialogRefConfirm: MatDialogRef<ConfirmComponent>;
   dialogRefTagSelection: MatDialogRef<TagSelectionComponent>;
   dialogRefRetire: MatDialogRef<RetireTemplateDialogComponent>;
+
+  // Templates sorted data
+  templatesList = [];
+  templateIndex = 0;
+  templateNextPrev = false;
 
   // Full template list variables
   sendingProfiles = [];
@@ -117,6 +126,7 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
     private templateManagerSvc: TemplateManagerService,
     private subscriptionSvc: SubscriptionService,
     private landingPageSvc: LandingPageManagerService,
+    private templatesSortedData: TemplatesDataService,
     public sendingProfileSvc: SendingProfileService,
     public customerSvc: CustomerService,
     private route: ActivatedRoute,
@@ -133,6 +143,16 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
       if (this.templateId != undefined) {
         layoutSvc.setTitle('Edit Template');
         this.selectTemplate(this.templateId);
+
+        // Prev and next templates
+        this.subscriptions.push(
+          this.templatesSortedData.currentData.subscribe(
+            (templates) => (this.templatesList = templates)
+          )
+        );
+        this.templateIndex = this.templatesList.indexOf(this.templateId);
+
+        this.templateNextPrev = false;
       } else {
         // Use preset empty form
         layoutSvc.setTitle('New Template');
@@ -198,7 +218,11 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
   }
 
   ngOnDestroy() {
-    //Unsubscribe from all subscriptions
+    if (!this.templateNextPrev) {
+      this.templatesSortedData.changeData([]);
+    }
+
+    // Unsubscribe from all subscriptions
     this.subscriptions.forEach((sub) => {
       sub.unsubscribe();
     });
@@ -217,6 +241,26 @@ export class TemplateManagerComponent implements OnInit, AfterViewInit {
         $('#toggleEditorMode-').click();
         this.angular_editor_mode = 'WYSIWYG';
       }
+    }
+  }
+
+  prevButton(): void {
+    this.templateNextPrev = true;
+    this.templateIndex = this.templatesList.indexOf(this.templateId);
+    if (this.templateIndex !== 0) {
+      this.router.navigate([
+        `/templatemanager/${this.templatesList[this.templateIndex - 1]}`,
+      ]);
+    }
+  }
+
+  nextButton(): void {
+    this.templateNextPrev = true;
+    this.templateIndex = this.templatesList.indexOf(this.templateId);
+    if (this.templateIndex !== this.templatesList.length - 1) {
+      this.router.navigate([
+        `/templatemanager/${this.templatesList[this.templateIndex + 1]}`,
+      ]);
     }
   }
 
