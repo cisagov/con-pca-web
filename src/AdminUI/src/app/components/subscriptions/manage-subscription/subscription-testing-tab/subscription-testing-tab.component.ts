@@ -1,7 +1,8 @@
+import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { error } from 'protractor';
+import { AlertComponent } from 'src/app/components/dialogs/alert/alert.component';
 import { ConfirmComponent } from 'src/app/components/dialogs/confirm/confirm.component';
 import { GenericViewComponent } from 'src/app/components/dialogs/generic-view/generic-view.component';
 import { ContactModel, CustomerModel } from 'src/app/models/customer.model';
@@ -25,9 +26,12 @@ export class SubscriptionTestingTabComponent implements OnInit {
   launching = false;
   launchingText = 'Test Launch in Progress';
 
-  contactColumns = ['email', 'firstName', 'lastName'];
+  contactColumns = ['select', 'email', 'firstName', 'lastName'];
 
   resultColumns = ['template', 'email', 'sent', 'clicked'];
+
+  // Contact selection
+  selection = new SelectionModel<ContactModel>(true, []);
 
   constructor(
     public customerSvc: CustomerService,
@@ -53,6 +57,15 @@ export class SubscriptionTestingTabComponent implements OnInit {
   }
 
   launchTest() {
+    if (this.selection.selected.length < 1) {
+      this.dialog.open(AlertComponent, {
+        data: {
+          title: 'Select Contacts',
+          messageText: 'At least a single contact needs to be selected',
+        },
+      });
+      return;
+    }
     const dialogRef = this.dialog.open(ConfirmComponent, {
       disableClose: false,
     });
@@ -61,16 +74,18 @@ export class SubscriptionTestingTabComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.launching = true;
-        this.subscriptionSvc.testSubscription(this.subscription._id).subscribe(
-          (data) => {
-            this.testResults = data;
-            this.launching = false;
-          },
-          (error) => {
-            console.log(error);
-            this.launching = false;
-          }
-        );
+        this.subscriptionSvc
+          .testSubscription(this.subscription._id, this.selection.selected)
+          .subscribe(
+            (data) => {
+              this.testResults = data;
+              this.launching = false;
+            },
+            (error) => {
+              console.log(error);
+              this.launching = false;
+            }
+          );
       }
     });
   }
@@ -96,5 +111,19 @@ export class SubscriptionTestingTabComponent implements OnInit {
         clicked: result.clicked,
       },
     });
+  }
+
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.customer.contact_list.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    this.isAllSelected()
+      ? this.selection.clear()
+      : this.customer.contact_list.forEach((row) => this.selection.select(row));
   }
 }
