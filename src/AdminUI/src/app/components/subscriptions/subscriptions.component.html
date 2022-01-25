@@ -90,7 +90,7 @@
         >Last Updated</mat-header-cell
       >
       <mat-cell *matCellDef="let row">
-        {{ row.subscription.lub_timestamp | date: dateFormat }}</mat-cell
+        {{ row.subscription.updated | date: dateFormat }}</mat-cell
       >
     </ng-container>
     <!-- ARCHIVED -->
