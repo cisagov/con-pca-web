@@ -184,12 +184,12 @@ export class SubscriptionService {
     return this.http.get<SubscriptionModel>(url);
   }
 
-  public testSubscription(subscriptionId) {
+  public testSubscription(subscriptionId: string, contacts: ContactModel[]) {
     const url = `${this.settingsService.settings.apiUrl}/api/subscription/${subscriptionId}/test/`;
-    return this.http.post<SubscriptionTestResultsModel[]>(url, {});
+    return this.http.post<SubscriptionTestResultsModel[]>(url, { contacts });
   }
 
-  public getTestResults(subscriptionId) {
+  public getTestResults(subscriptionId: string) {
     const url = `${this.settingsService.settings.apiUrl}/api/subscription/${subscriptionId}/test/`;
     return this.http.get<SubscriptionTestResultsModel[]>(url);
   }

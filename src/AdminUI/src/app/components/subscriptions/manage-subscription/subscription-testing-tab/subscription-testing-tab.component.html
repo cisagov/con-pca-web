@@ -10,27 +10,47 @@
     targets' inboxes and that they can click on the links).
   </p>
   <mat-table [dataSource]="customer?.contact_list">
+    <!-- Select -->
+    <ng-container matColumnDef="select">
+      <mat-header-cell *matHeaderCellDef>
+        <mat-checkbox
+          (change)="$event ? masterToggle() : null"
+          [checked]="selection.hasValue() && isAllSelected()"
+          [indeterminate]="selection.hasValue() && !isAllSelected()"
+        >
+        </mat-checkbox>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <mat-checkbox
+          (click)="$event.stopPropagation()"
+          (change)="$event ? selection.toggle(row) : null"
+          [checked]="selection.isSelected(row)"
+        >
+        </mat-checkbox>
+      </mat-cell>
+    </ng-container>
+
     <!-- Email -->
     <ng-container matColumnDef="email">
       <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
-      <mat-cell *matCellDef="let element">
-        {{ element.email }}
+      <mat-cell *matCellDef="let row">
+        {{ row.email }}
       </mat-cell>
     </ng-container>
 
     <!-- First Name -->
     <ng-container matColumnDef="firstName">
       <mat-header-cell *matHeaderCellDef>First Name</mat-header-cell>
-      <mat-cell *matCellDef="let element">
-        {{ element.first_name }}
+      <mat-cell *matCellDef="let row">
+        {{ row.first_name }}
       </mat-cell>
     </ng-container>
 
     <!-- Last Name -->
     <ng-container matColumnDef="lastName">
       <mat-header-cell *matHeaderCellDef>Last Name</mat-header-cell>
-      <mat-cell *matCellDef="let element">
-        {{ element.last_name }}
+      <mat-cell *matCellDef="let row">
+        {{ row.last_name }}
       </mat-cell>
     </ng-container>
 
@@ -75,34 +95,34 @@
     <!-- Template -->
     <ng-container matColumnDef="template">
       <mat-header-cell *matHeaderCellDef>Template</mat-header-cell>
-      <mat-cell *matCellDef="let element">
-        {{ element.template.name }}
+      <mat-cell *matCellDef="let row">
+        {{ row.template.name }}
       </mat-cell>
     </ng-container>
 
     <!-- Email -->
     <ng-container matColumnDef="email">
       <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
-      <mat-cell *matCellDef="let element">
-        {{ element.email }}
+      <mat-cell *matCellDef="let row">
+        {{ row.email }}
       </mat-cell>
     </ng-container>
 
     <!-- Sent -->
     <ng-container matColumnDef="sent">
       <mat-header-cell *matHeaderCellDef>Sent</mat-header-cell>
-      <mat-cell *matCellDef="let element">
-        <mat-icon *ngIf="element.sent" color="primary">check_circle</mat-icon
-        ><mat-icon *ngIf="!element.sent" color="warn">error</mat-icon>
+      <mat-cell *matCellDef="let row">
+        <mat-icon *ngIf="row.sent" color="primary">check_circle</mat-icon
+        ><mat-icon *ngIf="!row.sent" color="warn">error</mat-icon>
       </mat-cell>
     </ng-container>
 
     <!-- Clicked -->
     <ng-container matColumnDef="clicked">
       <mat-header-cell *matHeaderCellDef>Clicked</mat-header-cell>
-      <mat-cell *matCellDef="let element">
-        <mat-icon *ngIf="element.clicked" color="primary">check_circle</mat-icon
-        ><mat-icon *ngIf="!element.clicked" color="warn">error</mat-icon>
+      <mat-cell *matCellDef="let row">
+        <mat-icon *ngIf="row.clicked" color="primary">check_circle</mat-icon
+        ><mat-icon *ngIf="!row.clicked" color="warn">error</mat-icon>
       </mat-cell>
     </ng-container>
 

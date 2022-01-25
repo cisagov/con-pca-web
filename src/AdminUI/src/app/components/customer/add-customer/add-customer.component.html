@@ -286,7 +286,7 @@
           class="flex-grow-1"
           [formGroup]="customerFormGroup"
         >
-          <mat-label>Industry*</mat-label>
+          <mat-label>Industry</mat-label>
           <mat-select formControlName="industry">
             <mat-option *ngIf="!sectorSelected()" [value]="null">
               <b>Select a sector</b></mat-option
@@ -298,11 +298,6 @@
               {{ s.name }}</mat-option
             >
           </mat-select>
-          <mat-error
-            *ngIf="customerFormGroup.controls.industry.hasError('required')"
-          >
-            Industry is <strong>required</strong>
-          </mat-error>
         </mat-form-field>
       </div>
     </div>
