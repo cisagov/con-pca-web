@@ -17,6 +17,7 @@ import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { Subscription } from 'rxjs';
 import { AlertComponent } from '../../dialogs/alert/alert.component';
 import { ConfirmComponent } from '../../dialogs/confirm/confirm.component';
+import { SubscriptionModel } from 'src/app/models/subscription.model';
 
 @Component({
   selector: 'app-add-customer',
@@ -85,7 +86,7 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
   // Customer_id if not new
   customer_id: string;
   customer: CustomerModel;
-  subscriptions = new MatTableDataSource<Subscription>();
+  subscriptions = new MatTableDataSource<SubscriptionModel>();
   hasSubs = true;
 
   sectorList;
@@ -116,9 +117,6 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
           this.customerFormGroup.controls['sector'].setValidators(
             Validators.required
           );
-          this.customerFormGroup.controls['industry'].setValidators(
-            Validators.required
-          );
         } else {
           this.customerFormGroup.controls['sector'].clearValidators();
           this.customerFormGroup.controls['industry'].clearValidators();
@@ -136,7 +134,7 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
         } else {
           this.getSectorList();
           // Use preset empty form
-          this.hasSubs = true;
+          // this.hasSubs = true;
         }
       })
     );
@@ -152,8 +150,8 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
           this.getSectorList();
           this.subscriptionSvc
             .getSubscriptionsByCustomer(this.customer)
-            .subscribe((data: any[]) => {
-              this.subscriptions.data = data as Subscription[];
+            .subscribe((subscriptionData: SubscriptionModel[]) => {
+              this.subscriptions.data = subscriptionData;
               if (this.subscriptions.data.length < 1) {
                 this.hasSubs = false;
               } else {
