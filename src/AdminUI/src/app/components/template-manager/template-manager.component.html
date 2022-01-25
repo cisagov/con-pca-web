@@ -305,12 +305,10 @@
                     {{ sub.name }}
                   </mat-cell>
                 </ng-container>
-                <ng-container matColumnDef="start_date">
-                  <mat-header-cell *matHeaderCellDef>
-                    Start Date
-                  </mat-header-cell>
+                <ng-container matColumnDef="status">
+                  <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
                   <mat-cell *matCellDef="let sub">
-                    {{ sub.start_date | date: dateFormat }}
+                    {{ sub.status | titlecase }}
                   </mat-cell>
                 </ng-container>
 
