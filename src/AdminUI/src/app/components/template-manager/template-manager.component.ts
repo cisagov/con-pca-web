@@ -13,7 +13,10 @@ import { MyErrorStateMatcher } from 'src/app/helper/ErrorStateMatcher';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { TemplateManagerService } from 'src/app/services/template-manager.service';
 import { TemplateModel } from 'src/app/models/template.model';
-import { SubscriptionModel as PcaSubscription } from 'src/app/models/subscription.model';
+import {
+  SubscriptionModel as PcaSubscription,
+  SubscriptionModel,
+} from 'src/app/models/subscription.model';
 import { Subscription } from 'rxjs';
 import $ from 'jquery';
 import 'src/app/helper/csvToArray';
@@ -96,8 +99,8 @@ export class TemplateManagerComponent
   subscriptions = Array<Subscription>();
 
   // Con-PCA Subscriptions for the current Template
-  pcaSubscriptions = new MatTableDataSource<PcaSubscription>();
-  displayed_columns = ['name', 'start_date'];
+  pcaSubscriptions = new MatTableDataSource<SubscriptionModel>();
+  displayed_columns = ['name', 'status'];
 
   // config vars
   image_upload_url: string = `${this.settingsService.settings.apiUrl}/api/util/imageencode/`;
@@ -303,7 +306,7 @@ export class TemplateManagerComponent
       this.retiredReason = t.retired_description;
       this.subscriptionSvc
         .getSubscriptionsByTemplate(t)
-        .subscribe((x: PcaSubscription[]) => {
+        .subscribe((x: SubscriptionModel[]) => {
           this.pcaSubscriptions.data = x;
           this.setCanDelete();
         });
@@ -413,7 +416,6 @@ export class TemplateManagerComponent
     let htmlValue = this.replaceEscapeSequence(
       form.controls['templateHTML'].value
     );
-    console.log(form.controls['sophisticatedRecs'].value);
     return new TemplateModel({
       _id: this.templateId,
       name: form.controls['templateName'].value,
@@ -467,28 +469,29 @@ export class TemplateManagerComponent
       let templateToSave = this.getTemplateFromForm(
         this.currentTemplateFormGroup
       );
-      //PATCH - existing template update
+      // PATCH - existing template update
       if (this.currentTemplateFormGroup.controls['templateId'].value) {
-        this.templateManagerSvc.updateTemplate(templateToSave).then(
-          (success) => {
-            this.dialog.open(AlertComponent, {
-              data: {
-                title: 'Template Saved',
-                messageText: 'Your Template was Saved.',
-              },
-            });
-          },
-          (error) => {
-            console.log(error);
-            this.dialog.open(AlertComponent, {
-              data: {
-                title: 'Template Error',
-                messageText: JSON.stringify(error.error),
-              },
-            });
-          }
+        const running = this.pcaSubscriptions.data.filter(
+          (sub) => sub.status === 'running'
         );
-        //POST - new template creation
+
+        if (running.length > 0) {
+          const dialogRef = this.dialog.open(ConfirmComponent, {
+            disableClose: false,
+          });
+          dialogRef.componentInstance.confirmMessage =
+            'There are currently running subscriptions that use this template. Are you sure you want to save? (Check subscriptions tab for list).';
+          dialogRef.componentInstance.title = 'Confirm Save';
+
+          dialogRef.afterClosed().subscribe((result) => {
+            if (result) {
+              this.updateTemplate(templateToSave);
+            }
+          });
+        } else {
+          this.updateTemplate(templateToSave);
+        }
+        // POST - new template creation
       } else {
         this.templateManagerSvc.saveNewTemplate(templateToSave).subscribe(
           (resp: any) => {
@@ -531,6 +534,28 @@ export class TemplateManagerComponent
         },
       });
     }
+  }
+
+  updateTemplate(templateToSave) {
+    this.templateManagerSvc.updateTemplate(templateToSave).then(
+      (success) => {
+        this.dialog.open(AlertComponent, {
+          data: {
+            title: 'Template Saved',
+            messageText: 'Your Template was Saved.',
+          },
+        });
+      },
+      (error) => {
+        console.log(error);
+        this.dialog.open(AlertComponent, {
+          data: {
+            title: 'Template Error',
+            messageText: JSON.stringify(error.error),
+          },
+        });
+      }
+    );
   }
 
   deleteTemplate() {
