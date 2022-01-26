@@ -27,7 +27,7 @@ repos:
         args:
           - --fix=lf
       - id: pretty-format-json
-        exclude: src/AdminUI/src/assets/htmlhelp/
+        exclude: src/AdminUI/src/assets/htmlhelp/|src/AdminUI/package-lock.json
         args:
           - --autofix
       - id: requirements-txt-fixer
