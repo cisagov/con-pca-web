@@ -22,6 +22,7 @@ import { RecommendationModel } from 'src/app/models/recommendations.model';
 import { RecommendationsService } from 'src/app/services/recommendations.service';
 import { MatSort } from '@angular/material/sort';
 import { AlertComponent } from '../dialogs/alert/alert.component';
+import { AlertsService } from 'src/app/services/alerts.service';
 
 @Component({
   selector: 'app-recommendation-detail',
@@ -48,6 +49,7 @@ export class RecommendationDetailComponent implements OnInit {
    * Constructor.
    */
   constructor(
+    public alertSvc: AlertsService,
     private recommendationSvc: RecommendationsService,
     private changeDetector: ChangeDetectorRef,
     public dialogRef: MatDialogRef<RecommendationDetailComponent>,
@@ -107,9 +109,14 @@ export class RecommendationDetailComponent implements OnInit {
             this.dialogRef.close();
           });
       } else {
-        this.recommendationSvc.saveRecommendation(rm).subscribe(() => {
-          this.dialogRef.close();
-        });
+        this.recommendationSvc.saveRecommendation(rm).subscribe(
+          (success) => {
+            this.dialogRef.close();
+          },
+          (error) => {
+            this.alertSvc.alert(`An error occurred: ${error.error.error}`);
+          }
+        );
       }
     } else {
       //non valid form, collect nonvalid fields and display to user
