@@ -12,7 +12,7 @@
     "@angular/router": "^12.0.0-next.8",
     "@fortawesome/angular-fontawesome": "^0.9.0",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
-    "@kolkov/angular-editor": "1.1.4",
+    "@kolkov/angular-editor": "1.2.0",
     "@swimlane/ngx-charts": "^17.0.1",
     "angular": "^1.8.2",
     "bootstrap": "^4.6.0",
