@@ -17,6 +17,7 @@ export class ConfigComponent implements OnInit {
   config = new ConfigModel();
 
   constructor(
+    public alertsService: AlertsService,
     public layoutSvc: LayoutMainService,
     public settingsSvc: SettingsService,
     public nonhumanSvc: NonhumanService,
@@ -44,10 +45,16 @@ export class ConfigComponent implements OnInit {
   }
 
   addOrg() {
-    this.nonhumanSvc.saveNonHumanOrg(this.newOrg).subscribe(() => {
-      this.getAsnOrgs();
-      this.newOrg = '';
-    });
+    this.nonhumanSvc.saveNonHumanOrg(this.newOrg).subscribe(
+      () => {
+        this.getAsnOrgs();
+        this.newOrg = '';
+      },
+      (error) => {
+        console.log(error.error);
+        this.alertsService.alert(error.error);
+      }
+    );
   }
 
   getConfig() {
