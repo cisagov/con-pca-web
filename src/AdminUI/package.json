@@ -15,7 +15,7 @@
     "@kolkov/angular-editor": "1.2.0",
     "@swimlane/ngx-charts": "^17.0.1",
     "angular": "^1.8.2",
-    "bootstrap": "^4.6.0",
+    "bootstrap": "^4.6.1",
     "codyhouse-framework": "^2.9.2",
     "crypto-js": "^4.0.0",
     "font-awesome": "^4.7.0",
