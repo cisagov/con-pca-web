@@ -257,7 +257,7 @@ export class LandingPagesManagerComponent implements OnInit {
               // Parse error here
               data: {
                 title: 'Template Error',
-                messageText: 'Could not Create Template.',
+                messageText: `Error: ${error.error.error}`,
               },
             });
           }
