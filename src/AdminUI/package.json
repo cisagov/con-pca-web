@@ -11,7 +11,7 @@
     "@angular/platform-browser-dynamic": "^12.2.15",
     "@angular/router": "^12.2.15",
     "@fortawesome/angular-fontawesome": "^0.9.0",
-    "@fortawesome/free-solid-svg-icons": "^5.15.3",
+    "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@kolkov/angular-editor": "1.2.0",
     "@swimlane/ngx-charts": "^17.0.1",
     "angular": "^1.8.2",
