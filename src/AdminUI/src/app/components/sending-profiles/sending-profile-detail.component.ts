@@ -169,9 +169,21 @@ export class SendingProfileDetailComponent implements OnInit {
 
     if (this.profileForm.valid) {
       sp = this.save();
-      this.sendingProfileSvc.saveProfile(sp).subscribe(() => {
-        this.dialogRef.close();
-      });
+      this.sendingProfileSvc.saveProfile(sp).subscribe(
+        () => {
+          this.dialogRef.close();
+        },
+        (error) => {
+          console.log(error.error);
+          `An error occurred: ${error.error.error}`;
+          this.dialog.open(AlertComponent, {
+            data: {
+              title: 'Sending Profile Error',
+              messageText: `Error: ${error.error.error}`,
+            },
+          });
+        }
+      );
     } else {
       //non valid form, collect nonvalid fields and display to user
       const invalid = [];
