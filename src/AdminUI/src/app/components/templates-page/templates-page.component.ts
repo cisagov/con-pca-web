@@ -18,6 +18,8 @@ import { AlertsService } from 'src/app/services/alerts.service';
 import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
 import { TemplatesDataService } from 'src/app/services/templates-data.service';
 import { Subscription } from 'rxjs';
+import { SelectionModel } from '@angular/cdk/collections';
+import { TestTemplatesDialogComponent } from '../template-manager/test-templates-dialog/test-templates-dialog.component';
 
 @Component({
   selector: '',
@@ -28,23 +30,25 @@ export class TemplatesPageComponent
   implements OnInit, AfterViewInit, OnDestroy
 {
   displayedColumns = [
-    'checked',
+    'select',
     'name',
     'deception_score',
     'created_by',
-    'select',
+    'edit',
   ];
   templatesList = [];
   templatesSubscription: Subscription;
   templatesData = new MatTableDataSource<TemplateModel>();
   search_input = '';
-  allChecked = false;
   dialogRefRetire: MatDialogRef<RetireTemplatesDialogComponent>;
   @ViewChild(MatSort) sort: MatSort;
 
   showRetired: boolean = false;
 
   loading = true;
+
+  // Template Selection
+  selection = new SelectionModel<TemplateModel>(true, []);
 
   constructor(
     private templateSvc: TemplateManagerService,
@@ -75,6 +79,7 @@ export class TemplatesPageComponent
     this.templatesSubscription = this.templatesSortedData.currentData.subscribe(
       (templates) => (this.templatesList = templates)
     );
+    this.selection = new SelectionModel<TemplateModel>(true, []);
   }
 
   ngAfterViewInit(): void {
@@ -101,32 +106,15 @@ export class TemplatesPageComponent
     );
   }
 
-  selectTemplates(templateList) {
-    if (templateList) {
-      templateList.forEach((group) => {
-        group['isChecked'] = true;
-      });
-    }
-    return templateList;
-  }
-
-  updateAllCheckboxComplete(event) {
-    let data = this.templatesData['_data']['_value'];
-    this.allChecked = data != null && data.every((t) => t.isChecked);
-  }
-
-  someChecked() {
-    let data = this.templatesData['_data']['_value'];
-    if (data == null || data == undefined) {
-      return false;
-    }
-    return data.filter((t) => t.isChecked).length > 0 && !this.allChecked;
+  testTemplates() {
+    this.dialog.open(TestTemplatesDialogComponent, {
+      disableClose: false,
+      data: this.selection.selected,
+    });
   }
 
   retireTemplates() {
-    const templatesToRetire = this.templatesData['_data']['_value'].filter(
-      (template) => template['isChecked'] == true
-    );
+    const templatesToRetire = this.selection.selected;
 
     this.dialogRefRetire = this.dialog.open(RetireTemplatesDialogComponent, {
       disableClose: false,
@@ -134,9 +122,7 @@ export class TemplatesPageComponent
     });
     this.dialogRefRetire.afterClosed().subscribe((result) => {
       if (result.retired) {
-        this.templatesData.data = this.templatesData.data.filter(
-          (obj) => !templatesToRetire.includes(obj)
-        );
+        this.refresh();
       } else if (result.error) {
         this.alertsService.alert(
           `Error retiring template. ${result.error.error}`
@@ -146,9 +132,7 @@ export class TemplatesPageComponent
   }
 
   async duplicateTemplate() {
-    const templatesToDuplicate = this.templatesData['_data']['_value'].filter(
-      (template) => template['isChecked'] == true
-    );
+    const templatesToDuplicate = this.selection.selected;
     const dialogRef = this.dialog.open(ConfirmComponent, {
       disableClose: false,
     });
@@ -185,7 +169,7 @@ export class TemplatesPageComponent
         });
       }
       resultRef.afterClosed().subscribe(() => {
-        location.reload();
+        this.refresh();
       });
     }
   }
@@ -223,5 +207,19 @@ export class TemplatesPageComponent
         }
       );
     }
+  }
+
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.templatesData.data.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    this.isAllSelected()
+      ? this.selection.clear()
+      : this.templatesData.data.forEach((row) => this.selection.select(row));
   }
 }

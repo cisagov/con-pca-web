@@ -31,7 +31,7 @@ export class CustomerService {
   // Returns observable on http request to get customers
   public getCustomers() {
     const url = `${this.settingsService.settings.apiUrl}/api/customers/`;
-    return this.http.get(url);
+    return this.http.get<CustomerModel[]>(url);
   }
 
   public getAllContacts(customers: CustomerModel[]): ICustomerContact[] {

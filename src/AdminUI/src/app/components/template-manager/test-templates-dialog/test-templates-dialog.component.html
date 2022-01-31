@@ -1,0 +1,92 @@
+<form #testForm="ngForm">
+  <div class="form-group">
+    <!-- Sending Profile -->
+    <mat-form-field appearance="outline">
+      <mat-label>Sending Profile</mat-label>
+      <mat-select
+        [(ngModel)]="sendingProfile"
+        required
+        #nameInput="ngModel"
+        name="sendingProfile"
+      >
+        <mat-option [value]="null">--Select--</mat-option>
+        <mat-option *ngFor="let sp of sendingProfiles" [value]="sp">
+          {{ sp.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Customer -->
+    <mat-form-field appearance="outline">
+      <mat-label>Customer</mat-label>
+      <mat-select
+        [(ngModel)]="customer"
+        required
+        #nameInput="ngModel"
+        name="customer"
+      >
+        <mat-option [value]="null">--Select--</mat-option>
+        <mat-option *ngFor="let c of customers" [value]="c">
+          {{ c.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Email -->
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Email</mat-label>
+      <input
+        matInput
+        email
+        [(ngModel)]="email"
+        required
+        #nameInput="ngModel"
+        name="email"
+      />
+    </mat-form-field>
+
+    <!-- First Name -->
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>First Name</mat-label>
+      <input
+        matInput
+        [(ngModel)]="firstName"
+        #nameInput="ngModel"
+        name="firstName"
+      />
+    </mat-form-field>
+
+    <!-- Last Name -->
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Last Name</mat-label>
+      <input
+        matInput
+        [(ngModel)]="lastName"
+        #nameInput="ngModel"
+        name="lastName"
+      />
+    </mat-form-field>
+
+    <!-- Position -->
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Position</mat-label>
+      <input
+        matInput
+        [(ngModel)]="position"
+        #nameInput="ngModel"
+        name="position"
+      />
+    </mat-form-field>
+
+    <!-- Send Email Button -->
+    <button
+      type="submit"
+      color="primary"
+      mat-raised-button
+      (click)="test()"
+      [disabled]="testForm.invalid"
+    >
+      Send Test Emails
+    </button>
+  </div>
+</form>

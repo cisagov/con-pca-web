@@ -102,6 +102,7 @@ import { SubscriptionTestingTabComponent } from './components/subscriptions/mana
 import { GenericViewComponent } from './components/dialogs/generic-view/generic-view.component';
 import { RetireTemplatesDialogComponent } from './components/template-manager/retire-templates-dialog/retire-templates-dialog.component';
 import { TemplatesDataService } from './services/templates-data.service';
+import { TestTemplatesDialogComponent } from './components/template-manager/test-templates-dialog/test-templates-dialog.component';
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
   return () => settingsHttpService.initializeApp();
@@ -171,6 +172,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     RecommendationDetailComponent,
     SubscriptionTestingTabComponent,
     GenericViewComponent,
+    TestTemplatesDialogComponent,
   ],
   imports: [
     BrowserModule,
