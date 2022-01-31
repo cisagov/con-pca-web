@@ -15,7 +15,7 @@ export class SendingProfileService {
 
   public getAllProfiles() {
     const url = `${this.settingsService.settings.apiUrl}/api/sendingprofiles/`;
-    return this.http.get(url);
+    return this.http.get<SendingProfileModel[]>(url);
   }
 
   public getProfile(id: string) {

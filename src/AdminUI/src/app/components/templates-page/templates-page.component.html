@@ -27,7 +27,7 @@
           <mat-icon>download</mat-icon>
         </button>
         <button
-          [disabled]="!someChecked()"
+          [disabled]="!selection.hasValue()"
           mat-raised-button
           color="accent"
           [matMenuTriggerFor]="menu"
@@ -40,6 +40,9 @@
           </button>
           <button mat-menu-item (click)="duplicateTemplate()">
             <mat-icon color="basic">file_copy</mat-icon>Duplicate
+          </button>
+          <button mat-menu-item (click)="testTemplates()">
+            <mat-icon color="primary">email</mat-icon>Test
           </button>
         </mat-menu>
       </div>
@@ -69,20 +72,26 @@
 
     <!-- TEMPLATES TABLE -->
     <mat-table [hidden]="loading" [dataSource]="templatesData" matSort>
-      <!-- CHECKBOX -->
-      <ng-container matColumnDef="checked">
+      <!-- Select -->
+      <ng-container matColumnDef="select">
         <mat-header-cell *matHeaderCellDef>
-          <mat-icon>check</mat-icon>
+          <mat-checkbox
+            (change)="$event ? masterToggle() : null"
+            [checked]="selection.hasValue() && isAllSelected()"
+            [indeterminate]="selection.hasValue() && !isAllSelected()"
+          >
+          </mat-checkbox>
         </mat-header-cell>
         <mat-cell *matCellDef="let row">
           <mat-checkbox
-            [(ngModel)]="row.isChecked"
-            color="primary"
-            (ngModelChange)="updateAllCheckboxComplete($event)"
+            (click)="$event.stopPropagation()"
+            (change)="$event ? selection.toggle(row) : null"
+            [checked]="selection.isSelected(row)"
           >
           </mat-checkbox>
         </mat-cell>
       </ng-container>
+
       <!-- NAME -->
       <ng-container matColumnDef="name">
         <mat-header-cell *matHeaderCellDef mat-sort-header
@@ -119,7 +128,9 @@
           ><i *ngIf="row.retired" class="fa fa-check"></i>
         </mat-cell>
       </ng-container>
-      <ng-container matColumnDef="select">
+
+      <!-- Edit -->
+      <ng-container matColumnDef="edit">
         <mat-header-cell *matHeaderCellDef>Edit</mat-header-cell>
         <mat-cell *matCellDef="let row">
           <button
