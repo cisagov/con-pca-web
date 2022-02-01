@@ -118,7 +118,16 @@
       </div>
 
       <div *ngIf="pageMode != 'CREATE'">
-        <mat-label class="h6">Subscription Info</mat-label>
+        <mat-label class="h6">Safelist Info</mat-label>
+        <button
+          mat-raised-button
+          color="primary"
+          class="export-safelist-btn"
+          (click)="exportSafelist()"
+        >
+          <mat-icon>download</mat-icon>
+        </button>
+
         <div class="mb-4">
           <table class="table" style="max-width: 33rem">
             <tr>
