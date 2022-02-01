@@ -111,6 +111,10 @@ export class SubscriptionConfigTab
 
   hideReportingPassword = true;
 
+  // Safelisting Attributes
+  sendingProfileDomains = new Set();
+  sendingProfileIps = new Set();
+
   @Input() showLoading: boolean;
   ngOnChanges(changes: SimpleChanges) {
     if (changes.showLoading) {
@@ -1303,7 +1307,10 @@ export class SubscriptionConfigTab
     const profiles = this.sendingProfiles.filter((s) =>
       sendingProfileIds.includes(s._id)
     );
-    return new Set(profiles.map((p) => p.from_address.split('@')[1]));
+    this.sendingProfileDomains = new Set(
+      profiles.map((p) => p.from_address.split('@')[1])
+    );
+    return this.sendingProfileDomains;
   }
 
   getSendingProfileIps() {
@@ -1322,6 +1329,7 @@ export class SubscriptionConfigTab
         });
       }
     });
+    this.sendingProfileIps = ips;
     return ips;
   }
 
@@ -1369,5 +1377,37 @@ export class SubscriptionConfigTab
       const domain = fromArray[fromArray.length - 1].replace('>', '');
       return fromAddress.replace('@domain.com', `@${domain}`);
     }
+  }
+
+  downloadObject(filename, blob) {
+    const a = document.createElement('a');
+    const objectUrl = URL.createObjectURL(blob);
+    a.href = objectUrl;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(objectUrl);
+  }
+
+  exportSafelist() {
+    this.subscriptionSvc
+      .exportSafelist(
+        this.subscription._id,
+        this.subscription.phish_header,
+        Array.from(this.sendingProfileDomains),
+        Array.from(this.sendingProfileIps),
+        this.templatesSelected,
+        this.subscription.reporting_password
+      )
+      .subscribe(
+        (blob) => {
+          this.downloadObject(
+            `${this.subscription.name}_safelist_export.xlsx`,
+            blob
+          );
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
   }
 }
