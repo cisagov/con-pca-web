@@ -887,13 +887,13 @@ export class TemplateManagerComponent
           $('#toggleEditorMode-').trigger('click');
           this.angular_editor_mode = 'WYSIWYG';
         }
-        // this.currentTemplateFormGroup.patchValue({
-        //   templateSubject: result.subject,
-        // });
+        this.currentTemplateFormGroup.controls.templateSubject.setValue(
+          result.subject
+        );
         if (result.html) {
           this.angularEditorEle.textArea.nativeElement.innerHTML = result.html;
           this.editorConfig.placeholder = null;
-        } else if (result.text) {
+        } else {
           this.angularEditorEle.textArea.nativeElement.innerText = result.text;
           this.editorConfig.placeholder = null;
         }

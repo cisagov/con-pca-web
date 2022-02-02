@@ -26,6 +26,7 @@ export class ImportTemplateDialogComponent implements OnInit {
     this.templateSvc.importEmail(this.content, this.convertLink).subscribe(
       (success: any) => {
         this.dialogRef.close({
+          subject: success.subject,
           text: success.text,
           html: success.html,
         });
