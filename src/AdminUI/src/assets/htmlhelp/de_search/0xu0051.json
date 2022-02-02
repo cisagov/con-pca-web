@@ -1,5 +1,4 @@
 [
-	{ "s": "QUARTER", "p": [11, 3] },
-	{ "s": "QUARTERLY", "p": [12, 3] },
-	{ "s": "QUICKLY", "p": [20] }
+	{ "s": "QUARTER", "p": [3] },
+	{ "s": "QUARTERLY", "p": [3] }
 ]

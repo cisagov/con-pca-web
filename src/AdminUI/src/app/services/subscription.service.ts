@@ -193,4 +193,24 @@ export class SubscriptionService {
     const url = `${this.settingsService.settings.apiUrl}/api/subscription/${subscriptionId}/test/`;
     return this.http.get<SubscriptionTestResultsModel[]>(url);
   }
+
+  public exportSafelist(
+    subscriptionId: string,
+    phishHeader: string,
+    domains: any[],
+    ips: any[],
+    templates: TemplateModel[],
+    password: string
+  ): Observable<Blob> {
+    const headers = new HttpHeaders().set(
+      'Accept',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    );
+    const url = `${this.settingsService.settings.apiUrl}/api/subscription/${subscriptionId}/safelist/export/`;
+    return this.http.post(
+      url,
+      { phish_header: phishHeader, domains, ips, templates, password },
+      { headers, responseType: 'blob' }
+    );
+  }
 }
