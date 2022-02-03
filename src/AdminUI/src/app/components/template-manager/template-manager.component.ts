@@ -891,11 +891,13 @@ export class TemplateManagerComponent
           result.subject
         );
         if (result.html) {
-          this.angularEditorEle.textArea.nativeElement.innerHTML = result.html;
-          this.editorConfig.placeholder = null;
+          this.currentTemplateFormGroup.controls.templateHTML.setValue(
+            result.html
+          );
         } else {
-          this.angularEditorEle.textArea.nativeElement.innerText = result.text;
-          this.editorConfig.placeholder = null;
+          this.currentTemplateFormGroup.controls.templateText.setValue(
+            result.text
+          );
         }
       }
     });
