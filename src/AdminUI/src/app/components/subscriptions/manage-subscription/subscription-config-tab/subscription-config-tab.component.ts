@@ -184,11 +184,7 @@ export class SubscriptionConfigTab
           validators: [Validators.required, this.validDomain],
         }),
         csvText: new FormControl('', {
-          validators: [
-            Validators.required,
-            this.invalidCsv(),
-            this.domainListValidator(),
-          ],
+          validators: [this.invalidCsv(), this.domainListValidator()],
           updateOn: 'blur',
         }),
         cycle_length_minutes: new FormControl(86400, {
@@ -789,12 +785,13 @@ export class SubscriptionConfigTab
                 },
                 (error) => {
                   this.processing = false;
+                  this.loading = false;
                   this.dialog.open(AlertComponent, {
                     data: {
                       title: 'Error',
                       messageText:
                         'An error occurred launching the subscription: ' +
-                        error.error,
+                        JSON.stringify(error.error),
                     },
                   });
                 }
@@ -838,11 +835,13 @@ export class SubscriptionConfigTab
           },
           (error) => {
             this.processing = false;
+            this.loading = false;
             this.dialog.open(AlertComponent, {
               data: {
                 title: 'Error',
                 messageText:
-                  'An error occurred stopping the subscription: ' + error.error,
+                  'An error occurred stopping the subscription: ' +
+                  JSON.stringify(error.error),
               },
             });
           }
@@ -925,7 +924,8 @@ export class SubscriptionConfigTab
           data: {
             title: 'Error',
             messageText:
-              'An error occurred submitting the subscription: ' + error.error,
+              'An error occurred submitting the subscription: ' +
+              JSON.stringify(error.error),
           },
         });
       }
@@ -947,12 +947,12 @@ export class SubscriptionConfigTab
       (error) => {
         this.processing = false;
         this.loading = false;
-        console.log(error);
         this.dialog.open(AlertComponent, {
           data: {
             title: 'Error',
             messageText:
-              'An error occurred submitting the subscription: ' + error.error,
+              'An error occurred submitting the subscription: ' +
+              JSON.stringify(error.error),
           },
         });
       }
@@ -1069,6 +1069,9 @@ export class SubscriptionConfigTab
   invalidCsv(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: boolean } | null => {
       const lines = control.value.split('\n');
+      if (lines[0] === '') {
+        return null;
+      }
       const domains = this.getDomains();
       for (const line of lines) {
         const parts = line.split(',');
@@ -1117,6 +1120,9 @@ export class SubscriptionConfigTab
       const domains = this.getDomains();
 
       const lines = control.value.split('\n');
+      if (lines[0] === '') {
+        return null;
+      }
       for (const line of lines) {
         const parts = line.split(',');
         if (parts.length !== 4) {
