@@ -13,6 +13,16 @@
     >Change Links to Point to Landing Page</mat-checkbox
   >
   <div class="d-flex flex-row mt-3 justify-content-end">
+    <button mat-raised-button color="primary" (click)="openFileBrowser($event)">
+      Upload File <i class="fa fa-upload"></i>
+    </button>
+    <input
+      id="uploadFile"
+      type="file"
+      accept=".eml"
+      (change)="fileSelect($event)"
+      class="d-none"
+    />
     <button mat-raised-button color="accent" (click)="cancel()">Cancel</button>
     <button
       mat-raised-button

@@ -36,4 +36,24 @@ export class ImportTemplateDialogComponent implements OnInit {
       }
     );
   }
+
+  openFileBrowser(event) {
+    event.preventDefault();
+    const element: HTMLElement = document.getElementById('uploadFile');
+    element.click();
+  }
+
+  /**
+   * Reads the contents of the event's file and puts them into csvText.
+   * @param e The 'file' event
+   */
+  fileSelect(e: any) {
+    const file: any = e.target.files[0];
+
+    const fileReader = new FileReader();
+    fileReader.onload = () => {
+      this.content = fileReader.result.toString();
+    };
+    fileReader.readAsText(file);
+  }
 }
