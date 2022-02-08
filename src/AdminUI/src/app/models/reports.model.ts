@@ -12,6 +12,7 @@ export class AggregateReportModel {
   yearly_reports_sent: number;
   new_subscriptions: number;
   ongoing_subscriptions: number;
+  stopped_subscriptions: number;
   federal_stats: SectorIndustryReportModel;
   state_stats: SectorIndustryReportModel;
   local_stats: SectorIndustryReportModel;
