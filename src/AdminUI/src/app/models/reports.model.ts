@@ -1,3 +1,5 @@
+import { CycleStatsLevelModel } from './stats.model';
+
 export class SectorIndustryReportModel {
   subscription_count: number;
   cycle_count: number;
@@ -13,6 +15,5 @@ export class AggregateReportModel {
   local_stats: SectorIndustryReportModel;
   tribal_stats: SectorIndustryReportModel;
   private_stats: SectorIndustryReportModel;
-  click_rate_across_all_customers: number;
-  average_time_to_click_all_customers: string;
+  all_customer_stats: CycleStatsLevelModel;
 }

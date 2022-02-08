@@ -131,16 +131,10 @@
       <td>Average click rate across all customers</td>
       <td class="text-right">
         {{
-          detail?.click_rate_across_all_customers
+          detail?.all_customer_stats.all.clicked.ratio
             | nullishCoalesce: 0
             | percent: "0.2"
         }}
-      </td>
-    </tr>
-    <tr>
-      <td>Average time to click across all customers</td>
-      <td class="text-right">
-        {{ detail?.average_time_to_click_all_customers }}
       </td>
     </tr>
   </table>
