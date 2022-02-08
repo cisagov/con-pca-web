@@ -88,9 +88,13 @@ export class RecommendationsListComponent implements OnInit, AfterViewInit {
           },
           (failure) => {
             console.error(failure.error);
-            this.alertSvc.alert(
-              `An error occurred deleting the Recommendation: ${failure.error.error}`
-            );
+            this.dialog.open(AlertComponent, {
+              data: {
+                title: 'Error Deleting',
+                messageText: `An error occured deleting the recommendation: ${failure.error.error}`,
+                list: failure.error.templates,
+              },
+            });
           }
         );
       }

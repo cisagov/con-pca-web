@@ -30,6 +30,8 @@ export class SubscriptionTestingTabComponent implements OnInit {
 
   resultColumns = ['template', 'email', 'sent', 'clicked'];
 
+  contactList: ContactModel[];
+
   // Contact selection
   selection = new SelectionModel<ContactModel>(true, []);
 
@@ -46,6 +48,13 @@ export class SubscriptionTestingTabComponent implements OnInit {
         this.subscription = data;
         this.customerSvc.getCustomer(data.customer_id).subscribe((c) => {
           this.customer = c;
+          this.contactList = this.customer.contact_list;
+          const names = this.subscription.admin_email.split('@')[0].split('.');
+          this.contactList.push({
+            email: this.subscription.admin_email,
+            first_name: names[0],
+            last_name: names[1],
+          } as ContactModel);
         });
         this.getResults();
       }
