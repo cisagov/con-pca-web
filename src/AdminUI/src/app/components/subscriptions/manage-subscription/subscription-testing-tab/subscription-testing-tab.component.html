@@ -9,7 +9,7 @@
     will help verify proper safelisting configuration (emails can land in the
     targets' inboxes and that they can click on the links).
   </p>
-  <mat-table [dataSource]="customer?.contact_list">
+  <mat-table [dataSource]="contactList">
     <!-- Select -->
     <ng-container matColumnDef="select">
       <mat-header-cell *matHeaderCellDef>
