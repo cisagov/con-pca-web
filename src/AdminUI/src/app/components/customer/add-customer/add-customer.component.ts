@@ -18,6 +18,8 @@ import { Subscription } from 'rxjs';
 import { AlertComponent } from '../../dialogs/alert/alert.component';
 import { ConfirmComponent } from '../../dialogs/confirm/confirm.component';
 import { SubscriptionModel } from 'src/app/models/subscription.model';
+import { CanComponentDeactivate } from 'src/app/guards/unsaved-changes.guard';
+import { UnsavedComponent } from '../../dialogs/unsaved/unsaved.component';
 
 @Component({
   selector: 'app-add-customer',
@@ -25,7 +27,9 @@ import { SubscriptionModel } from 'src/app/models/subscription.model';
   styleUrls: ['./add-customer.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddCustomerComponent implements OnInit, OnDestroy {
+export class AddCustomerComponent
+  implements OnInit, OnDestroy, CanComponentDeactivate
+{
   @Input() inDialog: boolean;
 
   model: any;
@@ -390,6 +394,7 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
     this.contacts.data.splice(index, 1);
     const tempContact = this.contacts;
     this.contacts = new MatTableDataSource<ContactModel>(tempContact.data);
+    this.contactFormGroup.markAsDirty();
   }
 
   clearCustomer() {
@@ -411,6 +416,7 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
     this.contactFormGroup.reset();
     this.contactError = '';
     this.contactFormGroup.markAsUntouched();
+    this.contactFormGroup.markAsDirty();
   }
 
   showAddContact(fromEdit) {
@@ -481,6 +487,30 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
             console.log(error);
           }
         );
+      }
+    });
+  }
+
+  public canDeactivate(): Promise<boolean> {
+    return this.isNavigationAllowed();
+  }
+
+  private isNavigationAllowed(): Promise<boolean> {
+    return new Promise<boolean>((resolve) => {
+      if (this.customerFormGroup.dirty || this.contactFormGroup.dirty) {
+        const dialogRef = this.dialog.open(UnsavedComponent);
+        dialogRef.afterClosed().subscribe((result) => {
+          if (result === 'save') {
+            this.pushCustomer();
+            resolve(true);
+          } else if (result === 'discard') {
+            resolve(true);
+          } else {
+            resolve(false);
+          }
+        });
+      } else {
+        resolve(true);
       }
     });
   }

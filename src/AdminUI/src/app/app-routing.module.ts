@@ -92,7 +92,13 @@ const routes: Routes = [
     path: 'customer/:customerId',
     component: LayoutMainComponent,
     canActivate: [AuthGuard],
-    children: [{ path: '', component: AddCustomerComponent }],
+    children: [
+      {
+        path: '',
+        component: AddCustomerComponent,
+        canDeactivate: [UnsavedChangesGuard],
+      },
+    ],
   },
   {
     path: 'config',
