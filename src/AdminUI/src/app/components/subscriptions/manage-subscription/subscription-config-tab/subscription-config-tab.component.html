@@ -160,21 +160,28 @@
         </div>
       </div>
 
-      <mat-form-field appearance="outline" style="max-width: 33rem">
-        <mat-label>Reporting Password</mat-label>
-        <input
-          matInput
-          formControlName="reportingPassword"
-          [type]="hideReportingPassword ? 'password' : 'text'"
-        />
-        <mat-icon
-          matSuffix
-          (click)="hideReportingPassword = !hideReportingPassword"
-          >{{
-            hideReportingPassword ? "visibility_off" : "visibility"
-          }}</mat-icon
+      <div>
+        <mat-form-field
+          appearance="outline"
+          style="width: 100%; max-width: 20rem"
         >
-      </mat-form-field>
+          <mat-label>Reporting Password</mat-label>
+          <input
+            matInput
+            formControlName="reportingPassword"
+            [type]="hideReportingPassword ? 'password' : 'text'"
+          />
+          <div matSuffix class="d-flex flex-row">
+            <mat-icon
+              (click)="hideReportingPassword = !hideReportingPassword"
+              >{{
+                hideReportingPassword ? "visibility_off" : "visibility"
+              }}</mat-icon
+            >
+            <mat-icon (click)="randomizePassword()">refresh</mat-icon>
+          </div>
+        </mat-form-field>
+      </div>
 
       <mat-label *ngIf="subscription.templates_selected" class="h6"
         >Template Selection

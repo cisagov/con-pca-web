@@ -1416,4 +1416,11 @@ export class SubscriptionConfigTab
         }
       );
   }
+
+  randomizePassword() {
+    this.subscriptionSvc.getRandomPassword().subscribe((resp: any) => {
+      this.f.reportingPassword.setValue(resp.password);
+      this.hideReportingPassword = false;
+    });
+  }
 }
