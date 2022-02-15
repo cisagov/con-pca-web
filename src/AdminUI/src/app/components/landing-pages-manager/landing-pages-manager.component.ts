@@ -236,6 +236,13 @@ export class LandingPagesManagerComponent implements OnInit {
           },
           (error) => {
             console.log(error);
+            this.dialog.open(AlertComponent, {
+              // Parse error here
+              data: {
+                title: 'Template Error',
+                messageText: `Error: ${error.error.error}`,
+              },
+            });
           }
         );
         //POST - new template creation
