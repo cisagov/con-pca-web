@@ -21,6 +21,7 @@ interface ICustomerSubscription {
   primaryContact: string;
   customerName: string;
   startDate: Date;
+  lastUpdated: Date;
 }
 
 @Component({
@@ -88,6 +89,7 @@ export class SubscriptionsComponent implements OnInit {
                   s.primary_contact.last_name,
                 customerName: cc.name,
                 startDate: s.start_date,
+                lastUpdated: s.updated,
               };
               customerSubscriptions.push(customerSubscription);
             });
