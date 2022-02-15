@@ -213,4 +213,9 @@ export class SubscriptionService {
       { headers, responseType: 'blob' }
     );
   }
+
+  public getRandomPassword() {
+    const url = `${this.settingsService.settings.apiUrl}/api/util/randompassword/`;
+    return this.http.get(url);
+  }
 }
