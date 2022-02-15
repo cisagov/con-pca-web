@@ -274,9 +274,19 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
         // If editing existing customer
         customer._id = this.customer_id;
         this.angularSubscriptions.push(
-          this.customerSvc.patchCustomer(customer).subscribe((data: any) => {
-            this.router.navigate(['/customers']);
-          })
+          this.customerSvc.patchCustomer(customer).subscribe(
+            (data: any) => {
+              this.router.navigate(['/customers']);
+            },
+            (error: any) => {
+              this.dialog.open(AlertComponent, {
+                data: {
+                  title: 'Customer Error',
+                  messageText: `Error: ${error.error.error}`,
+                },
+              });
+            }
+          )
         );
       } else {
         // else creating a new customer
@@ -292,7 +302,15 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
             this.dialog.closeAll();
           },
           (error) => {
-            this.orgError = 'Error creating customer';
+            console.log(error.error.error);
+            this.orgError = error.error.error;
+            this.dialog.open(AlertComponent, {
+              // Parse error here
+              data: {
+                title: 'Customer Error',
+                messageText: `Error: ${error.error.error}`,
+              },
+            });
           }
         );
       }
