@@ -38,6 +38,13 @@
         >
         <mat-cell *matCellDef="let row">{{ row.interface_type }}</mat-cell>
       </ng-container>
+      <!-- CUSTOMERS USING -->
+      <ng-container matColumnDef="customers_using">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          ># of Customers Using</mat-header-cell
+        >
+        <mat-cell *matCellDef="let row">{{ row.customers_using }}</mat-cell>
+      </ng-container>
       <!-- LAST MODIFIED DATE -->
       <ng-container matColumnDef="modified_date">
         <mat-header-cell *matHeaderCellDef mat-sort-header
