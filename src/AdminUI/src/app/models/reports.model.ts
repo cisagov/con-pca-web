@@ -5,11 +5,6 @@ export class SectorIndustryReportModel {
   cycle_count: number;
 }
 
-export class SendingProfileMetricsModel {
-  domain: string;
-  customers: number;
-}
-
 export class AggregateReportModel {
   customers_enrolled: number;
   status_reports_sent: number;
@@ -18,7 +13,6 @@ export class AggregateReportModel {
   new_subscriptions: number;
   ongoing_subscriptions: number;
   stopped_subscriptions: number;
-  sending_profile_metrics: SendingProfileMetricsModel;
   federal_stats: SectorIndustryReportModel;
   state_stats: SectorIndustryReportModel;
   local_stats: SectorIndustryReportModel;
