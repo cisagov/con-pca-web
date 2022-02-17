@@ -30,6 +30,15 @@
     </tr>
   </table>
 
+  <h3>Total Customers using Sending Profile Domains</h3>
+
+  <table class="table">
+    <tr *ngFor="let profile of detail?.sending_profile_metrics">
+      <td>{{ profile.domain }}</td>
+      <td class="text-right">{{ profile.customers }}</td>
+    </tr>
+  </table>
+
   <h3>Customer Totals By Category</h3>
 
   <table class="table">
