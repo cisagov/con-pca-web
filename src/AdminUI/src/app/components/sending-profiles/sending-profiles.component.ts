@@ -16,9 +16,16 @@ import { MatSort } from '@angular/material/sort';
 @Component({
   selector: 'app-sending-profiles',
   templateUrl: './sending-profiles.component.html',
+  styleUrls: ['./sending-profiles.component.scss'],
 })
 export class SendingProfilesComponent implements OnInit {
-  displayedColumns = ['name', 'interface_type', 'modified_date', 'action'];
+  displayedColumns = [
+    'name',
+    'interface_type',
+    'customers_using',
+    'modified_date',
+    'action',
+  ];
   sendingProfilesData = new MatTableDataSource<SendingProfileModel>();
 
   dialogRefConfirm: MatDialogRef<ConfirmComponent>;
