@@ -1,0 +1,75 @@
+<div class="container-fluid">
+  <!-- Create domain button -->
+  <div class="mb-2 text-right">
+    <button
+      mat-raised-button
+      class="add-button"
+      color="primary"
+      (click)="openLandingDomainDialog(null)"
+    >
+      New Landing Domain
+    </button>
+  </div>
+
+  <div class="col p-0 w-100">
+    <!-- Loading Spinner -->
+    <div
+      *ngIf="loading"
+      style="text-align: center; padding-top: 2rem; padding-bottom: 2rem"
+    >
+      <mat-spinner
+        class="spinner"
+        style="margin-left: auto; margin-right: auto"
+        diameter="50"
+      ></mat-spinner>
+    </div>
+
+    <!-- Table -->
+    <mat-table [dataSource]="landingDomains" [hidden]="loading" matSort>
+      <!-- Domain -->
+      <ng-container matColumnDef="domain">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Domain</mat-header-cell
+        >
+        <mat-cell
+          *matCellDef="let row"
+          (click)="openLandingDomainDialog(row)"
+          >{{ row.domain }}</mat-cell
+        >
+      </ng-container>
+
+      <!-- ACTION ICONS -->
+      <ng-container matColumnDef="action">
+        <mat-header-cell *matHeaderCellDef>Edit/Delete</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <button
+            class="table-btn-icon"
+            mat-flat-button
+            color="primary"
+            (click)="openLandingDomainDialog(row)"
+          >
+            <mat-icon
+              class="mat-icon table-btn-icon-size material-icons mat-icon-no-color"
+              >edit</mat-icon
+            >
+          </button>
+          <button
+            class="table-btn-icon"
+            mat-flat-button
+            color="warn"
+            (click)="confirmDelete(row)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row
+        class="table-row cursor-pointer"
+        *matRowDef="let row; columns: displayedColumns"
+      >
+      </mat-row>
+    </mat-table>
+  </div>
+</div>
