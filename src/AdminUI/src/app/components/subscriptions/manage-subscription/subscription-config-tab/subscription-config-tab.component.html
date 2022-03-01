@@ -58,8 +58,8 @@
                 *ngFor="let c of customer?.contact_list"
                 [value]="c.email"
               >
-                {{ c.first_name }} {{ c.last_name }}</mat-option
-              >
+                {{ c.first_name }} {{ c.last_name }}
+              </mat-option>
             </mat-select>
             <mat-error
               *ngIf="f.primaryContact.errors?.required"
@@ -75,8 +75,8 @@
             <mat-select formControlName="adminEmail">
               <mat-option [value]="null">--Select--</mat-option>
               <mat-option *ngFor="let c of adminEmails" [value]="c">
-                {{ c }}</mat-option
-              >
+                {{ c }}
+              </mat-option>
             </mat-select>
             <mat-error
               *ngIf="f.adminEmail.errors?.required"
@@ -189,8 +189,8 @@
           (click)="randomizeTemplates()"
           matTooltip="Randomize Templates"
           class="randomize-button"
-          >refresh</mat-icon
-        >
+          >refresh
+        </mat-icon>
       </mat-label>
 
       <div
@@ -243,8 +243,8 @@
           <mat-select formControlName="sendingProfile">
             <mat-option [value]="null">--Select--</mat-option>
             <mat-option *ngFor="let sp of sendingProfiles" [value]="sp._id">
-              {{ sp.name }}</mat-option
-            >
+              {{ sp.name }}
+            </mat-option>
           </mat-select>
           <mat-error
             *ngIf="f.sendingProfile.errors?.required"
@@ -259,8 +259,8 @@
         </div>
       </div>
       <mat-label class="h6">Landing Page</mat-label>
-      <div class="mb-4">
-        <div class="text-muted">
+      <div class="mb-2">
+        <div class="text-muted mb-1">
           If a customer hosted landing page is requested, an optional url can be
           provided to redirect clicks after our server is hit for click
           tracking.
@@ -273,6 +273,21 @@
             type="text"
             trim="blur"
             formControlName="landingPageURL"
+          />
+        </mat-form-field>
+      </div>
+      <div class="mb-4">
+        <div class="text-muted mb-1">
+          An optional landing domain for simulated phishing URLs.
+        </div>
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label>Landing Domain</mat-label>
+          <mat-hint>https://internal.example.org/</mat-hint>
+          <input
+            matInput
+            type="text"
+            trim="blur"
+            formControlName="landingPageDomain"
           />
         </mat-form-field>
       </div>
@@ -442,8 +457,8 @@
           <mat-label>Time Units</mat-label>
           <mat-select formControlName="subTimeUnit">
             <mat-option *ngFor="let time of timeRanges" [value]="time">
-              {{ time }}</mat-option
-            >
+              {{ time }}
+            </mat-option>
           </mat-select>
         </mat-form-field>
         <div class="text-muted">
@@ -494,8 +509,8 @@
           <mat-label>Time Units</mat-label>
           <mat-select formControlName="cooldownTimeUnit">
             <mat-option *ngFor="let time of timeRanges" [value]="time">
-              {{ time }}</mat-option
-            >
+              {{ time }}
+            </mat-option>
           </mat-select>
         </mat-form-field>
         <div class="text-muted">
@@ -532,8 +547,8 @@
           <mat-label>Time Units</mat-label>
           <mat-select formControlName="reportTimeUnit">
             <mat-option *ngFor="let time of timeRanges" [value]="time">
-              {{ time }}</mat-option
-            >
+              {{ time }}
+            </mat-option>
           </mat-select>
         </mat-form-field>
       </div>
@@ -754,7 +769,8 @@
         class="spinner mt-3"
         diameter="25"
         mode="indeterminate"
-      ></mat-progress-spinner>
+      >
+      </mat-progress-spinner>
     </div>
   </form>
 </div>

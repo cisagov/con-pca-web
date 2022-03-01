@@ -64,6 +64,7 @@ export class SubscriptionModel {
   reporting_password: string;
   test_results: SubscriptionTestResultsModel[];
   landing_page_url: string;
+  landing_domain: string;
   updated: Date;
 
   // Helper attributes

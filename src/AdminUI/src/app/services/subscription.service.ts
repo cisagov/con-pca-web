@@ -111,6 +111,7 @@ export class SubscriptionService {
       report_frequency_minutes: subscription.report_frequency_minutes,
       reporting_password: subscription.reporting_password,
       landing_page_url: subscription.landing_page_url,
+      landing_domain: subscription.landing_domain,
     };
 
     return this.http.put(
