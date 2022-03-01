@@ -1411,6 +1411,7 @@ export class SubscriptionConfigTab
         this.subscription.phish_header,
         Array.from(this.sendingProfileDomains),
         Array.from(this.sendingProfileIps),
+        this.subscription.landing_domain,
         this.templatesSelected,
         this.subscription.reporting_password
       )
