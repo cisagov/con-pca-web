@@ -205,6 +205,7 @@ export class SubscriptionConfigTab
         continuousSubscription: new FormControl(false, {}),
         reportingPassword: new FormControl(''),
         landingPageURL: new FormControl(''),
+        landingPageDomain: new FormControl(''),
       },
       { updateOn: 'blur' }
     );
@@ -315,6 +316,13 @@ export class SubscriptionConfigTab
     this.angular_subs.push(
       this.f.landingPageURL.valueChanges.subscribe((val) => {
         this.subscription.landing_page_url = val;
+      })
+    );
+
+    // On changes to landing page domain
+    this.angular_subs.push(
+      this.f.landingPageDomain.valueChanges.subscribe((val) => {
+        this.subscription.landing_domain = val;
       })
     );
 
@@ -562,6 +570,7 @@ export class SubscriptionConfigTab
     this.f.reportingPassword.setValue(s.reporting_password);
 
     this.f.landingPageURL.setValue(s.landing_page_url);
+    this.f.landingPageDomain.setValue(s.landing_domain);
     this.enableDisableFields();
 
     this.customerSvc
@@ -886,6 +895,7 @@ export class SubscriptionConfigTab
     sub.continuous_subscription = this.f.continuousSubscription.value;
     sub.reporting_password = this.f.reportingPassword.value;
     sub.landing_page_url = this.f.landingPageURL.value;
+    sub.landing_domain = this.f.landingPageDomain.value;
     const cycleLength: number = +this.f.cycle_length_minutes.value;
     const cooldownLength: number = +this.f.cooldown_minutes.value;
     const reportLength: number = +this.f.report_frequency_minutes.value;
@@ -1401,6 +1411,7 @@ export class SubscriptionConfigTab
         this.subscription.phish_header,
         Array.from(this.sendingProfileDomains),
         Array.from(this.sendingProfileIps),
+        this.subscription.landing_domain,
         this.templatesSelected,
         this.subscription.reporting_password
       )

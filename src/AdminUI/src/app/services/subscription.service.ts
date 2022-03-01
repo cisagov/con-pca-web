@@ -111,6 +111,7 @@ export class SubscriptionService {
       report_frequency_minutes: subscription.report_frequency_minutes,
       reporting_password: subscription.reporting_password,
       landing_page_url: subscription.landing_page_url,
+      landing_domain: subscription.landing_domain,
     };
 
     return this.http.put(
@@ -199,6 +200,7 @@ export class SubscriptionService {
     phishHeader: string,
     domains: any[],
     ips: any[],
+    simulationURL: string,
     templates: TemplateModel[],
     password: string
   ): Observable<Blob> {
@@ -209,7 +211,14 @@ export class SubscriptionService {
     const url = `${this.settingsService.settings.apiUrl}/api/subscription/${subscriptionId}/safelist/export/`;
     return this.http.post(
       url,
-      { phish_header: phishHeader, domains, ips, templates, password },
+      {
+        phish_header: phishHeader,
+        domains: domains,
+        ips: ips,
+        simulation_url: simulationURL,
+        templates: templates,
+        password: password,
+      },
       { headers, responseType: 'blob' }
     );
   }
