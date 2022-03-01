@@ -24,7 +24,7 @@ export class ConfigComponent implements OnInit {
     public configSvc: ConfigService,
     public alertSvc: AlertsService
   ) {
-    layoutSvc.setTitle('Config');
+    layoutSvc.setTitle('Configuration');
   }
 
   ngOnInit() {
