@@ -10,6 +10,7 @@ import {
   SubscriptionModel,
   SubscriptionTestResultsModel,
 } from 'src/app/models/subscription.model';
+import { AlertsService } from 'src/app/services/alerts.service';
 import { CustomerService } from 'src/app/services/customer.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 
@@ -36,6 +37,7 @@ export class SubscriptionTestingTabComponent implements OnInit {
   selection = new SelectionModel<ContactModel>(true, []);
 
   constructor(
+    public alertsService: AlertsService,
     public customerSvc: CustomerService,
     public subscriptionSvc: SubscriptionService,
     public dialog: MatDialog,
@@ -92,6 +94,7 @@ export class SubscriptionTestingTabComponent implements OnInit {
             },
             (error) => {
               console.log(error);
+              this.alertsService.alert(error.error);
               this.launching = false;
             }
           );
