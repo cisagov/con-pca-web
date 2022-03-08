@@ -114,21 +114,6 @@ export class SubscriptionTestingTabComponent implements OnInit {
     this.router.navigate(['/templatemanager', result.template._id]);
   }
 
-  // detailResults(result: SubscriptionTestResultsModel) {
-  //   this.dialog.open(GenericViewComponent, {
-  //     data: {
-  //       email: result.email,
-  //       template: result.template.name,
-  //       subject: result.template.subject,
-  //       timeline: result.timeline,
-  //       sent: result.sent,
-  //       sentDate: result.sent_date,
-  //       opened: result.opened,
-  //       clicked: result.clicked,
-  //     },
-  //   });
-  // }
-
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
