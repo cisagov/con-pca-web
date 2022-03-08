@@ -58,6 +58,7 @@ export class SendingProfileDetailComponent implements OnInit {
    * convenience getter for easy access to form fields
    */
   get f() {
+    this.profileForm.controls['landingPageDomain'].disable();
     return this.profileForm.controls;
   }
 
@@ -67,7 +68,7 @@ export class SendingProfileDetailComponent implements OnInit {
   ngOnInit(): void {
     this.profileForm = new FormGroup({
       name: new FormControl('', Validators.required),
-      landingPageDomain: new FormControl('', Validators.required),
+      landingPageDomain: new FormControl(''),
       interfaceType: new FormControl('SMTP', Validators.required),
       from: new FormControl('', [
         Validators.required,

@@ -29,7 +29,7 @@ export class SubscriptionTestingTabComponent implements OnInit {
 
   contactColumns = ['select', 'email', 'firstName', 'lastName'];
 
-  resultColumns = ['template', 'email', 'sent', 'clicked'];
+  resultColumns = ['template', 'email', 'sent', 'sent_date', 'clicked'];
 
   contactList: ContactModel[];
 
@@ -110,19 +110,8 @@ export class SubscriptionTestingTabComponent implements OnInit {
       });
   }
 
-  detailResults(result: SubscriptionTestResultsModel) {
-    this.dialog.open(GenericViewComponent, {
-      data: {
-        email: result.email,
-        template: result.template.name,
-        subject: result.template.subject,
-        timeline: result.timeline,
-        sent: result.sent,
-        sentDate: result.sent_date,
-        opened: result.opened,
-        clicked: result.clicked,
-      },
-    });
+  toTemplateDetails(result: SubscriptionTestResultsModel) {
+    this.router.navigate(['/templatemanager', result.template._id]);
   }
 
   /** Whether the number of selected elements matches the total number of rows. */

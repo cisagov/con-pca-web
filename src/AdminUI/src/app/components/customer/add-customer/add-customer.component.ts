@@ -49,6 +49,8 @@ export class AddCustomerComponent
   isEdit = false;
   tempEditContact: ContactModel = null;
 
+  startAt = new Date();
+
   matchCustomerName = new MyErrorStateMatcher();
   matchCustomerIdentifier = new MyErrorStateMatcher();
   matchAddress1 = new MyErrorStateMatcher();
@@ -73,6 +75,7 @@ export class AddCustomerComponent
     industry: new FormControl(null),
     customerType: new FormControl('', [Validators.required]),
     domain: new FormControl('', [Validators.required]),
+    appendixADate: new FormControl(new Date(), [Validators.required]),
   });
 
   contactFormGroup = new FormGroup({
@@ -201,6 +204,7 @@ export class AddCustomerComponent
       sector: customer.sector,
       industry: customer.industry,
       domain: customer.domain,
+      appendixADate: customer.appendix_a_date,
     });
   }
 
@@ -272,6 +276,7 @@ export class AddCustomerComponent
         customer_type: this.customerFormGroup.controls['customerType'].value,
         contact_list: this.contacts.data,
         domain: this.customerFormGroup.controls['domain'].value,
+        appendix_a_date: this.customerFormGroup.controls['appendixADate'].value,
       };
 
       if (this.customer_id != null) {
