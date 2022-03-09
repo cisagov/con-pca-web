@@ -115,6 +115,9 @@
             Start Date cannot be in the past
           </mat-error>
         </mat-form-field>
+        <mat-error *ngIf="startBeforeAppendixDate" class="invalid-feedback">
+          Start Date can not be before the Appendix A Date
+        </mat-error>
       </div>
 
       <div *ngIf="pageMode != 'CREATE'">

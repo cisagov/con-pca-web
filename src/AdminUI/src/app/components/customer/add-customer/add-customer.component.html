@@ -14,7 +14,7 @@
         <!-- <button mat-raised-button color="accent">Edit</button>
               <button mat-raised-button color="warn">Delete</button> -->
       </div>
-      <div class="d-flex flex-row">
+      <div class="d-flex flex-row mb-3">
         <mat-form-field
           appearance="outline"
           class="flex-grow-1"
@@ -44,7 +44,6 @@
         </mat-form-field>
         <mat-form-field
           appearance="outline"
-          class="flex-grow-4"
           style="padding-bottom: 10px"
           [formGroup]="customerFormGroup"
         >
@@ -75,24 +74,6 @@
             Customer/Organization identifier may not contain only spaces
           </mat-error>
         </mat-form-field>
-        <mat-form-field
-          appearance="outline"
-          class="flex-grow-1"
-          [formGroup]="customerFormGroup"
-        >
-          <mat-label>Appendix A Date</mat-label>
-          <input
-            matInput
-            formControlName="appendixADate"
-            [matDatepicker]="picker"
-            [min]=""
-          />
-          <mat-datepicker-toggle
-            matSuffix
-            [for]="picker"
-          ></mat-datepicker-toggle>
-          <mat-datepicker #picker [startAt]="startAt"></mat-datepicker>
-        </mat-form-field>
       </div>
 
       <!-- Domain -->
@@ -113,6 +94,20 @@
             placeholder="Customer Domain"
             formControlName="domain"
           />
+        </mat-form-field>
+        <mat-form-field appearance="outline" [formGroup]="customerFormGroup">
+          <mat-label>Appendix A Date</mat-label>
+          <input
+            matInput
+            formControlName="appendixADate"
+            [matDatepicker]="picker"
+            [min]=""
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker [startAt]="startAt"></mat-datepicker>
         </mat-form-field>
       </div>
       <!-- Place holder for Government Type -->
