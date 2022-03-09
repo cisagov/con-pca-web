@@ -2,9 +2,9 @@
   [showLoading]="launching"
   [displayText]="launchingText"
 ></app-loading-overlay>
-<mat-card>
+<mat-card *ngIf="!startBeforeAppendixDate; else disallow_testing">
   <mat-card-title>Configuration</mat-card-title>
-  <p>
+  <p class="mt-3">
     All templates will be sent to each of the following customer contacts. This
     will help verify proper safelisting configuration (emails can land in the
     targets' inboxes and that they can click on the links).
@@ -75,6 +75,19 @@
     </button>
   </div>
 </mat-card>
+<ng-template #disallow_testing>
+  <mat-card>
+    <mat-card-title>Configuration</mat-card-title>
+    <p class="mt-3">
+      All templates will be sent to each of the following customer contacts.
+      This will help verify proper safelisting configuration (emails can land in
+      the targets' inboxes and that they can click on the links).
+    </p>
+    <p>
+      <strong>Please check back after the Customer's Appendix A Date.</strong>
+    </p>
+  </mat-card>
+</ng-template>
 
 <mat-card *ngIf="testResults && testResults.length > 0">
   <mat-card-title

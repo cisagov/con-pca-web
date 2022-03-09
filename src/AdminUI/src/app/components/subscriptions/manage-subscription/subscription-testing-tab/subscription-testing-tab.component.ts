@@ -36,6 +36,10 @@ export class SubscriptionTestingTabComponent implements OnInit {
   // Contact selection
   selection = new SelectionModel<ContactModel>(true, []);
 
+  // Appendix A Date
+  appendixADate = new Date();
+  startBeforeAppendixDate = false;
+
   constructor(
     public alertsService: AlertsService,
     public customerSvc: CustomerService,
@@ -57,6 +61,7 @@ export class SubscriptionTestingTabComponent implements OnInit {
             first_name: names[0],
             last_name: names[1],
           } as ContactModel);
+          this.isStartDateBeforeAADate();
         });
         this.getResults();
       }
@@ -126,5 +131,16 @@ export class SubscriptionTestingTabComponent implements OnInit {
     this.isAllSelected()
       ? this.selection.clear()
       : this.customer.contact_list.forEach((row) => this.selection.select(row));
+  }
+
+  // Start Date is before Appendix A Date
+  isStartDateBeforeAADate() {
+    this.appendixADate = new Date(this.customer.appendix_a_date);
+    if (this.subscription.start_date < this.appendixADate) {
+      console.log('Start Date can not be before the Appendix A Date');
+      this.startBeforeAppendixDate = true;
+      return;
+    }
+    this.startBeforeAppendixDate = false;
   }
 }
