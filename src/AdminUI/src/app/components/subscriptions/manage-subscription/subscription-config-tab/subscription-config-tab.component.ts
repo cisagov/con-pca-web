@@ -91,6 +91,8 @@ export class SubscriptionConfigTab
   startAt = new Date();
   sendBy = new Date();
   endDate = new Date();
+  appendixADate = new Date();
+  startBeforeAppendixDate = false;
 
   sendingProfiles = [];
 
@@ -270,6 +272,9 @@ export class SubscriptionConfigTab
         }
         this.subscription.start_date = startDate;
         this.setEndTimes();
+
+        // // Check if Start Date is before Appendix A Date
+        this.isStartDateBeforeAADate();
       })
     );
 
@@ -605,6 +610,8 @@ export class SubscriptionConfigTab
             (contact) => contact.active === true
           );
           this.f.selectedCustomerId.setValue(this.customer._id);
+          this.appendixADate = new Date(data.appendix_a_date);
+          this.isStartDateBeforeAADate();
         });
     }
   }
@@ -867,6 +874,10 @@ export class SubscriptionConfigTab
       return;
     }
 
+    if (this.startBeforeAppendixDate) {
+      return;
+    }
+
     this.loading = true;
     this.loadingText = 'Saving subscription';
 
@@ -1102,6 +1113,19 @@ export class SubscriptionConfigTab
       return null;
     };
   }
+
+  isStartDateBeforeAADate() {
+    if (this.customer) {
+      this.appendixADate = new Date(this.customer.appendix_a_date);
+    }
+    if (this.appendixADate && this.f.startDate.value < this.appendixADate) {
+      console.log('Start Date can not be before the Appendix A Date');
+      this.startBeforeAppendixDate = true;
+      return;
+    }
+    this.startBeforeAppendixDate = false;
+  }
+
   validDomain(control: FormControl) {
     const exprEmail =
       /^@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

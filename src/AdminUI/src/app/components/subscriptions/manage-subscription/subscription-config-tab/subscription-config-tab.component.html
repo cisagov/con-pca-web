@@ -767,6 +767,13 @@
           >
             Report time must be between 15 minutes and 360 days
           </mat-error>
+          <mat-error
+            style="display: flex"
+            *ngIf="startBeforeAppendixDate"
+            class="invalid-feedback"
+          >
+            Start Date can not be before the Appendix A Date
+          </mat-error>
         </div>
       </div>
 
