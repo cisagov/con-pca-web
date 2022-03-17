@@ -4,7 +4,7 @@
     <div class="d-flex flex-column w-100">
       <mat-form-field class="search-bar" appearance="outline">
         <mat-label>Search</mat-label>
-        <input matInput (keyup)="searchFilter($event)" />
+        <input matInput (keyup)="searchFilter($event.target.value)" />
         <mat-icon matSuffix>search</mat-icon>
       </mat-form-field>
     </div>
@@ -49,8 +49,8 @@
         >Status</mat-header-cell
       >
       <mat-cell *matCellDef="let row">
-        {{ row.subscription.status | titlecase }}</mat-cell
-      >
+        {{ row.subscription.status | titlecase }}
+      </mat-cell>
     </ng-container>
 
     <!-- PRIMARY CONTACT -->
@@ -80,8 +80,18 @@
         >Start Date</mat-header-cell
       >
       <mat-cell *matCellDef="let row">
-        {{ row.subscription.start_date | date: dateFormat }}</mat-cell
+        {{ row.subscription.start_date | date: dateFormat }}
+      </mat-cell>
+    </ng-container>
+
+    <!-- APPENDIX A DATE -->
+    <ng-container matColumnDef="appendixADate">
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >Appendix A Date</mat-header-cell
       >
+      <mat-cell *matCellDef="let row">
+        {{ row.customer.appendix_a_date | date: dateFormat }}
+      </mat-cell>
     </ng-container>
 
     <!-- LAST UDPATED DATE -->
@@ -90,8 +100,8 @@
         >Last Updated</mat-header-cell
       >
       <mat-cell *matCellDef="let row">
-        {{ row.subscription.updated | date: dateFormat }}</mat-cell
-      >
+        {{ row.subscription.updated | date: dateFormat }}
+      </mat-cell>
     </ng-container>
 
     <!-- ARCHIVED -->
