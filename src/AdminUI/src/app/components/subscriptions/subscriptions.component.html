@@ -4,7 +4,7 @@
     <div class="d-flex flex-column w-100">
       <mat-form-field class="search-bar" appearance="outline">
         <mat-label>Search</mat-label>
-        <input matInput (keyup)="searchFilter($event)" />
+        <input matInput (keyup)="searchFilter($event.target.value)" />
         <mat-icon matSuffix>search</mat-icon>
       </mat-form-field>
     </div>
