@@ -96,7 +96,7 @@
           />
         </mat-form-field>
         <mat-form-field appearance="outline" [formGroup]="customerFormGroup">
-          <mat-label>Appendix A Date</mat-label>
+          <mat-label>Appendix A Date*</mat-label>
           <input
             matInput
             formControlName="appendixADate"
@@ -108,6 +108,13 @@
             [for]="picker"
           ></mat-datepicker-toggle>
           <mat-datepicker #picker [startAt]="startAt"></mat-datepicker>
+          <mat-error
+            *ngIf="
+              customerFormGroup.controls.appendixADate.hasError('required')
+            "
+          >
+            Appendix A Date is <strong>required</strong>
+          </mat-error>
         </mat-form-field>
       </div>
       <!-- Place holder for Government Type -->
