@@ -41,7 +41,13 @@ const routes: Routes = [
     path: 'create-subscription',
     component: LayoutMainComponent,
     canActivate: [AuthGuard],
-    children: [{ path: '', component: SubscriptionConfigTab }],
+    children: [
+      {
+        path: '',
+        component: SubscriptionConfigTab,
+        canDeactivate: [UnsavedChangesGuard],
+      },
+    ],
   },
   {
     path: 'view-subscription',

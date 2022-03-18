@@ -46,6 +46,7 @@ import { UserService } from 'src/app/services/user.service';
 import { UserModel } from 'src/app/models/user.model';
 import { TemplateModel } from 'src/app/models/template.model';
 import { SendingProfileModel } from 'src/app/models/sending-profile.model';
+import { NavigateAwayComponent } from 'src/app/components/dialogs/navigate-away/navigate-away.component';
 
 @Component({
   selector: 'subscription-config-tab',
@@ -237,17 +238,31 @@ export class SubscriptionConfigTab
   private isNavigationAllowed(): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
       if (this.subscribeForm.dirty) {
-        this.dialogRefConfirm = this.dialog.open(UnsavedComponent);
-        this.dialogRefConfirm.afterClosed().subscribe((result) => {
-          if (result === 'save') {
-            this.save();
-            resolve(true);
-          } else if (result === 'discard') {
-            resolve(true);
-          } else {
-            resolve(false);
-          }
-        });
+        if (this.pageMode == 'CREATE') {
+          this.dialogRefConfirm = this.dialog.open(NavigateAwayComponent);
+          this.dialogRefConfirm.afterClosed().subscribe((result) => {
+            if (result === 'save') {
+              this.save();
+              resolve(true);
+            } else if (result === 'discard') {
+              resolve(true);
+            } else {
+              resolve(false);
+            }
+          });
+        } else {
+          this.dialogRefConfirm = this.dialog.open(UnsavedComponent);
+          this.dialogRefConfirm.afterClosed().subscribe((result) => {
+            if (result === 'save') {
+              this.save();
+              resolve(true);
+            } else if (result === 'discard') {
+              resolve(true);
+            } else {
+              resolve(false);
+            }
+          });
+        }
       } else {
         resolve(true);
       }
