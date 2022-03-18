@@ -105,6 +105,7 @@ import { TemplatesDataService } from './services/templates-data.service';
 import { TestTemplatesDialogComponent } from './components/template-manager/test-templates-dialog/test-templates-dialog.component';
 import { LandingDomainsComponent } from './components/landing-domains/landing-domains.component';
 import { LandingDomainDetailComponent } from './components/landing-domains/landing-domain-detail/landing-domain-detail.component';
+import { NavigateAwayComponent } from './components/dialogs/navigate-away/navigate-away.component';
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
   return () => settingsHttpService.initializeApp();
@@ -177,6 +178,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     TestTemplatesDialogComponent,
     LandingDomainsComponent,
     LandingDomainDetailComponent,
+    NavigateAwayComponent,
   ],
   imports: [
     BrowserModule,

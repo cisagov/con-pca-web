@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CustomerModel } from 'src/app/models/customer.model';
 import { Router } from '@angular/router';
 import { MatSort } from '@angular/material/sort';
+import { NavigateAwayComponent } from '../dialogs/navigate-away/navigate-away.component';
 
 @Component({
   selector: 'app-customers',
@@ -66,6 +67,29 @@ export class CustomersComponent implements OnInit {
       this.customersData.data = data as CustomerModel[];
       this.customersData.sort = this.sort;
       this.loading = false;
+    });
+  }
+
+  public canDeactivate(): Promise<boolean> {
+    return this.isNavigationAllowed();
+  }
+
+  private isNavigationAllowed(): Promise<boolean> {
+    return new Promise<boolean>((resolve) => {
+      if (this.customerSvc.showCustomerInfo) {
+        const dialogRef = this.dialog.open(NavigateAwayComponent);
+        dialogRef.afterClosed().subscribe((result) => {
+          if (result === 'save') {
+            resolve(true);
+          } else if (result === 'discard') {
+            resolve(true);
+          } else {
+            resolve(false);
+          }
+        });
+      } else {
+        resolve(true);
+      }
     });
   }
 

@@ -1,0 +1,23 @@
+<h1 mat-dialog-title>Unsaved Changes</h1>
+<div mat-dialog-content class="d-flex flex-column">
+  <div class="d-flex flex-row">
+    <mat-dialog-content class="mt-2 mb-2">
+      Are you sure you want to discard your changes?
+    </mat-dialog-content>
+  </div>
+</div>
+
+<div class="mt-2 mb-2 d-flex flex-row justify-content-end">
+  <mat-dialog-actions>
+    <button
+      mat-flat-button
+      color="warning"
+      (click)="dialogRef.close('discard')"
+    >
+      Discard Changes
+    </button>
+    <button mat-flat-button color="accent" (click)="dialogRef.close('cancel')">
+      Cancel
+    </button>
+  </mat-dialog-actions>
+</div>
