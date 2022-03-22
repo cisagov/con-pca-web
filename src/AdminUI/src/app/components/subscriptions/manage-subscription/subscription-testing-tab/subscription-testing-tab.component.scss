@@ -16,3 +16,8 @@
   overflow: initial;
   flex: 0 0 8%;
 }
+
+//to change the border color
+::ng-deep .mat-header-cell .mat-checkbox-frame {
+  border-color: #ffffff;
+}
