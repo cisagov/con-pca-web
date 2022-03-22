@@ -47,3 +47,8 @@ mat-form-field.mat-form-field {
   flex: 0 0 5%;
   min-width: 60px;
 }
+
+//to change the border color
+::ng-deep .mat-header-cell .mat-checkbox-frame {
+  border-color: #ffffff;
+}
