@@ -108,10 +108,11 @@ export class RecommendationDetailComponent implements OnInit {
           .subscribe(() => {
             this.dialogRef.close();
           });
+        this.dialogRef.close(true);
       } else {
         this.recommendationSvc.saveRecommendation(rm).subscribe(
           (success) => {
-            this.dialogRef.close();
+            this.dialogRef.close(true);
           },
           (error) => {
             this.alertSvc.alert(`An error occurred: ${error.error.error}`);
@@ -162,6 +163,6 @@ export class RecommendationDetailComponent implements OnInit {
    *
    */
   onCancelClick() {
-    this.dialogRef.close();
+    this.dialogRef.close(false);
   }
 }

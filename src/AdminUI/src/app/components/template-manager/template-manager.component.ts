@@ -958,14 +958,16 @@ export class TemplateManagerComponent
         dialogConfig
       );
 
-      dialogRef.afterClosed().subscribe(() => {
-        this.getRecommendations();
-        this.dialog.open(AlertComponent, {
-          data: {
-            title: 'Success',
-            messageText: `Recommendation has been created.`,
-          },
-        });
+      dialogRef.afterClosed().subscribe((success) => {
+        if (success) {
+          this.getRecommendations();
+          this.dialog.open(AlertComponent, {
+            data: {
+              title: 'Success',
+              messageText: `Recommendation has been created.`,
+            },
+          });
+        }
       });
     }
   }
