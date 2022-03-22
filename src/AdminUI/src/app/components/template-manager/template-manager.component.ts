@@ -510,7 +510,7 @@ export class TemplateManagerComponent
               // Parse error here
               data: {
                 title: `Template Error - ${error.statusText}`,
-                messageText: JSON.stringify(error.error.error),
+                messageText: JSON.stringify(error.error),
               },
             });
           }
@@ -551,7 +551,7 @@ export class TemplateManagerComponent
         this.dialog.open(AlertComponent, {
           data: {
             title: 'Template Error',
-            messageText: JSON.stringify(error.error.error),
+            messageText: JSON.stringify(error.error),
           },
         });
       }
