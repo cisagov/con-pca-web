@@ -5,6 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { UserModel } from 'src/app/models/user.model';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { UserService } from 'src/app/services/user.service';
+import { AlertComponent } from '../dialogs/alert/alert.component';
 import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
 
 @Component({
@@ -69,9 +70,19 @@ export class UsersComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.userService.deleteUser(username).subscribe(() => {
-          this.getUsers();
-        });
+        this.userService.deleteUser(username).subscribe(
+          () => {
+            this.getUsers();
+          },
+          (error) => {
+            this.dialog.open(AlertComponent, {
+              data: {
+                title: 'Error Trying to Delete',
+                messageText: error.error.error,
+              },
+            });
+          }
+        );
       }
     });
   }
