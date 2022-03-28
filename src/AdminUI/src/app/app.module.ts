@@ -107,6 +107,7 @@ import { LandingDomainDetailComponent } from './components/landing-domains/landi
 import { NavigateAwayComponent } from './components/dialogs/navigate-away/navigate-away.component';
 import { OverviewComponent } from './components/overview/overview.component';
 import { AggregateStatisticsTab } from './components/overview/aggregate-statistics-tab/aggregate-statistics-tab.component';
+import { SubscriptionStatusTab } from './components/overview/subscription-status-tab/subscription-status-tab.component';
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
   return () => settingsHttpService.initializeApp();
@@ -123,6 +124,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     ManageSubscriptionComponent,
     OverviewComponent,
     AggregateStatisticsTab,
+    SubscriptionStatusTab,
     SubscriptionConfigTab,
     SubscriptionTasksTabComponent,
     SubscriptionStatsTab,
