@@ -106,6 +106,7 @@ import { TestTemplatesDialogComponent } from './components/template-manager/test
 import { LandingDomainsComponent } from './components/landing-domains/landing-domains.component';
 import { LandingDomainDetailComponent } from './components/landing-domains/landing-domain-detail/landing-domain-detail.component';
 import { NavigateAwayComponent } from './components/dialogs/navigate-away/navigate-away.component';
+import { OverviewComponent } from './components/overview/overview.component';
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
   return () => settingsHttpService.initializeApp();
@@ -120,6 +121,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     SearchPanelComponent,
     AddCustomerComponent,
     ManageSubscriptionComponent,
+    OverviewComponent,
     SubscriptionConfigTab,
     SubscriptionTasksTabComponent,
     SubscriptionStatsTab,

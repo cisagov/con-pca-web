@@ -26,6 +26,7 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
 import { PasswordResetComponent } from './components/password-reset/password-reset.component';
 import { RecommendationsListComponent } from './components/recommendations/recommendations.component';
 import { LandingDomainsComponent } from './components/landing-domains/landing-domains.component';
+import { OverviewComponent } from './components/overview/overview.component';
 
 const routes: Routes = [
   {
@@ -114,7 +115,7 @@ const routes: Routes = [
     ],
   },
   {
-    path: 'config',
+    path: 'configuration',
     component: LayoutMainComponent,
     canActivate: [AuthGuard],
     children: [{ path: '', component: ConfigComponent }],
@@ -160,6 +161,12 @@ const routes: Routes = [
     component: LayoutMainComponent,
     canActivate: [AuthGuard],
     children: [{ path: '', component: LandingPagesManagerComponent }],
+  },
+  {
+    path: 'overview',
+    component: LayoutMainComponent,
+    canActivate: [AuthGuard],
+    children: [{ path: '', component: OverviewComponent }],
   },
   {
     path: 'recommendations',
