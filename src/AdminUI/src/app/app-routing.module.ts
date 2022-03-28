@@ -16,7 +16,6 @@ import { LoginComponent } from 'src/app/components/login/login.component';
 import { RegisterUserComponent } from 'src/app/components/register/register-user.component';
 import { HelpFilesComponent } from './components/help-files/help-files.component';
 import { TagsPageComponent } from './components/tags-page/tags-page.component';
-import { AggregateStatsComponent } from './components/config/aggregate-stats/aggregate-stats.component';
 import { LandingPagesComponent } from './components/landing-pages/landing-pages.component';
 import { LandingPagesManagerComponent } from './components/landing-pages-manager/landing-pages-manager.component';
 import { UsersComponent } from './components/users/users.component';
@@ -125,12 +124,6 @@ const routes: Routes = [
     component: LayoutMainComponent,
     canActivate: [AuthGuard],
     children: [{ path: '', component: HelpFilesComponent }],
-  },
-  {
-    path: 'aggreg-stats',
-    component: LayoutMainComponent,
-    canActivate: [AuthGuard],
-    children: [{ path: '', component: AggregateStatsComponent }],
   },
   {
     path: 'sending-profiles',

@@ -71,7 +71,6 @@ import { InputTrimDirective } from './helper/input-trim.directive';
 import { DatePipe } from '@angular/common';
 import { TagService } from './services/tag.service';
 import { StatsByLevelComponent } from './components/reports/stats-by-level/stats-by-level.component';
-import { AggregateStatsComponent } from './components/config/aggregate-stats/aggregate-stats.component';
 import { ChartComplexityLevelComponent } from './components/charts/chart-complexity-level/chart-complexity-level.component';
 import { ChartStatsByLevelComponent } from './components/charts/chart-stats-by-level/chart-stats-by-level.component';
 import { ChartTimeIntervalsComponent } from './components/charts/chart-time-intervals/chart-time-intervals.component';
@@ -155,7 +154,6 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     SvgTimelineComponent,
     InputTrimDirective,
     StatsByLevelComponent,
-    AggregateStatsComponent,
     ChartComplexityLevelComponent,
     ChartStatsByLevelComponent,
     ChartTimeIntervalsComponent,
