@@ -54,6 +54,7 @@ export class SubscriptionModel {
   templates_selected: string[];
   active: boolean;
   continuous_subscription: boolean;
+  buffer_time_minutes: number;
   cycle_length_minutes: number;
   cooldown_minutes: number;
   report_frequency_minutes: number;

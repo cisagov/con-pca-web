@@ -106,6 +106,7 @@ export class SubscriptionService {
       target_domain: subscription.target_domain,
       continuous_subscription: subscription.continuous_subscription,
       templates_selected: subscription.templates_selected,
+      buffer_time_minutes: subscription.buffer_time_minutes,
       cycle_length_minutes: subscription.cycle_length_minutes,
       cooldown_minutes: subscription.cooldown_minutes,
       report_frequency_minutes: subscription.report_frequency_minutes,

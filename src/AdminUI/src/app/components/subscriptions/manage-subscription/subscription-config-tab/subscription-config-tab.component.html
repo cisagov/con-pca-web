@@ -433,8 +433,40 @@
       <div class="text-muted mb-3">
         <em>Target Count: {{ subscription.target_email_list.length }}</em>
       </div>
-      <!-- Email Sent Time -->
       <mat-label class="h6">Sending Strategy</mat-label>
+
+      <!-- Buffer Time -->
+      <mat-label class="h7">Buffer Time</mat-label>
+      <div class="mb-2">
+        <div class="text-muted">
+          Time added to create a buffer between the start date and the first
+          email being sent. (Must be between 30 minutes and 30 days)
+        </div>
+        <mat-form-field appearance="outline">
+          <mat-label>Time</mat-label>
+          <input
+            matInput
+            formControlName="bufferDisplayTime"
+            type="text"
+            trim="blur"
+          />
+          <mat-error
+            *ngIf="f.bufferDisplayTime.errors?.outOfRange"
+            class="invalid-feedback"
+          >
+            Must be between 30 minutes and 30 days
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Time Units</mat-label>
+          <mat-select formControlName="bufferTimeUnit">
+            <mat-option *ngFor="let time of timeRanges" [value]="time">
+              {{ time }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <!-- Email Sent Time -->
       <mat-label class="h7">Email Sent Time</mat-label>
       <div class="mb-2">
         <div class="text-muted">

@@ -70,6 +70,7 @@ export class SubscriptionConfigTab
   subscriptionPreviousTimeUnit = 'Minutes';
   reportPeriodPreviousTimeUnit = 'Minutes';
   cooldownPreviousTimeUnit = 'Minutes';
+  bufferPreviousTimeUnit = 'Minutes';
   templatesSelected = [];
   templatesAvailable = [];
   dailyRate = '';
@@ -190,6 +191,9 @@ export class SubscriptionConfigTab
           validators: [this.invalidCsv(), this.domainListValidator()],
           updateOn: 'blur',
         }),
+        bufferTime: new FormControl(86400),
+        bufferDisplayTime: new FormControl(86400),
+        bufferTimeUnit: new FormControl('Minutes'),
         cycle_length_minutes: new FormControl(86400, {
           validators: [Validators.required],
         }),
@@ -369,6 +373,28 @@ export class SubscriptionConfigTab
       })
     );
 
+    // On changes to buffer time
+    this.angular_subs.push(
+      this.f.bufferDisplayTime.valueChanges.subscribe((val) => {
+        this.subscription.buffer_time_minutes = this.onDisplayTimeChanges(
+          this.f.bufferTime,
+          this.f.bufferDisplayTime,
+          this.bufferPreviousTimeUnit
+        );
+      })
+    );
+
+    // On changes to buffer time unit
+    this.angular_subs.push(
+      this.f.bufferTimeUnit.valueChanges.subscribe((val) => {
+        this.bufferPreviousTimeUnit = this.onTimeUnitChanges(
+          this.f.bufferDisplayTime,
+          this.bufferPreviousTimeUnit,
+          val
+        );
+      })
+    );
+
     // On changes to cooldown time unit
     this.angular_subs.push(
       this.f.cooldownTimeUnit.valueChanges.subscribe((val) => {
@@ -425,6 +451,9 @@ export class SubscriptionConfigTab
     }
     if (this.f.reportDisplayTime.value > 1440) {
       this.f.reportTimeUnit.setValue('Days');
+    }
+    if (this.f.bufferDisplayTime.value > 1440) {
+      this.f.bufferTimeUnit.setValue('Days');
     }
   }
 
@@ -575,6 +604,10 @@ export class SubscriptionConfigTab
       emitEvent: false,
     });
     this.f.report_frequency_minutes.setValue(s.report_frequency_minutes, {
+      emitEvent: false,
+    });
+    this.f.bufferTime.setValue(s.buffer_time_minutes, { emitEvent: false });
+    this.f.bufferDisplayTime.setValue(s.buffer_time_minutes, {
       emitEvent: false,
     });
     this.f.subDisplayTime.setValue(s.cycle_length_minutes, {
@@ -925,9 +958,11 @@ export class SubscriptionConfigTab
     const cycleLength: number = +this.f.cycle_length_minutes.value;
     const cooldownLength: number = +this.f.cooldown_minutes.value;
     const reportLength: number = +this.f.report_frequency_minutes.value;
+    const bufferTimeLength: number = +this.f.bufferTime.value;
     sub.cycle_length_minutes = cycleLength;
     sub.report_frequency_minutes = reportLength;
     sub.cooldown_minutes = cooldownLength;
+    sub.buffer_time_minutes = bufferTimeLength;
     this.setTemplatesSelected();
     sub.templates_selected = this.subscription.templates_selected;
 
