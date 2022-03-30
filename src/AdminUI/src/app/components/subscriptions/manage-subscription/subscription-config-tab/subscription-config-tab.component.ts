@@ -191,8 +191,8 @@ export class SubscriptionConfigTab
           validators: [this.invalidCsv(), this.domainListValidator()],
           updateOn: 'blur',
         }),
-        bufferTime: new FormControl(86400),
-        bufferDisplayTime: new FormControl(86400),
+        bufferTime: new FormControl(21600),
+        bufferDisplayTime: new FormControl(21600),
         bufferTimeUnit: new FormControl('Minutes'),
         cycle_length_minutes: new FormControl(86400, {
           validators: [Validators.required],
