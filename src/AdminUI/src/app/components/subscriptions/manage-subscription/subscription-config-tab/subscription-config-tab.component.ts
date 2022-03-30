@@ -1035,10 +1035,12 @@ export class SubscriptionConfigTab
    */
   enableDisableFields() {
     const status = this.subscription?.status?.toLowerCase();
-    if (status === 'in progress') {
+    if (status === 'running') {
       this.f.startDate.disable();
       this.f.sendingProfile.disable();
       this.f.targetDomain.disable();
+      this.f.bufferDisplayTime.disable();
+      this.f.bufferTimeUnit.disable();
       //this.f.csvText.disable();
     } else {
       this.f.startDate.enable();
