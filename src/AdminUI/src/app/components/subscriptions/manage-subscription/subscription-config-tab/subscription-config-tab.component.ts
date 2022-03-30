@@ -46,7 +46,6 @@ import { UserService } from 'src/app/services/user.service';
 import { UserModel } from 'src/app/models/user.model';
 import { TemplateModel } from 'src/app/models/template.model';
 import { SendingProfileModel } from 'src/app/models/sending-profile.model';
-import { NavigateAwayComponent } from 'src/app/components/dialogs/navigate-away/navigate-away.component';
 
 @Component({
   selector: 'subscription-config-tab',
@@ -70,6 +69,7 @@ export class SubscriptionConfigTab
   subscriptionPreviousTimeUnit = 'Minutes';
   reportPeriodPreviousTimeUnit = 'Minutes';
   cooldownPreviousTimeUnit = 'Minutes';
+  bufferPreviousTimeUnit = 'Minutes';
   templatesSelected = [];
   templatesAvailable = [];
   dailyRate = '';
@@ -190,6 +190,9 @@ export class SubscriptionConfigTab
           validators: [this.invalidCsv(), this.domainListValidator()],
           updateOn: 'blur',
         }),
+        bufferTime: new FormControl(21600),
+        bufferDisplayTime: new FormControl(21600),
+        bufferTimeUnit: new FormControl('Minutes'),
         cycle_length_minutes: new FormControl(86400, {
           validators: [Validators.required],
         }),
@@ -238,31 +241,17 @@ export class SubscriptionConfigTab
   private isNavigationAllowed(): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
       if (this.subscribeForm.dirty) {
-        if (this.pageMode == 'CREATE') {
-          this.dialogRefConfirm = this.dialog.open(NavigateAwayComponent);
-          this.dialogRefConfirm.afterClosed().subscribe((result) => {
-            if (result === 'save') {
-              this.save();
-              resolve(true);
-            } else if (result === 'discard') {
-              resolve(true);
-            } else {
-              resolve(false);
-            }
-          });
-        } else {
-          this.dialogRefConfirm = this.dialog.open(UnsavedComponent);
-          this.dialogRefConfirm.afterClosed().subscribe((result) => {
-            if (result === 'save') {
-              this.save();
-              resolve(true);
-            } else if (result === 'discard') {
-              resolve(true);
-            } else {
-              resolve(false);
-            }
-          });
-        }
+        this.dialogRefConfirm = this.dialog.open(UnsavedComponent);
+        this.dialogRefConfirm.afterClosed().subscribe((result) => {
+          if (result === 'save') {
+            this.save();
+            resolve(true);
+          } else if (result === 'discard') {
+            resolve(true);
+          } else {
+            resolve(false);
+          }
+        });
       } else {
         resolve(true);
       }
@@ -369,6 +358,28 @@ export class SubscriptionConfigTab
       })
     );
 
+    // On changes to buffer time
+    this.angular_subs.push(
+      this.f.bufferDisplayTime.valueChanges.subscribe((val) => {
+        this.subscription.buffer_time_minutes = this.onDisplayTimeChanges(
+          this.f.bufferTime,
+          this.f.bufferDisplayTime,
+          this.bufferPreviousTimeUnit
+        );
+      })
+    );
+
+    // On changes to buffer time unit
+    this.angular_subs.push(
+      this.f.bufferTimeUnit.valueChanges.subscribe((val) => {
+        this.bufferPreviousTimeUnit = this.onTimeUnitChanges(
+          this.f.bufferDisplayTime,
+          this.bufferPreviousTimeUnit,
+          val
+        );
+      })
+    );
+
     // On changes to cooldown time unit
     this.angular_subs.push(
       this.f.cooldownTimeUnit.valueChanges.subscribe((val) => {
@@ -425,6 +436,9 @@ export class SubscriptionConfigTab
     }
     if (this.f.reportDisplayTime.value > 1440) {
       this.f.reportTimeUnit.setValue('Days');
+    }
+    if (this.f.bufferDisplayTime.value > 1440) {
+      this.f.bufferTimeUnit.setValue('Days');
     }
   }
 
@@ -575,6 +589,10 @@ export class SubscriptionConfigTab
       emitEvent: false,
     });
     this.f.report_frequency_minutes.setValue(s.report_frequency_minutes, {
+      emitEvent: false,
+    });
+    this.f.bufferTime.setValue(s.buffer_time_minutes, { emitEvent: false });
+    this.f.bufferDisplayTime.setValue(s.buffer_time_minutes, {
       emitEvent: false,
     });
     this.f.subDisplayTime.setValue(s.cycle_length_minutes, {
@@ -925,9 +943,11 @@ export class SubscriptionConfigTab
     const cycleLength: number = +this.f.cycle_length_minutes.value;
     const cooldownLength: number = +this.f.cooldown_minutes.value;
     const reportLength: number = +this.f.report_frequency_minutes.value;
+    const bufferTimeLength: number = +this.f.bufferTime.value;
     sub.cycle_length_minutes = cycleLength;
     sub.report_frequency_minutes = reportLength;
     sub.cooldown_minutes = cooldownLength;
+    sub.buffer_time_minutes = bufferTimeLength;
     this.setTemplatesSelected();
     sub.templates_selected = this.subscription.templates_selected;
 
@@ -1000,10 +1020,12 @@ export class SubscriptionConfigTab
    */
   enableDisableFields() {
     const status = this.subscription?.status?.toLowerCase();
-    if (status === 'in progress') {
+    if (status === 'running') {
       this.f.startDate.disable();
       this.f.sendingProfile.disable();
       this.f.targetDomain.disable();
+      this.f.bufferDisplayTime.disable();
+      this.f.bufferTimeUnit.disable();
       //this.f.csvText.disable();
     } else {
       this.f.startDate.enable();
