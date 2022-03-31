@@ -30,6 +30,18 @@
       <td>Total stopped customer subscriptions</td>
       <td class="text-right">{{ detail?.stopped_subscriptions }}</td>
     </tr>
+    <tr>
+      <td>Total number of emails sent</td>
+      <td class="text-right">
+        {{ detail?.all_customer_stats.all.sent.count }}
+      </td>
+    </tr>
+    <tr>
+      <td>Total number of emails clicked</td>
+      <td class="text-right">
+        {{ detail?.all_customer_stats.all.clicked.count }}
+      </td>
+    </tr>
   </table>
 
   <h3>Customer Totals By Category</h3>
