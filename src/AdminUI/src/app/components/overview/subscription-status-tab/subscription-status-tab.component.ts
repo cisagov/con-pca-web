@@ -19,15 +19,30 @@ export class SubscriptionStatusTab implements OnInit {
 
   // Subscriptions Ending Soon Table
   public endingSoonDataSource: MatTableDataSource<SubscriptionModel>;
-  endingSoonDisplayedColumns = ['name', 'startDate', 'lastUpdated'];
+  endingSoonDisplayedColumns = [
+    'name',
+    'startDate',
+    'numberOfTargets',
+    'lastUpdated',
+  ];
 
   // Subscriptions in Progress Table
   public inProgressDataSource: MatTableDataSource<SubscriptionModel>;
-  inProgressDisplayedColumns = ['name', 'startDate', 'lastUpdated'];
+  inProgressDisplayedColumns = [
+    'name',
+    'startDate',
+    'numberOfTargets',
+    'lastUpdated',
+  ];
 
   // Stopped Subscriptions Table
   public stoppedDataSource: MatTableDataSource<SubscriptionModel>;
-  stoppedDisplayedColumns = ['name', 'startDate', 'lastUpdated'];
+  stoppedDisplayedColumns = [
+    'name',
+    'startDate',
+    'numberOfTargets',
+    'lastUpdated',
+  ];
 
   constructor(
     private router: Router,
@@ -66,6 +81,14 @@ export class SubscriptionStatusTab implements OnInit {
           (obj) => obj.status === 'stopped'
         ) as SubscriptionModel[];
       });
+  }
+
+  public getNumberOfTargets(target_list: []) {
+    if (!target_list) {
+      return 0;
+    }
+
+    return target_list.length;
   }
 
   public editSubscription(row) {
