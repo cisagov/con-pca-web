@@ -30,6 +30,18 @@
       <td>Total stopped customer subscriptions</td>
       <td class="text-right">{{ detail?.stopped_subscriptions }}</td>
     </tr>
+    <tr>
+      <td>Total number of emails sent</td>
+      <td class="text-right">
+        {{ detail?.all_customer_stats.all.sent.count }}
+      </td>
+    </tr>
+    <tr>
+      <td>Total number of emails clicked</td>
+      <td class="text-right">
+        {{ detail?.all_customer_stats.all.clicked.count }}
+      </td>
+    </tr>
   </table>
 
   <h3>Customer Totals By Category</h3>
@@ -52,6 +64,18 @@
                 {{ detail?.federal_stats.cycle_count }}
               </td>
             </tr>
+            <tr>
+              <td>Emails Sent</td>
+              <td class="text-right">
+                {{ detail?.federal_stats.emails_sent }}
+              </td>
+            </tr>
+            <tr>
+              <td>Emails Clicked</td>
+              <td class="text-right">
+                {{ detail?.federal_stats.emails_clicked }}
+              </td>
+            </tr>
           </table>
         </div>
       </td>
@@ -71,6 +95,18 @@
               <td>Cycle Count</td>
               <td class="text-right">{{ detail?.state_stats.cycle_count }}</td>
             </tr>
+            <tr>
+              <td>Emails Sent</td>
+              <td class="text-right">
+                {{ detail?.state_stats.emails_sent }}
+              </td>
+            </tr>
+            <tr>
+              <td>Emails Clicked</td>
+              <td class="text-right">
+                {{ detail?.state_stats.emails_clicked }}
+              </td>
+            </tr>
           </table>
         </div>
       </td>
@@ -89,6 +125,18 @@
             <tr>
               <td>Cycle Count</td>
               <td class="text-right">{{ detail?.local_stats.cycle_count }}</td>
+            </tr>
+            <tr>
+              <td>Emails Sent</td>
+              <td class="text-right">
+                {{ detail?.local_stats.emails_sent }}
+              </td>
+            </tr>
+            <tr>
+              <td>Emails Clicked</td>
+              <td class="text-right">
+                {{ detail?.local_stats.emails_clicked }}
+              </td>
             </tr>
           </table>
         </div>
@@ -111,6 +159,18 @@
                 {{ detail?.tribal_stats.cycle_count }}
               </td>
             </tr>
+            <tr>
+              <td>Emails Sent</td>
+              <td class="text-right">
+                {{ detail?.tribal_stats.emails_sent }}
+              </td>
+            </tr>
+            <tr>
+              <td>Emails Clicked</td>
+              <td class="text-right">
+                {{ detail?.tribal_stats.emails_clicked }}
+              </td>
+            </tr>
           </table>
         </div>
       </td>
@@ -130,6 +190,18 @@
               <td>Cycle Count</td>
               <td class="text-right">
                 {{ detail?.private_stats.cycle_count }}
+              </td>
+            </tr>
+            <tr>
+              <td>Emails Sent</td>
+              <td class="text-right">
+                {{ detail?.private_stats.emails_sent }}
+              </td>
+            </tr>
+            <tr>
+              <td>Emails Clicked</td>
+              <td class="text-right">
+                {{ detail?.private_stats.emails_clicked }}
               </td>
             </tr>
           </table>
