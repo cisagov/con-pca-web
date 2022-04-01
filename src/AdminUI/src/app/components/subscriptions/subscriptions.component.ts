@@ -21,6 +21,7 @@ interface ICustomerSubscription {
   primaryContact: string;
   customerName: string;
   startDate: Date;
+  numberOfTargets: number;
   lastUpdated: Date;
 }
 
@@ -40,6 +41,7 @@ export class SubscriptionsComponent implements OnInit {
     'customerName',
     'startDate',
     'appendixADate',
+    'numberOfTargets',
     'lastUpdated',
   ];
 
@@ -90,6 +92,7 @@ export class SubscriptionsComponent implements OnInit {
                   s.primary_contact.last_name,
                 customerName: cc.name,
                 startDate: s.start_date,
+                numberOfTargets: s.target_email_list.length,
                 lastUpdated: s.updated,
               };
               customerSubscriptions.push(customerSubscription);
@@ -119,6 +122,14 @@ export class SubscriptionsComponent implements OnInit {
       }
       return true;
     };
+  }
+
+  public getNumberOfTargets(target_list: []) {
+    if (!target_list) {
+      return 0;
+    }
+
+    return target_list.length;
   }
 
   public searchFilter(searchValue: string): void {

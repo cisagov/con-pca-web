@@ -22,7 +22,7 @@ export class SubscriptionStatusTab implements OnInit {
   endingSoonDisplayedColumns = [
     'name',
     'startDate',
-    'numberOfTargets',
+    'isContinuous',
     'lastUpdated',
   ];
 
@@ -31,7 +31,7 @@ export class SubscriptionStatusTab implements OnInit {
   inProgressDisplayedColumns = [
     'name',
     'startDate',
-    'numberOfTargets',
+    'isContinuous',
     'lastUpdated',
   ];
 
@@ -40,7 +40,7 @@ export class SubscriptionStatusTab implements OnInit {
   stoppedDisplayedColumns = [
     'name',
     'startDate',
-    'numberOfTargets',
+    'isContinuous',
     'lastUpdated',
   ];
 
@@ -81,14 +81,6 @@ export class SubscriptionStatusTab implements OnInit {
           (obj) => obj.status === 'stopped'
         ) as SubscriptionModel[];
       });
-  }
-
-  public getNumberOfTargets(target_list: []) {
-    if (!target_list) {
-      return 0;
-    }
-
-    return target_list.length;
   }
 
   public editSubscription(row) {
