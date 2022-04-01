@@ -20,13 +20,18 @@
       </mat-cell>
     </ng-container>
 
-    <!-- NUMBER OF TARGETS -->
-    <ng-container matColumnDef="numberOfTargets">
+    <!-- IS CONTINUOUS SUBCRIPTION -->
+    <ng-container matColumnDef="isContinuous">
       <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Number of Targets</mat-header-cell
+        >Continuous</mat-header-cell
       >
       <mat-cell *matCellDef="let row">
-        {{ getNumberOfTargets(row.target_email_list) }}
+        <mat-icon
+          *ngIf="row.continuous_subscription"
+          aria-hidden="false"
+          aria-label="check_circle icon"
+          >check_circle
+        </mat-icon>
       </mat-cell>
     </ng-container>
 
@@ -75,13 +80,18 @@
       </mat-cell>
     </ng-container>
 
-    <!-- NUMBER OF TARGETS -->
-    <ng-container matColumnDef="numberOfTargets">
+    <!-- IS CONTINUOUS SUBCRIPTION -->
+    <ng-container matColumnDef="isContinuous">
       <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Number of Targets</mat-header-cell
+        >Continuous</mat-header-cell
       >
       <mat-cell *matCellDef="let row">
-        {{ getNumberOfTargets(row.target_email_list) }}
+        <mat-icon
+          *ngIf="row.continuous_subscription"
+          aria-hidden="false"
+          aria-label="check_circle icon"
+          >check_circle
+        </mat-icon>
       </mat-cell>
     </ng-container>
 
@@ -130,13 +140,18 @@
       </mat-cell>
     </ng-container>
 
-    <!-- NUMBER OF TARGETS -->
-    <ng-container matColumnDef="numberOfTargets">
+    <!-- IS CONTINUOUS SUBCRIPTION -->
+    <ng-container matColumnDef="isContinuous">
       <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Number of Targets</mat-header-cell
+        >Continuous</mat-header-cell
       >
       <mat-cell *matCellDef="let row">
-        {{ getNumberOfTargets(row.target_email_list) }}
+        <mat-icon
+          *ngIf="row.continuous_subscription"
+          aria-hidden="false"
+          aria-label="check_circle icon"
+          >check_circle
+        </mat-icon>
       </mat-cell>
     </ng-container>
 
