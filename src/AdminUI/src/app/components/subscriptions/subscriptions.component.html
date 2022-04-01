@@ -94,7 +94,17 @@
       </mat-cell>
     </ng-container>
 
-    <!-- LAST UDPATED DATE -->
+    <!-- NUMBER OF TARGETS -->
+    <ng-container matColumnDef="numberOfTargets">
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >Number of Targets</mat-header-cell
+      >
+      <mat-cell *matCellDef="let row">
+        {{ getNumberOfTargets(row.subscription.target_email_list) }}
+      </mat-cell>
+    </ng-container>
+
+    <!-- LAST UPDATED DATE -->
     <ng-container matColumnDef="lastUpdated">
       <mat-header-cell *matHeaderCellDef mat-sort-header
         >Last Updated</mat-header-cell
