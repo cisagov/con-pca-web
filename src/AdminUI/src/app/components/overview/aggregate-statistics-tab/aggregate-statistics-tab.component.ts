@@ -8,6 +8,7 @@ import { StatisticsService } from 'src/app/services/statistics.service';
 })
 export class AggregateStatisticsTab implements OnInit {
   detail: AggregateReportModel;
+  loading: boolean = true;
 
   constructor(public statsSvc: StatisticsService) {}
 
@@ -15,6 +16,7 @@ export class AggregateStatisticsTab implements OnInit {
     this.statsSvc.getAggregateStats().subscribe(
       (result: AggregateReportModel) => {
         this.detail = result;
+        this.loading = false;
       },
       (error) => {
         console.log(error);
