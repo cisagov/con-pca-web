@@ -41,7 +41,7 @@
         >Last Updated</mat-header-cell
       >
       <mat-cell *matCellDef="let row">
-        {{ row.last_updated | date: dateFormat }}
+        {{ row.updated | date: dateFormat }}
       </mat-cell>
     </ng-container>
 
@@ -101,7 +101,7 @@
         >Last Updated</mat-header-cell
       >
       <mat-cell *matCellDef="let row">
-        {{ row.last_updated | date: dateFormat }}
+        {{ row.updated | date: dateFormat }}
       </mat-cell>
     </ng-container>
 
