@@ -1,227 +1,244 @@
 <div class="mt-2" style="max-width: 25rem">
   <h3>Overview</h3>
+  <div class="col p-0 w-100">
+    <!-- Loading Spinner -->
+    <div
+      *ngIf="loading"
+      style="text-align: center; padding-top: 2rem; padding-bottom: 2rem"
+    >
+      <mat-spinner
+        class="spinner"
+        style="margin-left: auto; margin-right: auto"
+        diameter="50"
+      ></mat-spinner>
+    </div>
 
-  <table class="table">
-    <tr>
-      <td>Total customers enrolled</td>
-      <td class="text-right">{{ detail?.customers_enrolled }}</td>
-    </tr>
-    <tr>
-      <td>Total status reports sent out</td>
-      <td class="text-right">{{ detail?.status_reports_sent }}</td>
-    </tr>
-    <tr>
-      <td>Total cycle reports sent out</td>
-      <td class="text-right">{{ detail?.cycle_reports_sent }}</td>
-    </tr>
-    <tr>
-      <td>Total yearly reports sent out</td>
-      <td class="text-right">{{ detail?.yearly_reports_sent }}</td>
-    </tr>
-    <tr>
-      <td>Total new customer subscriptions</td>
-      <td class="text-right">{{ detail?.new_subscriptions }}</td>
-    </tr>
-    <tr>
-      <td>Total ongoing customer subscriptions</td>
-      <td class="text-right">{{ detail?.ongoing_subscriptions }}</td>
-    </tr>
-    <tr>
-      <td>Total stopped customer subscriptions</td>
-      <td class="text-right">{{ detail?.stopped_subscriptions }}</td>
-    </tr>
-    <tr>
-      <td>Total number of emails sent</td>
-      <td class="text-right">
-        {{ detail?.all_customer_stats.all.sent.count }}
-      </td>
-    </tr>
-    <tr>
-      <td>Total number of emails clicked</td>
-      <td class="text-right">
-        {{ detail?.all_customer_stats.all.clicked.count }}
-      </td>
-    </tr>
-  </table>
+    <table class="table">
+      <tr>
+        <td>Total customers enrolled</td>
+        <td class="text-right">{{ detail?.customers_enrolled }}</td>
+      </tr>
+      <tr>
+        <td>Total status reports sent out</td>
+        <td class="text-right">{{ detail?.status_reports_sent }}</td>
+      </tr>
+      <tr>
+        <td>Total cycle reports sent out</td>
+        <td class="text-right">{{ detail?.cycle_reports_sent }}</td>
+      </tr>
+      <tr>
+        <td>Total yearly reports sent out</td>
+        <td class="text-right">{{ detail?.yearly_reports_sent }}</td>
+      </tr>
+      <tr>
+        <td>Total new customer subscriptions</td>
+        <td class="text-right">{{ detail?.new_subscriptions }}</td>
+      </tr>
+      <tr>
+        <td>Total ongoing customer subscriptions</td>
+        <td class="text-right">{{ detail?.ongoing_subscriptions }}</td>
+      </tr>
+      <tr>
+        <td>Total stopped customer subscriptions</td>
+        <td class="text-right">{{ detail?.stopped_subscriptions }}</td>
+      </tr>
+      <tr>
+        <td>Total number of emails sent</td>
+        <td class="text-right">
+          {{ detail?.all_customer_stats.all.sent.count }}
+        </td>
+      </tr>
+      <tr>
+        <td>Total number of emails clicked</td>
+        <td class="text-right">
+          {{ detail?.all_customer_stats.all.clicked.count }}
+        </td>
+      </tr>
+    </table>
 
-  <h3>Customer Totals By Category</h3>
+    <h3>Customer Totals By Category</h3>
 
-  <table class="table">
-    <tr>
-      <td colspan="2" class="pr-0">
-        <div class="mb-1">Federal</div>
-        <div class="pl-3">
-          <table class="w-100 no-borders">
-            <tr>
-              <td>Subscription Count</td>
-              <td class="text-right">
-                {{ detail?.federal_stats.subscription_count }}
-              </td>
-            </tr>
-            <tr>
-              <td>Cycle Count</td>
-              <td class="text-right">
-                {{ detail?.federal_stats.cycle_count }}
-              </td>
-            </tr>
-            <tr>
-              <td>Emails Sent</td>
-              <td class="text-right">
-                {{ detail?.federal_stats.emails_sent }}
-              </td>
-            </tr>
-            <tr>
-              <td>Email Click Ratio</td>
-              <td class="text-right">
-                {{ detail?.private_stats.emails_clicked_ratio }}%
-              </td>
-            </tr>
-          </table>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td colspan="2" class="pr-0">
-        <div class="mb-1">State</div>
-        <div class="pl-3">
-          <table class="w-100 no-borders">
-            <tr>
-              <td>Subscription Count</td>
-              <td class="text-right">
-                {{ detail?.state_stats.subscription_count }}
-              </td>
-            </tr>
-            <tr>
-              <td>Cycle Count</td>
-              <td class="text-right">{{ detail?.state_stats.cycle_count }}</td>
-            </tr>
-            <tr>
-              <td>Emails Sent</td>
-              <td class="text-right">
-                {{ detail?.state_stats.emails_sent }}
-              </td>
-            </tr>
-            <tr>
-              <td>Email Click Ratio</td>
-              <td class="text-right">
-                {{ detail?.private_stats.emails_clicked_ratio }}%
-              </td>
-            </tr>
-          </table>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td colspan="2" class="pr-0">
-        <div class="mb-1">Local</div>
-        <div class="pl-3">
-          <table class="w-100 no-borders">
-            <tr>
-              <td>Subscription Count</td>
-              <td class="text-right">
-                {{ detail?.local_stats.subscription_count }}
-              </td>
-            </tr>
-            <tr>
-              <td>Cycle Count</td>
-              <td class="text-right">{{ detail?.local_stats.cycle_count }}</td>
-            </tr>
-            <tr>
-              <td>Emails Sent</td>
-              <td class="text-right">
-                {{ detail?.local_stats.emails_sent }}
-              </td>
-            </tr>
-            <tr>
-              <td>Email Click Ratio</td>
-              <td class="text-right">
-                {{ detail?.private_stats.emails_clicked_ratio }}%
-              </td>
-            </tr>
-          </table>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td colspan="2" class="pr-0">
-        <div class="mb-1">Tribal/Territorial</div>
-        <div class="pl-3">
-          <table class="w-100 no-borders">
-            <tr>
-              <td>Subscription Count</td>
-              <td class="text-right">
-                {{ detail?.tribal_stats.subscription_count }}
-              </td>
-            </tr>
-            <tr>
-              <td>Cycle Count</td>
-              <td class="text-right">
-                {{ detail?.tribal_stats.cycle_count }}
-              </td>
-            </tr>
-            <tr>
-              <td>Emails Sent</td>
-              <td class="text-right">
-                {{ detail?.tribal_stats.emails_sent }}
-              </td>
-            </tr>
-            <tr>
-              <td>Email Click Ratio</td>
-              <td class="text-right">
-                {{ detail?.private_stats.emails_clicked_ratio }}%
-              </td>
-            </tr>
-          </table>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td colspan="2" class="pr-0">
-        <div class="mb-1">Critical Infrastructure (Private Sector)</div>
-        <div class="pl-3">
-          <table class="w-100 no-borders">
-            <tr>
-              <td>Subscription Count</td>
-              <td class="text-right">
-                {{ detail?.private_stats.subscription_count }}
-              </td>
-            </tr>
-            <tr>
-              <td>Cycle Count</td>
-              <td class="text-right">
-                {{ detail?.private_stats.cycle_count }}
-              </td>
-            </tr>
-            <tr>
-              <td>Emails Sent</td>
-              <td class="text-right">
-                {{ detail?.private_stats.emails_sent }}
-              </td>
-            </tr>
-            <tr>
-              <td>Email Click Ratio</td>
-              <td class="text-right">
-                {{ detail?.private_stats.emails_clicked_ratio }}%
-              </td>
-            </tr>
-          </table>
-        </div>
-      </td>
-    </tr>
-  </table>
+    <table class="table">
+      <tr>
+        <td colspan="2" class="pr-0">
+          <div class="mb-1">Federal</div>
+          <div class="pl-3">
+            <table class="w-100 no-borders">
+              <tr>
+                <td>Subscription Count</td>
+                <td class="text-right">
+                  {{ detail?.federal_stats.subscription_count }}
+                </td>
+              </tr>
+              <tr>
+                <td>Cycle Count</td>
+                <td class="text-right">
+                  {{ detail?.federal_stats.cycle_count }}
+                </td>
+              </tr>
+              <tr>
+                <td>Emails Sent</td>
+                <td class="text-right">
+                  {{ detail?.federal_stats.emails_sent }}
+                </td>
+              </tr>
+              <tr>
+                <td>Email Click Ratio</td>
+                <td class="text-right">
+                  {{ detail?.private_stats.emails_clicked_ratio }}%
+                </td>
+              </tr>
+            </table>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" class="pr-0">
+          <div class="mb-1">State</div>
+          <div class="pl-3">
+            <table class="w-100 no-borders">
+              <tr>
+                <td>Subscription Count</td>
+                <td class="text-right">
+                  {{ detail?.state_stats.subscription_count }}
+                </td>
+              </tr>
+              <tr>
+                <td>Cycle Count</td>
+                <td class="text-right">
+                  {{ detail?.state_stats.cycle_count }}
+                </td>
+              </tr>
+              <tr>
+                <td>Emails Sent</td>
+                <td class="text-right">
+                  {{ detail?.state_stats.emails_sent }}
+                </td>
+              </tr>
+              <tr>
+                <td>Email Click Ratio</td>
+                <td class="text-right">
+                  {{ detail?.private_stats.emails_clicked_ratio }}%
+                </td>
+              </tr>
+            </table>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" class="pr-0">
+          <div class="mb-1">Local</div>
+          <div class="pl-3">
+            <table class="w-100 no-borders">
+              <tr>
+                <td>Subscription Count</td>
+                <td class="text-right">
+                  {{ detail?.local_stats.subscription_count }}
+                </td>
+              </tr>
+              <tr>
+                <td>Cycle Count</td>
+                <td class="text-right">
+                  {{ detail?.local_stats.cycle_count }}
+                </td>
+              </tr>
+              <tr>
+                <td>Emails Sent</td>
+                <td class="text-right">
+                  {{ detail?.local_stats.emails_sent }}
+                </td>
+              </tr>
+              <tr>
+                <td>Email Click Ratio</td>
+                <td class="text-right">
+                  {{ detail?.private_stats.emails_clicked_ratio }}%
+                </td>
+              </tr>
+            </table>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" class="pr-0">
+          <div class="mb-1">Tribal/Territorial</div>
+          <div class="pl-3">
+            <table class="w-100 no-borders">
+              <tr>
+                <td>Subscription Count</td>
+                <td class="text-right">
+                  {{ detail?.tribal_stats.subscription_count }}
+                </td>
+              </tr>
+              <tr>
+                <td>Cycle Count</td>
+                <td class="text-right">
+                  {{ detail?.tribal_stats.cycle_count }}
+                </td>
+              </tr>
+              <tr>
+                <td>Emails Sent</td>
+                <td class="text-right">
+                  {{ detail?.tribal_stats.emails_sent }}
+                </td>
+              </tr>
+              <tr>
+                <td>Email Click Ratio</td>
+                <td class="text-right">
+                  {{ detail?.private_stats.emails_clicked_ratio }}%
+                </td>
+              </tr>
+            </table>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" class="pr-0">
+          <div class="mb-1">Critical Infrastructure (Private Sector)</div>
+          <div class="pl-3">
+            <table class="w-100 no-borders">
+              <tr>
+                <td>Subscription Count</td>
+                <td class="text-right">
+                  {{ detail?.private_stats.subscription_count }}
+                </td>
+              </tr>
+              <tr>
+                <td>Cycle Count</td>
+                <td class="text-right">
+                  {{ detail?.private_stats.cycle_count }}
+                </td>
+              </tr>
+              <tr>
+                <td>Emails Sent</td>
+                <td class="text-right">
+                  {{ detail?.private_stats.emails_sent }}
+                </td>
+              </tr>
+              <tr>
+                <td>Email Click Ratio</td>
+                <td class="text-right">
+                  {{ detail?.private_stats.emails_clicked_ratio }}%
+                </td>
+              </tr>
+            </table>
+          </div>
+        </td>
+      </tr>
+    </table>
 
-  <h3>Responses</h3>
+    <h3>Responses</h3>
 
-  <table class="table">
-    <tr>
-      <td>Average click rate across all customers</td>
-      <td class="text-right">
-        {{
-          detail?.all_customer_stats.all.clicked.ratio
-            | nullishCoalesce: 0
-            | percent: "0.2"
-        }}
-      </td>
-    </tr>
-  </table>
+    <table class="table">
+      <tr>
+        <td>Average click rate across all customers</td>
+        <td class="text-right">
+          {{
+            detail?.all_customer_stats.all.clicked.ratio
+              | nullishCoalesce: 0
+              | percent: "0.2"
+          }}
+        </td>
+      </tr>
+    </table>
+  </div>
 </div>
