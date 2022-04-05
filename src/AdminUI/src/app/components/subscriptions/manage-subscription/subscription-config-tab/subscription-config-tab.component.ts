@@ -61,6 +61,7 @@ export class SubscriptionConfigTab
   subscribeForm: FormGroup;
 
   processing = false;
+  saving = false;
 
   actionEDIT = 'edit';
   actionCREATE = 'create';
@@ -240,7 +241,7 @@ export class SubscriptionConfigTab
 
   private isNavigationAllowed(): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
-      if (this.subscribeForm.dirty) {
+      if (this.subscribeForm.dirty && !this.saving) {
         this.dialogRefConfirm = this.dialog.open(UnsavedComponent);
         this.dialogRefConfirm.afterClosed().subscribe((result) => {
           if (result === 'save') {
@@ -911,6 +912,7 @@ export class SubscriptionConfigTab
       return;
     }
 
+    this.saving = true;
     this.loading = true;
     this.loadingText = 'Saving subscription';
 
