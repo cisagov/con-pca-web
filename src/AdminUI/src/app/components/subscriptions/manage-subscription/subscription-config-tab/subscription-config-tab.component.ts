@@ -61,6 +61,7 @@ export class SubscriptionConfigTab
   subscribeForm: FormGroup;
 
   processing = false;
+  saving = false;
 
   actionEDIT = 'edit';
   actionCREATE = 'create';
@@ -240,7 +241,7 @@ export class SubscriptionConfigTab
 
   private isNavigationAllowed(): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
-      if (this.subscribeForm.dirty) {
+      if (this.subscribeForm.dirty && !this.saving) {
         this.dialogRefConfirm = this.dialog.open(UnsavedComponent);
         this.dialogRefConfirm.afterClosed().subscribe((result) => {
           if (result === 'save') {
@@ -911,6 +912,7 @@ export class SubscriptionConfigTab
       return;
     }
 
+    this.saving = true;
     this.loading = true;
     this.loadingText = 'Saving subscription';
 
@@ -1026,6 +1028,12 @@ export class SubscriptionConfigTab
       this.f.targetDomain.disable();
       this.f.bufferDisplayTime.disable();
       this.f.bufferTimeUnit.disable();
+      this.f.subDisplayTime.disable();
+      this.f.subTimeUnit.disable();
+      this.f.cooldownDisplayTime.disable();
+      this.f.cooldownTimeUnit.disable();
+      this.f.reportDisplayTime.disable();
+      this.f.reportTimeUnit.disable();
       //this.f.csvText.disable();
     } else {
       this.f.startDate.enable();
@@ -1272,6 +1280,7 @@ export class SubscriptionConfigTab
   checkValid(setError = true) {
     const cycleLength: number = +this.f.cycle_length_minutes.value;
     const targetCount = this.f.csvText.value.trim().split('\n').length;
+    const status = this.subscription?.status?.toLowerCase();
     this.subscriptionSvc
       .checkValid(cycleLength, targetCount)
       .subscribe((resp: any) => {
@@ -1282,9 +1291,11 @@ export class SubscriptionConfigTab
           if (resp.success) {
             this.isValidConfig = true;
           } else {
-            this.isValidConfig = false;
             console.log(resp.message);
-            this.validConfigMessage = resp.message;
+            if (status !== 'running') {
+              this.isValidConfig = false;
+              this.validConfigMessage = resp.message;
+            }
           }
         }
       });
