@@ -1,0 +1,76 @@
+<div class="flex flex-container">
+  <table class="table table-striped">
+    <thead>
+      <h2 (click)="toTemplateDetails(templateTestData.template._id)">
+        {{ templateTestData.name }}
+      </h2>
+    </thead>
+    <tbody>
+      <tr>
+        <th>Email</th>
+        <td>{{ templateTestData.email }}</td>
+      </tr>
+      <tr>
+        <th>Subject</th>
+        <td>{{ templateTestData.subject }}</td>
+      </tr>
+      <tr>
+        <th>Timeline</th>
+        <td>{{ templateTestData.timeline }}</td>
+      </tr>
+      <tr>
+        <th>Sent</th>
+        <td>
+          <mat-icon *ngIf="templateTestData.sent" color="primary"
+            >check_circle</mat-icon
+          >
+          <mat-icon *ngIf="!templateTestData.sent" color="warn"
+            >cancel</mat-icon
+          >
+        </td>
+      </tr>
+      <tr>
+        <th>Sent Date</th>
+        <td>
+          {{ templateTestData.sentDate | date: "medium" }}
+        </td>
+      </tr>
+      <tr>
+        <th>Opened</th>
+        <td>
+          <mat-icon *ngIf="templateTestData.opened" color="primary"
+            >check_circle</mat-icon
+          >
+          <mat-icon *ngIf="!templateTestData.opened" color="warn"
+            >cancel</mat-icon
+          >
+        </td>
+      </tr>
+      <tr>
+        <th>Clicked</th>
+        <td>
+          <mat-icon *ngIf="templateTestData.clicked" color="primary"
+            >check_circle</mat-icon
+          >
+          <mat-icon *ngIf="!templateTestData.clicked" color="warn"
+            >cancel</mat-icon
+          >
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="flex flex-container w-100">
+  <button
+    mat-raised-button
+    color="primary"
+    [mat-dialog-close]="true"
+    (click)="toTemplateDetails(templateTestData.template._id)"
+  >
+    Template Details
+  </button>
+  <button mat-raised-button color="warn" [mat-dialog-close]="true">
+    Close
+  </button>
+</div>
