@@ -121,20 +121,12 @@
       </mat-cell>
     </ng-container>
 
-    <!-- Sent Date -->
-    <ng-container matColumnDef="sent_date">
-      <mat-header-cell *matHeaderCellDef>Sent Date</mat-header-cell>
-      <mat-cell *matCellDef="let row">
-        {{ row.sent_date | date: "medium" }}
-      </mat-cell>
-    </ng-container>
-
     <!-- Sent -->
     <ng-container matColumnDef="sent">
       <mat-header-cell *matHeaderCellDef>Sent</mat-header-cell>
       <mat-cell *matCellDef="let row">
         <mat-icon *ngIf="row.sent" color="primary">check_circle</mat-icon>
-        <mat-icon *ngIf="!row.sent" color="warn">error</mat-icon>
+        <mat-icon *ngIf="!row.sent" color="warn">cancel</mat-icon>
       </mat-cell>
     </ng-container>
 
@@ -143,7 +135,7 @@
       <mat-header-cell *matHeaderCellDef>Clicked</mat-header-cell>
       <mat-cell *matCellDef="let row">
         <mat-icon *ngIf="row.clicked" color="primary">check_circle</mat-icon>
-        <mat-icon *ngIf="!row.clicked" color="warn">error</mat-icon>
+        <mat-icon *ngIf="!row.clicked" color="warn">cancel</mat-icon>
       </mat-cell>
     </ng-container>
 
@@ -152,7 +144,7 @@
     <mat-row
       *matRowDef="let row; columns: resultColumns"
       class="table-row cursor-pointer"
-      (click)="toTemplateDetails(row)"
+      (click)="detailResults(row)"
     >
     </mat-row>
   </mat-table>

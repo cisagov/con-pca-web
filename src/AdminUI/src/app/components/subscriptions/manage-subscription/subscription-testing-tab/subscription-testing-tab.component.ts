@@ -4,7 +4,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AlertComponent } from 'src/app/components/dialogs/alert/alert.component';
 import { ConfirmComponent } from 'src/app/components/dialogs/confirm/confirm.component';
-import { GenericViewComponent } from 'src/app/components/dialogs/generic-view/generic-view.component';
 import { ContactModel, CustomerModel } from 'src/app/models/customer.model';
 import {
   SubscriptionModel,
@@ -13,6 +12,7 @@ import {
 import { AlertsService } from 'src/app/services/alerts.service';
 import { CustomerService } from 'src/app/services/customer.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
+import { TemplateDataDialogComponent } from './template-data-dialog/template-data-dialog.component';
 
 @Component({
   selector: 'app-subscription-testing-tab',
@@ -29,7 +29,7 @@ export class SubscriptionTestingTabComponent implements OnInit {
 
   contactColumns = ['select', 'email', 'firstName', 'lastName'];
 
-  resultColumns = ['template', 'email', 'sent', 'sent_date', 'clicked'];
+  resultColumns = ['template', 'email', 'sent', 'clicked'];
 
   contactList: ContactModel[];
 
@@ -113,6 +113,22 @@ export class SubscriptionTestingTabComponent implements OnInit {
       .subscribe((data) => {
         this.testResults = data;
       });
+  }
+
+  detailResults(result: SubscriptionTestResultsModel) {
+    this.dialog.open(TemplateDataDialogComponent, {
+      data: {
+        template: result.template,
+        email: result.email,
+        name: result.template.name,
+        subject: result.template.subject,
+        timeline: result.timeline,
+        sent: result.sent,
+        sentDate: result.sent_date,
+        opened: result.opened,
+        clicked: result.clicked,
+      },
+    });
   }
 
   toTemplateDetails(result: SubscriptionTestResultsModel) {
