@@ -33,6 +33,7 @@ export class TemplatesPageComponent
     'select',
     'name',
     'deception_score',
+    'sending_profile_domain',
     'created_by',
     'edit',
   ];

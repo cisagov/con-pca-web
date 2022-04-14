@@ -110,6 +110,15 @@
           row.deception_score
         }}</mat-cell>
       </ng-container>
+      <!-- SENDING PROFILE DOMAIN -->
+      <ng-container matColumnDef="sending_profile_domain">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Domain</mat-header-cell
+        >
+        <mat-cell *matCellDef="let row">{{
+          row.sending_profile_domain
+        }}</mat-cell>
+      </ng-container>
       <!-- CREATED BY -->
       <ng-container matColumnDef="created_by">
         <mat-header-cell *matHeaderCellDef mat-sort-header
