@@ -49,6 +49,7 @@ export class TemplateModel {
   text: string;
   html: string;
   indicators: TemplateIndicatorsModel;
+  sending_profile_domain?: string;
 
   public constructor(init?: Partial<TemplateModel>) {
     Object.assign(this, init);
