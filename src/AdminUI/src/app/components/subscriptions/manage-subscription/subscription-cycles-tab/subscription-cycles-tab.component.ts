@@ -145,7 +145,12 @@ export class SubscriptionStatsTab implements OnInit {
       .downloadReport(this.selectedCycle._id, reportType, this.includeNonhuman)
       .subscribe(
         (blob) => {
-          this.downloadObject(`subscription_${reportType}_report.pdf`, blob);
+          this.downloadObject(
+            `CISA_PCA_${reportType.toLocaleUpperCase()}_report_${moment().format(
+              'MMDDYYYY'
+            )}.pdf`,
+            blob
+          );
           this.generating = false;
         },
         (error) => {
@@ -175,7 +180,7 @@ export class SubscriptionStatsTab implements OnInit {
     this.dialog.open(AlertComponent, {
       data: {
         title: 'Error',
-        messageText: `An error occured ${action} the ${type} report. Check logs for more detail.`,
+        messageText: `An error occurred ${action} the ${type} report. Check logs for more detail.`,
       },
     });
   }
