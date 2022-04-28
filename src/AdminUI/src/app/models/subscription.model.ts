@@ -47,6 +47,7 @@ export class SubscriptionModel {
   sending_profile_id: string;
   target_domain: string;
   start_date: Date;
+  end_date?: Date;
   primary_contact: ContactModel;
   admin_email: string;
   status: string;
