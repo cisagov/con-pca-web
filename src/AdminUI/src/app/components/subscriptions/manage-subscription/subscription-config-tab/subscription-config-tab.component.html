@@ -600,9 +600,12 @@
       </div>
 
       <div class="continuous-subscription-checkbox">
-        <mat-checkbox formControlName="continuousSubscription"
-          >Continuous Subscription Cycles</mat-checkbox
-        >
+        <!-- Temporarily disable continuous subscription on all subscriptions -->
+        <!-- <mat-checkbox formControlName="continuousSubscription"
+        >Continuous Subscription Cycles</mat-checkbox> -->
+        <mat-checkbox [disabled]="true"
+          >Continuous Subscription Cycles
+        </mat-checkbox>
       </div>
       <div class="d-flex flex-row-reverse justify-content-between">
         <div class="d-flex flex-row">
