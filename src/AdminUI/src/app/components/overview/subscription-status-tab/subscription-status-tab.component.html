@@ -20,6 +20,16 @@
       </mat-cell>
     </ng-container>
 
+    <!-- END DATE -->
+    <ng-container matColumnDef="endDate">
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >End Date</mat-header-cell
+      >
+      <mat-cell *matCellDef="let row">
+        {{ row.end_date | date: dateFormat }}
+      </mat-cell>
+    </ng-container>
+
     <!-- IS CONTINUOUS SUBCRIPTION -->
     <ng-container matColumnDef="isContinuous">
       <mat-header-cell *matHeaderCellDef mat-sort-header
@@ -77,6 +87,16 @@
       >
       <mat-cell *matCellDef="let row">
         {{ row.start_date | date: dateFormat }}
+      </mat-cell>
+    </ng-container>
+
+    <!-- END DATE -->
+    <ng-container matColumnDef="endDate">
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >End Date</mat-header-cell
+      >
+      <mat-cell *matCellDef="let row">
+        {{ row.end_date | date: dateFormat }}
       </mat-cell>
     </ng-container>
 

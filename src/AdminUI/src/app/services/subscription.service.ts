@@ -135,6 +135,12 @@ export class SubscriptionService {
     );
   }
 
+  public getSubscriptionsWithEndDate() {
+    return this.http.get(
+      `${this.settingsService.settings.apiUrl}/api/subscriptions/?overview=true`
+    );
+  }
+
   public getSubscriptionsByCustomer(customer: CustomerModel) {
     return this.http.get(
       `${this.settingsService.settings.apiUrl}/api/subscriptions/?customer_id=${customer._id}`

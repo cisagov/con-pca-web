@@ -22,6 +22,7 @@ export class SubscriptionStatusTab implements OnInit {
   endingSoonDisplayedColumns = [
     'name',
     'startDate',
+    'endDate',
     'isContinuous',
     'lastUpdated',
   ];
@@ -31,6 +32,7 @@ export class SubscriptionStatusTab implements OnInit {
   inProgressDisplayedColumns = [
     'name',
     'startDate',
+    'endDate',
     'isContinuous',
     'lastUpdated',
   ];
@@ -59,7 +61,7 @@ export class SubscriptionStatusTab implements OnInit {
   async refresh() {
     this.loading = true;
     await this.subscriptionSvc
-      .getSubscriptions(false)
+      .getSubscriptionsWithEndDate()
       .subscribe((subscriptions: any) => {
         this.loading = false;
         const now = moment();
