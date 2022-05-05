@@ -50,6 +50,7 @@ export class SubscriptionModel {
   end_date?: Date;
   primary_contact: ContactModel;
   admin_email: string;
+  operator_email: string;
   status: string;
   target_email_list: TargetModel[] = [];
   templates_selected: string[];

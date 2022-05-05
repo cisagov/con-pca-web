@@ -178,6 +178,7 @@ export class SubscriptionConfigTab
         adminEmail: new FormControl(null, {
           validators: Validators.required,
         }),
+        operatorEmail: new FormControl('', {}),
         startDate: new FormControl(new Date(), {
           validators: Validators.required,
         }),
@@ -576,6 +577,7 @@ export class SubscriptionConfigTab
     this.f.selectedCustomerId.setValue(s.customer_id);
     this.f.primaryContact.setValue(s.primary_contact?.email);
     this.f.adminEmail.setValue(s.admin_email);
+    this.f.operatorEmail.setValue(s.operator_email);
     this.f.startDate.setValue(s.start_date);
     this.f.csvText.setValue(this.formatTargetsToCSV(s.target_email_list), {
       emitEvent: false,
@@ -921,6 +923,7 @@ export class SubscriptionConfigTab
     sub.customer_id = this.customer._id;
     sub.primary_contact = this.primaryContact;
     sub.admin_email = this.f.adminEmail.value;
+    sub.operator_email = this.f.operatorEmail.value;
     sub.active = true;
 
     if (typeof this.f.startDate.value === 'string') {

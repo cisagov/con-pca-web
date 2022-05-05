@@ -1,7 +1,12 @@
 <div class="container-fluid">
   <h2 class="mt-2">Subscriptions Ending Soon</h2>
   <!-- TABLE -->
-  <mat-table [dataSource]="endingSoonDataSource" [hidden]="loading" matSort>
+  <mat-table
+    #endingSoonTable
+    [dataSource]="endingSoonDataSource"
+    [hidden]="loading"
+    matSort
+  >
     <!-- SUBSCRIPTION NAME -->
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef mat-sort-header
@@ -30,7 +35,7 @@
       </mat-cell>
     </ng-container>
 
-    <!-- IS CONTINUOUS SUBCRIPTION -->
+    <!-- IS CONTINUOUS SUBSCRIPTION -->
     <ng-container matColumnDef="isContinuous">
       <mat-header-cell *matHeaderCellDef mat-sort-header
         >Continuous</mat-header-cell
@@ -72,7 +77,12 @@
 
   <h2 class="mt-4">Subscriptions in Progress</h2>
   <!-- TABLE -->
-  <mat-table [dataSource]="inProgressDataSource" [hidden]="loading" matSort>
+  <mat-table
+    #inProgressTable
+    [dataSource]="inProgressDataSource"
+    [hidden]="loading"
+    matSort
+  >
     <!-- SUBSCRIPTION NAME -->
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef mat-sort-header
@@ -101,7 +111,7 @@
       </mat-cell>
     </ng-container>
 
-    <!-- IS CONTINUOUS SUBCRIPTION -->
+    <!-- IS CONTINUOUS SUBSCRIPTION -->
     <ng-container matColumnDef="isContinuous">
       <mat-header-cell *matHeaderCellDef mat-sort-header
         >Continuous</mat-header-cell
@@ -143,7 +153,12 @@
 
   <h2 class="mt-4">Stopped Subscriptions</h2>
   <!-- TABLE -->
-  <mat-table [dataSource]="stoppedDataSource" [hidden]="loading" matSort>
+  <mat-table
+    #stoppedTable
+    [dataSource]="stoppedDataSource"
+    [hidden]="loading"
+    matSort
+  >
     <!-- SUBSCRIPTION NAME -->
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef mat-sort-header
@@ -162,7 +177,7 @@
       </mat-cell>
     </ng-container>
 
-    <!-- IS CONTINUOUS SUBCRIPTION -->
+    <!-- IS CONTINUOUS SUBSCRIPTION -->
     <ng-container matColumnDef="isContinuous">
       <mat-header-cell *matHeaderCellDef mat-sort-header
         >Continuous</mat-header-cell

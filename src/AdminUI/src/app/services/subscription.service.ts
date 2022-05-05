@@ -100,6 +100,7 @@ export class SubscriptionService {
       archived: subscription.archived,
       primary_contact: subscription.primary_contact,
       admin_email: subscription.admin_email,
+      operator_email: subscription.operator_email,
       start_date: subscription.start_date,
       target_email_list: subscription.target_email_list,
       sending_profile_id: subscription.sending_profile_id,

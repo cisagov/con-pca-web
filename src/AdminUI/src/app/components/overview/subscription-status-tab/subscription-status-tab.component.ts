@@ -7,18 +7,32 @@ import { AppSettings } from 'src/app/AppSettings';
 import { SubscriptionModel } from 'src/app/models/subscription.model';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 
+interface SubscriptionWithEndDate {
+  // top-level primitives for column sorting
+  name: string;
+  start_date: Date;
+  end_date: Date;
+  is_continuous: string;
+  last_updated: Date;
+}
+
 @Component({
   selector: 'app-subscription-status-tab',
   templateUrl: './subscription-status-tab.component.html',
 })
 export class SubscriptionStatusTab implements OnInit {
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild('endingSoonTable', { read: MatSort, static: true })
+  sortEndingSoon: MatSort;
+  @ViewChild('inProgressTable', { read: MatSort, static: true })
+  sortInProgress: MatSort;
+  @ViewChild('stoppedTable', { read: MatSort, static: true })
+  sortStopped: MatSort;
   loading = false;
 
   dateFormat = AppSettings.DATE_FORMAT;
 
   // Subscriptions Ending Soon Table
-  public endingSoonDataSource: MatTableDataSource<SubscriptionModel>;
+  public endingSoonDataSource: MatTableDataSource<SubscriptionWithEndDate>;
   endingSoonDisplayedColumns = [
     'name',
     'startDate',
@@ -28,7 +42,7 @@ export class SubscriptionStatusTab implements OnInit {
   ];
 
   // Subscriptions in Progress Table
-  public inProgressDataSource: MatTableDataSource<SubscriptionModel>;
+  public inProgressDataSource: MatTableDataSource<SubscriptionWithEndDate>;
   inProgressDisplayedColumns = [
     'name',
     'startDate',
@@ -75,13 +89,16 @@ export class SubscriptionStatusTab implements OnInit {
               ),
               'day'
             )
-        ) as SubscriptionModel[];
+        ) as SubscriptionWithEndDate[];
+        this.endingSoonDataSource.sort = this.sortEndingSoon;
         this.inProgressDataSource.data = subscriptions.filter(
           (obj) => obj.status === 'running'
-        ) as SubscriptionModel[];
+        ) as SubscriptionWithEndDate[];
+        this.inProgressDataSource.sort = this.sortInProgress;
         this.stoppedDataSource.data = subscriptions.filter(
           (obj) => obj.status === 'stopped'
         ) as SubscriptionModel[];
+        this.stoppedDataSource.sort = this.sortStopped;
       });
   }
 

@@ -40,6 +40,10 @@ export class TemplateDataDialogComponent implements OnInit {
     });
   }
 
+  getTimeline(timeline: object): string {
+    return JSON.stringify(timeline);
+  }
+
   toTemplateDetails(templateId: string) {
     console.log(templateId);
     this.router.navigate(['/templatemanager', templateId]);
