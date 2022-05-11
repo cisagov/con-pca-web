@@ -1397,7 +1397,6 @@ export class SubscriptionConfigTab
     this.sendingProfileDomains = new Set(
       profiles.map((p) => p.from_address.split('@')[1])
     );
-    console.log('Sending Profile Domains: ', this.sendingProfileDomains);
     return this.sendingProfileDomains;
   }
 
@@ -1498,6 +1497,10 @@ export class SubscriptionConfigTab
           console.log(error);
         }
       );
+  }
+
+  sendSafelist() {
+    console.log('Sending safelist info...');
   }
 
   randomizePassword() {
