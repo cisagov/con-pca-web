@@ -1393,12 +1393,11 @@ export class SubscriptionConfigTab
       (t) => t.sending_profile_id
     );
     sendingProfileIds.push(this.f.sendingProfile.value);
-    const profiles = this.sendingProfiles.filter((s) =>
-      sendingProfileIds.includes(s._id)
-    );
+    const profiles = this.sendingProfiles;
     this.sendingProfileDomains = new Set(
       profiles.map((p) => p.from_address.split('@')[1])
     );
+    console.log('Sending Profile Domains: ', this.sendingProfileDomains);
     return this.sendingProfileDomains;
   }
 
