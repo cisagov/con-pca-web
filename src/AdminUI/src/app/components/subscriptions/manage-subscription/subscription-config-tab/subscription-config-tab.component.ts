@@ -1501,6 +1501,14 @@ export class SubscriptionConfigTab
 
   sendSafelist() {
     console.log('Sending safelist info...');
+    this.subscriptionSvc.sendSafelist(this.subscription._id).subscribe(
+      () => {
+        console.log('success.. safelisting information email sent.');
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
   randomizePassword() {
