@@ -142,7 +142,22 @@
         >
           <mat-icon>download</mat-icon>
         </button>
-
+        <button
+          mat-raised-button
+          color="accent"
+          class="export-safelist-btn"
+          (click)="sendSafelist()"
+        >
+          <mat-icon>email</mat-icon>
+        </button>
+        <button
+          mat-raised-button
+          color="primary"
+          class="rotate-header-btn"
+          (click)="rotateHeader()"
+        >
+          <mat-icon>refresh</mat-icon>
+        </button>
         <div class="mb-4">
           <table class="table" style="max-width: 33rem">
             <tr>
@@ -150,14 +165,6 @@
               <td class="text-right" style="color: grey; cursor: default">
                 {{ subscription?.phish_header }}
               </td>
-              <button
-                mat-raised-button
-                color="primary"
-                class="rotate-header-btn"
-                (click)="rotateHeader()"
-              >
-                <mat-icon>refresh</mat-icon>
-              </button>
             </tr>
             <tr>
               <td>Sending Domains</td>
