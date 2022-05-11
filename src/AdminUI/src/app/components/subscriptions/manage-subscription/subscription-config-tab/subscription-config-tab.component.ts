@@ -1029,8 +1029,6 @@ export class SubscriptionConfigTab
       this.f.startDate.disable();
       this.f.sendingProfile.disable();
       this.f.targetDomain.disable();
-      this.f.bufferDisplayTime.disable();
-      this.f.bufferTimeUnit.disable();
       this.f.subDisplayTime.disable();
       this.f.subTimeUnit.disable();
       this.f.cooldownDisplayTime.disable();
