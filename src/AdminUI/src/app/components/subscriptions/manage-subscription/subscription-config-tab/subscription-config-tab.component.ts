@@ -46,6 +46,7 @@ import { UserService } from 'src/app/services/user.service';
 import { UserModel } from 'src/app/models/user.model';
 import { TemplateModel } from 'src/app/models/template.model';
 import { SendingProfileModel } from 'src/app/models/sending-profile.model';
+import { AlertsService } from 'src/app/services/alerts.service';
 
 @Component({
   selector: 'subscription-config-tab',
@@ -140,6 +141,7 @@ export class SubscriptionConfigTab
     public sendingProfileSvc: SendingProfileService,
     private router: Router,
     public dialog: MatDialog,
+    public alertsService: AlertsService,
     public formBuilder: FormBuilder,
     private layoutSvc: LayoutMainService,
     public settingsService: SettingsService,
@@ -1500,7 +1502,20 @@ export class SubscriptionConfigTab
   }
 
   sendSafelist() {
-    console.log('Sending safelist info...');
+    this.subscriptionSvc.sendSafelist(this.subscription._id).subscribe(
+      () => {
+        this.dialog.open(AlertComponent, {
+          data: {
+            title: 'Email Sent',
+            messageText: 'Safelisting notification email has been sent.',
+          },
+        });
+      },
+      (error) => {
+        console.log(error);
+        this.alertsService.alert('Error: Email failed to send.');
+      }
+    );
   }
 
   randomizePassword() {

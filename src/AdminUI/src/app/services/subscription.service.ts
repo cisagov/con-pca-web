@@ -35,7 +35,7 @@ export class SubscriptionService {
   public getSubBehaviorSubject() {
     return this.subBehaviorSubject;
   }
-  public setSubBhaviorSubject(sub) {
+  public setSubBehaviorSubject(sub) {
     this.subBehaviorSubject.next(sub);
   }
   public clearSubBehaviorSubject() {
@@ -229,6 +229,11 @@ export class SubscriptionService {
       },
       { headers, responseType: 'blob' }
     );
+  }
+
+  public sendSafelist(subscriptionId: string) {
+    const url = `${this.settingsService.settings.apiUrl}/api/subscription/${subscriptionId}/safelist/send/`;
+    return this.http.get(url);
   }
 
   public getRandomPassword() {

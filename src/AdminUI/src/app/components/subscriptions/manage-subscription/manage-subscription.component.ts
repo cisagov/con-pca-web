@@ -106,7 +106,7 @@ export class ManageSubscriptionComponent
 
     this.subscription = s as SubscriptionModel;
     this.subscriptionSvc.subscription = this.subscription;
-    this.subscriptionSvc.setSubBhaviorSubject(s);
+    this.subscriptionSvc.setSubBehaviorSubject(s);
 
     if (s.cycles) {
       // Need to use let here. Compiler raises an error if not.
