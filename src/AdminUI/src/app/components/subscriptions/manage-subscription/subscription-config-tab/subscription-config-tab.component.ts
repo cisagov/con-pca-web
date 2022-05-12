@@ -1031,12 +1031,6 @@ export class SubscriptionConfigTab
       this.f.startDate.disable();
       this.f.sendingProfile.disable();
       this.f.targetDomain.disable();
-      this.f.subDisplayTime.disable();
-      this.f.subTimeUnit.disable();
-      this.f.cooldownDisplayTime.disable();
-      this.f.cooldownTimeUnit.disable();
-      this.f.reportDisplayTime.disable();
-      this.f.reportTimeUnit.disable();
       //this.f.csvText.disable();
     } else {
       this.f.startDate.enable();
