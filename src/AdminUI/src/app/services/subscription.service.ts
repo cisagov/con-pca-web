@@ -231,9 +231,32 @@ export class SubscriptionService {
     );
   }
 
-  public sendSafelist(subscriptionId: string) {
+  public sendSafelist(
+    subscriptionId: string,
+    phishHeader: string,
+    domains: any[],
+    ips: any[],
+    simulationURL: string,
+    templates: TemplateModel[],
+    password: string
+  ): Observable<Blob> {
+    const headers = new HttpHeaders().set(
+      'Accept',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    );
     const url = `${this.settingsService.settings.apiUrl}/api/subscription/${subscriptionId}/safelist/send/`;
-    return this.http.get(url);
+    return this.http.post(
+      url,
+      {
+        phish_header: phishHeader,
+        domains: domains,
+        ips: ips,
+        simulation_url: simulationURL,
+        templates: templates,
+        password: password,
+      },
+      { headers, responseType: 'blob' }
+    );
   }
 
   public getRandomPassword() {

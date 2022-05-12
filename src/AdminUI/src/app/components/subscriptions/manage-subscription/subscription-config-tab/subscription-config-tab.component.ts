@@ -1502,20 +1502,30 @@ export class SubscriptionConfigTab
   }
 
   sendSafelist() {
-    this.subscriptionSvc.sendSafelist(this.subscription._id).subscribe(
-      () => {
-        this.dialog.open(AlertComponent, {
-          data: {
-            title: 'Email Sent',
-            messageText: 'Safelisting notification email has been sent.',
-          },
-        });
-      },
-      (error) => {
-        console.log(error);
-        this.alertsService.alert('Error: Email failed to send.');
-      }
-    );
+    this.subscriptionSvc
+      .sendSafelist(
+        this.subscription._id,
+        this.subscription.phish_header,
+        Array.from(this.sendingProfileDomains),
+        Array.from(this.sendingProfileIps),
+        this.subscription.landing_domain,
+        this.templatesSelected,
+        this.subscription.reporting_password
+      )
+      .subscribe(
+        () => {
+          this.dialog.open(AlertComponent, {
+            data: {
+              title: 'Email Sent',
+              messageText: 'Safelisting notification email has been sent.',
+            },
+          });
+        },
+        (error) => {
+          console.log(error);
+          this.alertsService.alert('Error: Email failed to send.');
+        }
+      );
   }
 
   randomizePassword() {
