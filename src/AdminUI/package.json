@@ -16,7 +16,7 @@
     "@swimlane/ngx-charts": "^17.0.1",
     "angular": "^1.8.2",
     "bootstrap": "^4.6.1",
-    "codyhouse-framework": "^2.9.2",
+    "codyhouse-framework": "^2.9.3",
     "crypto-js": "^4.1.1",
     "font-awesome": "^4.7.0",
     "guid-typescript": "^1.0.9",
