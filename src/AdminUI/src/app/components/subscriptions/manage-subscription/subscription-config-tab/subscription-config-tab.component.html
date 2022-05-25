@@ -293,7 +293,16 @@
           provided to redirect clicks after our server is hit for click
           tracking.
         </div>
-        <mat-form-field class="w-100" appearance="outline">
+        <mat-form-field appearance="outline">
+          <mat-label>Landing Page Selection</mat-label>
+          <mat-select formControlName="landingPage">
+            <mat-option [value]="null">Use Template Default</mat-option>
+            <mat-option *ngFor="let page of pagesList" [value]="page._id">{{
+              page.name
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="w-80" appearance="outline">
           <mat-label>Landing Page URL</mat-label>
           <mat-hint>https://internal.example.org/</mat-hint>
           <input
@@ -306,10 +315,10 @@
       </div>
       <div class="mb-4">
         <div class="text-muted mb-1">
-          An optional landing domain for simulated phishing URLs.
+          Optional landing simulated phishing URL.
         </div>
         <mat-form-field class="w-100" appearance="outline">
-          <mat-label>Landing Domain</mat-label>
+          <mat-label>Simulated Phishing URL</mat-label>
           <mat-hint>https://internal.example.org/</mat-hint>
           <input
             matInput
@@ -623,12 +632,9 @@
       </div>
 
       <div class="continuous-subscription-checkbox">
-        <!-- Temporarily disable continuous subscription on all subscriptions -->
-        <!-- <mat-checkbox formControlName="continuousSubscription"
-        >Continuous Subscription Cycles</mat-checkbox> -->
-        <mat-checkbox [disabled]="true"
-          >Continuous Subscription Cycles
-        </mat-checkbox>
+        <mat-checkbox formControlName="continuousSubscription"
+          >Continuous Subscription Cycles</mat-checkbox
+        >
       </div>
       <div class="d-flex flex-row-reverse justify-content-between">
         <div class="d-flex flex-row">
