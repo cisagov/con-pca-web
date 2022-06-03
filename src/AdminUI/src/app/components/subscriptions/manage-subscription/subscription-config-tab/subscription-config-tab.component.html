@@ -472,7 +472,7 @@
       <div class="mb-2">
         <div class="text-muted">
           Time added to create a buffer between the start date and the first
-          email being sent. (Must be between 30 minutes and 30 days)
+          email being sent. (Must be between 15 minutes and 30 days)
         </div>
         <mat-form-field appearance="outline">
           <mat-label>Time</mat-label>
@@ -486,7 +486,7 @@
             *ngIf="f.bufferDisplayTime.errors?.outOfRange"
             class="invalid-feedback"
           >
-            Must be between 30 minutes and 30 days
+            Must be between 15 minutes and 30 days
           </mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline">
