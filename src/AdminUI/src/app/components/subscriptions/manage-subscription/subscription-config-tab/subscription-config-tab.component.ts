@@ -1027,6 +1027,7 @@ export class SubscriptionConfigTab
         this.processing = false;
       },
       (error) => {
+        console.log(sub._id);
         this.processing = false;
         this.loading = false;
         this.dialog.open(AlertComponent, {
