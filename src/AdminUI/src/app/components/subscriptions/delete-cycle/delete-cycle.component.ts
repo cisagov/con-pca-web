@@ -8,6 +8,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { SubscriptionModel } from 'src/app/models/subscription.model';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { Router } from '@angular/router';
+import { CycleService } from 'src/app/services/cycle.service';
 
 export interface DialogData {
   confirmName: string;
@@ -26,7 +27,7 @@ export class DeleteCycle {
   constructor(
     public dialog: MatDialog,
     private _snackBar: MatSnackBar,
-    public cycleSvc: SubscriptionService,
+    public cycleSvc: CycleService,
     private router: Router
   ) {}
 
@@ -38,7 +39,7 @@ export class DeleteCycle {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.cycleSvc.deleteSubscription(this.subscription).subscribe(
+        this.cycleSvc.deleteCycle(this.subscription).subscribe(
           (success) => {
             this.router.navigate(['/subscriptions']);
           },

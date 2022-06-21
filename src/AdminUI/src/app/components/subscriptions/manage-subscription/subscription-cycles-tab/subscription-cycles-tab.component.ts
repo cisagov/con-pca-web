@@ -284,10 +284,6 @@ export class SubscriptionStatsTab implements OnInit {
     }
   }
 
-  deleteCycle() {
-    console.log('cycle deleted');
-  }
-
   reportListValidator(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: boolean } | null => {
       const exprEmail =
