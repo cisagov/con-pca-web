@@ -1,0 +1,37 @@
+<h1 mat-dialog-title>Delete '{{data.cycle?._id}}'?</h1>
+<div mat-dialog-content>
+  <p>
+    <b>Warning</b> - Deleting a cycle is a significantly destructive task. All
+    data and statistics related to the cycle will be lost
+  </p>
+  <p>
+    In order to delete a cycle, you must type the cycle id into the box below
+  </p>
+  <mat-form-field>
+    <mat-label>Cycle ID</mat-label>
+    <input
+      matInput
+      id="confirmDeleteInput"
+      [(ngModel)]="data.confirmName"
+      (ngModelChange)="confirmValueChange($event)"
+    />
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <div
+    matTooltip="The entry field must match the cycle id to delete it"
+    matTooltipPosition="right"
+    matTooltipShowDelay="500"
+    [matTooltipDisabled]="canDelete"
+  >
+    <button
+      mat-button
+      [mat-dialog-close]="true"
+      [disabled]="!canDelete"
+      cdkFocusInitial
+    >
+      Delete
+    </button>
+  </div>
+</div>
