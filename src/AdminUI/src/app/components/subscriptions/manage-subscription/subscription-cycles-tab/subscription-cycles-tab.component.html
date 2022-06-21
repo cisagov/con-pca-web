@@ -14,16 +14,18 @@
         >
           <mat-option *ngFor="let c of subscription.cycles" [value]="c">
             {{ c.start_date | UTCtoReadableTime }} -
-            {{ c.end_date | UTCtoReadableTime }} ({{
-              c.target_count
-            }})</mat-option
-          >
+            {{ c.end_date | UTCtoReadableTime }} ({{ c.target_count }})
+          </mat-option>
         </mat-select>
       </mat-form-field>
     </div>
     <button mat-raised-button color="primary" (click)="pageRefresh()">
       Refresh
       <mat-icon class="table-btn-icon-size">autorenew</mat-icon>
+    </button>
+    <button mat-raised-button color="warn" (click)="deleteCycle()">
+      Delete
+      <mat-icon class="table-btn-icon-size">delete</mat-icon>
     </button>
 
     <div class="flex flex-row">
