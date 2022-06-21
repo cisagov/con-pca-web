@@ -5,14 +5,13 @@ import {
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { SubscriptionModel } from 'src/app/models/subscription.model';
-import { SubscriptionService } from 'src/app/services/subscription.service';
 import { Router } from '@angular/router';
 import { CycleService } from 'src/app/services/cycle.service';
+import { CycleModel } from 'src/app/models/cycle.model';
 
 export interface DialogData {
   confirmName: string;
-  subscription: SubscriptionModel;
+  cycle: CycleModel;
 }
 
 @Component({
@@ -22,7 +21,7 @@ export interface DialogData {
 })
 export class DeleteCycle {
   @Input()
-  subscription: SubscriptionModel;
+  cycle: CycleModel;
 
   constructor(
     public dialog: MatDialog,
@@ -33,17 +32,23 @@ export class DeleteCycle {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DeleteCycleDialog, {
-      width: '450px',
-      data: { subscription: this.subscription },
+      width: '500px',
+      data: { cycle: this.cycle },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.cycleSvc.deleteCycle(this.subscription).subscribe(
-          (success) => {
-            this.router.navigate(['/subscriptions']);
+        this.cycleSvc.deleteCycle(this.cycle._id).subscribe(
+          () => {
+            this._snackBar.open('Success: Cycle has been deleted.', 'Dismiss', {
+              duration: 5000,
+            });
+            this.router.navigate([
+              '/view-subscription',
+              this.cycle.subscription_id,
+            ]);
           },
-          (error) => {
+          () => {
             let snackBarRef = this._snackBar.open(
               'Cycle Deletion Failed',
               'Dismiss',
@@ -61,7 +66,7 @@ export class DeleteCycle {
   templateUrl: 'delete-cycle-dialog.html',
 })
 export class DeleteCycleDialog {
-  subscription: SubscriptionModel;
+  cycle: CycleModel;
   canDelete: boolean;
 
   constructor(
@@ -69,11 +74,11 @@ export class DeleteCycleDialog {
     @Inject(MAT_DIALOG_DATA) public data: DialogData
   ) {
     this.canDelete = false;
-    this.subscription = data.subscription;
+    this.cycle = data.cycle;
   }
 
   confirmValueChange(value) {
-    if (value === this.subscription.name) {
+    if (value === this.cycle._id) {
       this.canDelete = true;
     } else {
       this.canDelete = false;

@@ -1,15 +1,14 @@
-<h1 mat-dialog-title>Delete '{{data.subscription?.name}}'?</h1>
+<h1 mat-dialog-title>Delete '{{data.cycle?._id}}'?</h1>
 <div mat-dialog-content>
   <p>
     <b>Warning</b> - Deleting a cycle is a significantly destructive task. All
     data and statistics related to the cycle will be lost
   </p>
   <p>
-    In order to delete a cycle, you must type (or copy) the cycle id into the
-    box below
+    In order to delete a cycle, you must type the cycle id into the box below
   </p>
   <mat-form-field>
-    <mat-label>Cycle Name</mat-label>
+    <mat-label>Cycle ID</mat-label>
     <input
       matInput
       id="confirmDeleteInput"
