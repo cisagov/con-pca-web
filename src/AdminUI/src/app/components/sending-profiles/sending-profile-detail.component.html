@@ -3,20 +3,15 @@
 <form [formGroup]="profileForm">
   <div style="max-height: 70vh; overflow-y: auto; overflow-x: hidden">
     <mat-form-field appearance="outline" class="w-100">
-      <mat-label>Name*</mat-label>
+      <mat-label>Domain Name*</mat-label>
       <input
         formControlName="name"
         matInput
         [ngClass]="{ 'is-invalid': submitted && f.name.errors }"
       />
       <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
-        <div *ngIf="f.name.errors.required">Profile name is required</div>
+        <div *ngIf="f.name.errors.required">Domain name is required</div>
       </div>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" class="w-100">
-      <mat-label>Landing Page Domain*</mat-label>
-      <input formControlName="landingPageDomain" matInput />
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="w-100">

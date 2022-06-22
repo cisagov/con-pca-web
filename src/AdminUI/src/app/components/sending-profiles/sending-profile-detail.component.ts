@@ -58,7 +58,6 @@ export class SendingProfileDetailComponent implements OnInit {
    * convenience getter for easy access to form fields
    */
   get f() {
-    this.profileForm.controls['landingPageDomain'].disable();
     return this.profileForm.controls;
   }
 
@@ -68,7 +67,6 @@ export class SendingProfileDetailComponent implements OnInit {
   ngOnInit(): void {
     this.profileForm = new FormGroup({
       name: new FormControl('', Validators.required),
-      landingPageDomain: new FormControl(''),
       interfaceType: new FormControl('SMTP', Validators.required),
       from: new FormControl('', [
         Validators.required,
@@ -97,7 +95,6 @@ export class SendingProfileDetailComponent implements OnInit {
         (data: any) => {
           this.profile = data as SendingProfileModel;
           this.f.name.setValue(this.profile.name);
-          this.f.landingPageDomain.setValue(this.profile.landing_page_domain);
           this.f.interfaceType.setValue(this.profile.interface_type);
           this.f.from.setValue(this.profile.from_address);
           this.f.sendingIpAddress.setValue(this.profile.sending_ips);
@@ -220,7 +217,6 @@ export class SendingProfileDetailComponent implements OnInit {
 
     const sp = new SendingProfileModel();
     sp.name = this.f.name.value;
-    sp.landing_page_domain = this.f.landingPageDomain.value;
     sp.interface_type = this.f.interfaceType.value;
     sp.from_address = this.f.from.value;
     sp.sending_ips = this.f.sendingIpAddress.value;
