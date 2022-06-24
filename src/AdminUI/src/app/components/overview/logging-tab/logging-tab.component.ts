@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
 import { LoggingModel } from 'src/app/models/logging.model';
 import { LoggingService } from 'src/app/services/logging.service';
 
@@ -19,7 +18,7 @@ export class LoggingTab implements OnInit {
   public loggingSource: MatTableDataSource<LoggingModel>;
   loggingDisplayedColumns = ['timestamp', 'message'];
 
-  constructor(private loggingSvc: LoggingService, private router: Router) {}
+  constructor(private loggingSvc: LoggingService) {}
 
   ngOnInit(): void {
     this.loggingSource = new MatTableDataSource();
@@ -28,6 +27,14 @@ export class LoggingTab implements OnInit {
 
   async refresh() {
     this.loading = true;
+    this.loggingSource.sortingDataAccessor = (item, property) => {
+      switch (property) {
+        case 'timestamp':
+          return new Date(item.created);
+        default:
+          return item[property];
+      }
+    };
     await this.loggingSvc.getLogging().subscribe((logging: LoggingModel[]) => {
       this.loggingSource.sort = this.sortLogging;
       this.loggingSource.data = logging as LoggingModel[];
