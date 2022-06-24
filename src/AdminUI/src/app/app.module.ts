@@ -113,6 +113,7 @@ import { OverviewComponent } from './components/overview/overview.component';
 import { AggregateStatisticsTab } from './components/overview/aggregate-statistics-tab/aggregate-statistics-tab.component';
 import { SubscriptionStatusTab } from './components/overview/subscription-status-tab/subscription-status-tab.component';
 import { TemplateDataDialogComponent } from './components/subscriptions/manage-subscription/subscription-testing-tab/template-data-dialog/template-data-dialog.component';
+import { LoggingTab } from './components/overview/logging-tab/logging-tab.component';
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
   return () => settingsHttpService.initializeApp();
@@ -191,6 +192,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     LandingDomainsComponent,
     LandingDomainDetailComponent,
     NavigateAwayComponent,
+    LoggingTab,
   ],
   imports: [
     BrowserModule,
