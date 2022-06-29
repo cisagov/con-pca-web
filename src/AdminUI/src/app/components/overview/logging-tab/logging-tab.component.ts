@@ -48,7 +48,12 @@ export class LoggingTab implements OnInit {
   }
 
   public editSubscription(row) {
-    if (row.source) {
+    if (
+      row.source &&
+      (row.source_type == 'subscription' ||
+        row.source_type == 'cycle' ||
+        row.source_type == 'target')
+    ) {
       this.router.navigate(['/view-subscription', row.source]);
     }
   }
