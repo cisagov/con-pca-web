@@ -38,6 +38,7 @@
     <mat-row
       *matRowDef="let row; columns: loggingDisplayedColumns"
       class="table-row cursor-pointer"
+      (click)="editSubscription(row)"
     >
     </mat-row>
   </mat-table>

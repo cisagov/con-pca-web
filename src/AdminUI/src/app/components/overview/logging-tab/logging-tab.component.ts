@@ -3,6 +3,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { LoggingModel } from 'src/app/models/logging.model';
 import { LoggingService } from 'src/app/services/logging.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-logging-tab',
@@ -18,7 +19,7 @@ export class LoggingTab implements OnInit {
   public loggingSource: MatTableDataSource<LoggingModel>;
   loggingDisplayedColumns = ['timestamp', 'message'];
 
-  constructor(private loggingSvc: LoggingService) {}
+  constructor(private router: Router, private loggingSvc: LoggingService) {}
 
   ngOnInit(): void {
     this.loggingSource = new MatTableDataSource();
@@ -44,5 +45,11 @@ export class LoggingTab implements OnInit {
 
   pageRefresh(): void {
     this.refresh();
+  }
+
+  public editSubscription(row) {
+    if (row.source) {
+      this.router.navigate(['/view-subscription', row.source]);
+    }
   }
 }
