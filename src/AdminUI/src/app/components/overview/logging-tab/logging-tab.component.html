@@ -30,6 +30,11 @@
       >
       <mat-cell *matCellDef="let row"> {{ row.error_message }}</mat-cell>
     </ng-container>
+    <!-- File -->
+    <ng-container matColumnDef="file">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>File</mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{ row.file }}</mat-cell>
+    </ng-container>
 
     <!-- HEADER ROW -->
     <mat-header-row *matHeaderRowDef="loggingDisplayedColumns"></mat-header-row>

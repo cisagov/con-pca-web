@@ -17,7 +17,7 @@ export class LoggingTab implements OnInit {
 
   // Logging Messages Table
   public loggingSource: MatTableDataSource<LoggingModel>;
-  loggingDisplayedColumns = ['timestamp', 'message'];
+  loggingDisplayedColumns = ['timestamp', 'message', 'file'];
 
   constructor(private router: Router, private loggingSvc: LoggingService) {}
 
