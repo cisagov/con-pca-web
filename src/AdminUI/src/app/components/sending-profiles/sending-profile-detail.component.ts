@@ -34,12 +34,6 @@ export class SendingProfileDetailComponent implements OnInit {
   profileForm: FormGroup;
   profile: SendingProfileModel;
   id: string;
-
-  @ViewChild(MatSort) sort: MatSort;
-  displayedColumns = ['header', 'value', 'actions'];
-
-  headerList: MatTableDataSource<CustomHeader> =
-    new MatTableDataSource<CustomHeader>();
   submitted = false;
 
   /**
@@ -83,10 +77,6 @@ export class SendingProfileDetailComponent implements OnInit {
       // Mailgun
       mailgunApiKey: new FormControl(''),
       mailgunDomain: new FormControl(''),
-
-      // For adding headers
-      newHeaderName: new FormControl(''),
-      newHeaderValue: new FormControl(''),
     });
 
     if (!!this.id) {
@@ -106,16 +96,6 @@ export class SendingProfileDetailComponent implements OnInit {
             this.f.mailgunApiKey.setValue(this.profile.mailgun_api_key);
             this.f.mailgunDomain.setValue(this.profile.mailgun_domain);
           }
-          this.headerList = new MatTableDataSource<CustomHeader>();
-          if (this.profile.headers) {
-            for (const h of this.profile.headers) {
-              const headerListItem = new CustomHeader();
-              headerListItem.header = h.key;
-              headerListItem.value = h.value;
-              this.headerList.data.push(headerListItem);
-            }
-          }
-          this.headerList.sort = this.sort;
         },
         (err) => {
           console.log('send profile error:');
@@ -123,39 +103,6 @@ export class SendingProfileDetailComponent implements OnInit {
         }
       );
     }
-  }
-
-  /**
-   * Adds a custom email header to the internal list.
-   */
-  addHeader() {
-    const key = this.f.newHeaderName.value.trim();
-    if (key === '') {
-      return;
-    }
-
-    if (!this.headerList) {
-      this.headerList = new MatTableDataSource<CustomHeader>();
-    }
-
-    const data = this.headerList.data;
-    const newHeader = new CustomHeader();
-    newHeader.header = key;
-    newHeader.value = this.f.newHeaderValue.value.trim();
-    data.push(newHeader);
-    this.headerList.data = data;
-
-    this.f.newHeaderName.setValue('');
-    this.f.newHeaderValue.setValue('');
-  }
-
-  /**
-   * Deletes a custom email header from the internal list.
-   */
-  deleteHeader(headerToDelete: any) {
-    this.headerList.data = this.headerList.data.filter(
-      (x) => x.header !== headerToDelete.header
-    );
   }
 
   /**
@@ -220,7 +167,6 @@ export class SendingProfileDetailComponent implements OnInit {
     sp.interface_type = this.f.interfaceType.value;
     sp.from_address = this.f.from.value;
     sp.sending_ips = this.f.sendingIpAddress.value;
-    sp.headers = [];
 
     if (sp.interface_type === 'SMTP') {
       sp.smtp_username = this.f.username.value;
@@ -229,16 +175,6 @@ export class SendingProfileDetailComponent implements OnInit {
     } else if (sp.interface_type === 'Mailgun') {
       sp.mailgun_api_key = this.f.mailgunApiKey.value;
       sp.mailgun_domain = this.f.mailgunDomain.value;
-    }
-
-    if (!!this.headerList.data) {
-      for (const ch of this.headerList.data) {
-        const h = {
-          key: ch.header,
-          value: ch.value,
-        };
-        sp.headers.push(h);
-      }
     }
 
     if (this.id) {
@@ -288,9 +224,4 @@ export class SendingProfileDetailComponent implements OnInit {
     }
     return email_with_brackets;
   }
-}
-
-export class CustomHeader {
-  header: string;
-  value: string;
 }
