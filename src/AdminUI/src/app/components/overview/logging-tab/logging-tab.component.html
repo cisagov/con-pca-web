@@ -23,17 +23,17 @@
         {{ row.created | date: "medium" }}</mat-cell
       >
     </ng-container>
+    <!-- File -->
+    <ng-container matColumnDef="file">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>File</mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{ row.file }}</mat-cell>
+    </ng-container>
     <!-- ERROR MESSAGE -->
     <ng-container matColumnDef="message">
       <mat-header-cell *matHeaderCellDef mat-sort-header
         >Message</mat-header-cell
       >
       <mat-cell *matCellDef="let row"> {{ row.error_message }}</mat-cell>
-    </ng-container>
-    <!-- File -->
-    <ng-container matColumnDef="file">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>File</mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{ row.file }}</mat-cell>
     </ng-container>
 
     <!-- HEADER ROW -->
