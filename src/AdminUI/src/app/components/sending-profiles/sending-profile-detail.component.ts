@@ -62,12 +62,6 @@ export class SendingProfileDetailComponent implements OnInit {
     this.profileForm = new FormGroup({
       name: new FormControl('', Validators.required),
       interfaceType: new FormControl('SMTP', Validators.required),
-      from: new FormControl('', [
-        Validators.required,
-        Validators.pattern(
-          '^\\s*([A-Za-z\\d\\s]+?)\\s*<([\\w.!#$%&’*+\\/=?^_`{|}~-]+@[\\w-]+(?:\\.[\\w-]+)+)>\\s*$|^\\s*([\\w.!#$%&’*+\\/=?^_`{|}~-]+@[\\w-]+(?:\\.[\\w-]+)+)\\s*$'
-        ),
-      ]),
       sendingIpAddress: new FormControl(''),
       // SMTP
       host: new FormControl(''),
@@ -86,7 +80,6 @@ export class SendingProfileDetailComponent implements OnInit {
           this.profile = data as SendingProfileModel;
           this.f.name.setValue(this.profile.name);
           this.f.interfaceType.setValue(this.profile.interface_type);
-          this.f.from.setValue(this.profile.from_address);
           this.f.sendingIpAddress.setValue(this.profile.sending_ips);
           if (this.profile.interface_type === 'SMTP') {
             this.f.host.setValue(this.profile.smtp_host);
@@ -135,10 +128,6 @@ export class SendingProfileDetailComponent implements OnInit {
       const controls = this.profileForm.controls;
       for (var name in controls) {
         if (controls[name].invalid) {
-          if (name == 'from') {
-            controls[name].hasError('pattern');
-            name = 'From as a valid Email';
-          }
           invalid.push(this.capitalizeFirstLetter(name));
         }
       }
@@ -158,14 +147,13 @@ export class SendingProfileDetailComponent implements OnInit {
 
   save() {
     if (this.profileForm.invalid) {
-      console.log(this.f.from.errors);
+      console.log(this.f.name.errors);
       return;
     }
 
     const sp = new SendingProfileModel();
     sp.name = this.f.name.value;
     sp.interface_type = this.f.interfaceType.value;
-    sp.from_address = this.f.from.value;
     sp.sending_ips = this.f.sendingIpAddress.value;
 
     if (sp.interface_type === 'SMTP') {
@@ -193,7 +181,7 @@ export class SendingProfileDetailComponent implements OnInit {
   onSendTestClick() {
     let sp: SendingProfileModel;
     sp = this.save();
-    sp.from_address = this.getEmailFromBrackets(sp.from_address);
+    sp.from_address = `test@${sp.name}`;
     let email_for_test: TestEmailModel = {
       template: null, //template name to be used in the test
       first_name: 'test',
@@ -214,14 +202,5 @@ export class SendingProfileDetailComponent implements OnInit {
         Swal.fire(error);
       }
     );
-  }
-
-  getEmailFromBrackets(email_with_brackets: string) {
-    var regex = /.+\<(.+@.+)>/g;
-    if (regex.test(email_with_brackets)) {
-      var match = regex.exec(email_with_brackets);
-      return match[0];
-    }
-    return email_with_brackets;
   }
 }
