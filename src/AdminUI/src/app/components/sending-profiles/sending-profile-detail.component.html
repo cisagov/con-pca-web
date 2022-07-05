@@ -13,22 +13,6 @@
         <div *ngIf="f.name.errors.required">Domain name is required</div>
       </div>
     </mat-form-field>
-
-    <mat-form-field appearance="outline" class="w-100">
-      <mat-label>From*</mat-label>
-      <input
-        formControlName="from"
-        matInput
-        [ngClass]="{ 'is-invalid': submitted && f.from.errors }"
-      />
-      <div *ngIf="submitted && f.from.errors" class="invalid-feedback">
-        <div *ngIf="f.from.errors.required">From address is required</div>
-        <div *ngIf="f.from.errors.pattern">
-          From address must be a valid email address
-        </div>
-      </div>
-    </mat-form-field>
-
     <mat-form-field appearance="outline" class="w-100">
       <mat-label>Sending Ip[s]</mat-label>
       <input formControlName="sendingIpAddress" matInput />
@@ -76,76 +60,12 @@
         <input formControlName="mailgunDomain" matInput />
       </mat-form-field>
     </div>
-
-    <div>
-      <h2>Email Headers</h2>
-      <div class="d-flex flex-row align-items-center w-100">
-        <mat-form-field appearance="outline" class="mr-2">
-          <input
-            formControlName="newHeaderName"
-            matInput
-            placeholder="Custom Header"
-            maxlength="100"
-          />
-        </mat-form-field>
-        <mat-form-field appearance="outline" class="mr-2">
-          <input
-            formControlName="newHeaderValue"
-            matInput
-            placeholder="Header Value"
-            maxlength="100"
-          />
-        </mat-form-field>
-        <div class="mb-3">
-          <button mat-raised-button color="primary" (click)="addHeader()">
-            Add Custom Header
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <div class="mb-2">
-      <mat-table [dataSource]="headerList" matSort>
-        <ng-container matColumnDef="header">
-          <mat-header-cell *matHeaderCellDef mat-sort-header
-            >Header</mat-header-cell
-          >
-          <mat-cell *matCellDef="let row">{{ row.header }}</mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="value">
-          <mat-header-cell *matHeaderCellDef mat-sort-header
-            >Value</mat-header-cell
-          >
-          <mat-cell *matCellDef="let row">{{ row.value }}</mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="actions">
-          <mat-header-cell *matHeaderCellDef></mat-header-cell>
-          <mat-cell *matCellDef="let row">
-            <button
-              class="table-btn-icon"
-              mat-flat-button
-              color="warn"
-              (click)="deleteHeader(row)"
-            >
-              <mat-icon>delete</mat-icon>
-            </button>
-          </mat-cell>
-        </ng-container>
-
-        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row
-          class="table-row"
-          *matRowDef="let row; columns: displayedColumns"
-        ></mat-row>
-      </mat-table>
-
-      <div *ngIf="!headerList || headerList?.data.length == 0" class="p-3">
-        No headers defined
-      </div>
-    </div>
   </div>
 
   <div class="text-left mt-3 mb-4">
+    <p>
+      Test email will be sent from: <strong>test@{{ f.name.value }}</strong>
+    </p>
     <mat-form-field>
       <mat-label>Test Email</mat-label>
       <input
