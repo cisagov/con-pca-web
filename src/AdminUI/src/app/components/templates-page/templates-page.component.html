@@ -35,8 +35,19 @@
           Actions<mat-icon>arrow_drop_down</mat-icon>
         </button>
         <mat-menu xPosition="before" yPosition="below" #menu="matMenu">
-          <button mat-menu-item (click)="retireTemplates()">
+          <button
+            mat-menu-item
+            *ngIf="!showRetired"
+            (click)="retireTemplates()"
+          >
             <mat-icon color="warn">archive</mat-icon>Retire
+          </button>
+          <button
+            mat-menu-item
+            *ngIf="showRetired"
+            (click)="restoreTemplates()"
+          >
+            <mat-icon color="warn">unarchive</mat-icon>Restore
           </button>
           <button mat-menu-item (click)="duplicateTemplate()">
             <mat-icon color="basic">file_copy</mat-icon>Duplicate
