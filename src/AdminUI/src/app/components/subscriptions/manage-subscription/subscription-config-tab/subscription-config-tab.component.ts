@@ -645,6 +645,9 @@ export class SubscriptionConfigTab
       false,
       s.templates_selected
     );
+    this.templatesSelected = this.templatesSelected.concat(
+      await this.templateSvc.getAllTemplates(true, s.templates_selected)
+    );
     this.setDefaultTimeUnit();
     this.setEndTimes();
     this.checkValid(false);

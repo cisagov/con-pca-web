@@ -115,6 +115,7 @@ import { SubscriptionStatusTab } from './components/overview/subscription-status
 import { TemplateDataDialogComponent } from './components/subscriptions/manage-subscription/subscription-testing-tab/template-data-dialog/template-data-dialog.component';
 import { LoggingTab } from './components/overview/logging-tab/logging-tab.component';
 import { FailedEmailsTab } from './components/overview/failed-emails-tab/failed-emails-tab.component';
+import { RestoreTemplatesDialogComponent } from './components/template-manager/restore-templates-dialog/restore-templates-dialog.component';
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
   return () => settingsHttpService.initializeApp();
@@ -156,6 +157,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     SubDashboardComponent,
     ConfirmComponent,
     TagSelectionComponent,
+    RestoreTemplatesDialogComponent,
     RetireTemplateDialogComponent,
     RetireTemplatesDialogComponent,
     CustomerDialogComponent,
