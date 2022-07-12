@@ -157,7 +157,6 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     SubDashboardComponent,
     ConfirmComponent,
     TagSelectionComponent,
-    RestoreTemplatesDialogComponent,
     RetireTemplateDialogComponent,
     RetireTemplatesDialogComponent,
     CustomerDialogComponent,
