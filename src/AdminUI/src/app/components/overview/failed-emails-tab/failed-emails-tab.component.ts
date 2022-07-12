@@ -60,6 +60,14 @@ export class FailedEmailsTab implements OnInit {
     this.refresh();
   }
 
+  removeEmails(): void {
+    const emailsToRemove = this.selection.selected;
+    for (var email of emailsToRemove) {
+      this.failedSvc.deleteFailedEmails(email);
+    }
+    this.pageRefresh();
+  }
+
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;

@@ -1,4 +1,5 @@
 export class FailedModel {
+  _id: string;
   recipient: string;
   sent_time: string;
   reason: string;

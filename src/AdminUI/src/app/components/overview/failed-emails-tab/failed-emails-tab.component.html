@@ -6,6 +6,19 @@
       Refresh
       <mat-icon class="table-btn-icon-size">autorenew</mat-icon>
     </button>
+    <button
+      [disabled]="!selection.hasValue()"
+      mat-raised-button
+      color="accent"
+      [matMenuTriggerFor]="menu"
+    >
+      Actions<mat-icon>arrow_drop_down</mat-icon>
+    </button>
+    <mat-menu xPosition="before" yPosition="below" #menu="matMenu">
+      <button mat-menu-item (click)="removeEmails()">
+        <mat-icon color="warn">archive</mat-icon>Remove
+      </button>
+    </mat-menu>
   </div>
   <!-- TABLE -->
   <mat-table
