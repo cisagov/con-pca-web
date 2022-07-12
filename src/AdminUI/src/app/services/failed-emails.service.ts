@@ -12,7 +12,7 @@ export class FailedEmailsService {
   ) {}
 
   public getFailedEmails() {
-    const url = `${this.SettingsService.settings.apiUrl}/api/failedemails/`;
+    const url = `${this.SettingsService.settings.apiUrl}/api/failedemails/?retired=false`;
     return this.http.get(url);
   }
 }

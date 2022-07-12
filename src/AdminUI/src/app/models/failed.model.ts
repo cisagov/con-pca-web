@@ -3,4 +3,5 @@ export class FailedModel {
   sent_time: string;
   reason: string;
   delivery_status: string;
+  removed: boolean;
 }
