@@ -4,6 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { FailedModel } from 'src/app/models/failed.model';
 import { FailedEmailsService } from 'src/app/services/failed-emails.service';
 import { Router } from '@angular/router';
+import { SelectionModel } from '@angular/cdk/collections';
 
 @Component({
   selector: 'app-failed-emails-tab',
@@ -15,9 +16,13 @@ export class FailedEmailsTab implements OnInit {
   sortFailed: MatSort;
   loading = false;
 
+  // Failed Email Selection
+  selection = new SelectionModel<FailedModel>(true, []);
+
   // Failed Emails Table
   public failedSource: MatTableDataSource<FailedModel>;
   failedDisplayedColumns = [
+    'select',
     'sent_time',
     'recipient',
     'reason',
@@ -47,7 +52,22 @@ export class FailedEmailsTab implements OnInit {
         this.failedSource.sort = this.sortFailed;
         this.failedSource.data = failed as FailedModel[];
         this.loading = false;
+        this.selection = new SelectionModel<FailedModel>(true, []);
       });
+  }
+
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.failedSource.data.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    this.isAllSelected()
+      ? this.selection.clear()
+      : this.failedSource.data.forEach((row) => this.selection.select(row));
   }
 
   pageRefresh(): void {
