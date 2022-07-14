@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <h2 class="mt-2">Failed Emails</h2>
+  <p>Emails that have failed to be delivered will be displayed below.</p>
   <div class="flex-container">
-    <p>Emails that have failed to be delivered will be displayed below.</p>
     <button mat-raised-button color="primary" (click)="pageRefresh()">
       Refresh
       <mat-icon class="table-btn-icon-size">autorenew</mat-icon>
@@ -20,71 +20,85 @@
       </button>
     </mat-menu>
   </div>
-  <!-- TABLE -->
-  <mat-table
-    #failedTable
-    [dataSource]="failedSource"
-    [hidden]="loading"
-    matSort
-  >
-    <!-- Select -->
-    <ng-container matColumnDef="select">
-      <mat-header-cell *matHeaderCellDef>
-        <mat-checkbox
-          (change)="$event ? masterToggle() : null"
-          [checked]="selection.hasValue() && isAllSelected()"
-          [indeterminate]="selection.hasValue() && !isAllSelected()"
-        >
-        </mat-checkbox>
-      </mat-header-cell>
-      <mat-cell *matCellDef="let row">
-        <mat-checkbox
-          (click)="$event.stopPropagation()"
-          (change)="$event ? selection.toggle(row) : null"
-          [checked]="selection.isSelected(row)"
-        >
-        </mat-checkbox>
-      </mat-cell>
-    </ng-container>
-    <!-- SENT TIME -->
-    <ng-container matColumnDef="sent_time">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >sent_time</mat-header-cell
-      >
-      <mat-cell *matCellDef="let row">
-        {{ row.sent_time | date: "medium" }}</mat-cell
-      >
-    </ng-container>
-    <!-- RECIPIENT -->
-    <ng-container matColumnDef="recipient">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Recipient</mat-header-cell
-      >
-      <mat-cell *matCellDef="let row"> {{ row.recipient }}</mat-cell>
-    </ng-container>
-    <!-- REASON -->
-    <ng-container matColumnDef="reason">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Reason</mat-header-cell
-      >
-      <mat-cell *matCellDef="let row"> {{ row.reason }}</mat-cell>
-    </ng-container>
-    <!-- DELIVERY STATUS -->
-    <ng-container matColumnDef="delivery_status">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Delivery Status</mat-header-cell
-      >
-      <mat-cell *matCellDef="let row"> {{ row.delivery_status }}</mat-cell>
-    </ng-container>
-
-    <!-- HEADER ROW -->
-    <mat-header-row *matHeaderRowDef="failedDisplayedColumns"></mat-header-row>
-
-    <!-- ROW DEFINITION -->
-    <mat-row
-      *matRowDef="let row; columns: failedDisplayedColumns"
-      class="table-row cursor-pointer"
+  <div class="col p-0 w-100">
+    <div
+      *ngIf="loading"
+      style="text-align: center; padding-top: 2rem; padding-bottom: 2rem"
     >
-    </mat-row>
-  </mat-table>
+      <mat-spinner
+        class="spinner"
+        style="margin-left: auto; margin-right: auto"
+        diameter="50"
+      ></mat-spinner>
+    </div>
+    <!-- TABLE -->
+    <mat-table
+      #failedTable
+      [dataSource]="failedSource"
+      [hidden]="loading"
+      matSort
+    >
+      <!-- Select -->
+      <ng-container matColumnDef="select">
+        <mat-header-cell *matHeaderCellDef>
+          <mat-checkbox
+            (change)="$event ? masterToggle() : null"
+            [checked]="selection.hasValue() && isAllSelected()"
+            [indeterminate]="selection.hasValue() && !isAllSelected()"
+          >
+          </mat-checkbox>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <mat-checkbox
+            (click)="$event.stopPropagation()"
+            (change)="$event ? selection.toggle(row) : null"
+            [checked]="selection.isSelected(row)"
+          >
+          </mat-checkbox>
+        </mat-cell>
+      </ng-container>
+      <!-- SENT TIME -->
+      <ng-container matColumnDef="sent_time">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Sent Time</mat-header-cell
+        >
+        <mat-cell *matCellDef="let row">
+          {{ row.sent_time | date: "medium" }}</mat-cell
+        >
+      </ng-container>
+      <!-- RECIPIENT -->
+      <ng-container matColumnDef="recipient">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Recipient</mat-header-cell
+        >
+        <mat-cell *matCellDef="let row"> {{ row.recipient }}</mat-cell>
+      </ng-container>
+      <!-- ERROR TYPE -->
+      <ng-container matColumnDef="error_type">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Error Type</mat-header-cell
+        >
+        <mat-cell *matCellDef="let row"> {{ row.error_type }}</mat-cell>
+      </ng-container>
+      <!-- REASON -->
+      <ng-container matColumnDef="reason">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Reason</mat-header-cell
+        >
+        <mat-cell *matCellDef="let row"> {{ row.reason }}</mat-cell>
+      </ng-container>
+
+      <!-- HEADER ROW -->
+      <mat-header-row
+        *matHeaderRowDef="failedDisplayedColumns"
+      ></mat-header-row>
+
+      <!-- ROW DEFINITION -->
+      <mat-row
+        *matRowDef="let row; columns: failedDisplayedColumns"
+        class="table-row cursor-pointer"
+      >
+      </mat-row>
+    </mat-table>
+  </div>
 </div>

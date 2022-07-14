@@ -25,8 +25,8 @@ export class FailedEmailsTab implements OnInit {
     'select',
     'sent_time',
     'recipient',
+    'error_type',
     'reason',
-    'delivery_status',
   ];
 
   constructor(private router: Router, private failedSvc: FailedEmailsService) {}
@@ -57,6 +57,7 @@ export class FailedEmailsTab implements OnInit {
   }
 
   pageRefresh(): void {
+    this.failedSvc.getFailedEmails();
     this.refresh();
   }
 
