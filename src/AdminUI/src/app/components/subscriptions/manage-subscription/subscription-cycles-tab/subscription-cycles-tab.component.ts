@@ -41,7 +41,8 @@ export class SubscriptionStatsTab implements OnInit {
   display_timeline = false;
   includeNonhuman = false;
 
-  downloading = false;
+  downloadingCycle = false;
+  downloadingSubscription = false;
   downloadingText = 'Downloading Cycle Data';
 
   generating = false;
@@ -154,7 +155,7 @@ export class SubscriptionStatsTab implements OnInit {
           this.generating = false;
         },
         (error) => {
-          this.popupReportError(error, 'downloading', reportType);
+          this.popupReportError(error, 'downloading', `${reportType} report`);
           this.generating = false;
         }
       );
@@ -170,7 +171,7 @@ export class SubscriptionStatsTab implements OnInit {
           this.generating = false;
         },
         (error) => {
-          this.popupReportError(error, 'sending', reportType);
+          this.popupReportError(error, 'sending', `${reportType} report`);
           this.generating = false;
         }
       );
@@ -180,7 +181,7 @@ export class SubscriptionStatsTab implements OnInit {
     this.dialog.open(AlertComponent, {
       data: {
         title: 'Error',
-        messageText: `An error occurred ${action} the ${type} report. Check logs for more detail.`,
+        messageText: `An error occurred ${action} the ${type}. Check logs for more detail.`,
       },
     });
   }
@@ -194,8 +195,21 @@ export class SubscriptionStatsTab implements OnInit {
     URL.revokeObjectURL(objectUrl);
   }
 
+  exportSubscriptionData() {
+    this.downloadingSubscription = true;
+    this.subscriptionSvc.exportSubscriptionData(this.subscription_id).subscribe(
+      (blob) => {
+        this.downloadObject('test.csv', blob);
+      },
+      (error) => {
+        this.popupReportError(error, 'downloading', 'subscription export');
+      }
+    );
+    this.downloadingSubscription = false;
+  }
+
   downloadCycleData() {
-    this.downloading = true;
+    this.downloadingCycle = true;
     this.cycleSvc.getCycle(this.selectedCycle._id).subscribe((cycle) => {
       this.subscriptionSvc.getSubscription(cycle.subscription_id).subscribe(
         (subscription) => {
@@ -203,11 +217,11 @@ export class SubscriptionStatsTab implements OnInit {
           const filename = `${subscription.name}_cycle_data.json`;
           const blob = new Blob([JSON.stringify(data)]);
           this.downloadObject(filename, blob);
-          this.downloading = false;
+          this.downloadingCycle = false;
         },
         (error) => {
-          this.popupReportError(error, 'downloading', 'cycle');
-          this.downloading = false;
+          this.popupReportError(error, 'downloading', 'cycle report');
+          this.downloadingCycle = false;
         }
       );
     });
