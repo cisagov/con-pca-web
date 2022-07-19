@@ -58,6 +58,10 @@ export class SubscriptionStatsTab implements OnInit {
   };
   reportListErrorLineNum = 0;
 
+  // subscription export info
+  hourlyRate = 0;
+  dailyRate = 0;
+
   constructor(
     public subscriptionSvc: SubscriptionService,
     public datePipe: DatePipe,
@@ -93,6 +97,17 @@ export class SubscriptionStatsTab implements OnInit {
           this.reportListValidator(),
         ]);
         this.convertReportsToCSV();
+      }
+      if (this.subscription.status === 'running') {
+        this.subscriptionSvc
+          .checkValid(
+            this.subscription.cycle_length_minutes,
+            this.subscription.target_email_list.length
+          )
+          .subscribe((resp: any) => {
+            this.hourlyRate = resp.hourly_rate;
+            this.dailyRate = resp.daily_rate;
+          });
       }
     });
   }
@@ -197,14 +212,51 @@ export class SubscriptionStatsTab implements OnInit {
 
   exportSubscriptionData() {
     this.downloadingSubscription = true;
-    this.subscriptionSvc.exportSubscriptionData(this.subscription_id).subscribe(
-      (blob) => {
-        this.downloadObject('test.csv', blob);
-      },
-      (error) => {
-        this.popupReportError(error, 'downloading', 'subscription export');
-      }
-    );
+    const bufTimeMinutes = this.subscription.buffer_time_minutes;
+    const bufferTime =
+      bufTimeMinutes > 1400
+        ? `${bufTimeMinutes / 1440} days`
+        : `${bufTimeMinutes / 60} hours`;
+
+    let statusReportDays = 'subscription not active';
+    let cycleReportDay = 'subscription not active';
+
+    if (this.subscription.status === 'running') {
+      const cycleLength: number = this.subscription.cycle_length_minutes;
+      const targetCount: number = this.subscription.target_email_list.length;
+      statusReportDays = `${new Date(
+        this.subscription.tasks.find(
+          (t) => t.task_type === 'status_report'
+        ).scheduled_date
+      ).toDateString()}`;
+      cycleReportDay = `${new Date(
+        this.subscription.tasks.find(
+          (t) => t.task_type === 'cycle_report'
+        ).scheduled_date
+      ).toDateString()}`;
+    }
+
+    const data = {
+      'Launch Day': new Date(this.subscription.start_date).toDateString(),
+      'Main Recipient': this.subscription.primary_contact.email,
+      'Number of Participants': this.subscription.target_email_list.length,
+      'Status report delivery days': statusReportDays,
+      'cycle report delivery day': cycleReportDay,
+      'Emails sent by': new Date(
+        this.selectedCycle.send_by_date
+      ).toDateString(),
+      'Cycle completed by': new Date(
+        this.selectedCycle.end_date
+      ).toDateString(),
+      'Hourly email sending rate': this.hourlyRate,
+      'Daily email sending rate': this.dailyRate,
+      'Buffer days between cycles': bufferTime,
+    };
+    const blob: Blob = new Blob([this.convertToCSV(data)], {
+      type: 'text/csv;charset=utf-8',
+    });
+    const url = window.URL.createObjectURL(blob);
+    window.open(url);
     this.downloadingSubscription = false;
   }
 
@@ -346,5 +398,9 @@ export class SubscriptionStatsTab implements OnInit {
 
   get f() {
     return this.reportedStatsForm.controls;
+  }
+
+  private convertToCSV(data: object) {
+    return Object.entries(data).join('\n');
   }
 }
