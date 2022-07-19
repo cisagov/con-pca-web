@@ -264,4 +264,9 @@ export class SubscriptionService {
     const url = `${this.settingsService.settings.apiUrl}/api/util/randompassword/`;
     return this.http.get(url);
   }
+
+  public exportSubscriptionData(subscriptionId: string) {
+    const url = `${this.settingsService.settings.apiUrl}/api/subscription/${subscriptionId}/export/`;
+    return this.http.get(url);
+  }
 }
