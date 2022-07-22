@@ -69,7 +69,7 @@ export class CustomersComponent implements OnInit {
       this.layout_service.setTitle('Customers');
     }
     this.loading = true;
-    this.customerSvc.getCustomers().subscribe((data: any) => {
+    this.customerSvc.getCustomers(this.showRetired).subscribe((data: any) => {
       this.customersData.data = data as CustomerModel[];
       this.customersData.sort = this.sort;
       this.loading = false;
@@ -106,6 +106,15 @@ export class CustomersComponent implements OnInit {
   public editCustomer(customer_id) {
     if (!this.insideDialog) this.router.navigate(['/customer', customer_id]);
     else this.setCustomer(customer_id);
+  }
+
+  onRetiredToggle() {
+    if (this.displayed_columns.includes('retired')) {
+      this.displayed_columns.pop();
+    } else {
+      this.displayed_columns.push('retired');
+    }
+    this.refresh();
   }
 
   /** Whether the number of selected elements matches the total number of rows. */

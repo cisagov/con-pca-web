@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import {
   ContactModel,
   NewCustomerModel,
@@ -8,6 +8,11 @@ import {
 } from 'src/app/models/customer.model';
 import { BehaviorSubject } from 'rxjs';
 import { SettingsService } from './settings.service';
+
+const headers = {
+  headers: new HttpHeaders().set('Content-Type', 'application/json'),
+  params: new HttpParams(),
+};
 
 @Injectable()
 export class CustomerService {
@@ -29,9 +34,16 @@ export class CustomerService {
     return this.showCustomerInfoStatus;
   }
   // Returns observable on http request to get customers
-  public getCustomers() {
-    const url = `${this.settingsService.settings.apiUrl}/api/customers/`;
-    return this.http.get<CustomerModel[]>(url);
+  public getCustomers(retired: boolean = false) {
+    let url = `${this.settingsService.settings.apiUrl}/api/customers/`;
+    const parameters = [];
+    if (retired) {
+      parameters.push('archived=true');
+    }
+    if (parameters) {
+      url = `${url}?${parameters.join('&')}`;
+    }
+    return this.http.get<CustomerModel[]>(url, headers);
   }
 
   public getAllContacts(customers: CustomerModel[]): ICustomerContact[] {

@@ -21,6 +21,15 @@
         >
           New Customer
         </button>
+        <div class="d-flex flex-row-reverse mb-2">
+          <mat-slide-toggle
+            class="mt-1 ml-1 mr-1"
+            [(ngModel)]="showRetired"
+            (change)="onRetiredToggle()"
+          >
+            Show Retired
+          </mat-slide-toggle>
+        </div>
       </div>
     </div>
 
