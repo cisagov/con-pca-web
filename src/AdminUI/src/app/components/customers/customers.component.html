@@ -21,6 +21,19 @@
         >
           New Customer
         </button>
+        <button
+          [disabled]="!selection.hasValue()"
+          mat-raised-button
+          color="accent"
+          [matMenuTriggerFor]="menu"
+        >
+          Actions<mat-icon>arrow_drop_down</mat-icon>
+        </button>
+        <mat-menu xPosition="before" yPosition="below" #menu="matMenu">
+          <button mat-menu-item (click)="onRetiredToggle()">
+            <mat-icon color="warn">archive</mat-icon>Remove
+          </button>
+        </mat-menu>
         <div class="d-flex flex-row-reverse mb-2">
           <mat-slide-toggle
             class="mt-1 ml-1 mr-1"
