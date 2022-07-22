@@ -5,6 +5,7 @@ import { CustomerService } from 'src/app/services/customer.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CustomerModel } from 'src/app/models/customer.model';
 import { Router } from '@angular/router';
+import { SelectionModel } from '@angular/cdk/collections';
 import { MatSort } from '@angular/material/sort';
 import { NavigateAwayComponent } from '../dialogs/navigate-away/navigate-away.component';
 
@@ -18,8 +19,10 @@ export class CustomersComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
   loading = false;
+  showRetired: boolean = false;
 
   displayed_columns = [
+    'select',
     'name',
     'identifier',
     'address_1',
@@ -27,10 +30,13 @@ export class CustomersComponent implements OnInit {
     'city',
     'state',
     'zip_code',
-    'select',
+    'edit',
   ];
   customersData = new MatTableDataSource<CustomerModel>();
   search_input = '';
+
+  // Customer Selection
+  selection = new SelectionModel<CustomerModel>(true, []);
 
   constructor(
     private layout_service: LayoutMainService,
@@ -100,5 +106,19 @@ export class CustomersComponent implements OnInit {
   public editCustomer(customer_id) {
     if (!this.insideDialog) this.router.navigate(['/customer', customer_id]);
     else this.setCustomer(customer_id);
+  }
+
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.customersData.data.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    this.isAllSelected()
+      ? this.selection.clear()
+      : this.customersData.data.forEach((row) => this.selection.select(row));
   }
 }
