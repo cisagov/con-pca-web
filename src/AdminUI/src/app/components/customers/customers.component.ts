@@ -2,12 +2,15 @@ import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { CustomerService } from 'src/app/services/customer.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CustomerModel } from 'src/app/models/customer.model';
 import { Router } from '@angular/router';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatSort } from '@angular/material/sort';
 import { NavigateAwayComponent } from '../dialogs/navigate-away/navigate-away.component';
+import { ArchiveCustomersDialogComponent } from '../customer/archive-customers-dialog/archive-customers-dialog.component';
+import { UnarchiveCustomersDialogComponent } from '../customer/unarchive-customers-dialog/unarchive-customers-dialog.component';
+import { AlertsService } from 'src/app/services/alerts.service';
 
 @Component({
   selector: 'app-customers',
@@ -34,6 +37,8 @@ export class CustomersComponent implements OnInit {
   ];
   customersData = new MatTableDataSource<CustomerModel>();
   search_input = '';
+  dialogRefArchive: MatDialogRef<ArchiveCustomersDialogComponent>;
+  dialogRefUnarchive: MatDialogRef<UnarchiveCustomersDialogComponent>;
 
   // Customer Selection
   selection = new SelectionModel<CustomerModel>(true, []);
@@ -41,6 +46,7 @@ export class CustomersComponent implements OnInit {
   constructor(
     private layout_service: LayoutMainService,
     public customerSvc: CustomerService,
+    public alertsService: AlertsService,
     public dialog: MatDialog,
     private router: Router
   ) {
@@ -115,6 +121,45 @@ export class CustomersComponent implements OnInit {
       this.displayed_columns.push('archived');
     }
     this.refresh();
+  }
+
+  archiveCustomers() {
+    const customersToArchive = this.selection.selected;
+
+    this.dialogRefArchive = this.dialog.open(ArchiveCustomersDialogComponent, {
+      disableClose: false,
+      data: customersToArchive,
+    });
+    this.dialogRefArchive.afterClosed().subscribe((result) => {
+      if (result.archived) {
+        this.refresh();
+      } else if (result.error) {
+        this.alertsService.alert(
+          `Error archiving customer. ${result.error.error}`
+        );
+      }
+    });
+  }
+
+  unarchiveCustomers() {
+    const customersToUnarchive = this.selection.selected;
+
+    this.dialogRefUnarchive = this.dialog.open(
+      UnarchiveCustomersDialogComponent,
+      {
+        disableClose: false,
+        data: customersToUnarchive,
+      }
+    );
+    this.dialogRefUnarchive.afterClosed().subscribe((result) => {
+      if (!result.archived) {
+        this.refresh();
+      } else if (result.error) {
+        this.alertsService.alert(
+          `Error unarchiving customer. ${result.error.error}`
+        );
+      }
+    });
   }
 
   /** Whether the number of selected elements matches the total number of rows. */

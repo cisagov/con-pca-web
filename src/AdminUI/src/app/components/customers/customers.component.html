@@ -30,8 +30,19 @@
           Actions<mat-icon>arrow_drop_down</mat-icon>
         </button>
         <mat-menu xPosition="before" yPosition="below" #menu="matMenu">
-          <button mat-menu-item (click)="onArchivedToggle()">
-            <mat-icon color="warn">archive</mat-icon>Remove
+          <button
+            mat-menu-item
+            *ngIf="!showArchived"
+            (click)="archiveCustomers()"
+          >
+            <mat-icon color="warn">archive</mat-icon>Archive
+          </button>
+          <button
+            mat-menu-item
+            *ngIf="showArchived"
+            (click)="unarchiveCustomers()"
+          >
+            <mat-icon color="warn">unarchive</mat-icon>Unarchive
           </button>
         </mat-menu>
         <div class="d-flex flex-row-reverse mb-2">
@@ -118,7 +129,7 @@
         >
         <mat-cell *matCellDef="let row"> {{ row.zip_code }} </mat-cell>
       </ng-container>
-      <!-- RETIRED -->
+      <!-- ARCHIVED -->
       <ng-container matColumnDef="archived">
         <mat-header-cell *matHeaderCellDef mat-sort-header
           >Archived</mat-header-cell
