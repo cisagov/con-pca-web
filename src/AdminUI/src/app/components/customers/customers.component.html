@@ -30,17 +30,17 @@
           Actions<mat-icon>arrow_drop_down</mat-icon>
         </button>
         <mat-menu xPosition="before" yPosition="below" #menu="matMenu">
-          <button mat-menu-item (click)="onRetiredToggle()">
+          <button mat-menu-item (click)="onArchivedToggle()">
             <mat-icon color="warn">archive</mat-icon>Remove
           </button>
         </mat-menu>
         <div class="d-flex flex-row-reverse mb-2">
           <mat-slide-toggle
             class="mt-1 ml-1 mr-1"
-            [(ngModel)]="showRetired"
-            (change)="onRetiredToggle()"
+            [(ngModel)]="showArchived"
+            (change)="onArchivedToggle()"
           >
-            Show Retired
+            Show Archived
           </mat-slide-toggle>
         </div>
       </div>
@@ -119,12 +119,12 @@
         <mat-cell *matCellDef="let row"> {{ row.zip_code }} </mat-cell>
       </ng-container>
       <!-- RETIRED -->
-      <ng-container matColumnDef="retired">
+      <ng-container matColumnDef="archived">
         <mat-header-cell *matHeaderCellDef mat-sort-header
-          >Retired</mat-header-cell
+          >Archived</mat-header-cell
         >
         <mat-cell *matCellDef="let row" (click)="editCustomer(row._id)"
-          ><i *ngIf="row.retired" class="fa fa-check"></i>
+          ><i *ngIf="row.archived" class="fa fa-check"></i>
         </mat-cell>
       </ng-container>
       <ng-container matColumnDef="edit">

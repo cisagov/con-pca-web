@@ -19,7 +19,7 @@ export class CustomersComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
   loading = false;
-  showRetired: boolean = false;
+  showArchived: boolean = false;
 
   displayed_columns = [
     'select',
@@ -69,7 +69,7 @@ export class CustomersComponent implements OnInit {
       this.layout_service.setTitle('Customers');
     }
     this.loading = true;
-    this.customerSvc.getCustomers(this.showRetired).subscribe((data: any) => {
+    this.customerSvc.getCustomers(this.showArchived).subscribe((data: any) => {
       this.customersData.data = data as CustomerModel[];
       this.customersData.sort = this.sort;
       this.loading = false;
@@ -108,11 +108,11 @@ export class CustomersComponent implements OnInit {
     else this.setCustomer(customer_id);
   }
 
-  onRetiredToggle() {
-    if (this.displayed_columns.includes('retired')) {
+  onArchivedToggle() {
+    if (this.displayed_columns.includes('archived')) {
       this.displayed_columns.pop();
     } else {
-      this.displayed_columns.push('retired');
+      this.displayed_columns.push('archived');
     }
     this.refresh();
   }
