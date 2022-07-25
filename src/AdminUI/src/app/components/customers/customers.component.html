@@ -23,6 +23,7 @@
         </button>
         <button
           [disabled]="!selection.hasValue()"
+          *ngIf="!insideDialog"
           mat-raised-button
           color="accent"
           [matMenuTriggerFor]="menu"
@@ -32,14 +33,14 @@
         <mat-menu xPosition="before" yPosition="below" #menu="matMenu">
           <button
             mat-menu-item
-            *ngIf="!showArchived"
+            *ngIf="!insideDialog && !showArchived"
             (click)="archiveCustomers()"
           >
             <mat-icon color="warn">archive</mat-icon>Archive
           </button>
           <button
             mat-menu-item
-            *ngIf="showArchived"
+            *ngIf="!insideDialog && showArchived"
             (click)="unarchiveCustomers()"
           >
             <mat-icon color="warn">unarchive</mat-icon>Unarchive
@@ -48,6 +49,7 @@
         <div class="d-flex flex-row-reverse mb-2">
           <mat-slide-toggle
             class="mt-1 ml-1 mr-1"
+            *ngIf="!insideDialog"
             [(ngModel)]="showArchived"
             (change)="onArchivedToggle()"
           >
@@ -72,6 +74,7 @@
       <ng-container matColumnDef="select">
         <mat-header-cell *matHeaderCellDef>
           <mat-checkbox
+            *ngIf="!insideDialog"
             (change)="$event ? masterToggle() : null"
             [checked]="selection.hasValue() && isAllSelected()"
             [indeterminate]="selection.hasValue() && !isAllSelected()"
@@ -80,6 +83,7 @@
         </mat-header-cell>
         <mat-cell *matCellDef="let row">
           <mat-checkbox
+            *ngIf="!insideDialog"
             (click)="$event.stopPropagation()"
             (change)="$event ? selection.toggle(row) : null"
             [checked]="selection.isSelected(row)"
@@ -142,12 +146,13 @@
         <mat-header-cell *matHeaderCellDef>Edit</mat-header-cell>
         <mat-cell *matCellDef="let row">
           <button
+            *ngIf="!insideDialog"
             class="table-btn-icon"
             mat-flat-button
             color="primary"
             [routerLink]="['/customer', row._id]"
           >
-            <mat-icon class="table-btn-icon-size">edit</mat-icon>
+            <mat-icon class="table-btn-icon-size">edit </mat-icon>
           </button>
         </mat-cell>
       </ng-container>

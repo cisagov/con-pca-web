@@ -56,6 +56,9 @@ export class CustomersComponent implements OnInit {
   ngOnInit(): void {
     if (!this.insideDialog) {
       this.layout_service.setTitle('Customers');
+    } else {
+      this.displayed_columns.splice(8, 1);
+      this.displayed_columns.splice(0, 1);
     }
 
     this.customersData = new MatTableDataSource();
