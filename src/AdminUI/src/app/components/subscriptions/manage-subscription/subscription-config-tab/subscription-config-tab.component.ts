@@ -578,7 +578,7 @@ export class SubscriptionConfigTab
   async getRandomTemplates() {
     //  Get Templates Selected
     this.subscription.templates_selected =
-      await this.subscriptionSvc.getTemplatesSelected();
+      await this.subscriptionSvc.getTemplatesSelected(this.subscription._id);
     this.templatesSelected = await this.templateSvc.getAllTemplates(
       false,
       this.subscription.templates_selected
