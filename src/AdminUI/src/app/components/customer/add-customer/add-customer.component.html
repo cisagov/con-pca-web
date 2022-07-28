@@ -597,14 +597,21 @@
         </div>
       </div>
       <div class="d-flex flex-row flex-grow-1 justify-content-end">
-        <button
-          mat-raised-button
-          color="warn"
-          [disabled]="hasSubs"
-          (click)="deleteCustomer()"
+        <div
+          matTooltip="A customer must have no subscriptions assigned and be archived"
+          matTooltipPosition="right"
+          matTooltipShowDelay="500"
+          [matTooltipDisabled]="!hasSubs && customer.archived"
         >
-          Delete Customer
-        </button>
+          <button
+            mat-raised-button
+            color="warn"
+            [disabled]="hasSubs || !customer.archived"
+            (click)="deleteCustomer()"
+          >
+            Delete Customer
+          </button>
+        </div>
         <div
           matTooltip="A customer must have all required fields filled, and at least one contact listed"
           matTooltipPosition="right"
