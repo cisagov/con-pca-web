@@ -1,0 +1,37 @@
+<div class="d-flex flex-column">
+  <!-- RETIRED DESCRIPTION -->
+  <h3>
+    Archiving customers will disable them from being used in any future
+    subscriptions, unless brought out of archival.
+  </h3>
+  <h3>Please enter a reason for archiving the selected customers:</h3>
+  <mat-form-field appearance="outline" class="flex-grow-1">
+    <textarea
+      matInput
+      cdkTextareaAutosize
+      cdkAutosizeMinRows="5"
+      cdkAutosizeMaxRows="10"
+      [(ngModel)]="archivedDescription"
+      (ngModelChange)="updateReason()"
+    ></textarea>
+  </mat-form-field>
+  <div class="d-flex flex-row mt-3 justify-content-end">
+    <button mat-raised-button color="accent" (click)="cancel()">Cancel</button>
+    <div
+      matTooltip="There must be a reason for archiving the customer."
+      matTooltipPosition="right"
+      matTooltipShowDelay="500"
+      [matTooltipDisabled]="canArchive"
+    >
+      <button
+        mat-raised-button
+        [mat-dialog-close]="true"
+        [disabled]="!canArchive"
+        color="warn"
+        (click)="archive()"
+      >
+        Archive
+      </button>
+    </div>
+  </div>
+</div>
