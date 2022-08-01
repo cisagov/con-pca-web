@@ -37,7 +37,7 @@ export class TemplateManagerService {
   getTemplate(id: string) {
     return new Promise((resolve, reject) => {
       this.http
-        .get(`${this.settingsService.settings.apiUrl}/api/template/${id}`)
+        .get(`${this.settingsService.settings.apiUrl}/api/template/${id}/`)
         .subscribe(
           (success) => {
             resolve(success);

@@ -1,0 +1,50 @@
+<div class="container-fluid">
+  <h2 class="mt-2">Application Logging Errors</h2>
+  <div class="flex-container">
+    <p>Errors within the last 24 hours will be displayed below.</p>
+    <button mat-raised-button color="primary" (click)="pageRefresh()">
+      Refresh
+      <mat-icon class="table-btn-icon-size">autorenew</mat-icon>
+    </button>
+  </div>
+  <!-- TABLE -->
+  <mat-table
+    #loggingTable
+    [dataSource]="loggingSource"
+    [hidden]="loading"
+    matSort
+  >
+    <!-- TIMESTAMP -->
+    <ng-container matColumnDef="timestamp">
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >Timestamp</mat-header-cell
+      >
+      <mat-cell *matCellDef="let row">
+        {{ row.created | date: "medium" }}</mat-cell
+      >
+    </ng-container>
+    <!-- File -->
+    <ng-container matColumnDef="file">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>File</mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{ row.file }}</mat-cell>
+    </ng-container>
+    <!-- ERROR MESSAGE -->
+    <ng-container matColumnDef="message">
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >Message</mat-header-cell
+      >
+      <mat-cell *matCellDef="let row"> {{ row.error_message }}</mat-cell>
+    </ng-container>
+
+    <!-- HEADER ROW -->
+    <mat-header-row *matHeaderRowDef="loggingDisplayedColumns"></mat-header-row>
+
+    <!-- ROW DEFINITION -->
+    <mat-row
+      *matRowDef="let row; columns: loggingDisplayedColumns"
+      class="table-row cursor-pointer"
+      (click)="editSubscription(row)"
+    >
+    </mat-row>
+  </mat-table>
+</div>

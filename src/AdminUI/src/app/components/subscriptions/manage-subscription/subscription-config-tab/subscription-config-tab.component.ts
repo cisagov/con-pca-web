@@ -578,7 +578,7 @@ export class SubscriptionConfigTab
   async getRandomTemplates() {
     //  Get Templates Selected
     this.subscription.templates_selected =
-      await this.subscriptionSvc.getTemplatesSelected();
+      await this.subscriptionSvc.getTemplatesSelected(this.subscription._id);
     this.templatesSelected = await this.templateSvc.getAllTemplates(
       false,
       this.subscription.templates_selected
@@ -644,6 +644,9 @@ export class SubscriptionConfigTab
     this.templatesSelected = await this.templateSvc.getAllTemplates(
       false,
       s.templates_selected
+    );
+    this.templatesSelected = this.templatesSelected.concat(
+      await this.templateSvc.getAllTemplates(true, s.templates_selected)
     );
     this.setDefaultTimeUnit();
     this.setEndTimes();
@@ -831,6 +834,10 @@ export class SubscriptionConfigTab
         this.setTemplatesSelected();
         this.subscription.target_email_list =
           this.subscription.target_email_list;
+        // if start date is in the past, move it to today
+        if (this.f.startDate.value < new Date()) {
+          this.f.startDate.setValue(new Date());
+        }
         // persist any changes before restart
         this.subscriptionSvc
           .patchSubscription(this.subscription)
@@ -1027,6 +1034,7 @@ export class SubscriptionConfigTab
         this.processing = false;
       },
       (error) => {
+        console.log(sub._id);
         this.processing = false;
         this.loading = false;
         this.dialog.open(AlertComponent, {

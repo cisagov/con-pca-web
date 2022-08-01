@@ -21,7 +21,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.layoutSvc.setTitle('Overview');
 
-    this.routeSub = this.route.params.subscribe((params) => {
+    this.routeSub = this.route.params.subscribe(() => {
       this.route.queryParams.subscribe((queryParams) => {
         if (!queryParams.tab) {
           this.selectedTabIndex = 0;

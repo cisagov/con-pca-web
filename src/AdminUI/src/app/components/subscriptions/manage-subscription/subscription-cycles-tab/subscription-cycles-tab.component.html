@@ -14,10 +14,8 @@
         >
           <mat-option *ngFor="let c of subscription.cycles" [value]="c">
             {{ c.start_date | UTCtoReadableTime }} -
-            {{ c.end_date | UTCtoReadableTime }} ({{
-              c.target_count
-            }})</mat-option
-          >
+            {{ c.end_date | UTCtoReadableTime }} ({{ c.target_count }})
+          </mat-option>
         </mat-select>
       </mat-form-field>
     </div>
@@ -25,7 +23,7 @@
       Refresh
       <mat-icon class="table-btn-icon-size">autorenew</mat-icon>
     </button>
-
+    <delete-cycle [cycle]="selectedCycle"></delete-cycle>
     <div class="flex flex-row">
       Include Non-Human Interactions:
       <mat-slide-toggle
@@ -34,10 +32,27 @@
       ></mat-slide-toggle>
     </div>
   </mat-card>
-
   <mat-card>
     <app-loading-overlay
-      [showLoading]="downloading"
+      [showLoading]="downloadingSubscription"
+      [displayText]="downloadingText"
+    ></app-loading-overlay>
+    <mat-card-title>Subscription Information</mat-card-title>
+    <div class="text-muted">
+      Download top level data associated with this subscription
+    </div>
+    <button
+      mat-raised-button
+      color="primary"
+      class="mb-3"
+      (click)="exportSubscriptionData(); $event.preventDefault()"
+    >
+      Export Subscription Data
+    </button>
+  </mat-card>
+  <mat-card>
+    <app-loading-overlay
+      [showLoading]="downloadingCycle"
       [displayText]="downloadingText"
     ></app-loading-overlay>
     <mat-card-title>Cycle Information</mat-card-title>
@@ -58,10 +73,9 @@
       class="mb-3"
       (click)="downloadCycleData(); $event.preventDefault()"
     >
-      Download Data
+      Download Cycle Data
     </button>
   </mat-card>
-
   <mat-card>
     <app-loading-overlay
       [showLoading]="generating"

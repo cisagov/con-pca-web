@@ -184,8 +184,8 @@ export class SubscriptionService {
     };
     return this.http.post(url, data);
   }
-  public async getTemplatesSelected() {
-    const url = `${this.settingsService.settings.apiUrl}/api/templates/select/`;
+  public async getTemplatesSelected(subscriptionId) {
+    const url = `${this.settingsService.settings.apiUrl}/api/templates/select/${subscriptionId}/`;
     return this.http.get<string[]>(url).toPromise();
   }
 
@@ -262,6 +262,11 @@ export class SubscriptionService {
 
   public getRandomPassword() {
     const url = `${this.settingsService.settings.apiUrl}/api/util/randompassword/`;
+    return this.http.get(url);
+  }
+
+  public exportSubscriptionData(subscriptionId: string) {
+    const url = `${this.settingsService.settings.apiUrl}/api/subscription/${subscriptionId}/export/`;
     return this.http.get(url);
   }
 }

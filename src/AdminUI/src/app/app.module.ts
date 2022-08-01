@@ -50,6 +50,10 @@ import {
   DeleteSubscription,
   DeleteSubscriptionDialog,
 } from 'src/app/components/subscriptions/delete-subscription/delete-subscription.component';
+import {
+  DeleteCycle,
+  DeleteCycleDialog,
+} from './components/subscriptions/delete-cycle/delete-cycle.component';
 import { SendingProfilesComponent } from './components/sending-profiles/sending-profiles.component';
 import { SendingProfileDetailComponent } from './components/sending-profiles/sending-profile-detail.component';
 import { CustomerSubscriptionsComponent } from './components/subscriptions/customer-subscriptions/customer-subscriptions.component';
@@ -109,6 +113,11 @@ import { OverviewComponent } from './components/overview/overview.component';
 import { AggregateStatisticsTab } from './components/overview/aggregate-statistics-tab/aggregate-statistics-tab.component';
 import { SubscriptionStatusTab } from './components/overview/subscription-status-tab/subscription-status-tab.component';
 import { TemplateDataDialogComponent } from './components/subscriptions/manage-subscription/subscription-testing-tab/template-data-dialog/template-data-dialog.component';
+import { LoggingTab } from './components/overview/logging-tab/logging-tab.component';
+import { FailedEmailsTab } from './components/overview/failed-emails-tab/failed-emails-tab.component';
+import { RestoreTemplatesDialogComponent } from './components/template-manager/restore-templates-dialog/restore-templates-dialog.component';
+import { ArchiveCustomersDialogComponent } from './components/customer/archive-customers-dialog/archive-customers-dialog.component';
+import { UnarchiveCustomersDialogComponent } from './components/customer/unarchive-customers-dialog/unarchive-customers-dialog.component';
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
   return () => settingsHttpService.initializeApp();
@@ -142,14 +151,19 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     ViewContactDialogComponent,
     DeleteSubscription,
     DeleteSubscriptionDialog,
+    DeleteCycle,
+    DeleteCycleDialog,
     SendingProfilesComponent,
     SendingProfileDetailComponent,
     CustomerSubscriptionsComponent,
     SubDashboardComponent,
     ConfirmComponent,
     TagSelectionComponent,
+    RestoreTemplatesDialogComponent,
     RetireTemplateDialogComponent,
     RetireTemplatesDialogComponent,
+    UnarchiveCustomersDialogComponent,
+    ArchiveCustomersDialogComponent,
     CustomerDialogComponent,
     AlertComponent,
     SafePipe,
@@ -185,6 +199,8 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     LandingDomainsComponent,
     LandingDomainDetailComponent,
     NavigateAwayComponent,
+    LoggingTab,
+    FailedEmailsTab,
   ],
   imports: [
     BrowserModule,
