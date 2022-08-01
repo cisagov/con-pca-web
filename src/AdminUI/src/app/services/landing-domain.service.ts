@@ -10,7 +10,7 @@ export class LandingDomainService {
   url: string;
 
   constructor(private http: HttpClient, private settingsSvc: SettingsService) {
-    this.url = `${this.settingsSvc.settings.apiUrl}/api/landingdomain`;
+    this.url = `${this.settingsSvc.settings.apiUrl}/api/landingdomain/`;
   }
 
   public getLandingDomains() {

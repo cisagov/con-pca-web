@@ -36,7 +36,7 @@ export class SendingProfileService {
   }
 
   public deleteProfile(id: string) {
-    const url = `${this.settingsService.settings.apiUrl}/api/sendingprofile/${id}`;
+    const url = `${this.settingsService.settings.apiUrl}/api/sendingprofile/${id}/`;
     return this.http.delete(url);
   }
 
