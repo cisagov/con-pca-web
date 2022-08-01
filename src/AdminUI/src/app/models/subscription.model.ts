@@ -47,8 +47,10 @@ export class SubscriptionModel {
   sending_profile_id: string;
   target_domain: string;
   start_date: Date;
+  end_date?: Date;
   primary_contact: ContactModel;
   admin_email: string;
+  operator_email: string;
   status: string;
   target_email_list: TargetModel[] = [];
   templates_selected: string[];
@@ -64,6 +66,7 @@ export class SubscriptionModel {
   phish_header: string;
   reporting_password: string;
   test_results: SubscriptionTestResultsModel[];
+  landing_page_id: string;
   landing_page_url: string;
   landing_domain: string;
   updated: Date;

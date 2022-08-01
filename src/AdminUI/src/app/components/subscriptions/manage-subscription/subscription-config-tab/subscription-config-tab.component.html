@@ -86,6 +86,17 @@
             </mat-error>
           </mat-form-field>
         </div>
+        <div>
+          <mat-form-field appearance="outline">
+            <mat-label>Operator Email</mat-label>
+            <mat-select formControlName="operatorEmail">
+              <mat-option [value]="null">--Select--</mat-option>
+              <mat-option *ngFor="let c of adminEmails" [value]="c">
+                {{ c }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
       </div>
 
       <mat-label class="h6">Start Date</mat-label>
@@ -131,7 +142,22 @@
         >
           <mat-icon>download</mat-icon>
         </button>
-
+        <button
+          mat-raised-button
+          color="accent"
+          class="export-safelist-btn"
+          (click)="sendSafelist()"
+        >
+          <mat-icon>email</mat-icon>
+        </button>
+        <button
+          mat-raised-button
+          color="primary"
+          class="rotate-header-btn"
+          (click)="rotateHeader()"
+        >
+          <mat-icon>refresh</mat-icon>
+        </button>
         <div class="mb-4">
           <table class="table" style="max-width: 33rem">
             <tr>
@@ -139,14 +165,6 @@
               <td class="text-right" style="color: grey; cursor: default">
                 {{ subscription?.phish_header }}
               </td>
-              <button
-                mat-raised-button
-                color="primary"
-                class="rotate-header-btn"
-                (click)="rotateHeader()"
-              >
-                <mat-icon>refresh</mat-icon>
-              </button>
             </tr>
             <tr>
               <td>Sending Domains</td>
@@ -275,6 +293,20 @@
           provided to redirect clicks after our server is hit for click
           tracking.
         </div>
+        <mat-form-field appearance="outline">
+          <mat-label>Landing Page Selection</mat-label>
+          <mat-select formControlName="landingPage">
+            <mat-option [value]="null">Use Template Default</mat-option>
+            <mat-option *ngFor="let page of pagesList" [value]="page._id">{{
+              page.name
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="mb-4">
+        <div class="text-muted mb-1">
+          Optional link to an external landing page.
+        </div>
         <mat-form-field class="w-100" appearance="outline">
           <mat-label>Landing Page URL</mat-label>
           <mat-hint>https://internal.example.org/</mat-hint>
@@ -288,10 +320,10 @@
       </div>
       <div class="mb-4">
         <div class="text-muted mb-1">
-          An optional landing domain for simulated phishing URLs.
+          Optional landing simulated phishing URL.
         </div>
         <mat-form-field class="w-100" appearance="outline">
-          <mat-label>Landing Domain</mat-label>
+          <mat-label>Simulated Phishing URL</mat-label>
           <mat-hint>https://internal.example.org/</mat-hint>
           <input
             matInput
@@ -434,38 +466,11 @@
         <em>Target Count: {{ subscription.target_email_list.length }}</em>
       </div>
       <mat-label class="h6">Sending Strategy</mat-label>
-
-      <!-- Buffer Time -->
-      <mat-label class="h7">Buffer Time</mat-label>
-      <div class="mb-2">
-        <div class="text-muted">
-          Time added to create a buffer between the start date and the first
-          email being sent. (Must be between 30 minutes and 30 days)
-        </div>
-        <mat-form-field appearance="outline">
-          <mat-label>Time</mat-label>
-          <input
-            matInput
-            formControlName="bufferDisplayTime"
-            type="text"
-            trim="blur"
-          />
-          <mat-error
-            *ngIf="f.bufferDisplayTime.errors?.outOfRange"
-            class="invalid-feedback"
-          >
-            Must be between 30 minutes and 30 days
-          </mat-error>
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Time Units</mat-label>
-          <mat-select formControlName="bufferTimeUnit">
-            <mat-option *ngFor="let time of timeRanges" [value]="time">
-              {{ time }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
+      <p>
+        Please note, for continuous subscriptions that are currently in
+        progress, any modifications to the Sending Strategy fields below will
+        reflect on the next cycle.
+      </p>
       <!-- Email Sent Time -->
       <mat-label class="h7">Email Sent Time</mat-label>
       <div class="mb-2">
@@ -550,6 +555,37 @@
         <mat-form-field appearance="outline">
           <mat-label>Time Units</mat-label>
           <mat-select formControlName="cooldownTimeUnit">
+            <mat-option *ngFor="let time of timeRanges" [value]="time">
+              {{ time }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <!-- Buffer Time -->
+      <mat-label class="h7">Buffer Time</mat-label>
+      <div class="mb-2">
+        <div class="text-muted">
+          Time added to create a buffer at the end date of each cycle. (Must be
+          between 15 minutes and 30 days)
+        </div>
+        <mat-form-field appearance="outline">
+          <mat-label>Time</mat-label>
+          <input
+            matInput
+            formControlName="bufferDisplayTime"
+            type="text"
+            trim="blur"
+          />
+          <mat-error
+            *ngIf="f.bufferDisplayTime.errors?.outOfRange"
+            class="invalid-feedback"
+          >
+            Must be between 15 minutes and 30 days
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Time Units</mat-label>
+          <mat-select formControlName="bufferTimeUnit">
             <mat-option *ngFor="let time of timeRanges" [value]="time">
               {{ time }}
             </mat-option>

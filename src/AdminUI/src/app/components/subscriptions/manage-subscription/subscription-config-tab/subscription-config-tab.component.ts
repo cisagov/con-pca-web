@@ -46,6 +46,9 @@ import { UserService } from 'src/app/services/user.service';
 import { UserModel } from 'src/app/models/user.model';
 import { TemplateModel } from 'src/app/models/template.model';
 import { SendingProfileModel } from 'src/app/models/sending-profile.model';
+import { AlertsService } from 'src/app/services/alerts.service';
+import { LandingPageModel } from 'src/app/models/landing-page.models';
+import { LandingPageManagerService } from 'src/app/services/landing-page-manager.service';
 
 @Component({
   selector: 'subscription-config-tab',
@@ -115,6 +118,8 @@ export class SubscriptionConfigTab
 
   hideReportingPassword = true;
 
+  pagesList: LandingPageModel[];
+
   // Safelisting Attributes
   sendingProfileDomains = new Set();
   sendingProfileIps = new Set();
@@ -140,7 +145,9 @@ export class SubscriptionConfigTab
     public sendingProfileSvc: SendingProfileService,
     private router: Router,
     public dialog: MatDialog,
+    public alertsService: AlertsService,
     public formBuilder: FormBuilder,
+    private landingPageSvc: LandingPageManagerService,
     private layoutSvc: LayoutMainService,
     public settingsService: SettingsService,
     private route: ActivatedRoute,
@@ -178,6 +185,7 @@ export class SubscriptionConfigTab
         adminEmail: new FormControl(null, {
           validators: Validators.required,
         }),
+        operatorEmail: new FormControl('', {}),
         startDate: new FormControl(new Date(), {
           validators: Validators.required,
         }),
@@ -211,11 +219,16 @@ export class SubscriptionConfigTab
         reportDisplayTime: new FormControl(43200),
         continuousSubscription: new FormControl(false, {}),
         reportingPassword: new FormControl(''),
+        landingPage: new FormControl(''),
         landingPageURL: new FormControl(''),
         landingPageDomain: new FormControl(''),
       },
       { updateOn: 'blur' }
     );
+
+    this.landingPageSvc.getAlllandingpages(true).subscribe((data: any) => {
+      this.pagesList = data;
+    });
 
     this.onChanges();
 
@@ -319,6 +332,13 @@ export class SubscriptionConfigTab
     this.angular_subs.push(
       this.f.reportingPassword.valueChanges.subscribe((val) => {
         this.subscription.reporting_password = val;
+      })
+    );
+
+    // On changes to landing page
+    this.angular_subs.push(
+      this.f.landingPage.valueChanges.subscribe((val) => {
+        this.subscription.landing_page_id = val;
       })
     );
 
@@ -558,7 +578,7 @@ export class SubscriptionConfigTab
   async getRandomTemplates() {
     //  Get Templates Selected
     this.subscription.templates_selected =
-      await this.subscriptionSvc.getTemplatesSelected();
+      await this.subscriptionSvc.getTemplatesSelected(this.subscription._id);
     this.templatesSelected = await this.templateSvc.getAllTemplates(
       false,
       this.subscription.templates_selected
@@ -576,6 +596,7 @@ export class SubscriptionConfigTab
     this.f.selectedCustomerId.setValue(s.customer_id);
     this.f.primaryContact.setValue(s.primary_contact?.email);
     this.f.adminEmail.setValue(s.admin_email);
+    this.f.operatorEmail.setValue(s.operator_email);
     this.f.startDate.setValue(s.start_date);
     this.f.csvText.setValue(this.formatTargetsToCSV(s.target_email_list), {
       emitEvent: false,
@@ -608,6 +629,7 @@ export class SubscriptionConfigTab
     this.f.continuousSubscription.setValue(s.continuous_subscription);
     this.f.reportingPassword.setValue(s.reporting_password);
 
+    this.f.landingPage.setValue(s.landing_page_id);
     this.f.landingPageURL.setValue(s.landing_page_url);
     this.f.landingPageDomain.setValue(s.landing_domain);
     this.enableDisableFields();
@@ -622,6 +644,9 @@ export class SubscriptionConfigTab
     this.templatesSelected = await this.templateSvc.getAllTemplates(
       false,
       s.templates_selected
+    );
+    this.templatesSelected = this.templatesSelected.concat(
+      await this.templateSvc.getAllTemplates(true, s.templates_selected)
     );
     this.setDefaultTimeUnit();
     this.setEndTimes();
@@ -809,6 +834,10 @@ export class SubscriptionConfigTab
         this.setTemplatesSelected();
         this.subscription.target_email_list =
           this.subscription.target_email_list;
+        // if start date is in the past, move it to today
+        if (this.f.startDate.value < new Date()) {
+          this.f.startDate.setValue(new Date());
+        }
         // persist any changes before restart
         this.subscriptionSvc
           .patchSubscription(this.subscription)
@@ -921,6 +950,7 @@ export class SubscriptionConfigTab
     sub.customer_id = this.customer._id;
     sub.primary_contact = this.primaryContact;
     sub.admin_email = this.f.adminEmail.value;
+    sub.operator_email = this.f.operatorEmail.value;
     sub.active = true;
 
     if (typeof this.f.startDate.value === 'string') {
@@ -940,6 +970,7 @@ export class SubscriptionConfigTab
 
     sub.continuous_subscription = this.f.continuousSubscription.value;
     sub.reporting_password = this.f.reportingPassword.value;
+    sub.landing_page_id = this.f.landingPage.value;
     sub.landing_page_url = this.f.landingPageURL.value;
     sub.landing_domain = this.f.landingPageDomain.value;
     const cycleLength: number = +this.f.cycle_length_minutes.value;
@@ -1003,6 +1034,7 @@ export class SubscriptionConfigTab
         this.processing = false;
       },
       (error) => {
+        console.log(sub._id);
         this.processing = false;
         this.loading = false;
         this.dialog.open(AlertComponent, {
@@ -1026,14 +1058,6 @@ export class SubscriptionConfigTab
       this.f.startDate.disable();
       this.f.sendingProfile.disable();
       this.f.targetDomain.disable();
-      this.f.bufferDisplayTime.disable();
-      this.f.bufferTimeUnit.disable();
-      this.f.subDisplayTime.disable();
-      this.f.subTimeUnit.disable();
-      this.f.cooldownDisplayTime.disable();
-      this.f.cooldownTimeUnit.disable();
-      this.f.reportDisplayTime.disable();
-      this.f.reportTimeUnit.disable();
       //this.f.csvText.disable();
     } else {
       this.f.startDate.enable();
@@ -1392,9 +1416,7 @@ export class SubscriptionConfigTab
       (t) => t.sending_profile_id
     );
     sendingProfileIds.push(this.f.sendingProfile.value);
-    const profiles = this.sendingProfiles.filter((s) =>
-      sendingProfileIds.includes(s._id)
-    );
+    const profiles = this.sendingProfiles;
     this.sendingProfileDomains = new Set(
       profiles.map((p) => p.from_address.split('@')[1])
     );
@@ -1496,6 +1518,33 @@ export class SubscriptionConfigTab
         },
         (error) => {
           console.log(error);
+        }
+      );
+  }
+
+  sendSafelist() {
+    this.subscriptionSvc
+      .sendSafelist(
+        this.subscription._id,
+        this.subscription.phish_header,
+        Array.from(this.sendingProfileDomains),
+        Array.from(this.sendingProfileIps),
+        this.subscription.landing_domain,
+        this.templatesSelected,
+        this.subscription.reporting_password
+      )
+      .subscribe(
+        () => {
+          this.dialog.open(AlertComponent, {
+            data: {
+              title: 'Email Sent',
+              messageText: 'Safelisting notification email has been sent.',
+            },
+          });
+        },
+        (error) => {
+          console.log(error);
+          this.alertsService.alert('Error: Email failed to send.');
         }
       );
   }

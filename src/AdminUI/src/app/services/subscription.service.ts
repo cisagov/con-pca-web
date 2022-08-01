@@ -35,7 +35,7 @@ export class SubscriptionService {
   public getSubBehaviorSubject() {
     return this.subBehaviorSubject;
   }
-  public setSubBhaviorSubject(sub) {
+  public setSubBehaviorSubject(sub) {
     this.subBehaviorSubject.next(sub);
   }
   public clearSubBehaviorSubject() {
@@ -100,6 +100,7 @@ export class SubscriptionService {
       archived: subscription.archived,
       primary_contact: subscription.primary_contact,
       admin_email: subscription.admin_email,
+      operator_email: subscription.operator_email,
       start_date: subscription.start_date,
       target_email_list: subscription.target_email_list,
       sending_profile_id: subscription.sending_profile_id,
@@ -111,6 +112,7 @@ export class SubscriptionService {
       cooldown_minutes: subscription.cooldown_minutes,
       report_frequency_minutes: subscription.report_frequency_minutes,
       reporting_password: subscription.reporting_password,
+      landing_page_id: subscription.landing_page_id,
       landing_page_url: subscription.landing_page_url,
       landing_domain: subscription.landing_domain,
     };
@@ -132,6 +134,12 @@ export class SubscriptionService {
   public getSubscriptionsByTemplate(template: TemplateModel) {
     return this.http.get(
       `${this.settingsService.settings.apiUrl}/api/subscriptions/?template=${template._id}`
+    );
+  }
+
+  public getSubscriptionsWithEndDate() {
+    return this.http.get(
+      `${this.settingsService.settings.apiUrl}/api/subscriptions/?overview=true`
     );
   }
 
@@ -176,8 +184,8 @@ export class SubscriptionService {
     };
     return this.http.post(url, data);
   }
-  public async getTemplatesSelected() {
-    const url = `${this.settingsService.settings.apiUrl}/api/templates/select/`;
+  public async getTemplatesSelected(subscriptionId) {
+    const url = `${this.settingsService.settings.apiUrl}/api/templates/select/${subscriptionId}/`;
     return this.http.get<string[]>(url).toPromise();
   }
 
@@ -224,8 +232,41 @@ export class SubscriptionService {
     );
   }
 
+  public sendSafelist(
+    subscriptionId: string,
+    phishHeader: string,
+    domains: any[],
+    ips: any[],
+    simulationURL: string,
+    templates: TemplateModel[],
+    password: string
+  ): Observable<Blob> {
+    const headers = new HttpHeaders().set(
+      'Accept',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    );
+    const url = `${this.settingsService.settings.apiUrl}/api/subscription/${subscriptionId}/safelist/send/`;
+    return this.http.post(
+      url,
+      {
+        phish_header: phishHeader,
+        domains: domains,
+        ips: ips,
+        simulation_url: simulationURL,
+        templates: templates,
+        password: password,
+      },
+      { headers, responseType: 'blob' }
+    );
+  }
+
   public getRandomPassword() {
     const url = `${this.settingsService.settings.apiUrl}/api/util/randompassword/`;
+    return this.http.get(url);
+  }
+
+  public exportSubscriptionData(subscriptionId: string) {
+    const url = `${this.settingsService.settings.apiUrl}/api/subscription/${subscriptionId}/export/`;
     return this.http.get(url);
   }
 }

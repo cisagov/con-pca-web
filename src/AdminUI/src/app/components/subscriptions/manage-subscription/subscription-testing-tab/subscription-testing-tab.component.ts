@@ -55,12 +55,26 @@ export class SubscriptionTestingTabComponent implements OnInit {
         this.customerSvc.getCustomer(data.customer_id).subscribe((c) => {
           this.customer = c;
           this.contactList = this.customer.contact_list;
-          const names = this.subscription.admin_email.split('@')[0].split('.');
-          this.contactList.push({
-            email: this.subscription.admin_email,
-            first_name: names[0],
-            last_name: names[1],
-          } as ContactModel);
+          if (this.subscription.admin_email) {
+            const adminName = this.subscription.admin_email
+              .split('@')[0]
+              .split('.');
+            this.contactList.push({
+              email: this.subscription.admin_email,
+              first_name: adminName[0],
+              last_name: adminName[1],
+            } as ContactModel);
+          }
+          if (this.subscription.operator_email) {
+            const operatorName = this.subscription.operator_email
+              .split('@')[0]
+              .split('.');
+            this.contactList.push({
+              email: this.subscription.operator_email,
+              first_name: operatorName[0],
+              last_name: operatorName[1],
+            } as ContactModel);
+          }
           this.isStartDateBeforeAADate();
         });
         this.getResults();
