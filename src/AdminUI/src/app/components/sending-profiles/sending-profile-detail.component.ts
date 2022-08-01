@@ -34,12 +34,6 @@ export class SendingProfileDetailComponent implements OnInit {
   profileForm: FormGroup;
   profile: SendingProfileModel;
   id: string;
-
-  @ViewChild(MatSort) sort: MatSort;
-  displayedColumns = ['header', 'value', 'actions'];
-
-  headerList: MatTableDataSource<CustomHeader> =
-    new MatTableDataSource<CustomHeader>();
   submitted = false;
 
   /**
@@ -58,7 +52,6 @@ export class SendingProfileDetailComponent implements OnInit {
    * convenience getter for easy access to form fields
    */
   get f() {
-    this.profileForm.controls['landingPageDomain'].disable();
     return this.profileForm.controls;
   }
 
@@ -68,14 +61,7 @@ export class SendingProfileDetailComponent implements OnInit {
   ngOnInit(): void {
     this.profileForm = new FormGroup({
       name: new FormControl('', Validators.required),
-      landingPageDomain: new FormControl(''),
       interfaceType: new FormControl('SMTP', Validators.required),
-      from: new FormControl('', [
-        Validators.required,
-        Validators.pattern(
-          '^\\s*([A-Za-z\\d\\s]+?)\\s*<([\\w.!#$%&’*+\\/=?^_`{|}~-]+@[\\w-]+(?:\\.[\\w-]+)+)>\\s*$|^\\s*([\\w.!#$%&’*+\\/=?^_`{|}~-]+@[\\w-]+(?:\\.[\\w-]+)+)\\s*$'
-        ),
-      ]),
       sendingIpAddress: new FormControl(''),
       // SMTP
       host: new FormControl(''),
@@ -85,10 +71,6 @@ export class SendingProfileDetailComponent implements OnInit {
       // Mailgun
       mailgunApiKey: new FormControl(''),
       mailgunDomain: new FormControl(''),
-
-      // For adding headers
-      newHeaderName: new FormControl(''),
-      newHeaderValue: new FormControl(''),
     });
 
     if (!!this.id) {
@@ -97,9 +79,7 @@ export class SendingProfileDetailComponent implements OnInit {
         (data: any) => {
           this.profile = data as SendingProfileModel;
           this.f.name.setValue(this.profile.name);
-          this.f.landingPageDomain.setValue(this.profile.landing_page_domain);
           this.f.interfaceType.setValue(this.profile.interface_type);
-          this.f.from.setValue(this.profile.from_address);
           this.f.sendingIpAddress.setValue(this.profile.sending_ips);
           if (this.profile.interface_type === 'SMTP') {
             this.f.host.setValue(this.profile.smtp_host);
@@ -109,16 +89,6 @@ export class SendingProfileDetailComponent implements OnInit {
             this.f.mailgunApiKey.setValue(this.profile.mailgun_api_key);
             this.f.mailgunDomain.setValue(this.profile.mailgun_domain);
           }
-          this.headerList = new MatTableDataSource<CustomHeader>();
-          if (this.profile.headers) {
-            for (const h of this.profile.headers) {
-              const headerListItem = new CustomHeader();
-              headerListItem.header = h.key;
-              headerListItem.value = h.value;
-              this.headerList.data.push(headerListItem);
-            }
-          }
-          this.headerList.sort = this.sort;
         },
         (err) => {
           console.log('send profile error:');
@@ -126,39 +96,6 @@ export class SendingProfileDetailComponent implements OnInit {
         }
       );
     }
-  }
-
-  /**
-   * Adds a custom email header to the internal list.
-   */
-  addHeader() {
-    const key = this.f.newHeaderName.value.trim();
-    if (key === '') {
-      return;
-    }
-
-    if (!this.headerList) {
-      this.headerList = new MatTableDataSource<CustomHeader>();
-    }
-
-    const data = this.headerList.data;
-    const newHeader = new CustomHeader();
-    newHeader.header = key;
-    newHeader.value = this.f.newHeaderValue.value.trim();
-    data.push(newHeader);
-    this.headerList.data = data;
-
-    this.f.newHeaderName.setValue('');
-    this.f.newHeaderValue.setValue('');
-  }
-
-  /**
-   * Deletes a custom email header from the internal list.
-   */
-  deleteHeader(headerToDelete: any) {
-    this.headerList.data = this.headerList.data.filter(
-      (x) => x.header !== headerToDelete.header
-    );
   }
 
   /**
@@ -191,10 +128,6 @@ export class SendingProfileDetailComponent implements OnInit {
       const controls = this.profileForm.controls;
       for (var name in controls) {
         if (controls[name].invalid) {
-          if (name == 'from') {
-            controls[name].hasError('pattern');
-            name = 'From as a valid Email';
-          }
           invalid.push(this.capitalizeFirstLetter(name));
         }
       }
@@ -214,17 +147,14 @@ export class SendingProfileDetailComponent implements OnInit {
 
   save() {
     if (this.profileForm.invalid) {
-      console.log(this.f.from.errors);
+      console.log(this.f.name.errors);
       return;
     }
 
     const sp = new SendingProfileModel();
     sp.name = this.f.name.value;
-    sp.landing_page_domain = this.f.landingPageDomain.value;
     sp.interface_type = this.f.interfaceType.value;
-    sp.from_address = this.f.from.value;
     sp.sending_ips = this.f.sendingIpAddress.value;
-    sp.headers = [];
 
     if (sp.interface_type === 'SMTP') {
       sp.smtp_username = this.f.username.value;
@@ -233,16 +163,6 @@ export class SendingProfileDetailComponent implements OnInit {
     } else if (sp.interface_type === 'Mailgun') {
       sp.mailgun_api_key = this.f.mailgunApiKey.value;
       sp.mailgun_domain = this.f.mailgunDomain.value;
-    }
-
-    if (!!this.headerList.data) {
-      for (const ch of this.headerList.data) {
-        const h = {
-          key: ch.header,
-          value: ch.value,
-        };
-        sp.headers.push(h);
-      }
     }
 
     if (this.id) {
@@ -261,7 +181,7 @@ export class SendingProfileDetailComponent implements OnInit {
   onSendTestClick() {
     let sp: SendingProfileModel;
     sp = this.save();
-    sp.from_address = this.getEmailFromBrackets(sp.from_address);
+    sp.from_address = `test@${sp.name}`;
     let email_for_test: TestEmailModel = {
       template: null, //template name to be used in the test
       first_name: 'test',
@@ -283,18 +203,4 @@ export class SendingProfileDetailComponent implements OnInit {
       }
     );
   }
-
-  getEmailFromBrackets(email_with_brackets: string) {
-    var regex = /.+\<(.+@.+)>/g;
-    if (regex.test(email_with_brackets)) {
-      var match = regex.exec(email_with_brackets);
-      return match[0];
-    }
-    return email_with_brackets;
-  }
-}
-
-export class CustomHeader {
-  header: string;
-  value: string;
 }

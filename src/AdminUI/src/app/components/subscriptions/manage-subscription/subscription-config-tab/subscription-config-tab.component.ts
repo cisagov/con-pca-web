@@ -47,6 +47,8 @@ import { UserModel } from 'src/app/models/user.model';
 import { TemplateModel } from 'src/app/models/template.model';
 import { SendingProfileModel } from 'src/app/models/sending-profile.model';
 import { AlertsService } from 'src/app/services/alerts.service';
+import { LandingPageModel } from 'src/app/models/landing-page.models';
+import { LandingPageManagerService } from 'src/app/services/landing-page-manager.service';
 
 @Component({
   selector: 'subscription-config-tab',
@@ -116,6 +118,8 @@ export class SubscriptionConfigTab
 
   hideReportingPassword = true;
 
+  pagesList: LandingPageModel[];
+
   // Safelisting Attributes
   sendingProfileDomains = new Set();
   sendingProfileIps = new Set();
@@ -143,6 +147,7 @@ export class SubscriptionConfigTab
     public dialog: MatDialog,
     public alertsService: AlertsService,
     public formBuilder: FormBuilder,
+    private landingPageSvc: LandingPageManagerService,
     private layoutSvc: LayoutMainService,
     public settingsService: SettingsService,
     private route: ActivatedRoute,
@@ -214,11 +219,16 @@ export class SubscriptionConfigTab
         reportDisplayTime: new FormControl(43200),
         continuousSubscription: new FormControl(false, {}),
         reportingPassword: new FormControl(''),
+        landingPage: new FormControl(''),
         landingPageURL: new FormControl(''),
         landingPageDomain: new FormControl(''),
       },
       { updateOn: 'blur' }
     );
+
+    this.landingPageSvc.getAlllandingpages(true).subscribe((data: any) => {
+      this.pagesList = data;
+    });
 
     this.onChanges();
 
@@ -322,6 +332,13 @@ export class SubscriptionConfigTab
     this.angular_subs.push(
       this.f.reportingPassword.valueChanges.subscribe((val) => {
         this.subscription.reporting_password = val;
+      })
+    );
+
+    // On changes to landing page
+    this.angular_subs.push(
+      this.f.landingPage.valueChanges.subscribe((val) => {
+        this.subscription.landing_page_id = val;
       })
     );
 
@@ -561,7 +578,7 @@ export class SubscriptionConfigTab
   async getRandomTemplates() {
     //  Get Templates Selected
     this.subscription.templates_selected =
-      await this.subscriptionSvc.getTemplatesSelected();
+      await this.subscriptionSvc.getTemplatesSelected(this.subscription._id);
     this.templatesSelected = await this.templateSvc.getAllTemplates(
       false,
       this.subscription.templates_selected
@@ -612,6 +629,7 @@ export class SubscriptionConfigTab
     this.f.continuousSubscription.setValue(s.continuous_subscription);
     this.f.reportingPassword.setValue(s.reporting_password);
 
+    this.f.landingPage.setValue(s.landing_page_id);
     this.f.landingPageURL.setValue(s.landing_page_url);
     this.f.landingPageDomain.setValue(s.landing_domain);
     this.enableDisableFields();
@@ -626,6 +644,9 @@ export class SubscriptionConfigTab
     this.templatesSelected = await this.templateSvc.getAllTemplates(
       false,
       s.templates_selected
+    );
+    this.templatesSelected = this.templatesSelected.concat(
+      await this.templateSvc.getAllTemplates(true, s.templates_selected)
     );
     this.setDefaultTimeUnit();
     this.setEndTimes();
@@ -813,6 +834,10 @@ export class SubscriptionConfigTab
         this.setTemplatesSelected();
         this.subscription.target_email_list =
           this.subscription.target_email_list;
+        // if start date is in the past, move it to today
+        if (this.f.startDate.value < new Date()) {
+          this.f.startDate.setValue(new Date());
+        }
         // persist any changes before restart
         this.subscriptionSvc
           .patchSubscription(this.subscription)
@@ -945,6 +970,7 @@ export class SubscriptionConfigTab
 
     sub.continuous_subscription = this.f.continuousSubscription.value;
     sub.reporting_password = this.f.reportingPassword.value;
+    sub.landing_page_id = this.f.landingPage.value;
     sub.landing_page_url = this.f.landingPageURL.value;
     sub.landing_domain = this.f.landingPageDomain.value;
     const cycleLength: number = +this.f.cycle_length_minutes.value;
@@ -1008,6 +1034,7 @@ export class SubscriptionConfigTab
         this.processing = false;
       },
       (error) => {
+        console.log(sub._id);
         this.processing = false;
         this.loading = false;
         this.dialog.open(AlertComponent, {

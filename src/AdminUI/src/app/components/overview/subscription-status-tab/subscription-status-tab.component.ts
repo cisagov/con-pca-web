@@ -91,15 +91,35 @@ export class SubscriptionStatusTab implements OnInit {
             )
         ) as SubscriptionWithEndDate[];
         this.endingSoonDataSource.sort = this.sortEndingSoon;
+        this.sortingDataAccessor(this.endingSoonDataSource);
         this.inProgressDataSource.data = subscriptions.filter(
           (obj) => obj.status === 'running'
         ) as SubscriptionWithEndDate[];
         this.inProgressDataSource.sort = this.sortInProgress;
+        this.sortingDataAccessor(this.inProgressDataSource);
         this.stoppedDataSource.data = subscriptions.filter(
           (obj) => obj.status === 'stopped'
         ) as SubscriptionModel[];
         this.stoppedDataSource.sort = this.sortStopped;
+        this.sortingDataAccessor(this.stoppedDataSource);
       });
+  }
+
+  private sortingDataAccessor(callBack: any) {
+    callBack.sortingDataAccessor = (item, property) => {
+      switch (property) {
+        case 'startDate':
+          return new Date(item.start_date);
+        case 'endDate':
+          return new Date(item.end_date);
+        case 'isContinuous':
+          return item.continuous_subscription ? 1 : 0;
+        case 'lastUpdated':
+          return new Date(item.updated);
+        default:
+          return item[property];
+      }
+    };
   }
 
   public editSubscription(row) {

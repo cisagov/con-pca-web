@@ -65,7 +65,9 @@ export class TemplateSelectDialogComponent {
     if (this.selectedArray.length > 1) {
       for (let i = 0; i < this.selectedArray.length; i++) {
         if (this.selectedArray[i]._id === template._id) {
-          this.availableArray.push(template);
+          if (template.retired === false) {
+            this.availableArray.push(template);
+          }
           this.selectedArray.splice(i, 1);
           i = this.selectedArray.length;
           this.initMatTables();

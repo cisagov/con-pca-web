@@ -24,7 +24,7 @@ export class LandingDomainsComponent implements OnInit {
     public dialog: MatDialog,
     public layoutSvc: LayoutMainService
   ) {
-    layoutSvc.setTitle('Landing Domains');
+    layoutSvc.setTitle('Simulated Phishing URLs');
   }
 
   ngOnInit(): void {

@@ -20,6 +20,7 @@ import { TemplatesDataService } from 'src/app/services/templates-data.service';
 import { Subscription } from 'rxjs';
 import { SelectionModel } from '@angular/cdk/collections';
 import { TestTemplatesDialogComponent } from '../template-manager/test-templates-dialog/test-templates-dialog.component';
+import { RestoreTemplatesDialogComponent } from '../template-manager/restore-templates-dialog/restore-templates-dialog.component';
 
 @Component({
   selector: '',
@@ -42,6 +43,7 @@ export class TemplatesPageComponent
   templatesData = new MatTableDataSource<TemplateModel>();
   search_input = '';
   dialogRefRetire: MatDialogRef<RetireTemplatesDialogComponent>;
+  dialogRefRestore: MatDialogRef<RestoreTemplatesDialogComponent>;
   @ViewChild(MatSort) sort: MatSort;
 
   showRetired: boolean = false;
@@ -127,6 +129,24 @@ export class TemplatesPageComponent
       } else if (result.error) {
         this.alertsService.alert(
           `Error retiring template. ${result.error.error}`
+        );
+      }
+    });
+  }
+
+  restoreTemplates() {
+    const templatesToRestore = this.selection.selected;
+
+    this.dialogRefRestore = this.dialog.open(RestoreTemplatesDialogComponent, {
+      disableClose: false,
+      data: templatesToRestore,
+    });
+    this.dialogRefRestore.afterClosed().subscribe((result) => {
+      if (!result.retired) {
+        this.refresh();
+      } else if (result.error) {
+        this.alertsService.alert(
+          `Error restoring template. ${result.error.error}`
         );
       }
     });

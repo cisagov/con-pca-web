@@ -112,6 +112,7 @@ export class SubscriptionService {
       cooldown_minutes: subscription.cooldown_minutes,
       report_frequency_minutes: subscription.report_frequency_minutes,
       reporting_password: subscription.reporting_password,
+      landing_page_id: subscription.landing_page_id,
       landing_page_url: subscription.landing_page_url,
       landing_domain: subscription.landing_domain,
     };
@@ -183,8 +184,8 @@ export class SubscriptionService {
     };
     return this.http.post(url, data);
   }
-  public async getTemplatesSelected() {
-    const url = `${this.settingsService.settings.apiUrl}/api/templates/select/`;
+  public async getTemplatesSelected(subscriptionId) {
+    const url = `${this.settingsService.settings.apiUrl}/api/templates/select/${subscriptionId}/`;
     return this.http.get<string[]>(url).toPromise();
   }
 
@@ -261,6 +262,11 @@ export class SubscriptionService {
 
   public getRandomPassword() {
     const url = `${this.settingsService.settings.apiUrl}/api/util/randompassword/`;
+    return this.http.get(url);
+  }
+
+  public exportSubscriptionData(subscriptionId: string) {
+    const url = `${this.settingsService.settings.apiUrl}/api/subscription/${subscriptionId}/export/`;
     return this.http.get(url);
   }
 }

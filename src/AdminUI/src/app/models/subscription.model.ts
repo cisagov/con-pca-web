@@ -66,6 +66,7 @@ export class SubscriptionModel {
   phish_header: string;
   reporting_password: string;
   test_results: SubscriptionTestResultsModel[];
+  landing_page_id: string;
   landing_page_url: string;
   landing_domain: string;
   updated: Date;

@@ -23,6 +23,11 @@ export class CycleService {
     return this.http.get<CycleModel>(url);
   }
 
+  public deleteCycle(cycleId) {
+    const url = `${this.SettingsService.settings.apiUrl}/api/cycle/${cycleId}/`;
+    return this.http.delete(url);
+  }
+
   public getCycleStats(cycleId: string, nonhuman = false) {
     let url = `${this.SettingsService.settings.apiUrl}/api/cycle/${cycleId}/stats/`;
     if (nonhuman) {

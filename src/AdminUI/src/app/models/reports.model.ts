@@ -7,6 +7,7 @@ export class SectorIndustryReportModel {
 
 export class AggregateReportModel {
   customers_enrolled: number;
+  customers_active: number;
   status_reports_sent: number;
   cycle_reports_sent: number;
   yearly_reports_sent: number;

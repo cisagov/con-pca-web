@@ -22,14 +22,14 @@
     "guid-typescript": "^1.0.9",
     "jquery": "^3.6.0",
     "jwt-decode": "^3.1.2",
-    "moment": "^2.29.3",
+    "moment": "^2.29.4",
     "ngx-autosize": "^1.8.7",
     "ngx-cookie-service": "^12.0.3",
     "rxjs": "~6.6.7",
     "sweetalert2": "^10.16.6",
-    "tslib": "^2.3.1",
+    "tslib": "^2.4.0",
     "xlsx": "^0.18.2",
-    "zone.js": "~0.11.5"
+    "zone.js": "~0.11.6"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^12.2.15",
