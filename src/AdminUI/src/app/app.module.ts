@@ -116,6 +116,8 @@ import { TemplateDataDialogComponent } from './components/subscriptions/manage-s
 import { LoggingTab } from './components/overview/logging-tab/logging-tab.component';
 import { FailedEmailsTab } from './components/overview/failed-emails-tab/failed-emails-tab.component';
 import { RestoreTemplatesDialogComponent } from './components/template-manager/restore-templates-dialog/restore-templates-dialog.component';
+import { ArchiveCustomersDialogComponent } from './components/customer/archive-customers-dialog/archive-customers-dialog.component';
+import { UnarchiveCustomersDialogComponent } from './components/customer/unarchive-customers-dialog/unarchive-customers-dialog.component';
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
   return () => settingsHttpService.initializeApp();
@@ -160,6 +162,8 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     RestoreTemplatesDialogComponent,
     RetireTemplateDialogComponent,
     RetireTemplatesDialogComponent,
+    UnarchiveCustomersDialogComponent,
+    ArchiveCustomersDialogComponent,
     CustomerDialogComponent,
     AlertComponent,
     SafePipe,
