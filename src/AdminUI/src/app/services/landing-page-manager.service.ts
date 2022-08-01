@@ -27,7 +27,7 @@ export class LandingPageManagerService {
   getlandingpage(id: string) {
     return new Promise((resolve, reject) => {
       this.http
-        .get(`${this.settingsService.settings.apiUrl}/api/landingpage/${id}`)
+        .get(`${this.settingsService.settings.apiUrl}/api/landingpage/${id}/`)
         .subscribe(
           (success) => {
             resolve(success);
@@ -91,7 +91,7 @@ export class LandingPageManagerService {
 
   getLandingPageTemplates(landingPageId: string) {
     return this.http.get(
-      `${this.settingsService.settings.apiUrl}/api/templates/?landing_page_id=${landingPageId}`
+      `${this.settingsService.settings.apiUrl}/api/templates/?landing_page_id=${landingPageId}/`
     );
   }
 }
