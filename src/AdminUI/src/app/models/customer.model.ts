@@ -13,6 +13,8 @@ export class CustomerModel {
   contact_list: ContactModel[];
   domain: string;
   appendix_a_date: Date;
+  archived: boolean;
+  archived_description: string;
 
   public constructor(init?: Partial<CustomerModel>) {
     Object.assign(this, init);

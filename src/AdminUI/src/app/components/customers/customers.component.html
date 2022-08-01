@@ -1,6 +1,6 @@
 <div mat-dialog-content>
   <div class="container-fluid" *ngIf="!customerSvc.showCustomerInfo">
-    <div class="d-flex flex-row align-items-start">
+    <div class="d-flex flex-row flex-grow-1">
       <!-- SEARCH BAR -->
       <mat-form-field class="d-flex flex-column w-100" appearance="outline">
         <mat-label>Search</mat-label>
@@ -14,13 +14,50 @@
       </mat-form-field>
 
       <div class="d-inline-flex flex-column ml-2">
-        <button
-          mat-raised-button
-          color="primary"
-          (click)="this.customerSvc.setCustomerInfo(true)"
-        >
-          New Customer
-        </button>
+        <div class="d-flex">
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="this.customerSvc.setCustomerInfo(true)"
+          >
+            New Customer
+          </button>
+          <button
+            [disabled]="!selection.hasValue()"
+            *ngIf="!insideDialog"
+            mat-raised-button
+            color="accent"
+            [matMenuTriggerFor]="menu"
+          >
+            Actions<mat-icon>arrow_drop_down</mat-icon>
+          </button>
+          <mat-menu xPosition="before" yPosition="below" #menu="matMenu">
+            <button
+              mat-menu-item
+              *ngIf="!insideDialog && !showArchived"
+              (click)="archiveCustomers()"
+            >
+              <mat-icon color="warn">archive</mat-icon>Archive
+            </button>
+            <button
+              mat-menu-item
+              *ngIf="!insideDialog && showArchived"
+              (click)="unarchiveCustomers()"
+            >
+              <mat-icon color="warn">unarchive</mat-icon>Unarchive
+            </button>
+          </mat-menu>
+        </div>
+        <div class="d-flex flex-row-reverse mb-2">
+          <mat-slide-toggle
+            class="mt-1 ml-1 mr-1"
+            *ngIf="!insideDialog"
+            [(ngModel)]="showArchived"
+            (change)="onArchivedToggle()"
+          >
+            Show Archived
+          </mat-slide-toggle>
+        </div>
       </div>
     </div>
 
@@ -36,6 +73,26 @@
     </div>
 
     <mat-table [dataSource]="customersData" [hidden]="loading" matSort>
+      <ng-container matColumnDef="select">
+        <mat-header-cell *matHeaderCellDef>
+          <mat-checkbox
+            *ngIf="!insideDialog"
+            (change)="$event ? masterToggle() : null"
+            [checked]="selection.hasValue() && isAllSelected()"
+            [indeterminate]="selection.hasValue() && !isAllSelected()"
+          >
+          </mat-checkbox>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <mat-checkbox
+            *ngIf="!insideDialog"
+            (click)="$event.stopPropagation()"
+            (change)="$event ? selection.toggle(row) : null"
+            [checked]="selection.isSelected(row)"
+          >
+          </mat-checkbox>
+        </mat-cell>
+      </ng-container>
       <ng-container matColumnDef="name">
         <mat-header-cell *matHeaderCellDef mat-sort-header
           >Name</mat-header-cell
@@ -78,16 +135,26 @@
         >
         <mat-cell *matCellDef="let row"> {{ row.zip_code }} </mat-cell>
       </ng-container>
-      <ng-container matColumnDef="select">
+      <!-- ARCHIVED -->
+      <ng-container matColumnDef="archived">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Archived</mat-header-cell
+        >
+        <mat-cell *matCellDef="let row" (click)="editCustomer(row._id)"
+          ><i *ngIf="row.archived" class="fa fa-check"></i>
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="edit">
         <mat-header-cell *matHeaderCellDef>Edit</mat-header-cell>
         <mat-cell *matCellDef="let row">
           <button
+            *ngIf="!insideDialog"
             class="table-btn-icon"
             mat-flat-button
             color="primary"
             [routerLink]="['/customer', row._id]"
           >
-            <mat-icon class="table-btn-icon-size">edit</mat-icon>
+            <mat-icon class="table-btn-icon-size">edit </mat-icon>
           </button>
         </mat-cell>
       </ng-container>
