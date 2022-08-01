@@ -11,15 +11,17 @@ import { SubscriptionService } from 'src/app/services/subscription.service';
 import { ContactModel, CustomerModel } from 'src/app/models/customer.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CustomerService } from 'src/app/services/customer.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { Subscription } from 'rxjs';
 import { AlertComponent } from '../../dialogs/alert/alert.component';
+import { AlertsService } from 'src/app/services/alerts.service';
 import { ConfirmComponent } from '../../dialogs/confirm/confirm.component';
 import { SubscriptionModel } from 'src/app/models/subscription.model';
 import { CanComponentDeactivate } from 'src/app/guards/unsaved-changes.guard';
 import { UnsavedComponent } from '../../dialogs/unsaved/unsaved.component';
+import { ArchiveCustomersDialogComponent } from '../archive-customers-dialog/archive-customers-dialog.component';
 
 @Component({
   selector: 'app-add-customer',
@@ -33,6 +35,7 @@ export class AddCustomerComponent
   @Input() inDialog: boolean;
 
   model: any;
+  dialogRefArchive: MatDialogRef<ArchiveCustomersDialogComponent>;
   addContact = false;
   contactDataSource: any = [];
   displayedColumns: string[] = [
@@ -102,6 +105,7 @@ export class AddCustomerComponent
   constructor(
     public subscriptionSvc: SubscriptionService,
     public customerSvc: CustomerService,
+    public alertsService: AlertsService,
     public dialog: MatDialog,
     private route: ActivatedRoute,
     public router: Router,
@@ -277,8 +281,8 @@ export class AddCustomerComponent
         contact_list: this.contacts.data,
         domain: this.customerFormGroup.controls['domain'].value,
         appendix_a_date: this.customerFormGroup.controls['appendixADate'].value,
-        archived: false,
-        archived_description: '',
+        archived: this.customer.archived,
+        archived_description: this.customer.archived_description,
       };
 
       if (this.customer_id != null) {
@@ -469,6 +473,41 @@ export class AddCustomerComponent
 
   customerValid() {
     return this.customerFormGroup.valid && this.contacts.data.length > 0;
+  }
+
+  openUnarchiveCustomerDialog() {
+    const dialogRef = this.dialog.open(ConfirmComponent, {
+      disableClose: false,
+    });
+    dialogRef.componentInstance.confirmMessage = `Are you sure you want to unarchive ${this.customer.name}? Initial Reason for Archiving - ${this.customer.archived_description}`;
+    dialogRef.componentInstance.title = 'Confirm Unarchive';
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.customer.archived = false;
+        this.customer.archived_description = '';
+        this.pushCustomer();
+      }
+    });
+  }
+
+  openArchiveCustomerDialog() {
+    this.dialogRefArchive = this.dialog.open(ArchiveCustomersDialogComponent, {
+      disableClose: false,
+      data: [this.customer],
+    });
+
+    this.dialogRefArchive.afterClosed().subscribe((result) => {
+      if (result.archived) {
+        this.customer.archived = true;
+        this.customer.archived_description = result.description;
+        this.pushCustomer();
+      } else if (result.error) {
+        this.alertsService.alert(
+          `Error archiving customer. ${result.error.error}`
+        );
+      }
+    });
   }
 
   deleteCustomer() {

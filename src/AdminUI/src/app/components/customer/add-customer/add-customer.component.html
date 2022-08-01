@@ -598,6 +598,26 @@
       </div>
       <div class="d-flex flex-row flex-grow-1 justify-content-end">
         <button
+          id="unarchive-button"
+          class="d-flex"
+          mat-raised-button
+          color="accent"
+          (click)="openUnarchiveCustomerDialog()"
+          *ngIf="customer._id && customer.archived"
+        >
+          Unarchive Customer
+        </button>
+        <button
+          id="archive-button"
+          class="d-flex"
+          mat-raised-button
+          color="accent"
+          (click)="openArchiveCustomerDialog()"
+          *ngIf="customer._id && !customer.archived"
+        >
+          Archive Customer
+        </button>
+        <button
           mat-raised-button
           color="warn"
           [disabled]="hasSubs"
@@ -621,6 +641,14 @@
           </button>
         </div>
         <button mat-flat-button (click)="cancelCustomer()">Cancel</button>
+      </div>
+      <div
+        class="flex-container flex-row pb-3"
+        *ngIf="customer._id && customer.archived"
+      >
+        <p class="text-danger">
+          Reason for Archiving - {{ customer.archived_description }}
+        </p>
       </div>
     </div>
   </div>
