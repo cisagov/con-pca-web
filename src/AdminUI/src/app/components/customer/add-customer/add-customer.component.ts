@@ -300,8 +300,8 @@ export class AddCustomerComponent
         contact_list: this.contacts.data,
         domain: this.customerFormGroup.controls['domain'].value,
         appendix_a_date: this.customerFormGroup.controls['appendixADate'].value,
-        archived: this.customer.archived,
-        archived_description: this.customer.archived_description,
+        archived: false,
+        archived_description: '',
       };
 
       if (this.customer_id != null) {

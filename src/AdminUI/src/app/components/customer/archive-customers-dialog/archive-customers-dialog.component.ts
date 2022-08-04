@@ -14,8 +14,10 @@ import { MatTableDataSource } from '@angular/material/table';
 })
 export class ArchiveCustomersDialogComponent implements OnInit {
   customers: CustomerModel[];
+  customer: CustomerModel;
   archivedDescription: string;
   canArchive: boolean;
+  hasActiveSubs = false;
 
   subscriptions = new MatTableDataSource<SubscriptionModel>();
 
@@ -38,34 +40,52 @@ export class ArchiveCustomersDialogComponent implements OnInit {
     }
   }
 
-  isActive(customer): boolean {
-    this.subscriptionSvc
-      .getSubscriptionsByCustomer(customer)
-      .subscribe((data: any[]) => {
-        this.subscriptions.data = data as SubscriptionModel[];
-      });
-    return this.subscriptions.data.some((subscription) => {
-      return subscription.status == 'running';
-    });
-  }
-
   archive(): void {
     for (let customer of this.customers) {
-      if (!this.isActive(customer)) {
-        customer.archived = true;
-        customer.archived_description = this.archivedDescription;
-        this.customerSvc.updateCustomer(customer).then(
-          () => {
-            this.dialogRef.close({
-              archived: true,
-              description: this.archivedDescription,
-            });
-          },
-          (error) => {
-            this.dialogRef.close({ error: error.error });
+      this.hasActiveSubs = false;
+      console.log(this.hasActiveSubs);
+      this.customerSvc
+        .getCustomer(customer._id)
+        .subscribe((data: CustomerModel) => {
+          if (data._id != null) {
+            this.customer = data as CustomerModel;
+            this.subscriptionSvc
+              .getSubscriptionsByCustomer(this.customer)
+              .subscribe((subscriptionData: SubscriptionModel[]) => {
+                this.subscriptions.data = subscriptionData;
+                console.log(this.subscriptions.data);
+                this.subscriptions.data.forEach((subscription) => {
+                  console.log(subscription);
+                  console.log(subscription.status);
+                  if (
+                    subscription.status == 'running' ||
+                    subscription.status == 'queued'
+                  ) {
+                    this.hasActiveSubs = true;
+                  }
+                });
+                console.log(this.hasActiveSubs);
+                if (!this.hasActiveSubs) {
+                  console.log('something should be archived after this point');
+                  customer.archived = true;
+                  customer.archived_description = this.archivedDescription;
+                  this.customerSvc.updateCustomer(customer).then(
+                    () => {
+                      this.dialogRef.close({
+                        archived: true,
+                        description: this.archivedDescription,
+                      });
+                    },
+                    (error) => {
+                      this.dialogRef.close({ error: error.error });
+                    }
+                  );
+                } else {
+                  this.hasActiveSubs = false;
+                }
+              });
           }
-        );
-      }
+        });
     }
   }
 

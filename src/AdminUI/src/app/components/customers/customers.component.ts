@@ -147,6 +147,7 @@ export class CustomersComponent implements OnInit {
         );
       }
     });
+    this.refresh();
   }
 
   unarchiveCustomers() {
