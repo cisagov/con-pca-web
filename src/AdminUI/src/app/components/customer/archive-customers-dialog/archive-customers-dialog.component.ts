@@ -41,9 +41,8 @@ export class ArchiveCustomersDialogComponent implements OnInit {
   }
 
   archive(): void {
-    for (let customer of this.customers) {
+    for (let [i, customer] of this.customers.entries()) {
       this.hasActiveSubs = false;
-      console.log(this.hasActiveSubs);
       this.customerSvc
         .getCustomer(customer._id)
         .subscribe((data: CustomerModel) => {
@@ -53,10 +52,7 @@ export class ArchiveCustomersDialogComponent implements OnInit {
               .getSubscriptionsByCustomer(this.customer)
               .subscribe((subscriptionData: SubscriptionModel[]) => {
                 this.subscriptions.data = subscriptionData;
-                console.log(this.subscriptions.data);
                 this.subscriptions.data.forEach((subscription) => {
-                  console.log(subscription);
-                  console.log(subscription.status);
                   if (
                     subscription.status == 'running' ||
                     subscription.status == 'queued'
@@ -64,22 +60,24 @@ export class ArchiveCustomersDialogComponent implements OnInit {
                     this.hasActiveSubs = true;
                   }
                 });
-                console.log(this.hasActiveSubs);
                 if (!this.hasActiveSubs) {
-                  console.log('something should be archived after this point');
                   customer.archived = true;
                   customer.archived_description = this.archivedDescription;
-                  this.customerSvc.updateCustomer(customer).then(
-                    () => {
-                      this.dialogRef.close({
-                        archived: true,
-                        description: this.archivedDescription,
-                      });
-                    },
-                    (error) => {
-                      this.dialogRef.close({ error: error.error });
-                    }
-                  );
+                  if (i === this.customers.length - 1) {
+                    this.customerSvc.updateCustomer(customer).then(
+                      () => {
+                        this.dialogRef.close({
+                          archived: true,
+                          description: this.archivedDescription,
+                        });
+                      },
+                      (error) => {
+                        this.dialogRef.close({ error: error.error });
+                      }
+                    );
+                  } else {
+                    this.customerSvc.updateCustomer(customer);
+                  }
                 } else {
                   this.hasActiveSubs = false;
                 }

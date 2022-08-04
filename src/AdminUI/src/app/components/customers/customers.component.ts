@@ -138,14 +138,8 @@ export class CustomersComponent implements OnInit {
       disableClose: false,
       data: customersToArchive,
     });
-    this.dialogRefArchive.afterClosed().subscribe((result) => {
-      if (result.archived) {
-        this.refresh();
-      } else if (result.error) {
-        this.alertsService.alert(
-          `Error archiving customer. ${result.error.error}`
-        );
-      }
+    this.dialogRefArchive.afterClosed().subscribe(() => {
+      this.refresh();
     });
     this.refresh();
   }
