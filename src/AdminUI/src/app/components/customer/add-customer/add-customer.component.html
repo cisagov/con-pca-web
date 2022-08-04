@@ -602,31 +602,41 @@
           class="d-flex"
           mat-raised-button
           color="accent"
+          *ngIf="isExistingCustomer() && isArchived()"
+          [disabled]="!isArchived()"
           (click)="openUnarchiveCustomerDialog()"
-          *ngIf="customer._id && customer.archived"
         >
           Unarchive Customer
         </button>
-        <button
-          id="archive-button"
-          class="d-flex"
-          mat-raised-button
-          color="accent"
-          (click)="openArchiveCustomerDialog()"
-          *ngIf="customer._id && !customer.archived"
+        <div
+          matTooltip="A customer cannot be archived with active subscriptions."
+          matTooltipPosition="right"
+          *ngIf="isExistingCustomer() && !isArchived()"
+          matTooltipShowDelay="500"
+          [matTooltipDisabled]="!hasSubs || isArchived()"
         >
-          Archive Customer
-        </button>
+          <button
+            id="archive-button"
+            class="d-flex"
+            mat-raised-button
+            [disabled]="hasActiveSubs || isArchived()"
+            *ngIf="isExistingCustomer() && !isArchived()"
+            color="accent"
+            (click)="openArchiveCustomerDialog()"
+          >
+            Archive Customer
+          </button>
+        </div>
         <div
           matTooltip="Only customers that have been archived can be deleted."
           matTooltipPosition="right"
           matTooltipShowDelay="500"
-          [matTooltipDisabled]="!hasSubs && customer.archived"
+          [matTooltipDisabled]="!hasSubs && isArchived()"
         >
           <button
             mat-raised-button
             color="warn"
-            [disabled]="hasSubs || !customer.archived"
+            [disabled]="hasSubs || !isArchived()"
             (click)="deleteCustomer()"
           >
             Delete Customer
@@ -651,7 +661,7 @@
       </div>
       <div
         class="flex-container flex-row pb-3"
-        *ngIf="customer._id && customer.archived"
+        *ngIf="isArchived() && isExistingCustomer()"
       >
         <p class="text-danger">
           Reason for Archiving - {{ customer.archived_description }}

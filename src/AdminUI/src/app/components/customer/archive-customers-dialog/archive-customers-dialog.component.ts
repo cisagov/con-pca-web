@@ -2,6 +2,9 @@ import { Component, OnInit, Inject, HostBinding } from '@angular/core';
 import { CustomerService } from 'src/app/services/customer.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CustomerModel } from 'src/app/models/customer.model';
+import { SubscriptionModel } from 'src/app/models/subscription.model';
+import { SubscriptionService } from 'src/app/services/subscription.service';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-archive-customer-dialog',
@@ -14,9 +17,12 @@ export class ArchiveCustomersDialogComponent implements OnInit {
   archivedDescription: string;
   canArchive: boolean;
 
+  subscriptions = new MatTableDataSource<SubscriptionModel>();
+
   constructor(
     public dialogRef: MatDialogRef<ArchiveCustomersDialogComponent>,
     public customerSvc: CustomerService,
+    public subscriptionSvc: SubscriptionService,
     @Inject(MAT_DIALOG_DATA) data: CustomerModel[]
   ) {
     this.customers = data;
@@ -32,21 +38,34 @@ export class ArchiveCustomersDialogComponent implements OnInit {
     }
   }
 
+  isActive(customer): boolean {
+    this.subscriptionSvc
+      .getSubscriptionsByCustomer(customer)
+      .subscribe((data: any[]) => {
+        this.subscriptions.data = data as SubscriptionModel[];
+      });
+    return this.subscriptions.data.some((subscription) => {
+      return subscription.status == 'running';
+    });
+  }
+
   archive(): void {
     for (let customer of this.customers) {
-      customer.archived = true;
-      customer.archived_description = this.archivedDescription;
-      this.customerSvc.updateCustomer(customer).then(
-        () => {
-          this.dialogRef.close({
-            archived: true,
-            description: this.archivedDescription,
-          });
-        },
-        (error) => {
-          this.dialogRef.close({ error: error.error });
-        }
-      );
+      if (!this.isActive(customer)) {
+        customer.archived = true;
+        customer.archived_description = this.archivedDescription;
+        this.customerSvc.updateCustomer(customer).then(
+          () => {
+            this.dialogRef.close({
+              archived: true,
+              description: this.archivedDescription,
+            });
+          },
+          (error) => {
+            this.dialogRef.close({ error: error.error });
+          }
+        );
+      }
     }
   }
 

@@ -95,9 +95,12 @@ export class AddCustomerComponent
   angularSubscriptions = Array<Subscription>();
   // Customer_id if not new
   customer_id: string;
+  archived = false;
+  archived_description = '';
   customer: CustomerModel;
   subscriptions = new MatTableDataSource<SubscriptionModel>();
   hasSubs = true;
+  hasActiveSubs = false;
 
   sectorList;
   industryList;
@@ -156,6 +159,7 @@ export class AddCustomerComponent
       (data: CustomerModel) => {
         if (data._id != null) {
           this.customer = data as CustomerModel;
+          this.archived = this.customer.archived;
           this.setCustomerForm(this.customer);
           this.setContacts(this.customer.contact_list as ContactModel[]);
           this.getSectorList();
@@ -167,6 +171,14 @@ export class AddCustomerComponent
                 this.hasSubs = false;
               } else {
                 this.hasSubs = true;
+                this.subscriptions.data.forEach((subscription) => {
+                  if (
+                    subscription.status == 'queued' ||
+                    subscription.status == 'running'
+                  ) {
+                    this.hasActiveSubs = true;
+                  }
+                });
               }
             });
         } else {
@@ -231,6 +243,13 @@ export class AddCustomerComponent
     this.contacts.data = newContacts;
   }
 
+  isArchived(): boolean {
+    if (this.archived) {
+      return true;
+    }
+    return false;
+  }
+
   isExistingCustomer(): boolean {
     if (this.customer_id) {
       return true;
@@ -288,6 +307,7 @@ export class AddCustomerComponent
       if (this.customer_id != null) {
         // If editing existing customer
         customer._id = this.customer_id;
+        this.archived = this.customer.archived;
         this.angularSubscriptions.push(
           this.customerSvc.patchCustomer(customer).subscribe(
             (data: any) => {
@@ -484,6 +504,7 @@ export class AddCustomerComponent
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
+        this.archived = false;
         this.customer.archived = false;
         this.customer.archived_description = '';
         this.pushCustomer();
@@ -499,6 +520,7 @@ export class AddCustomerComponent
 
     this.dialogRefArchive.afterClosed().subscribe((result) => {
       if (result.archived) {
+        this.archived = true;
         this.customer.archived = true;
         this.customer.archived_description = result.description;
         this.pushCustomer();
