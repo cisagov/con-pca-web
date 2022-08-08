@@ -138,6 +138,25 @@ export class CustomerService {
     });
   }
 
+  public archiveCustomer(data: CustomerModel) {
+    return new Promise((resolve, reject) => {
+      this.http
+        .put(
+          `${this.settingsService.settings.apiUrl}/api/archivecustomer/${data._id}/`,
+          data
+        )
+        .subscribe(
+          (success) => {
+            resolve(success);
+          },
+          (error) => {
+            reject(error);
+          },
+          () => {}
+        );
+    });
+  }
+
   public addCustomer(customer: NewCustomerModel) {
     return this.http.post(
       `${this.settingsService.settings.apiUrl}/api/customers/`,

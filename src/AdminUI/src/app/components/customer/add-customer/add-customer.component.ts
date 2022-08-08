@@ -523,7 +523,7 @@ export class AddCustomerComponent
         this.archived = true;
         this.customer.archived = true;
         this.customer.archived_description = result.description;
-        this.pushCustomer();
+        this.router.navigate(['/customers']);
       } else if (result.error) {
         this.alertsService.alert(
           `Error archiving customer. ${result.error.error}`
