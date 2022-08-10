@@ -34,12 +34,13 @@ export class CustomerService {
     return this.showCustomerInfoStatus;
   }
   // Returns observable on http request to get customers
-  public getCustomers(retired: boolean = false) {
+  public getCustomers(archived: string = '') {
     let url = `${this.settingsService.settings.apiUrl}/api/customers/`;
     const parameters = [];
-    if (retired) {
+    if (archived == 'true') {
       parameters.push('archived=true');
-    } else {
+    }
+    if (archived == 'false') {
       parameters.push('archived=false');
     }
     if (parameters) {

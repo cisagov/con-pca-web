@@ -83,11 +83,13 @@ export class CustomersComponent implements OnInit {
     }
     this.loading = true;
     this.selection = new SelectionModel<CustomerModel>(true, []);
-    this.customerSvc.getCustomers(this.showArchived).subscribe((data: any) => {
-      this.customersData.data = data as CustomerModel[];
-      this.customersData.sort = this.sort;
-      this.loading = false;
-    });
+    this.customerSvc
+      .getCustomers(this.showArchived.toString())
+      .subscribe((data: any) => {
+        this.customersData.data = data as CustomerModel[];
+        this.customersData.sort = this.sort;
+        this.loading = false;
+      });
   }
 
   public canDeactivate(): Promise<boolean> {
