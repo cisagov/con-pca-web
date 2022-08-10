@@ -39,6 +39,8 @@ export class CustomerService {
     const parameters = [];
     if (retired) {
       parameters.push('archived=true');
+    } else {
+      parameters.push('archived=false');
     }
     if (parameters) {
       url = `${url}?${parameters.join('&')}`;
