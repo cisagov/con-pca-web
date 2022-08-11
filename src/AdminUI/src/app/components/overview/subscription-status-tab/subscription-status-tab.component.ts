@@ -10,8 +10,9 @@ import { SubscriptionService } from 'src/app/services/subscription.service';
 interface SubscriptionWithEndDate {
   // top-level primitives for column sorting
   name: string;
-  start_date: Date;
-  end_date: Date;
+  cycle_start_date: Date;
+  cycle_end_date: Date;
+  appendix_a_date: Date;
   is_continuous: string;
   last_updated: Date;
 }
@@ -37,6 +38,7 @@ export class SubscriptionStatusTab implements OnInit {
     'name',
     'startDate',
     'endDate',
+    'appendixDate',
     'isContinuous',
     'lastUpdated',
   ];
@@ -47,6 +49,7 @@ export class SubscriptionStatusTab implements OnInit {
     'name',
     'startDate',
     'endDate',
+    'appendixDate',
     'isContinuous',
     'lastUpdated',
   ];
@@ -56,6 +59,7 @@ export class SubscriptionStatusTab implements OnInit {
   stoppedDisplayedColumns = [
     'name',
     'startDate',
+    'appendixDate',
     'isContinuous',
     'lastUpdated',
   ];
@@ -83,7 +87,7 @@ export class SubscriptionStatusTab implements OnInit {
           (obj) =>
             obj.status === 'running' &&
             moment().isAfter(
-              moment(obj.start_date, 'YYYY-MM-DD').add(
+              moment(obj.cycle_start_date, 'YYYY-MM-DD').add(
                 obj.cycle_length_minutes - 28800,
                 'minutes'
               ),
@@ -109,9 +113,11 @@ export class SubscriptionStatusTab implements OnInit {
     callBack.sortingDataAccessor = (item, property) => {
       switch (property) {
         case 'startDate':
-          return new Date(item.start_date);
+          return new Date(item.cycle_start_date);
         case 'endDate':
-          return new Date(item.end_date);
+          return new Date(item.cycle_end_date);
+        case 'appendixDate':
+          return new Date(item.appendix_a_date);
         case 'isContinuous':
           return item.continuous_subscription ? 1 : 0;
         case 'lastUpdated':
