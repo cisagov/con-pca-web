@@ -2,6 +2,9 @@ import { Component, OnInit, Inject, HostBinding } from '@angular/core';
 import { CustomerService } from 'src/app/services/customer.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CustomerModel } from 'src/app/models/customer.model';
+import { SubscriptionModel } from 'src/app/models/subscription.model';
+import { SubscriptionService } from 'src/app/services/subscription.service';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-archive-customer-dialog',
@@ -11,12 +14,16 @@ import { CustomerModel } from 'src/app/models/customer.model';
 })
 export class ArchiveCustomersDialogComponent implements OnInit {
   customers: CustomerModel[];
+  customer: CustomerModel;
   archivedDescription: string;
   canArchive: boolean;
+
+  subscriptions = new MatTableDataSource<SubscriptionModel>();
 
   constructor(
     public dialogRef: MatDialogRef<ArchiveCustomersDialogComponent>,
     public customerSvc: CustomerService,
+    public subscriptionSvc: SubscriptionService,
     @Inject(MAT_DIALOG_DATA) data: CustomerModel[]
   ) {
     this.customers = data;
@@ -36,7 +43,7 @@ export class ArchiveCustomersDialogComponent implements OnInit {
     for (let customer of this.customers) {
       customer.archived = true;
       customer.archived_description = this.archivedDescription;
-      this.customerSvc.updateCustomer(customer).then(
+      this.customerSvc.archiveCustomer(customer).then(
         () => {
           this.dialogRef.close({
             archived: true,
