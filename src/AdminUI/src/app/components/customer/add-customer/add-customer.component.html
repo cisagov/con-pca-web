@@ -597,16 +597,46 @@
         </div>
       </div>
       <div class="d-flex flex-row flex-grow-1 justify-content-end">
+        <button
+          id="unarchive-button"
+          class="d-flex"
+          mat-raised-button
+          color="accent"
+          *ngIf="isExistingCustomer() && isArchived()"
+          [disabled]="!isArchived()"
+          (click)="openUnarchiveCustomerDialog()"
+        >
+          Unarchive Customer
+        </button>
+        <div
+          matTooltip="A customer cannot be archived with active subscriptions."
+          matTooltipPosition="right"
+          *ngIf="isExistingCustomer() && !isArchived()"
+          matTooltipShowDelay="500"
+          [matTooltipDisabled]="!hasSubs || isArchived()"
+        >
+          <button
+            id="archive-button"
+            class="d-flex"
+            mat-raised-button
+            [disabled]="hasActiveSubs || isArchived()"
+            *ngIf="isExistingCustomer() && !isArchived()"
+            color="accent"
+            (click)="openArchiveCustomerDialog()"
+          >
+            Archive Customer
+          </button>
+        </div>
         <div
           matTooltip="Only customers that have been archived can be deleted."
           matTooltipPosition="right"
           matTooltipShowDelay="500"
-          [matTooltipDisabled]="!hasSubs && customer.archived"
+          [matTooltipDisabled]="!hasSubs && isArchived()"
         >
           <button
             mat-raised-button
             color="warn"
-            [disabled]="hasSubs || !customer.archived"
+            [disabled]="hasSubs || !isArchived()"
             (click)="deleteCustomer()"
           >
             Delete Customer
@@ -628,6 +658,14 @@
           </button>
         </div>
         <button mat-flat-button (click)="cancelCustomer()">Cancel</button>
+      </div>
+      <div
+        class="flex-container flex-row pb-3"
+        *ngIf="isArchived() && isExistingCustomer()"
+      >
+        <p class="text-danger">
+          Reason for Archiving - {{ customer.archived_description }}
+        </p>
       </div>
     </div>
   </div>
