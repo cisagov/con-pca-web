@@ -1,214 +1,229 @@
 <div class="container-fluid">
-  <h2 class="mt-2">Subscriptions Ending Soon</h2>
-  <!-- TABLE -->
-  <mat-table
-    #endingSoonTable
-    [dataSource]="endingSoonDataSource"
-    [hidden]="loading"
-    matSort
+  <!-- Loading Spinner -->
+  <div
+    *ngIf="loading"
+    style="text-align: center; padding-top: 2rem; padding-bottom: 2rem"
   >
-    <!-- SUBSCRIPTION NAME -->
-    <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Subscription Name</mat-header-cell
-      >
-      <mat-cell *matCellDef="let row"> {{ row.name }}</mat-cell>
-    </ng-container>
-
-    <!-- START DATE -->
-    <ng-container matColumnDef="startDate">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Start Date</mat-header-cell
-      >
-      <mat-cell *matCellDef="let row">
-        {{ row.start_date | date: dateFormat }}
-      </mat-cell>
-    </ng-container>
-
-    <!-- END DATE -->
-    <ng-container matColumnDef="endDate">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >End Date</mat-header-cell
-      >
-      <mat-cell *matCellDef="let row">
-        {{ row.end_date | date: dateFormat }}
-      </mat-cell>
-    </ng-container>
-
-    <!-- IS CONTINUOUS SUBSCRIPTION -->
-    <ng-container matColumnDef="isContinuous">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Continuous</mat-header-cell
-      >
-      <mat-cell *matCellDef="let row">
-        <mat-icon
-          *ngIf="row.continuous_subscription"
-          aria-hidden="false"
-          aria-label="check_circle icon"
-          >check_circle
-        </mat-icon>
-      </mat-cell>
-    </ng-container>
-
-    <!-- LAST UPDATED DATE -->
-    <ng-container matColumnDef="lastUpdated">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Last Updated</mat-header-cell
-      >
-      <mat-cell *matCellDef="let row">
-        {{ row.updated | date: dateFormat }}
-      </mat-cell>
-    </ng-container>
-
-    <!-- HEADER ROW -->
-    <mat-header-row
-      *matHeaderRowDef="endingSoonDisplayedColumns"
-    ></mat-header-row>
-
-    <!-- ROW DEFINITION -->
-    <mat-row
-      *matRowDef="let row; columns: endingSoonDisplayedColumns"
-      class="table-row cursor-pointer"
-      (click)="editSubscription(row)"
+    <mat-spinner
+      class="spinner"
+      style="margin-left: auto; margin-right: auto"
+      diameter="50"
+    ></mat-spinner>
+  </div>
+  <div [hidden]="loading">
+    <h2 class="mt-2">Subscriptions Ending Soon</h2>
+    <!-- TABLE -->
+    <mat-table
+      #endingSoonTable
+      [dataSource]="endingSoonDataSource"
+      [hidden]="loading"
+      matSort
     >
-    </mat-row>
-  </mat-table>
+      <!-- SUBSCRIPTION NAME -->
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Subscription Name</mat-header-cell
+        >
+        <mat-cell *matCellDef="let row"> {{ row.name }}</mat-cell>
+      </ng-container>
 
-  <h2 class="mt-4">Subscriptions in Progress</h2>
-  <!-- TABLE -->
-  <mat-table
-    #inProgressTable
-    [dataSource]="inProgressDataSource"
-    [hidden]="loading"
-    matSort
-  >
-    <!-- SUBSCRIPTION NAME -->
-    <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Subscription Name</mat-header-cell
+      <!-- START DATE -->
+      <ng-container matColumnDef="startDate">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Start Date</mat-header-cell
+        >
+        <mat-cell *matCellDef="let row">
+          {{ row.start_date | date: dateFormat }}
+        </mat-cell>
+      </ng-container>
+
+      <!-- END DATE -->
+      <ng-container matColumnDef="endDate">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >End Date</mat-header-cell
+        >
+        <mat-cell *matCellDef="let row">
+          {{ row.end_date | date: dateFormat }}
+        </mat-cell>
+      </ng-container>
+
+      <!-- IS CONTINUOUS SUBSCRIPTION -->
+      <ng-container matColumnDef="isContinuous">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Continuous</mat-header-cell
+        >
+        <mat-cell *matCellDef="let row">
+          <mat-icon
+            *ngIf="row.continuous_subscription"
+            aria-hidden="false"
+            aria-label="check_circle icon"
+            >check_circle
+          </mat-icon>
+        </mat-cell>
+      </ng-container>
+
+      <!-- LAST UPDATED DATE -->
+      <ng-container matColumnDef="lastUpdated">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Last Updated</mat-header-cell
+        >
+        <mat-cell *matCellDef="let row">
+          {{ row.updated | date: dateFormat }}
+        </mat-cell>
+      </ng-container>
+
+      <!-- HEADER ROW -->
+      <mat-header-row
+        *matHeaderRowDef="endingSoonDisplayedColumns"
+      ></mat-header-row>
+
+      <!-- ROW DEFINITION -->
+      <mat-row
+        *matRowDef="let row; columns: endingSoonDisplayedColumns"
+        class="table-row cursor-pointer"
+        (click)="editSubscription(row)"
       >
-      <mat-cell *matCellDef="let row"> {{ row.name }}</mat-cell>
-    </ng-container>
+      </mat-row>
+    </mat-table>
 
-    <!-- START DATE -->
-    <ng-container matColumnDef="startDate">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Start Date</mat-header-cell
-      >
-      <mat-cell *matCellDef="let row">
-        {{ row.start_date | date: dateFormat }}
-      </mat-cell>
-    </ng-container>
-
-    <!-- END DATE -->
-    <ng-container matColumnDef="endDate">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >End Date</mat-header-cell
-      >
-      <mat-cell *matCellDef="let row">
-        {{ row.end_date | date: dateFormat }}
-      </mat-cell>
-    </ng-container>
-
-    <!-- IS CONTINUOUS SUBSCRIPTION -->
-    <ng-container matColumnDef="isContinuous">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Continuous</mat-header-cell
-      >
-      <mat-cell *matCellDef="let row">
-        <mat-icon
-          *ngIf="row.continuous_subscription"
-          aria-hidden="false"
-          aria-label="check_circle icon"
-          >check_circle
-        </mat-icon>
-      </mat-cell>
-    </ng-container>
-
-    <!-- LAST UPDATED DATE -->
-    <ng-container matColumnDef="lastUpdated">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Last Updated</mat-header-cell
-      >
-      <mat-cell *matCellDef="let row">
-        {{ row.updated | date: dateFormat }}
-      </mat-cell>
-    </ng-container>
-
-    <!-- HEADER ROW -->
-    <mat-header-row
-      *matHeaderRowDef="inProgressDisplayedColumns"
-    ></mat-header-row>
-
-    <!-- ROW DEFINITION -->
-    <mat-row
-      *matRowDef="let row; columns: inProgressDisplayedColumns"
-      class="table-row cursor-pointer"
-      (click)="editSubscription(row)"
+    <h2 class="mt-4">Subscriptions in Progress</h2>
+    <!-- TABLE -->
+    <mat-table
+      #inProgressTable
+      [dataSource]="inProgressDataSource"
+      [hidden]="loading"
+      matSort
     >
-    </mat-row>
-  </mat-table>
+      <!-- SUBSCRIPTION NAME -->
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Subscription Name</mat-header-cell
+        >
+        <mat-cell *matCellDef="let row"> {{ row.name }}</mat-cell>
+      </ng-container>
 
-  <h2 class="mt-4">Stopped Subscriptions</h2>
-  <!-- TABLE -->
-  <mat-table
-    #stoppedTable
-    [dataSource]="stoppedDataSource"
-    [hidden]="loading"
-    matSort
-  >
-    <!-- SUBSCRIPTION NAME -->
-    <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Subscription Name</mat-header-cell
+      <!-- START DATE -->
+      <ng-container matColumnDef="startDate">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Start Date</mat-header-cell
+        >
+        <mat-cell *matCellDef="let row">
+          {{ row.start_date | date: dateFormat }}
+        </mat-cell>
+      </ng-container>
+
+      <!-- END DATE -->
+      <ng-container matColumnDef="endDate">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >End Date</mat-header-cell
+        >
+        <mat-cell *matCellDef="let row">
+          {{ row.end_date | date: dateFormat }}
+        </mat-cell>
+      </ng-container>
+
+      <!-- IS CONTINUOUS SUBSCRIPTION -->
+      <ng-container matColumnDef="isContinuous">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Continuous</mat-header-cell
+        >
+        <mat-cell *matCellDef="let row">
+          <mat-icon
+            *ngIf="row.continuous_subscription"
+            aria-hidden="false"
+            aria-label="check_circle icon"
+            >check_circle
+          </mat-icon>
+        </mat-cell>
+      </ng-container>
+
+      <!-- LAST UPDATED DATE -->
+      <ng-container matColumnDef="lastUpdated">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Last Updated</mat-header-cell
+        >
+        <mat-cell *matCellDef="let row">
+          {{ row.updated | date: dateFormat }}
+        </mat-cell>
+      </ng-container>
+
+      <!-- HEADER ROW -->
+      <mat-header-row
+        *matHeaderRowDef="inProgressDisplayedColumns"
+      ></mat-header-row>
+
+      <!-- ROW DEFINITION -->
+      <mat-row
+        *matRowDef="let row; columns: inProgressDisplayedColumns"
+        class="table-row cursor-pointer"
+        (click)="editSubscription(row)"
       >
-      <mat-cell *matCellDef="let row"> {{ row.name }}</mat-cell>
-    </ng-container>
+      </mat-row>
+    </mat-table>
 
-    <!-- START DATE -->
-    <ng-container matColumnDef="startDate">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Start Date</mat-header-cell
-      >
-      <mat-cell *matCellDef="let row">
-        {{ row.start_date | date: dateFormat }}
-      </mat-cell>
-    </ng-container>
-
-    <!-- IS CONTINUOUS SUBSCRIPTION -->
-    <ng-container matColumnDef="isContinuous">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Continuous</mat-header-cell
-      >
-      <mat-cell *matCellDef="let row">
-        <mat-icon
-          *ngIf="row.continuous_subscription"
-          aria-hidden="false"
-          aria-label="check_circle icon"
-          >check_circle
-        </mat-icon>
-      </mat-cell>
-    </ng-container>
-
-    <!-- LAST UPDATED DATE -->
-    <ng-container matColumnDef="lastUpdated">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Last Updated</mat-header-cell
-      >
-      <mat-cell *matCellDef="let row">
-        {{ row.updated | date: dateFormat }}
-      </mat-cell>
-    </ng-container>
-
-    <!-- HEADER ROW -->
-    <mat-header-row *matHeaderRowDef="stoppedDisplayedColumns"></mat-header-row>
-
-    <!-- ROW DEFINITION -->
-    <mat-row
-      *matRowDef="let row; columns: stoppedDisplayedColumns"
-      class="table-row cursor-pointer"
-      (click)="editSubscription(row)"
+    <h2 class="mt-4">Stopped Subscriptions</h2>
+    <!-- TABLE -->
+    <mat-table
+      #stoppedTable
+      [dataSource]="stoppedDataSource"
+      [hidden]="loading"
+      matSort
     >
-    </mat-row>
-  </mat-table>
+      <!-- SUBSCRIPTION NAME -->
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Subscription Name</mat-header-cell
+        >
+        <mat-cell *matCellDef="let row"> {{ row.name }}</mat-cell>
+      </ng-container>
+
+      <!-- START DATE -->
+      <ng-container matColumnDef="startDate">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Start Date</mat-header-cell
+        >
+        <mat-cell *matCellDef="let row">
+          {{ row.start_date | date: dateFormat }}
+        </mat-cell>
+      </ng-container>
+
+      <!-- IS CONTINUOUS SUBSCRIPTION -->
+      <ng-container matColumnDef="isContinuous">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Continuous</mat-header-cell
+        >
+        <mat-cell *matCellDef="let row">
+          <mat-icon
+            *ngIf="row.continuous_subscription"
+            aria-hidden="false"
+            aria-label="check_circle icon"
+            >check_circle
+          </mat-icon>
+        </mat-cell>
+      </ng-container>
+
+      <!-- LAST UPDATED DATE -->
+      <ng-container matColumnDef="lastUpdated">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Last Updated</mat-header-cell
+        >
+        <mat-cell *matCellDef="let row">
+          {{ row.updated | date: dateFormat }}
+        </mat-cell>
+      </ng-container>
+
+      <!-- HEADER ROW -->
+      <mat-header-row
+        *matHeaderRowDef="stoppedDisplayedColumns"
+      ></mat-header-row>
+
+      <!-- ROW DEFINITION -->
+      <mat-row
+        *matRowDef="let row; columns: stoppedDisplayedColumns"
+        class="table-row cursor-pointer"
+        (click)="editSubscription(row)"
+      >
+      </mat-row>
+    </mat-table>
+  </div>
 </div>
