@@ -164,7 +164,7 @@ export class SubscriptionStatsTab implements OnInit {
           this.downloadObject(
             `CISA_PCA_${reportType.toLocaleUpperCase()}_report_${moment().format(
               'MMDDYYYY'
-            )}.pdf`,
+            )}_${this.selectedCycle._id}.pdf`,
             blob
           );
           this.generating = false;
