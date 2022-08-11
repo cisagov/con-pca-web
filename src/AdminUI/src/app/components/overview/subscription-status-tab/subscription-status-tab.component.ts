@@ -27,7 +27,7 @@ export class SubscriptionStatusTab implements OnInit {
   sortInProgress: MatSort;
   @ViewChild('stoppedTable', { read: MatSort, static: true })
   sortStopped: MatSort;
-  loading = false;
+  loading: boolean = false;
 
   dateFormat = AppSettings.DATE_FORMAT;
 
@@ -77,7 +77,6 @@ export class SubscriptionStatusTab implements OnInit {
     await this.subscriptionSvc
       .getSubscriptionsWithEndDate()
       .subscribe((subscriptions: any) => {
-        this.loading = false;
         const now = moment();
         this.endingSoonDataSource.data = subscriptions.filter(
           (obj) =>
@@ -103,6 +102,7 @@ export class SubscriptionStatusTab implements OnInit {
         this.stoppedDataSource.sort = this.sortStopped;
         this.sortingDataAccessor(this.stoppedDataSource);
       });
+    this.loading = false;
   }
 
   private sortingDataAccessor(callBack: any) {
