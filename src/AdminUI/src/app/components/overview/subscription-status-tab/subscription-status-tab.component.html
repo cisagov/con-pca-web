@@ -33,7 +33,7 @@
           >Start Date</mat-header-cell
         >
         <mat-cell *matCellDef="let row">
-          {{ row.start_date | date: dateFormat }}
+          {{ row.cycle_start_date | date: dateFormat }}
         </mat-cell>
       </ng-container>
 
@@ -43,7 +43,17 @@
           >End Date</mat-header-cell
         >
         <mat-cell *matCellDef="let row">
-          {{ row.end_date | date: dateFormat }}
+          {{ row.cycle_end_date | date: dateFormat }}
+        </mat-cell>
+      </ng-container>
+
+      <!-- APPENDIX A DATE -->
+      <ng-container matColumnDef="appendixDate">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Appendix A Date</mat-header-cell
+        >
+        <mat-cell *matCellDef="let row">
+          {{ row.appendix_a_date | date: dateFormat }}
         </mat-cell>
       </ng-container>
 
@@ -108,7 +118,7 @@
           >Start Date</mat-header-cell
         >
         <mat-cell *matCellDef="let row">
-          {{ row.start_date | date: dateFormat }}
+          {{ row.cycle_start_date | date: dateFormat }}
         </mat-cell>
       </ng-container>
 
@@ -118,7 +128,17 @@
           >End Date</mat-header-cell
         >
         <mat-cell *matCellDef="let row">
-          {{ row.end_date | date: dateFormat }}
+          {{ row.cycle_end_date | date: dateFormat }}
+        </mat-cell>
+      </ng-container>
+
+      <!-- APPENDIX A DATE -->
+      <ng-container matColumnDef="appendixDate">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Appendix A Date</mat-header-cell
+        >
+        <mat-cell *matCellDef="let row">
+          {{ row.appendix_a_date | date: dateFormat }}
         </mat-cell>
       </ng-container>
 
@@ -183,7 +203,17 @@
           >Start Date</mat-header-cell
         >
         <mat-cell *matCellDef="let row">
-          {{ row.start_date | date: dateFormat }}
+          {{ row.cycle_start_date | date: dateFormat }}
+        </mat-cell>
+      </ng-container>
+
+      <!-- APPENDIX A DATE -->
+      <ng-container matColumnDef="appendixDate">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Appendix A Date</mat-header-cell
+        >
+        <mat-cell *matCellDef="let row">
+          {{ row.appendix_a_date | date: dateFormat }}
         </mat-cell>
       </ng-container>
 
