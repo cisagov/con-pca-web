@@ -2,6 +2,7 @@ export class CustomerModel {
   _id: string;
   name: string;
   identifier: string;
+  unique_identifier: string;
   address_1: string;
   address_2: string;
   city: string;

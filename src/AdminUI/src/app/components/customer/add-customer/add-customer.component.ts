@@ -289,6 +289,8 @@ export class AddCustomerComponent
         _id: '',
         name: this.customerFormGroup.controls['customerName'].value,
         identifier: this.customerFormGroup.controls['customerIdentifier'].value,
+        unique_identifier:
+          this.customerFormGroup.controls['customerIdentifier'].value,
         address_1: this.customerFormGroup.controls['address1'].value,
         address_2: this.customerFormGroup.controls['address2'].value,
         city: this.customerFormGroup.controls['city'].value,
