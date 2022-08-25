@@ -1,6 +1,10 @@
 <div class="container-fluid">
   <h2 class="mt-2">Failed Emails</h2>
   <p>Emails that have failed to be delivered will be displayed below.</p>
+  <p *ngIf="!success">
+    <b>Warning:</b> Not all sending profiles were checked for failed emails
+    successfully. See Logging Errors tab for more details.
+  </p>
   <div class="flex-container">
     <button mat-raised-button color="primary" (click)="pageRefresh()">
       Refresh
