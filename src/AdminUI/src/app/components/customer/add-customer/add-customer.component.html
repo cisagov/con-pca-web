@@ -232,62 +232,9 @@
             formControlName="state"
             [errorStateMatcher]="matchState"
           >
-            <mat-option [value]="null">--Select--</mat-option>
-            <mat-option value="AL">-AL- Alabama</mat-option>
-            <mat-option value="AK">-AK- Alaska</mat-option>
-            <mat-option value="AS">-AS- American Samoa</mat-option>
-            <mat-option value="AZ">-AZ- Arizona</mat-option>
-            <mat-option value="AR">-AR- Arkansas</mat-option>
-            <mat-option value="CA">-CA- California</mat-option>
-            <mat-option value="CO">-CO- Colorado</mat-option>
-            <mat-option value="CT">-CT- Connecticut</mat-option>
-            <mat-option value="DE">-DE- Delaware</mat-option>
-            <mat-option value="DC">-DC- District of Columbia</mat-option>
-            <mat-option value="FL">-FL- Florida</mat-option>
-            <mat-option value="GA">-GA- Georgia</mat-option>
-            <mat-option value="GU">-GU- Guam</mat-option>
-            <mat-option value="HI">-HI- Hawaii</mat-option>
-            <mat-option value="ID">-ID- Idaho</mat-option>
-            <mat-option value="IL">-IL- Illinois</mat-option>
-            <mat-option value="IN">-IN- Indiana</mat-option>
-            <mat-option value="IA">-IA- Iowa</mat-option>
-            <mat-option value="KS">-KS- Kansas</mat-option>
-            <mat-option value="KY">-KY- Kentucky</mat-option>
-            <mat-option value="LA">-LA- Louisiana</mat-option>
-            <mat-option value="ME">-ME- Maine</mat-option>
-            <mat-option value="MD">-MD- Maryland</mat-option>
-            <mat-option value="MA">-MA- Massachusetts</mat-option>
-            <mat-option value="MI">-MI- Michigan</mat-option>
-            <mat-option value="MN">-MN- Minnesota</mat-option>
-            <mat-option value="MS">-MS- Mississippi</mat-option>
-            <mat-option value="MO">-MO- Missouri</mat-option>
-            <mat-option value="MT">-MT- Montana</mat-option>
-            <mat-option value="NE">-NE- Nebraska</mat-option>
-            <mat-option value="NV">-NV- Nevada</mat-option>
-            <mat-option value="NH">-NH- New Hampshire</mat-option>
-            <mat-option value="NJ">-NJ- New Jersey</mat-option>
-            <mat-option value="NM">-NM- New Mexico</mat-option>
-            <mat-option value="NY">-NY- New York</mat-option>
-            <mat-option value="NC">-NC- North Carolina</mat-option>
-            <mat-option value="ND">-ND- North Dakota</mat-option>
-            <mat-option value="OH">-OH- Ohio</mat-option>
-            <mat-option value="OK">-OK- Oklahoma</mat-option>
-            <mat-option value="OR">-OR- Oregon</mat-option>
-            <mat-option value="PA">-PA- Pennsylvania</mat-option>
-            <mat-option value="PR">-PR- Puerto Rico</mat-option>
-            <mat-option value="RI">-RI- Rhode Island</mat-option>
-            <mat-option value="SC">-SC- South Carolina</mat-option>
-            <mat-option value="SD">-SD- South Dakota</mat-option>
-            <mat-option value="TN">-TN- Tennessee</mat-option>
-            <mat-option value="TX">-TX- Texas</mat-option>
-            <mat-option value="UT">-UT- Utah</mat-option>
-            <mat-option value="VT">-VT- Vermont</mat-option>
-            <mat-option value="VA">-VA- Virginia</mat-option>
-            <mat-option value="VI">-VI- Virgin Islands</mat-option>
-            <mat-option value="WA">-WA- Washington</mat-option>
-            <mat-option value="WV">-WV- West Virginia</mat-option>
-            <mat-option value="WI">-WI- Wisconsin</mat-option>
-            <mat-option value="WY">-WY- Wyoming</mat-option>
+            <mat-option *ngFor="let s of states" value="s.value">{{
+              s.name
+            }}</mat-option>
           </mat-select>
           <mat-error
             *ngIf="customerFormGroup.controls.state.hasError('required')"
