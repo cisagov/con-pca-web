@@ -219,9 +219,8 @@ export class SubscriptionStatsTab implements OnInit {
         : `${bufTimeMinutes / 60} hours`;
 
     let nextCyclesLaunchDay = new Date(this.selectedCycle.end_date);
-    nextCyclesLaunchDay.setMinutes(
-      nextCyclesLaunchDay.getMinutes() + bufferTime
-    );
+    let minutes = nextCyclesLaunchDay.getMinutes() + bufferTime;
+    nextCyclesLaunchDay.setMinutes(Number(minutes));
 
     let statusReportDays = 'subscription not active';
     let cycleReportDay = 'subscription not active';
