@@ -218,9 +218,10 @@ export class SubscriptionStatsTab implements OnInit {
         ? `${bufTimeMinutes / 1440} days`
         : `${bufTimeMinutes / 60} hours`;
 
-
     let nextCyclesLaunchDay = new Date(this.selectedCycle.end_date);
-    nextCyclesLaunchDay.setMinutes(nextCyclesLaunchDay.getMinutes() + bufferTime);
+    nextCyclesLaunchDay.setMinutes(
+      nextCyclesLaunchDay.getMinutes() + bufferTime
+    );
 
     let statusReportDays = 'subscription not active';
     let cycleReportDay = 'subscription not active';
@@ -242,7 +243,8 @@ export class SubscriptionStatsTab implements OnInit {
 
     const data = {
       'Email launch day': new Date(this.subscription.start_date).toDateString(),
-      'Primary POC receiving status reports and updates': this.subscription.primary_contact.email,
+      'Primary POC receiving status reports and updates':
+        this.subscription.primary_contact.email,
       'Number of participants': this.subscription.target_email_list.length,
       'Status report delivery days': statusReportDays,
       'Cycle report delivery day': cycleReportDay,
@@ -255,7 +257,7 @@ export class SubscriptionStatsTab implements OnInit {
       'Hourly email sending rate': this.hourlyRate,
       'Daily email sending rate': this.dailyRate,
       'Buffer days between cycles': bufferTime,
-      'Next cycle\'s email launch day': nextCyclesLaunchDay.toDateString(),
+      "Next cycle's email launch day": nextCyclesLaunchDay.toDateString(),
     };
     const blob: Blob = new Blob([this.convertToCSV(data)], {
       type: 'text/csv;charset=utf-8',
