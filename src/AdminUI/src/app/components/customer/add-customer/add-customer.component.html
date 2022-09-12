@@ -227,14 +227,15 @@
           [formGroup]="customerFormGroup"
         >
           <mat-label>State*</mat-label>
-          <input
-            type="text"
-            trim="blur"
-            matInput
+          <mat-select
             placeholder="State"
             formControlName="state"
             [errorStateMatcher]="matchState"
-          />
+          >
+            <mat-option *ngFor="let s of states" value="s.value">{{
+              s.name
+            }}</mat-option>
+          </mat-select>
           <mat-error
             *ngIf="customerFormGroup.controls.state.hasError('required')"
           >

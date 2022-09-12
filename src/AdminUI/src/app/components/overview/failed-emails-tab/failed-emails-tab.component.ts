@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { FailedModel } from 'src/app/models/failed.model';
+import { FailedModel, FailedEmailModel } from 'src/app/models/failed.model';
 import { FailedEmailsService } from 'src/app/services/failed-emails.service';
 import { Router } from '@angular/router';
 import { SelectionModel } from '@angular/cdk/collections';
@@ -15,12 +15,13 @@ export class FailedEmailsTab implements OnInit {
   @ViewChild('failedTable', { read: MatSort, static: true })
   sortFailed: MatSort;
   loading = false;
+  success = false;
 
   // Failed Email Selection
-  selection = new SelectionModel<FailedModel>(true, []);
+  selection = new SelectionModel<FailedEmailModel>(true, []);
 
   // Failed Emails Table
-  public failedSource: MatTableDataSource<FailedModel>;
+  public failedSource: MatTableDataSource<FailedEmailModel>;
   failedDisplayedColumns = [
     'select',
     'sent_time',
@@ -46,14 +47,13 @@ export class FailedEmailsTab implements OnInit {
           return item[property];
       }
     };
-    await this.failedSvc
-      .getFailedEmails()
-      .subscribe((failed: FailedModel[]) => {
-        this.failedSource.sort = this.sortFailed;
-        this.failedSource.data = failed as FailedModel[];
-        this.loading = false;
-        this.selection = new SelectionModel<FailedModel>(true, []);
-      });
+    await this.failedSvc.getFailedEmails().subscribe((failed: FailedModel) => {
+      this.failedSource.sort = this.sortFailed;
+      this.failedSource.data = failed.failed_emails as FailedEmailModel[];
+      this.success = failed.success;
+      this.loading = false;
+      this.selection = new SelectionModel<FailedEmailModel>(true, []);
+    });
   }
 
   pageRefresh(): void {
