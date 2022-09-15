@@ -230,9 +230,10 @@
           <mat-select
             placeholder="State"
             formControlName="state"
+            (selectionChange)="changeState($event)"
             [errorStateMatcher]="matchState"
           >
-            <mat-option *ngFor="let s of states" value="s.value">{{
+            <mat-option *ngFor="let s of states" [value]="s.value">{{
               s.name
             }}</mat-option>
           </mat-select>
@@ -287,7 +288,7 @@
           <mat-label>Sector*</mat-label>
           <mat-select
             formControlName="sector"
-            (selectionChange)="sectorChange($event)"
+            (selectionChange)="changeSector($event)"
           >
             <mat-option [value]="null">--Select--</mat-option>
             <mat-option *ngFor="let s of sectorList" [value]="s.name">

@@ -4,6 +4,7 @@ import {
   Input,
   OnDestroy,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { MyErrorStateMatcher } from '../../../helper/ErrorStateMatcher';
@@ -171,9 +172,10 @@ export class AddCustomerComponent
     public dialog: MatDialog,
     private route: ActivatedRoute,
     public router: Router,
-    public layoutSvc: LayoutMainService
+    public layoutSvc: LayoutMainService,
+    private changeDetectorRef: ChangeDetectorRef
   ) {
-    layoutSvc.setTitle('New Customer');
+    this.layoutSvc.setTitle('New Customer');
   }
 
   ngOnInit(): void {
@@ -182,7 +184,6 @@ export class AddCustomerComponent
     } else {
       this.inDialog = false;
     }
-
     this.customerFormGroup
       .get('customerType')
       .valueChanges.subscribe((value) => {
@@ -211,6 +212,7 @@ export class AddCustomerComponent
         }
       })
     );
+    this.changeDetectorRef.detectChanges();
   }
 
   getCustomer() {
@@ -250,6 +252,13 @@ export class AddCustomerComponent
     );
   }
 
+  // Choose state using select dropdown
+  changeState(e) {
+    this.customerFormGroup.setValue(e.value, {
+      onlySelf: true,
+    });
+  }
+
   getSectorList() {
     this.customerSvc.getSectorList().subscribe(
       (data: any) => {
@@ -257,11 +266,11 @@ export class AddCustomerComponent
           this.sectorList = data;
           this.setIndustryList();
         } else {
-          this.orgError = 'Error retreiving sector/industry list';
+          this.orgError = 'Error retrieving sector/industry list';
         }
       },
       (error) => {
-        this.orgError = 'Error retreiving sector/industry list';
+        this.orgError = 'Error retrieving sector/industry list';
       }
     );
   }
@@ -527,7 +536,7 @@ export class AddCustomerComponent
     return this.contacts.data.length > 0;
   }
 
-  sectorChange(event) {
+  changeSector(event) {
     this.setIndustryList();
     this.customerFormGroup.patchValue({
       industry: null,
