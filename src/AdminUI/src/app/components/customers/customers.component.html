@@ -105,6 +105,14 @@
         >
         <mat-cell *matCellDef="let row"> {{ row.identifier }} </mat-cell>
       </ng-container>
+      <ng-container matColumnDef="stakeholder_shortname">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Shortname</mat-header-cell
+        >
+        <mat-cell *matCellDef="let row">
+          {{ row.stakeholder_shortname }}
+        </mat-cell>
+      </ng-container>
       <ng-container matColumnDef="address_1">
         <mat-header-cell *matHeaderCellDef mat-sort-header
           >Address 1</mat-header-cell
