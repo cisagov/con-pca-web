@@ -24,8 +24,9 @@ export class FailedEmailsTab implements OnInit {
   public failedSource: MatTableDataSource<FailedEmailModel>;
   failedDisplayedColumns = [
     'select',
+    'recipient_address',
+    'recipient_domain',
     'sent_time',
-    'recipient',
     'error_type',
     'reason',
   ];
