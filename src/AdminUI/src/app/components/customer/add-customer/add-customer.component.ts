@@ -57,6 +57,7 @@ export class AddCustomerComponent
 
   matchCustomerName = new MyErrorStateMatcher();
   matchCustomerIdentifier = new MyErrorStateMatcher();
+  matchCustomerShortname = new MyErrorStateMatcher();
   matchAddress1 = new MyErrorStateMatcher();
   matchCity = new MyErrorStateMatcher();
   matchState = new MyErrorStateMatcher();
@@ -70,6 +71,7 @@ export class AddCustomerComponent
   customerFormGroup = new FormGroup({
     customerName: new FormControl('', [Validators.required]),
     customerIdentifier: new FormControl('', [Validators.required]),
+    customerShortname: new FormControl('', [Validators.required]),
     address1: new FormControl('', [Validators.required]),
     address2: new FormControl(''),
     city: new FormControl('', [Validators.required]),
@@ -279,6 +281,7 @@ export class AddCustomerComponent
     this.customerFormGroup.patchValue({
       customerName: customer.name,
       customerIdentifier: customer.identifier,
+      customerShortname: customer.stakeholder_shortname,
       customerType: customer.customer_type,
       address1: customer.address_1,
       address2: customer.address_2,
@@ -357,6 +360,8 @@ export class AddCustomerComponent
         _id: '',
         name: this.customerFormGroup.controls['customerName'].value,
         identifier: this.customerFormGroup.controls['customerIdentifier'].value,
+        stakeholder_shortname:
+          this.customerFormGroup.controls['customerShortname'].value,
         address_1: this.customerFormGroup.controls['address1'].value,
         address_2: this.customerFormGroup.controls['address2'].value,
         city: this.customerFormGroup.controls['city'].value,

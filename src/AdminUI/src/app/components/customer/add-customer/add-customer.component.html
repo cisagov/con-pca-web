@@ -74,6 +74,38 @@
             Customer/Organization identifier may not contain only spaces
           </mat-error>
         </mat-form-field>
+        <mat-form-field
+          appearance="outline"
+          style="padding-bottom: 10px"
+          [formGroup]="customerFormGroup"
+        >
+          <mat-label>Stakeholder Shortname*</mat-label>
+          <input
+            type="text"
+            trim="blur"
+            matInput
+            placeholder="Stakeholder Shortname"
+            formControlName="customerShortname"
+            [errorStateMatcher]="matchCustomerShortname"
+          />
+          <mat-hint align="start"
+            ><strong>Shortname used internally by DHS for the customer</strong>
+          </mat-hint>
+          <mat-error
+            *ngIf="
+              customerFormGroup.controls.customerShortname.hasError('required')
+            "
+          >
+            Stakeholder shortname is <strong>required</strong>
+          </mat-error>
+          <mat-error
+            *ngIf="
+              customerFormGroup.controls.customerName.hasError('whitespace')
+            "
+          >
+            Stakeholder shortname may not contain only spaces
+          </mat-error>
+        </mat-form-field>
       </div>
 
       <!-- Domain -->

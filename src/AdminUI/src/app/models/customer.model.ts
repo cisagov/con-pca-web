@@ -2,6 +2,7 @@ export class CustomerModel {
   _id: string;
   name: string;
   identifier: string;
+  stakeholder_shortname: string;
   address_1: string;
   address_2: string;
   city: string;
@@ -24,6 +25,7 @@ export class CustomerModel {
 export class NewCustomerModel {
   name: string;
   identifier: string;
+  stakeholder_shortname: string;
   address_1: string;
   address_2: string;
   city: string;

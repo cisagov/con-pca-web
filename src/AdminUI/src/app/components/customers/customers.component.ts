@@ -30,6 +30,7 @@ export class CustomersComponent implements OnInit {
     'select',
     'name',
     'identifier',
+    'stakeholder_shortname',
     'address_1',
     'address_2',
     'city',
