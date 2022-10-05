@@ -25,6 +25,7 @@
     "moment": "^2.29.4",
     "ngx-autosize": "^1.8.7",
     "ngx-cookie-service": "^13.2.1",
+    "ngx-mat-timepicker": "^13.2.3",
     "rxjs": "~6.6.7",
     "sweetalert2": "^10.16.6",
     "tslib": "^2.4.0",

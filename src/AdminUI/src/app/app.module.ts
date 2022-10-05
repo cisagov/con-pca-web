@@ -13,6 +13,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
 import { SubscriptionsComponent } from './components/subscriptions/subscriptions.component';
 import { LayoutBlankComponent } from './components/layout/layout-blank/layout-blank.component';
 import { LayoutMainComponent } from './components/layout/layout-main/layout-main.component';
@@ -214,6 +215,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     AutosizeModule,
     HttpClientModule,
     NgxChartsModule,
+    NgxMatTimepickerModule,
   ],
   providers: [
     AlertsService,
