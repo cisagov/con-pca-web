@@ -19,9 +19,15 @@
       Actions<mat-icon>arrow_drop_down</mat-icon>
     </button>
     <mat-menu xPosition="before" yPosition="below" #menu="matMenu">
-      <button mat-menu-item (click)="removeEmails()">
-        <mat-icon color="warn">archive</mat-icon>Remove
-      </button>
+      <div
+        matTooltip="Remove the selected email addresses from this list and from the target lists of every subscription."
+        matTooltipPosition="right"
+        matTooltipShowDelay="0"
+      >
+        <button mat-menu-item (click)="removeEmails()">
+          <mat-icon color="warn">archive</mat-icon>Remove
+        </button>
+      </div>
     </mat-menu>
   </div>
   <div class="col p-0 w-100">
