@@ -61,6 +61,25 @@
           </mat-checkbox>
         </mat-cell>
       </ng-container>
+      <!-- ADDRESS -->
+      <ng-container matColumnDef="recipient_address">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Address</mat-header-cell
+        >
+        <mat-cell *matCellDef="let row">
+          <td *ngIf="row.recipient_address != null">
+            {{ row.recipient_address }}
+          </td>
+          <td *ngIf="row.recipient_address == null">{{ row.recipient }}</td>
+        </mat-cell>
+      </ng-container>
+      <!-- DOMAIN -->
+      <ng-container matColumnDef="recipient_domain">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Domain</mat-header-cell
+        >
+        <mat-cell *matCellDef="let row"> {{ row.recipient_domain }}</mat-cell>
+      </ng-container>
       <!-- SENT TIME -->
       <ng-container matColumnDef="sent_time">
         <mat-header-cell *matHeaderCellDef mat-sort-header
@@ -69,13 +88,6 @@
         <mat-cell *matCellDef="let row">
           {{ row.sent_time | date: "medium" }}</mat-cell
         >
-      </ng-container>
-      <!-- RECIPIENT -->
-      <ng-container matColumnDef="recipient">
-        <mat-header-cell *matHeaderCellDef mat-sort-header
-          >Recipient</mat-header-cell
-        >
-        <mat-cell *matCellDef="let row"> {{ row.recipient }}</mat-cell>
       </ng-container>
       <!-- ERROR TYPE -->
       <ng-container matColumnDef="error_type">
