@@ -17,6 +17,8 @@ export class FailedEmailsTab implements OnInit {
   loading = false;
   success = false;
 
+  search_input = '';
+
   // Failed Email Selection
   selection = new SelectionModel<FailedEmailModel>(true, []);
 
@@ -37,6 +39,10 @@ export class FailedEmailsTab implements OnInit {
     this.failedSource = new MatTableDataSource();
     this.refresh();
   }
+
+  public filterEmails = (value: string) => {
+    this.failedSource.filter = value.trim().toLocaleLowerCase();
+  };
 
   async refresh() {
     this.loading = true;

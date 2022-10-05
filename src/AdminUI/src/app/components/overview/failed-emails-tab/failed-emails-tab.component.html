@@ -6,6 +6,17 @@
     successfully. See Logging Errors tab for more details.
   </p>
   <div class="flex-container">
+    <!-- SEARCH BAR -->
+    <mat-form-field class="d-flex flex-column w-100" appearance="outline">
+      <mat-label>Search</mat-label>
+      <input
+        [(ngModel)]="search_input"
+        (keyup)="filterEmails($event.target.value)"
+        matInput
+        placeholder="Search"
+      />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
     <button mat-raised-button color="primary" (click)="pageRefresh()">
       Refresh
       <mat-icon class="table-btn-icon-size">autorenew</mat-icon>
