@@ -22,6 +22,14 @@
       <mat-icon class="table-btn-icon-size">autorenew</mat-icon>
     </button>
     <button
+      style="width: 1em"
+      mat-raised-button
+      color="primary"
+      (click)="downloadFailedEmailsJSON()"
+    >
+      <mat-icon>download</mat-icon>
+    </button>
+    <button
       [disabled]="!selection.hasValue()"
       mat-raised-button
       color="accent"
