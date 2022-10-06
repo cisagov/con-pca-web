@@ -1,10 +1,14 @@
+import { AlertComponent } from 'src/app/components/dialogs/alert/alert.component';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
 import { FailedModel, FailedEmailModel } from 'src/app/models/failed.model';
 import { FailedEmailsService } from 'src/app/services/failed-emails.service';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { SelectionModel } from '@angular/cdk/collections';
+import { SettingsService } from 'src/app/services/settings.service';
 
 @Component({
   selector: 'app-failed-emails-tab',
@@ -17,6 +21,8 @@ export class FailedEmailsTab implements OnInit {
   loading = false;
   success = false;
 
+  search_input = '';
+
   // Failed Email Selection
   selection = new SelectionModel<FailedEmailModel>(true, []);
 
@@ -24,18 +30,29 @@ export class FailedEmailsTab implements OnInit {
   public failedSource: MatTableDataSource<FailedEmailModel>;
   failedDisplayedColumns = [
     'select',
+    'recipient_address',
+    'recipient_domain',
     'sent_time',
-    'recipient',
     'error_type',
     'reason',
   ];
 
-  constructor(private router: Router, private failedSvc: FailedEmailsService) {}
+  constructor(
+    private router: Router,
+    private failedSvc: FailedEmailsService,
+    private settingsService: SettingsService,
+    private http: HttpClient,
+    public dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.failedSource = new MatTableDataSource();
     this.refresh();
   }
+
+  public filterEmails = (value: string) => {
+    this.failedSource.filter = value.trim().toLocaleLowerCase();
+  };
 
   async refresh() {
     this.loading = true;
@@ -59,6 +76,43 @@ export class FailedEmailsTab implements OnInit {
   pageRefresh(): void {
     this.failedSvc.getFailedEmails();
     this.refresh();
+  }
+
+  downloadObject(filename, blob) {
+    const a = document.createElement('a');
+    const objectUrl = URL.createObjectURL(blob);
+    a.href = objectUrl;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(objectUrl);
+  }
+
+  public getFailedEmailsJSON() {
+    const headers = new HttpHeaders().set('content-type', 'application/json');
+    const parameters = [];
+    parameters.push(`removed=false`);
+    const url = `${
+      this.settingsService.settings.apiUrl
+    }/api/failedemails/?${parameters.join('&')}`;
+    return this.http.get(url, { headers, responseType: 'blob' });
+  }
+
+  downloadFailedEmailsJSON() {
+    if (confirm('Download JSON file of failed emails?')) {
+      this.getFailedEmailsJSON().subscribe(
+        (blob) => {
+          this.downloadObject(`failed_emails_data.json`, blob);
+        },
+        (error) => {
+          this.dialog.open(AlertComponent, {
+            data: {
+              title: 'Error',
+              messageText: `An error occured downloading the failed emails data. Check logs for more detail.`,
+            },
+          });
+        }
+      );
+    }
   }
 
   removeEmails(): void {

@@ -6,9 +6,28 @@
     successfully. See Logging Errors tab for more details.
   </p>
   <div class="flex-container">
+    <!-- SEARCH BAR -->
+    <mat-form-field class="d-flex flex-column w-100" appearance="outline">
+      <mat-label>Search</mat-label>
+      <input
+        [(ngModel)]="search_input"
+        (keyup)="filterEmails($event.target.value)"
+        matInput
+        placeholder="Search"
+      />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
     <button mat-raised-button color="primary" (click)="pageRefresh()">
       Refresh
       <mat-icon class="table-btn-icon-size">autorenew</mat-icon>
+    </button>
+    <button
+      style="width: 1em"
+      mat-raised-button
+      color="primary"
+      (click)="downloadFailedEmailsJSON()"
+    >
+      <mat-icon>download</mat-icon>
     </button>
     <button
       [disabled]="!selection.hasValue()"
@@ -19,9 +38,15 @@
       Actions<mat-icon>arrow_drop_down</mat-icon>
     </button>
     <mat-menu xPosition="before" yPosition="below" #menu="matMenu">
-      <button mat-menu-item (click)="removeEmails()">
-        <mat-icon color="warn">archive</mat-icon>Remove
-      </button>
+      <div
+        matTooltip="Remove the selected email addresses from this list and from the target lists of every subscription."
+        matTooltipPosition="right"
+        matTooltipShowDelay="0"
+      >
+        <button mat-menu-item (click)="removeEmails()">
+          <mat-icon color="warn">archive</mat-icon>Remove
+        </button>
+      </div>
     </mat-menu>
   </div>
   <div class="col p-0 w-100">
@@ -61,6 +86,25 @@
           </mat-checkbox>
         </mat-cell>
       </ng-container>
+      <!-- ADDRESS -->
+      <ng-container matColumnDef="recipient_address">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Address</mat-header-cell
+        >
+        <mat-cell *matCellDef="let row">
+          <td *ngIf="row.recipient_address != null">
+            {{ row.recipient_address }}
+          </td>
+          <td *ngIf="row.recipient_address == null">{{ row.recipient }}</td>
+        </mat-cell>
+      </ng-container>
+      <!-- DOMAIN -->
+      <ng-container matColumnDef="recipient_domain">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Domain</mat-header-cell
+        >
+        <mat-cell *matCellDef="let row"> {{ row.recipient_domain }}</mat-cell>
+      </ng-container>
       <!-- SENT TIME -->
       <ng-container matColumnDef="sent_time">
         <mat-header-cell *matHeaderCellDef mat-sort-header
@@ -69,13 +113,6 @@
         <mat-cell *matCellDef="let row">
           {{ row.sent_time | date: "medium" }}</mat-cell
         >
-      </ng-container>
-      <!-- RECIPIENT -->
-      <ng-container matColumnDef="recipient">
-        <mat-header-cell *matHeaderCellDef mat-sort-header
-          >Recipient</mat-header-cell
-        >
-        <mat-cell *matCellDef="let row"> {{ row.recipient }}</mat-cell>
       </ng-container>
       <!-- ERROR TYPE -->
       <ng-container matColumnDef="error_type">
