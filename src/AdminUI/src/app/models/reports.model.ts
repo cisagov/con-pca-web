@@ -14,6 +14,10 @@ export class AggregateReportModel {
   new_subscriptions: number;
   ongoing_subscriptions: number;
   stopped_subscriptions: number;
+  emails_sent_7_days: number;
+  emails_clicked_7_days: number;
+  emails_sent_30_days: number;
+  emails_clicked_30_days: number;
   federal_stats: SectorIndustryReportModel;
   state_stats: SectorIndustryReportModel;
   local_stats: SectorIndustryReportModel;
