@@ -50,7 +50,7 @@
         >
         <mat-cell *matCellDef="let row">
           <span *ngIf="row.type === 'red_flag'; else other_type">Red Flag</span>
-          <ng-template #other_type>{{ row.type }}</ng-template>
+          <ng-template #other_type>{{ row.type | titlecase }}</ng-template>
         </mat-cell>
       </ng-container>
       <!-- CREATED BY -->

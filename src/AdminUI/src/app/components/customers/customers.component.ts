@@ -1,11 +1,13 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
+import { SubscriptionService } from 'src/app/services/subscription.service';
 import { CustomerService } from 'src/app/services/customer.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CustomerModel } from 'src/app/models/customer.model';
 import { Router } from '@angular/router';
 import { SelectionModel } from '@angular/cdk/collections';
+import { SubscriptionModel } from 'src/app/models/subscription.model';
 import { MatSort } from '@angular/material/sort';
 import { NavigateAwayComponent } from '../dialogs/navigate-away/navigate-away.component';
 import { ArchiveCustomersDialogComponent } from '../customer/archive-customers-dialog/archive-customers-dialog.component';
@@ -28,6 +30,7 @@ export class CustomersComponent implements OnInit {
     'select',
     'name',
     'identifier',
+    'stakeholder_shortname',
     'address_1',
     'address_2',
     'city',
@@ -36,6 +39,7 @@ export class CustomersComponent implements OnInit {
     'edit',
   ];
   customersData = new MatTableDataSource<CustomerModel>();
+  subscriptions = new MatTableDataSource<SubscriptionModel>();
   search_input = '';
   dialogRefArchive: MatDialogRef<ArchiveCustomersDialogComponent>;
   dialogRefUnarchive: MatDialogRef<UnarchiveCustomersDialogComponent>;
@@ -45,6 +49,7 @@ export class CustomersComponent implements OnInit {
 
   constructor(
     private layout_service: LayoutMainService,
+    public subscriptionSvc: SubscriptionService,
     public customerSvc: CustomerService,
     public alertsService: AlertsService,
     public dialog: MatDialog,
@@ -78,11 +83,14 @@ export class CustomersComponent implements OnInit {
       this.layout_service.setTitle('Customers');
     }
     this.loading = true;
-    this.customerSvc.getCustomers(this.showArchived).subscribe((data: any) => {
-      this.customersData.data = data as CustomerModel[];
-      this.customersData.sort = this.sort;
-      this.loading = false;
-    });
+    this.selection = new SelectionModel<CustomerModel>(true, []);
+    this.customerSvc
+      .getCustomers(this.showArchived.toString())
+      .subscribe((data: any) => {
+        this.customersData.data = data as CustomerModel[];
+        this.customersData.sort = this.sort;
+        this.loading = false;
+      });
   }
 
   public canDeactivate(): Promise<boolean> {
@@ -133,15 +141,10 @@ export class CustomersComponent implements OnInit {
       disableClose: false,
       data: customersToArchive,
     });
-    this.dialogRefArchive.afterClosed().subscribe((result) => {
-      if (result.archived) {
-        this.refresh();
-      } else if (result.error) {
-        this.alertsService.alert(
-          `Error archiving customer. ${result.error.error}`
-        );
-      }
+    this.dialogRefArchive.afterClosed().subscribe(() => {
+      this.refresh();
     });
+    this.refresh();
   }
 
   unarchiveCustomers() {

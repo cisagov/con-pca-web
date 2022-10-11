@@ -4,6 +4,7 @@ import {
   Input,
   OnDestroy,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { MyErrorStateMatcher } from '../../../helper/ErrorStateMatcher';
@@ -11,15 +12,17 @@ import { SubscriptionService } from 'src/app/services/subscription.service';
 import { ContactModel, CustomerModel } from 'src/app/models/customer.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CustomerService } from 'src/app/services/customer.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { Subscription } from 'rxjs';
 import { AlertComponent } from '../../dialogs/alert/alert.component';
+import { AlertsService } from 'src/app/services/alerts.service';
 import { ConfirmComponent } from '../../dialogs/confirm/confirm.component';
 import { SubscriptionModel } from 'src/app/models/subscription.model';
 import { CanComponentDeactivate } from 'src/app/guards/unsaved-changes.guard';
 import { UnsavedComponent } from '../../dialogs/unsaved/unsaved.component';
+import { ArchiveCustomersDialogComponent } from '../archive-customers-dialog/archive-customers-dialog.component';
 
 @Component({
   selector: 'app-add-customer',
@@ -33,6 +36,7 @@ export class AddCustomerComponent
   @Input() inDialog: boolean;
 
   model: any;
+  dialogRefArchive: MatDialogRef<ArchiveCustomersDialogComponent>;
   addContact = false;
   contactDataSource: any = [];
   displayedColumns: string[] = [
@@ -53,6 +57,7 @@ export class AddCustomerComponent
 
   matchCustomerName = new MyErrorStateMatcher();
   matchCustomerIdentifier = new MyErrorStateMatcher();
+  matchCustomerShortname = new MyErrorStateMatcher();
   matchAddress1 = new MyErrorStateMatcher();
   matchCity = new MyErrorStateMatcher();
   matchState = new MyErrorStateMatcher();
@@ -66,6 +71,7 @@ export class AddCustomerComponent
   customerFormGroup = new FormGroup({
     customerName: new FormControl('', [Validators.required]),
     customerIdentifier: new FormControl('', [Validators.required]),
+    customerShortname: new FormControl('', [Validators.required]),
     address1: new FormControl('', [Validators.required]),
     address2: new FormControl(''),
     city: new FormControl('', [Validators.required]),
@@ -88,13 +94,75 @@ export class AddCustomerComponent
     contactNotes: new FormControl(''),
   });
 
+  // List of US states
+  states: Array<object> = [
+    { name: 'AL - Alabama', value: 'AL' },
+    { name: 'AK - Alaska', value: 'AK' },
+    { name: 'AS - American Samoa', value: 'AS' },
+    { name: 'AZ - Arizona', value: 'AZ' },
+    { name: 'AR - Arkansas', value: 'AR' },
+    { name: 'CA - California', value: 'CA' },
+    { name: 'CO - Colorado', value: 'CO' },
+    { name: 'CT - Connecticut', value: 'CT' },
+    { name: 'DE - Delaware', value: 'DE' },
+    { name: 'DC - District of Columbia', value: 'DC' },
+    { name: 'FL - Florida', value: 'FL' },
+    { name: 'GA - Georgia', value: 'GA' },
+    { name: 'GU - Guam', value: 'GU' },
+    { name: 'HI - Hawaii', value: 'HI' },
+    { name: 'ID - Idaho', value: 'ID' },
+    { name: 'IL - Illinois', value: 'IL' },
+    { name: 'IN - Indiana', value: 'IN' },
+    { name: 'IA - Iowa', value: 'IA' },
+    { name: 'KS - Kansas', value: 'KS' },
+    { name: 'KY - Kentucky', value: 'KY' },
+    { name: 'LA - Louisiana', value: 'LA' },
+    { name: 'ME - Maine', value: 'ME' },
+    { name: 'MD - Maryland', value: 'MD' },
+    { name: 'MA - Massachusetts', value: 'MA' },
+    { name: 'MI - Michigan', value: 'MI' },
+    { name: 'MN - Minnesota', value: 'MN' },
+    { name: 'MS - Mississippi', value: 'MS' },
+    { name: 'MO - Missouri', value: 'MO' },
+    { name: 'MT - Montana', value: 'MT' },
+    { name: 'NE - Nebraska', value: 'NE' },
+    { name: 'NV - Nevada', value: 'NV' },
+    { name: 'NH - New Hampshire', value: 'NH' },
+    { name: 'NJ - New Jersey', value: 'NJ' },
+    { name: 'NM - New Mexico', value: 'NM' },
+    { name: 'NY - New York', value: 'NY' },
+    { name: 'NC - North Carolina', value: 'NC' },
+    { name: 'ND - North Dakota', value: 'ND' },
+    { name: 'OH - Ohio', value: 'OH' },
+    { name: 'OK - Oklahoma', value: 'OK' },
+    { name: 'OR - Oregon', value: 'OR' },
+    { name: 'PA - Pennsylvania', value: 'PA' },
+    { name: 'PR - Puerto Rico', value: 'PR' },
+    { name: 'RI - Rhode Island', value: 'RI' },
+    { name: 'SC - South Carolina', value: 'SC' },
+    { name: 'SD - South Dakota', value: 'SD' },
+    { name: 'TN - Tennessee', value: 'TN' },
+    { name: 'TX - Texas', value: 'TX' },
+    { name: 'UT - Utah', value: 'UT' },
+    { name: 'VT - Vermont', value: 'VT' },
+    { name: 'VA - Virginia', value: 'VA' },
+    { name: 'VI - Virgin Islands', value: 'VI' },
+    { name: 'WA - Washington', value: 'WA' },
+    { name: 'WV - West Virginia', value: 'WV' },
+    { name: 'WI - Wisconsin', value: 'WI' },
+    { name: 'WY - Wyoming', value: 'WY' },
+  ];
+
   // List of angular subscriptions, unsubscribed to on delete
   angularSubscriptions = Array<Subscription>();
   // Customer_id if not new
   customer_id: string;
+  archived = false;
+  archived_description = '';
   customer: CustomerModel;
   subscriptions = new MatTableDataSource<SubscriptionModel>();
   hasSubs = true;
+  hasActiveSubs = false;
 
   sectorList;
   industryList;
@@ -102,12 +170,14 @@ export class AddCustomerComponent
   constructor(
     public subscriptionSvc: SubscriptionService,
     public customerSvc: CustomerService,
+    public alertsService: AlertsService,
     public dialog: MatDialog,
     private route: ActivatedRoute,
     public router: Router,
-    public layoutSvc: LayoutMainService
+    public layoutSvc: LayoutMainService,
+    private changeDetectorRef: ChangeDetectorRef
   ) {
-    layoutSvc.setTitle('New Customer');
+    this.layoutSvc.setTitle('New Customer');
   }
 
   ngOnInit(): void {
@@ -116,7 +186,6 @@ export class AddCustomerComponent
     } else {
       this.inDialog = false;
     }
-
     this.customerFormGroup
       .get('customerType')
       .valueChanges.subscribe((value) => {
@@ -145,6 +214,7 @@ export class AddCustomerComponent
         }
       })
     );
+    this.changeDetectorRef.detectChanges();
   }
 
   getCustomer() {
@@ -152,6 +222,7 @@ export class AddCustomerComponent
       (data: CustomerModel) => {
         if (data._id != null) {
           this.customer = data as CustomerModel;
+          this.archived = this.customer.archived;
           this.setCustomerForm(this.customer);
           this.setContacts(this.customer.contact_list as ContactModel[]);
           this.getSectorList();
@@ -163,6 +234,14 @@ export class AddCustomerComponent
                 this.hasSubs = false;
               } else {
                 this.hasSubs = true;
+                this.subscriptions.data.forEach((subscription) => {
+                  if (
+                    subscription.status == 'queued' ||
+                    subscription.status == 'running'
+                  ) {
+                    this.hasActiveSubs = true;
+                  }
+                });
               }
             });
         } else {
@@ -175,6 +254,13 @@ export class AddCustomerComponent
     );
   }
 
+  // Choose state using select dropdown
+  changeState(e) {
+    this.customerFormGroup.setValue(e.value, {
+      onlySelf: true,
+    });
+  }
+
   getSectorList() {
     this.customerSvc.getSectorList().subscribe(
       (data: any) => {
@@ -182,11 +268,11 @@ export class AddCustomerComponent
           this.sectorList = data;
           this.setIndustryList();
         } else {
-          this.orgError = 'Error retreiving sector/industry list';
+          this.orgError = 'Error retrieving sector/industry list';
         }
       },
       (error) => {
-        this.orgError = 'Error retreiving sector/industry list';
+        this.orgError = 'Error retrieving sector/industry list';
       }
     );
   }
@@ -195,6 +281,7 @@ export class AddCustomerComponent
     this.customerFormGroup.patchValue({
       customerName: customer.name,
       customerIdentifier: customer.identifier,
+      customerShortname: customer.stakeholder_shortname,
       customerType: customer.customer_type,
       address1: customer.address_1,
       address2: customer.address_2,
@@ -225,6 +312,13 @@ export class AddCustomerComponent
       // this.contacts.data.push(contactToAdd)
     });
     this.contacts.data = newContacts;
+  }
+
+  isArchived(): boolean {
+    if (this.archived) {
+      return true;
+    }
+    return false;
   }
 
   isExistingCustomer(): boolean {
@@ -266,6 +360,8 @@ export class AddCustomerComponent
         _id: '',
         name: this.customerFormGroup.controls['customerName'].value,
         identifier: this.customerFormGroup.controls['customerIdentifier'].value,
+        stakeholder_shortname:
+          this.customerFormGroup.controls['customerShortname'].value,
         address_1: this.customerFormGroup.controls['address1'].value,
         address_2: this.customerFormGroup.controls['address2'].value,
         city: this.customerFormGroup.controls['city'].value,
@@ -284,6 +380,7 @@ export class AddCustomerComponent
       if (this.customer_id != null) {
         // If editing existing customer
         customer._id = this.customer_id;
+        this.archived = this.customer.archived;
         this.angularSubscriptions.push(
           this.customerSvc.patchCustomer(customer).subscribe(
             (data: any) => {
@@ -444,7 +541,7 @@ export class AddCustomerComponent
     return this.contacts.data.length > 0;
   }
 
-  sectorChange(event) {
+  changeSector(event) {
     this.setIndustryList();
     this.customerFormGroup.patchValue({
       industry: null,
@@ -469,6 +566,43 @@ export class AddCustomerComponent
 
   customerValid() {
     return this.customerFormGroup.valid && this.contacts.data.length > 0;
+  }
+
+  openUnarchiveCustomerDialog() {
+    const dialogRef = this.dialog.open(ConfirmComponent, {
+      disableClose: false,
+    });
+    dialogRef.componentInstance.confirmMessage = `Are you sure you want to unarchive ${this.customer.name}? Initial Reason for Archiving - ${this.customer.archived_description}`;
+    dialogRef.componentInstance.title = 'Confirm Unarchive';
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.archived = false;
+        this.customer.archived = false;
+        this.customer.archived_description = '';
+        this.pushCustomer();
+      }
+    });
+  }
+
+  openArchiveCustomerDialog() {
+    this.dialogRefArchive = this.dialog.open(ArchiveCustomersDialogComponent, {
+      disableClose: false,
+      data: [this.customer],
+    });
+
+    this.dialogRefArchive.afterClosed().subscribe((result) => {
+      if (result.archived) {
+        this.archived = true;
+        this.customer.archived = true;
+        this.customer.archived_description = result.description;
+        this.router.navigate(['/customers']);
+      } else if (result.error) {
+        this.alertsService.alert(
+          `Error archiving customer. ${result.error.error}`
+        );
+      }
+    });
   }
 
   deleteCustomer() {

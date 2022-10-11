@@ -20,7 +20,7 @@
           class="flex-grow-1"
           [formGroup]="customerFormGroup"
         >
-          <mat-label>Customer Name*</mat-label>
+          <mat-label>Customer Name</mat-label>
           <input
             type="text"
             trim="blur"
@@ -47,7 +47,7 @@
           style="padding-bottom: 10px"
           [formGroup]="customerFormGroup"
         >
-          <mat-label>Customer Identifier*</mat-label>
+          <mat-label>Customer Identifier</mat-label>
           <input
             type="text"
             trim="blur"
@@ -74,6 +74,38 @@
             Customer/Organization identifier may not contain only spaces
           </mat-error>
         </mat-form-field>
+        <mat-form-field
+          appearance="outline"
+          style="padding-bottom: 10px"
+          [formGroup]="customerFormGroup"
+        >
+          <mat-label>Stakeholder Shortname</mat-label>
+          <input
+            type="text"
+            trim="blur"
+            matInput
+            placeholder="Stakeholder Shortname"
+            formControlName="customerShortname"
+            [errorStateMatcher]="matchCustomerShortname"
+          />
+          <mat-hint align="start"
+            ><strong>Shortname used internally by DHS for the customer</strong>
+          </mat-hint>
+          <mat-error
+            *ngIf="
+              customerFormGroup.controls.customerShortname.hasError('required')
+            "
+          >
+            Stakeholder shortname is <strong>required</strong>
+          </mat-error>
+          <mat-error
+            *ngIf="
+              customerFormGroup.controls.customerName.hasError('whitespace')
+            "
+          >
+            Stakeholder shortname may not contain only spaces
+          </mat-error>
+        </mat-form-field>
       </div>
 
       <!-- Domain -->
@@ -85,7 +117,7 @@
         >
           <mat-label
             >Customer Domain (ex. example.org or
-            subdomain.example.org)*</mat-label
+            subdomain.example.org)</mat-label
           >
           <input
             type="text"
@@ -96,7 +128,7 @@
           />
         </mat-form-field>
         <mat-form-field appearance="outline" [formGroup]="customerFormGroup">
-          <mat-label>Appendix A Date*</mat-label>
+          <mat-label>Appendix A Date</mat-label>
           <input
             matInput
             formControlName="appendixADate"
@@ -124,7 +156,7 @@
           class="flex-grow-1"
           [formGroup]="customerFormGroup"
         >
-          <mat-label>Customer Type*</mat-label>
+          <mat-label>Customer Type</mat-label>
           <mat-select formControlName="customerType">
             <mat-option [value]="null">--Select--</mat-option>
             <mat-option value="Federal">Government - Federal</mat-option>
@@ -154,7 +186,7 @@
           class="flex-grow-1"
           [formGroup]="customerFormGroup"
         >
-          <mat-label>Address 1*</mat-label>
+          <mat-label>Address 1</mat-label>
           <input
             type="text"
             trim="blur"
@@ -199,7 +231,7 @@
           class="flex-grow-1"
           [formGroup]="customerFormGroup"
         >
-          <mat-label>City*</mat-label>
+          <mat-label>City</mat-label>
           <input
             type="text"
             trim="blur"
@@ -226,15 +258,17 @@
           class="flex-grow-2"
           [formGroup]="customerFormGroup"
         >
-          <mat-label>State*</mat-label>
-          <input
-            type="text"
-            trim="blur"
-            matInput
+          <mat-label>State</mat-label>
+          <mat-select
             placeholder="State"
             formControlName="state"
+            (selectionChange)="changeState($event)"
             [errorStateMatcher]="matchState"
-          />
+          >
+            <mat-option *ngFor="let s of states" [value]="s.value">{{
+              s.name
+            }}</mat-option>
+          </mat-select>
           <mat-error
             *ngIf="customerFormGroup.controls.state.hasError('required')"
           >
@@ -254,7 +288,7 @@
           [formGroup]="customerFormGroup"
           [style.width.px]="80"
         >
-          <mat-label>Zip*</mat-label>
+          <mat-label>Zip</mat-label>
           <input
             type="text"
             trim="blur"
@@ -283,10 +317,10 @@
           class="flex-grow-1"
           [formGroup]="customerFormGroup"
         >
-          <mat-label>Sector*</mat-label>
+          <mat-label>Sector</mat-label>
           <mat-select
             formControlName="sector"
-            (selectionChange)="sectorChange($event)"
+            (selectionChange)="changeSector($event)"
           >
             <mat-option [value]="null">--Select--</mat-option>
             <mat-option *ngFor="let s of sectorList" [value]="s.name">
@@ -353,7 +387,7 @@
                 [formGroup]="contactFormGroup"
               >
                 <mat-form-field appearance="outline">
-                  <mat-label>First Name*</mat-label>
+                  <mat-label>First Name</mat-label>
                   <input
                     type="text"
                     trim="blur"
@@ -376,7 +410,7 @@
                 [formGroup]="contactFormGroup"
               >
                 <mat-form-field appearance="outline">
-                  <mat-label>Last Name*</mat-label>
+                  <mat-label>Last Name</mat-label>
                   <input
                     type="text"
                     trim="blur"
@@ -448,7 +482,7 @@
                 [formGroup]="contactFormGroup"
               >
                 <mat-form-field appearance="outline">
-                  <mat-label>Email*</mat-label>
+                  <mat-label>Email</mat-label>
                   <input
                     type="text"
                     trim="blur"
@@ -597,16 +631,46 @@
         </div>
       </div>
       <div class="d-flex flex-row flex-grow-1 justify-content-end">
+        <button
+          id="unarchive-button"
+          class="d-flex"
+          mat-raised-button
+          color="accent"
+          *ngIf="isExistingCustomer() && isArchived()"
+          [disabled]="!isArchived()"
+          (click)="openUnarchiveCustomerDialog()"
+        >
+          Unarchive Customer
+        </button>
+        <div
+          matTooltip="A customer cannot be archived with active subscriptions."
+          matTooltipPosition="right"
+          *ngIf="isExistingCustomer() && !isArchived()"
+          matTooltipShowDelay="500"
+          [matTooltipDisabled]="!hasSubs || isArchived()"
+        >
+          <button
+            id="archive-button"
+            class="d-flex"
+            mat-raised-button
+            [disabled]="hasActiveSubs || isArchived()"
+            *ngIf="isExistingCustomer() && !isArchived()"
+            color="accent"
+            (click)="openArchiveCustomerDialog()"
+          >
+            Archive Customer
+          </button>
+        </div>
         <div
           matTooltip="Only customers that have been archived can be deleted."
           matTooltipPosition="right"
           matTooltipShowDelay="500"
-          [matTooltipDisabled]="!hasSubs && customer.archived"
+          [matTooltipDisabled]="!hasSubs && isArchived()"
         >
           <button
             mat-raised-button
             color="warn"
-            [disabled]="hasSubs || !customer.archived"
+            [disabled]="hasSubs || !isArchived()"
             (click)="deleteCustomer()"
           >
             Delete Customer
@@ -628,6 +692,14 @@
           </button>
         </div>
         <button mat-flat-button (click)="cancelCustomer()">Cancel</button>
+      </div>
+      <div
+        class="flex-container flex-row pb-3"
+        *ngIf="isArchived() && isExistingCustomer()"
+      >
+        <p class="text-danger">
+          Reason for Archiving - {{ customer.archived_description }}
+        </p>
       </div>
     </div>
   </div>

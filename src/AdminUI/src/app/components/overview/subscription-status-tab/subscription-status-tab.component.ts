@@ -10,8 +10,9 @@ import { SubscriptionService } from 'src/app/services/subscription.service';
 interface SubscriptionWithEndDate {
   // top-level primitives for column sorting
   name: string;
-  start_date: Date;
-  end_date: Date;
+  cycle_start_date: Date;
+  cycle_end_date: Date;
+  appendix_a_date: Date;
   is_continuous: string;
   last_updated: Date;
 }
@@ -27,7 +28,7 @@ export class SubscriptionStatusTab implements OnInit {
   sortInProgress: MatSort;
   @ViewChild('stoppedTable', { read: MatSort, static: true })
   sortStopped: MatSort;
-  loading = false;
+  loading: boolean = false;
 
   dateFormat = AppSettings.DATE_FORMAT;
 
@@ -37,6 +38,7 @@ export class SubscriptionStatusTab implements OnInit {
     'name',
     'startDate',
     'endDate',
+    'appendixDate',
     'isContinuous',
     'lastUpdated',
   ];
@@ -47,6 +49,7 @@ export class SubscriptionStatusTab implements OnInit {
     'name',
     'startDate',
     'endDate',
+    'appendixDate',
     'isContinuous',
     'lastUpdated',
   ];
@@ -56,6 +59,7 @@ export class SubscriptionStatusTab implements OnInit {
   stoppedDisplayedColumns = [
     'name',
     'startDate',
+    'appendixDate',
     'isContinuous',
     'lastUpdated',
   ];
@@ -77,13 +81,12 @@ export class SubscriptionStatusTab implements OnInit {
     await this.subscriptionSvc
       .getSubscriptionsWithEndDate()
       .subscribe((subscriptions: any) => {
-        this.loading = false;
         const now = moment();
         this.endingSoonDataSource.data = subscriptions.filter(
           (obj) =>
             obj.status === 'running' &&
             moment().isAfter(
-              moment(obj.start_date, 'YYYY-MM-DD').add(
+              moment(obj.cycle_start_date, 'YYYY-MM-DD').add(
                 obj.cycle_length_minutes - 28800,
                 'minutes'
               ),
@@ -103,15 +106,18 @@ export class SubscriptionStatusTab implements OnInit {
         this.stoppedDataSource.sort = this.sortStopped;
         this.sortingDataAccessor(this.stoppedDataSource);
       });
+    this.loading = false;
   }
 
   private sortingDataAccessor(callBack: any) {
     callBack.sortingDataAccessor = (item, property) => {
       switch (property) {
         case 'startDate':
-          return new Date(item.start_date);
+          return new Date(item.cycle_start_date);
         case 'endDate':
-          return new Date(item.end_date);
+          return new Date(item.cycle_end_date);
+        case 'appendixDate':
+          return new Date(item.appendix_a_date);
         case 'isContinuous':
           return item.continuous_subscription ? 1 : 0;
         case 'lastUpdated':
