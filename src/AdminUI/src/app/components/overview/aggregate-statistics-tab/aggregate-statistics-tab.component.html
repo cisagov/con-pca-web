@@ -32,10 +32,6 @@
           <td class="text-right">{{ detail?.cycle_reports_sent }}</td>
         </tr>
         <tr>
-          <td>Total yearly reports sent out</td>
-          <td class="text-right">{{ detail?.yearly_reports_sent }}</td>
-        </tr>
-        <tr>
           <td>Total customer subscriptions in the 'created' status</td>
           <td class="text-right">{{ detail?.new_subscriptions }}</td>
         </tr>
@@ -48,13 +44,37 @@
           <td class="text-right">{{ detail?.stopped_subscriptions }}</td>
         </tr>
         <tr>
-          <td>Total number of emails sent</td>
+          <td>Total number of emails sent in the last 7 days</td>
+          <td class="text-right">
+            {{ detail?.emails_sent_7_days }}
+          </td>
+        </tr>
+        <tr>
+          <td>Total number of emails clicked in the last 7 days</td>
+          <td class="text-right">
+            {{ detail?.emails_clicked_7_days }}
+          </td>
+        </tr>
+        <tr>
+          <td>Total number of emails sent in the last 30 days</td>
+          <td class="text-right">
+            {{ detail?.emails_sent_30_days }}
+          </td>
+        </tr>
+        <tr>
+          <td>Total number of emails clicked in the last 30 days</td>
+          <td class="text-right">
+            {{ detail?.emails_clicked_30_days }}
+          </td>
+        </tr>
+        <tr>
+          <td>Total number of emails sent over all time</td>
           <td class="text-right">
             {{ detail?.all_customer_stats.all.sent.count }}
           </td>
         </tr>
         <tr>
-          <td>Total number of emails clicked</td>
+          <td>Total number of emails clicked over all time</td>
           <td class="text-right">
             {{ detail?.all_customer_stats.all.clicked.count }}
           </td>
@@ -90,7 +110,10 @@
                 <tr>
                   <td>Email Click Ratio</td>
                   <td class="text-right">
-                    {{ detail?.federal_stats.emails_clicked_ratio * 100 }}%
+                    {{
+                      detail?.federal_stats.emails_clicked_ratio
+                        | percent: "1.0-2"
+                    }}
                   </td>
                 </tr>
               </table>
@@ -123,7 +146,10 @@
                 <tr>
                   <td>Email Click Ratio</td>
                   <td class="text-right">
-                    {{ detail?.state_stats.emails_clicked_ratio * 100 }}%
+                    {{
+                      detail?.state_stats.emails_clicked_ratio
+                        | percent: "1.0-2"
+                    }}
                   </td>
                 </tr>
               </table>
@@ -156,7 +182,10 @@
                 <tr>
                   <td>Email Click Ratio</td>
                   <td class="text-right">
-                    {{ detail?.local_stats.emails_clicked_ratio * 100 }}%
+                    {{
+                      detail?.local_stats.emails_clicked_ratio
+                        | percent: "1.0-2"
+                    }}
                   </td>
                 </tr>
               </table>
@@ -189,7 +218,10 @@
                 <tr>
                   <td>Email Click Ratio</td>
                   <td class="text-right">
-                    {{ detail?.tribal_stats.emails_clicked_ratio * 100 }}%
+                    {{
+                      detail?.tribal_stats.emails_clicked_ratio
+                        | percent: "1.0-2"
+                    }}
                   </td>
                 </tr>
               </table>
@@ -222,7 +254,10 @@
                 <tr>
                   <td>Email Click Ratio</td>
                   <td class="text-right">
-                    {{ detail?.private_stats.emails_clicked_ratio * 100 }}%
+                    {{
+                      detail?.private_stats.emails_clicked_ratio
+                        | percent: "1.0-2"
+                    }}
                   </td>
                 </tr>
               </table>
@@ -240,7 +275,7 @@
             {{
               detail?.all_customer_stats.all.clicked.ratio
                 | nullishCoalesce: 0
-                | percent: "0.2"
+                | percent: "1.0-2"
             }}
           </td>
         </tr>
