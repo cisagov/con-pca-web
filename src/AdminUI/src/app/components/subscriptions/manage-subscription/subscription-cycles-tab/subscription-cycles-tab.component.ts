@@ -287,7 +287,7 @@ export class SubscriptionStatsTab implements OnInit {
 
   convertReportsToCSV() {
     let displayString = '';
-    if (this.selectedCycle.manual_reports) {
+    if (this.selectedCycle?.manual_reports) {
       this.selectedCycle.manual_reports.forEach((element) => {
         let newDate = '';
         if (element.report_date) {
