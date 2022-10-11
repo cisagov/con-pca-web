@@ -189,6 +189,9 @@ export class SubscriptionConfigTab
         startDate: new FormControl(new Date(), {
           validators: Validators.required,
         }),
+        startTime: new FormControl('', {
+          validators: Validators.required,
+        }),
         sendingProfile: new FormControl('', {
           validators: Validators.required,
         }),
@@ -293,6 +296,25 @@ export class SubscriptionConfigTab
 
         // // Check if Start Date is before Appendix A Date
         this.isStartDateBeforeAADate();
+      })
+    );
+
+    // On changes to start time
+    this.angular_subs.push(
+      this.f.startTime.valueChanges.subscribe((val) => {
+        const today = new Date();
+        const hour = val.substr(0, val.indexOf(':'));
+        const minute = val.substr(val.indexOf(':') + 1, 2);
+        let localStartDate = new Date(this.subscription.start_date);
+        localStartDate.setHours(hour, minute);
+
+        if (localStartDate <= today) {
+          const now = new Date();
+          localStartDate.setMinutes(now.getMinutes());
+          localStartDate.setHours(now.getHours());
+        }
+
+        this.f.startDate.setValue(localStartDate);
       })
     );
 
@@ -597,7 +619,12 @@ export class SubscriptionConfigTab
     this.f.primaryContact.setValue(s.primary_contact?.email);
     this.f.adminEmail.setValue(s.admin_email);
     this.f.operatorEmail.setValue(s.operator_email);
-    this.f.startDate.setValue(s.start_date);
+
+    const startTimeString = new Date(s.start_date).toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+    this.f.startTime.setValue(startTimeString);
     this.f.csvText.setValue(this.formatTargetsToCSV(s.target_email_list), {
       emitEvent: false,
     });
@@ -837,6 +864,12 @@ export class SubscriptionConfigTab
         // if start date is in the past, move it to today
         if (this.f.startDate.value < new Date()) {
           this.f.startDate.setValue(new Date());
+          this.f.startTime.setValue(
+            new Date().toLocaleTimeString([], {
+              hour: '2-digit',
+              minute: '2-digit',
+            })
+          );
         }
         // persist any changes before restart
         this.subscriptionSvc
@@ -1056,11 +1089,13 @@ export class SubscriptionConfigTab
     const status = this.subscription?.status?.toLowerCase();
     if (status === 'running') {
       this.f.startDate.disable();
+      this.f.startTime.disable();
       this.f.sendingProfile.disable();
       this.f.targetDomain.disable();
       //this.f.csvText.disable();
     } else {
       this.f.startDate.enable();
+      this.f.startTime.enable();
       this.f.sendingProfile.enable();
       this.f.targetDomain.enable();
       //this.f.csvText.enable();

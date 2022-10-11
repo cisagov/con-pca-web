@@ -101,6 +101,7 @@
 
       <mat-label class="h6">Start Date</mat-label>
       <p>Appendix A Date: {{ customer.appendix_a_date | date: "MM/dd/yy" }}</p>
+      <div class="text-muted">Based on your local timezone.</div>
       <div class="mb-4">
         <mat-form-field appearance="outline">
           <input
@@ -127,6 +128,20 @@
             Start Date cannot be in the past
           </mat-error>
         </mat-form-field>
+        <mat-form-field>
+          <input
+            matInput
+            formControlName="startTime"
+            format="24"
+            [ngxMatTimepicker]="timePicker"
+            placeholder="HH:MM"
+            readonly
+          />
+          <mat-icon matSuffix (click)="timePicker.open()">
+            watch_later
+          </mat-icon>
+        </mat-form-field>
+        <ngx-mat-timepicker #timePicker></ngx-mat-timepicker>
         <mat-error *ngIf="startBeforeAppendixDate" class="invalid-feedback">
           Start Date can not be before the Appendix A Date
         </mat-error>
@@ -264,7 +279,7 @@
       <mat-label class="h6">Sending Profile </mat-label>
       <div class="mb-4">
         <div class="text-muted" *ngIf="sendingProfiles.length > 0">
-          Select the sending profile that will be used
+          Select the sending profile that will be used.
         </div>
         <mat-form-field appearance="outline" *ngIf="sendingProfiles.length > 0">
           <mat-label>Sending Profile</mat-label>
