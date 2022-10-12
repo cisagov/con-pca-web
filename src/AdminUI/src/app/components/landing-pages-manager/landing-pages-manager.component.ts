@@ -9,6 +9,7 @@ import { Subscription } from 'rxjs';
 import $ from 'jquery';
 import 'src/app/helper/csvToArray';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatSort } from '@angular/material/sort';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
 import { AppSettings } from 'src/app/AppSettings';
@@ -19,6 +20,7 @@ import { LandingPageManagerService } from 'src/app/services/landing-page-manager
 import { LandingPageModel } from 'src/app/models/landing-page.models';
 import { TemplateModel } from 'src/app/models/template.model';
 import { TagSelectionComponent } from '../dialogs/tag-selection/tag-selection.component';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-landing-pages-manager',
@@ -26,6 +28,10 @@ import { TagSelectionComponent } from '../dialogs/tag-selection/tag-selection.co
   styleUrls: ['./landing-pages-manager.component.scss'],
 })
 export class LandingPagesManagerComponent implements OnInit {
+  sortTemplates: MatSort;
+  loading = false;
+  public templatesSource: MatTableDataSource<TemplateModel>;
+
   dialogRefConfirm: MatDialogRef<ConfirmComponent>;
   dialogRefTagSelection: MatDialogRef<TagSelectionComponent>;
 
@@ -73,7 +79,8 @@ export class LandingPagesManagerComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private settingsService: SettingsService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private http: HttpClient
   ) {
     // Set title of page
     route.params.subscribe((params) => {
@@ -87,7 +94,6 @@ export class LandingPagesManagerComponent implements OnInit {
     });
     //this.setEmptyTemplateForm();
     this.setTemplateForm(new LandingPageModel());
-    //this.getAllTemplates();
   }
   ngOnInit() {
     //get subscription to height of page from main layout component

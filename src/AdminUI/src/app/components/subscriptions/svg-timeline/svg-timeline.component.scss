@@ -1,0 +1,19 @@
+.timeline-icon {
+    display: none;
+  }
+
+.timeline-text {
+    display: none;
+  }
+.timeline-today-text {
+    font-size: 11px;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+      
+.timeline-circle:hover + .transform > .timeline-text {
+    display: inline;
+  }
+
+.timeline-circle:hover ~ .timeline-icon {
+    display: inline;
+  }

@@ -12,6 +12,7 @@ import { AppSettings } from 'src/app/AppSettings';
 @Component({
   selector: 'app-svg-timeline',
   templateUrl: './svg-timeline.component.html',
+  styleUrls: ['./svg-timeline.component.scss'],
 })
 export class SvgTimelineComponent implements OnInit {
   @Input()
