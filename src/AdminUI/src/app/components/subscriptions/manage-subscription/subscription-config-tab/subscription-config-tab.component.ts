@@ -49,6 +49,7 @@ import { SendingProfileModel } from 'src/app/models/sending-profile.model';
 import { AlertsService } from 'src/app/services/alerts.service';
 import { LandingPageModel } from 'src/app/models/landing-page.models';
 import { LandingPageManagerService } from 'src/app/services/landing-page-manager.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'subscription-config-tab',
@@ -284,14 +285,22 @@ export class SubscriptionConfigTab
       this.f.startDate.valueChanges.subscribe((val) => {
         const startDate = new Date(val);
         const today = new Date();
-        today.setHours(0, 0, 0, 0);
 
-        if (startDate >= today) {
+        if (this.pageMode === 'EDIT') {
+          const timeVal = this.f.startTime.value;
+          const hour = Number(moment(timeVal, ['h:mm A']).format('HH'));
+          const minute = Number(moment(timeVal, ['h:mm A']).format('mm'));
+          startDate.setHours(hour);
+          startDate.setMinutes(minute);
+        }
+        if (startDate <= today) {
           const now = new Date();
           startDate.setMinutes(now.getMinutes());
           startDate.setHours(now.getHours());
         }
         this.subscription.start_date = startDate;
+        this.f.startDate.setValue(startDate, { emitEvent: false });
+
         this.setEndTimes();
 
         // // Check if Start Date is before Appendix A Date
@@ -303,8 +312,8 @@ export class SubscriptionConfigTab
     this.angular_subs.push(
       this.f.startTime.valueChanges.subscribe((val) => {
         const today = new Date();
-        const hour = val.substr(0, val.indexOf(':'));
-        const minute = val.substr(val.indexOf(':') + 1, 2);
+        const hour = Number(moment(val, ['h:mm A']).format('HH'));
+        const minute = Number(moment(val, ['h:mm A']).format('mm'));
         let localStartDate = new Date(this.subscription.start_date);
         localStartDate.setHours(hour, minute);
 
@@ -861,16 +870,7 @@ export class SubscriptionConfigTab
         this.setTemplatesSelected();
         this.subscription.target_email_list =
           this.subscription.target_email_list;
-        // if start date is in the past, move it to today
-        if (this.f.startDate.value < new Date()) {
-          this.f.startDate.setValue(new Date());
-          this.f.startTime.setValue(
-            new Date().toLocaleTimeString([], {
-              hour: '2-digit',
-              minute: '2-digit',
-            })
-          );
-        }
+
         // persist any changes before restart
         this.subscriptionSvc
           .patchSubscription(this.subscription)
