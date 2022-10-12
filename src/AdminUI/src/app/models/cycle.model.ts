@@ -38,7 +38,7 @@ export class CycleModel {
   targets: CycleTargetModel[];
   processing: boolean;
   phish_header: string;
-  manual_reports: CycleManualReportsModel[];
+  manual_reports?: CycleManualReportsModel[];
 
   // Helper Attributes
   nonhuman: boolean;
