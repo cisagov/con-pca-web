@@ -19,10 +19,11 @@ export class LoggingTab implements OnInit {
   public loggingSource: MatTableDataSource<LoggingModel>;
   loggingDisplayedColumns = ['timestamp', 'file', 'message'];
 
-  constructor(private router: Router, private loggingSvc: LoggingService) {}
+  constructor(private router: Router, private loggingSvc: LoggingService) {
+    this.loggingSource = new MatTableDataSource();
+  }
 
   ngOnInit(): void {
-    this.loggingSource = new MatTableDataSource();
     this.refresh();
   }
 

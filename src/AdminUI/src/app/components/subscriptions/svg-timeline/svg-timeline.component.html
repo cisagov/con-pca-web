@@ -19,18 +19,16 @@
         [attr.y1]="30"
         [attr.y2]="80"
       ></line>
-      <text [attr.x]="t.x" y="90" text-anchor="middle" class="timeline-text">
+      <text
+        [attr.x]="t.x"
+        y="90"
+        text-anchor="middle"
+        class="timeline-today-text"
+      >
         Today
       </text>
     </g>
     <g *ngIf="t.title !== 'Today'">
-      <text
-        [attr.x]="t.x"
-        y="10"
-        text-anchor="middle"
-        class="timeline-icon"
-        [innerHTML]="t.icon"
-      ></text>
       <circle
         r="3"
         [attr.cx]="t.x"
@@ -38,12 +36,19 @@
         stroke-width="1"
         class="timeline-circle"
       ></circle>
-      <g [attr.transform]="'translate(' + t.x + ' 50)'">
+      <g class="transform" [attr.transform]="'translate(' + t.x + ' 50)'">
         <text x="0" y="0" text-anchor="middle" class="timeline-text">
-          <tspan x="0" dy="0">{{ t.title }}</tspan>
+          <tspan class="" x="0" dy="0">{{ t.title }}</tspan>
           <tspan x="0" dy="1.2em">{{ t.date | date: dateFormat }}</tspan>
         </text>
       </g>
+      <text
+        [attr.x]="t.x"
+        y="10"
+        text-anchor="middle"
+        class="timeline-icon"
+        [innerHTML]="t.icon"
+      ></text>
     </g>
   </g>
 </svg>

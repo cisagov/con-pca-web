@@ -91,7 +91,7 @@ export class LandingPageManagerService {
 
   getLandingPageTemplates(landingPageId: string) {
     return this.http.get(
-      `${this.settingsService.settings.apiUrl}/api/templates/?landing_page_id=${landingPageId}/`
+      `${this.settingsService.settings.apiUrl}/api/landingpage/${landingPageId}/templates`
     );
   }
 }

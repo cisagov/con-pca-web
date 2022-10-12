@@ -124,6 +124,9 @@
   <mat-card *ngIf="display_timeline">
     <div>
       <h4>Subscription Timeline</h4>
+      <div class="text-muted" style="margin-bottom: 50px">
+        Hover over dots for event information
+      </div>
       <div style="margin: 0 2rem 2rem 2rem">
         <app-svg-timeline [timelineItems]="timelineItems"></app-svg-timeline>
       </div>
