@@ -11,6 +11,7 @@
 .startButton {
   align-self: right;
 }
+
 .active_subscription {
   margin-top: 1em;
 }
@@ -22,6 +23,7 @@
   margin-top: 1em;
   margin-bottom: 4em;
 }
+
 .template-selection-level-container {
   border: 1px solid rgba(0, 0, 0, 0.25);
   border-radius: 5px;
@@ -31,24 +33,30 @@
   margin: 0.5em;
   // max-width: 800px;
 }
+
 .template-selection-level-container > table > tbody > tr:hover {
   background-color: #d6e9f2;
 }
+
 .tslc-title {
   margin-top: -1.5em;
   position: absolute;
 }
+
 .template-selected-list {
   list-style: none;
   padding: 0.5em;
   width: 100%;
 }
+
 .template-selction-row {
   min-width: 100%;
 }
+
 .template-selction-row:hover {
   background: rgba(0, 0, 0, 0.15);
 }
+
 .change-template-btn {
   display: inline-block;
   position: absolute;
@@ -58,6 +66,7 @@
   width: 11em;
   margin-right: 0 !important;
 }
+
 .rotate-header-btn {
   margin-left: 8px;
   display: inline-block;

@@ -313,6 +313,7 @@ $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
   .mat-sort-header-stem {
     color: white;
   }
+
   .mat-sort-header-indicator {
     color: white;
   }
@@ -336,6 +337,7 @@ $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
 .material-icons {
   font-size: 24px;
   font-family: "Material Icons", "Material Icons";
+
   .mat-badge-content {
     font-family: "Roboto";
   }
@@ -361,6 +363,7 @@ $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
 .material-icons {
   font-size: 24px;
   font-family: "Material Icons", "Material Icons";
+
   .mat-badge-content {
     font-family: "Roboto";
   }
@@ -375,6 +378,7 @@ $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
     border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !important;
 }
+
 .mat-button.mat-primary:hover,
 .mat-stroked-button.mat-success:hover {
   background-color: #ffffff !important;
@@ -418,11 +422,13 @@ $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
 .material-icons {
   font-size: 24px;
   font-family: "Material Icons", "Material Icons";
+
   .mat-badge-content {
     font-family: "Roboto";
     color: "#fff";
   }
 }
+
 :focus {
   outline: none !important;
 }
@@ -477,6 +483,14 @@ table.table-1 td {
   margin-right: 10px;
 }
 
+.mat-form-field-disabled {
+  background-color: white;
+}
+
+.disabled-color {
+  background-color: white;
+}
+
 .table-btn-icon {
   min-width: 0 !important;
   padding-left: 4px !important;
@@ -501,6 +515,7 @@ table.table-1 td {
 .needs-work {
   // background-color: #ffff00;
 }
+
 .randomize-button {
   background-color: #29ab87;
   color: white;

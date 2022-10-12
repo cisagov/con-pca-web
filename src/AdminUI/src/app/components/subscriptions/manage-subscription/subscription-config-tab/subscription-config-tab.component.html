@@ -101,7 +101,9 @@
 
       <mat-label class="h6">Start Date</mat-label>
       <p>Appendix A Date: {{ customer.appendix_a_date | date: "MM/dd/yy" }}</p>
-      <div class="text-muted">Based on your local timezone.</div>
+      <div class="text-muted mb-2">
+        Based on your local timezone. Use 12h or 24h time format.
+      </div>
       <div class="mb-4">
         <mat-form-field appearance="outline">
           <input
@@ -133,15 +135,9 @@
             matInput
             formControlName="startTime"
             format="24"
-            [ngxMatTimepicker]="timePicker"
-            placeholder="HH:MM"
-            readonly
+            placeholder="HH:MM or HH:MM AM/PM"
           />
-          <mat-icon matSuffix (click)="timePicker.open()">
-            watch_later
-          </mat-icon>
         </mat-form-field>
-        <ngx-mat-timepicker #timePicker></ngx-mat-timepicker>
         <mat-error *ngIf="startBeforeAppendixDate" class="invalid-feedback">
           Start Date can not be before the Appendix A Date
         </mat-error>
