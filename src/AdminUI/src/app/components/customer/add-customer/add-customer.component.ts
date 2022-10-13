@@ -423,7 +423,7 @@ export class AddCustomerComponent
         );
       }
     } else if (!this.customerFormGroup.valid) {
-      this.orgError = 'Fix required fields';
+      this.orgError = 'Missing required fields';
     } else if (this.contacts.data.length < 1) {
       this.orgError = 'Please add at least one contact';
     }

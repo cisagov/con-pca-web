@@ -680,12 +680,10 @@
           matTooltip="A customer must have all required fields filled, and at least one contact listed"
           matTooltipPosition="right"
           matTooltipShowDelay="500"
-          [matTooltipDisabled]="customerValid()"
         >
           <button
             mat-raised-button
             [color]="customerValid() ? 'primary' : 'warn'"
-            [disabled]="!customerValid()"
             (click)="pushCustomer()"
           >
             Save Customer
