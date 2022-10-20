@@ -26,3 +26,6 @@ __pycache__
 .pytest_cache
 .python-version
 .venv
+
+# Angular
+src/AdminUI/.angular
