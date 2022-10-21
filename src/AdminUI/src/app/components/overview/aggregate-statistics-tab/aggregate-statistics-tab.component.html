@@ -44,30 +44,6 @@
           <td class="text-right">{{ detail?.stopped_subscriptions }}</td>
         </tr>
         <tr>
-          <td>Total number of emails sent in the last 7 days</td>
-          <td class="text-right">
-            {{ detail?.emails_sent_7_days }}
-          </td>
-        </tr>
-        <tr>
-          <td>Total number of emails clicked in the last 7 days</td>
-          <td class="text-right">
-            {{ detail?.emails_clicked_7_days }}
-          </td>
-        </tr>
-        <tr>
-          <td>Total number of emails sent in the last 30 days</td>
-          <td class="text-right">
-            {{ detail?.emails_sent_30_days }}
-          </td>
-        </tr>
-        <tr>
-          <td>Total number of emails clicked in the last 30 days</td>
-          <td class="text-right">
-            {{ detail?.emails_clicked_30_days }}
-          </td>
-        </tr>
-        <tr>
           <td>Total number of emails sent over all time</td>
           <td class="text-right">
             {{ detail?.all_customer_stats.all.sent.count }}
@@ -77,6 +53,101 @@
           <td>Total number of emails clicked over all time</td>
           <td class="text-right">
             {{ detail?.all_customer_stats.all.clicked.count }}
+          </td>
+        </tr>
+      </table>
+
+      <h3>Recent Emailing Statistics</h3>
+
+      <table class="table">
+        <tr>
+          <td>
+            Total number of emails scheduled to be sent in the last 24 hours
+          </td>
+          <td class="text-right">
+            {{ detail?.email_sending_stats.emails_scheduled_24_hours }}
+          </td>
+        </tr>
+        <tr>
+          <td>Total number of emails successfully sent in the last 24 hours</td>
+          <td class="text-right">
+            {{ detail?.email_sending_stats.emails_sent_24_hours }}
+          </td>
+        </tr>
+        <tr>
+          <td>Percentage of emails successfully sent in the last 24 hours</td>
+          <td class="text-right">
+            {{
+              detail?.email_sending_stats.emails_sent_on_time_24_hours_ratio
+                | nullishCoalesce: 0
+                | percent: "1.0-2"
+            }}
+          </td>
+        </tr>
+        <tr>
+          <td>Total number of emails clicked in the last 24 hours</td>
+          <td class="text-right">
+            {{ detail?.email_sending_stats.emails_clicked_24_hours }}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Total number of emails scheduled to be sent in the last 7 days
+          </td>
+          <td class="text-right">
+            {{ detail?.email_sending_stats.emails_scheduled_7_days }}
+          </td>
+        </tr>
+        <tr>
+          <td>Total number of emails successfully sent in the last 7 days</td>
+          <td class="text-right">
+            {{ detail?.email_sending_stats.emails_sent_7_days }}
+          </td>
+        </tr>
+        <tr>
+          <td>Percentage of emails successfully sent in the last 7 days</td>
+          <td class="text-right">
+            {{
+              detail?.email_sending_stats.emails_sent_on_time_7_days_ratio
+                | nullishCoalesce: 0
+                | percent: "1.0-2"
+            }}
+          </td>
+        </tr>
+        <tr>
+          <td>Total number of emails clicked in the last 7 days</td>
+          <td class="text-right">
+            {{ detail?.email_sending_stats.emails_clicked_7_days }}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Total number of emails scheduled to be sent in the last 30 days
+          </td>
+          <td class="text-right">
+            {{ detail?.email_sending_stats.emails_scheduled_30_days }}
+          </td>
+        </tr>
+        <tr>
+          <td>Total number of emails successfully sent in the last 30 days</td>
+          <td class="text-right">
+            {{ detail?.email_sending_stats.emails_sent_30_days }}
+          </td>
+        </tr>
+        <tr>
+          <td>Percentage of emails successfully sent in the last 30 days</td>
+          <td class="text-right">
+            {{
+              detail?.email_sending_stats.emails_sent_on_time_30_days_ratio
+                | nullishCoalesce: 0
+                | percent: "1.0-2"
+            }}
+          </td>
+        </tr>
+        <tr>
+          <td>Total number of emails clicked in the last 30 days</td>
+          <td class="text-right">
+            {{ detail?.email_sending_stats.emails_clicked_30_days }}
           </td>
         </tr>
       </table>
