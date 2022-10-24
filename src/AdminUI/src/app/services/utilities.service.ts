@@ -14,6 +14,6 @@ export class UtilitiesService {
   public getContacts() {
     const headers = new HttpHeaders().set('content-type', 'application/json');
     const url = `${this.SettingsService.settings.apiUrl}/api/customers/contacts/`;
-    return this.http.get(url, { headers, responseType: 'blob' });
+    return this.http.get(url, { headers, responseType: 'json' });
   }
 }
