@@ -13,6 +13,8 @@ import { AlertsService } from 'src/app/services/alerts.service';
 import { CustomerService } from 'src/app/services/customer.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { TemplateDataDialogComponent } from './template-data-dialog/template-data-dialog.component';
+import { HttpClient } from '@angular/common/http';
+import { SettingsService } from '../../../../services/settings.service';
 
 @Component({
   selector: 'app-subscription-testing-tab',
@@ -33,6 +35,8 @@ export class SubscriptionTestingTabComponent implements OnInit {
 
   contactList: ContactModel[];
 
+  n = 0;
+
   // Contact selection
   selection = new SelectionModel<ContactModel>(true, []);
 
@@ -45,7 +49,9 @@ export class SubscriptionTestingTabComponent implements OnInit {
     public customerSvc: CustomerService,
     public subscriptionSvc: SubscriptionService,
     public dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private http: HttpClient,
+    private settingsService: SettingsService
   ) {}
 
   ngOnInit(): void {
@@ -172,5 +178,21 @@ export class SubscriptionTestingTabComponent implements OnInit {
       return;
     }
     this.startBeforeAppendixDate = false;
+  }
+
+  public overload() {
+    return this.http.post(
+      `${this.settingsService.settings.apiUrl}/api/subscription/${this.subscription._id}/test/?overload=true&number_of_tasks=${this.n}`,
+      ''
+    );
+  }
+
+  taskOverloadTest() {
+    this.overload().subscribe(
+      () => {},
+      (error) => {
+        console.log(error.error);
+      }
+    );
   }
 }

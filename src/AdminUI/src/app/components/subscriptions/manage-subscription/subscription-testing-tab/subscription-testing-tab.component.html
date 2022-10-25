@@ -149,3 +149,16 @@
     </mat-row>
   </mat-table>
 </mat-card>
+
+<mat-card>
+  <mat-card-title
+    >Task Overload Test
+    <mat-form-field appearance="outline">
+      <mat-label>Number of Tasks</mat-label>
+      <input matInput trim="blur" type="number" [(ngModel)]="n" />
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="taskOverloadTest()">
+      Execute Test
+    </button>
+  </mat-card-title>
+</mat-card>
