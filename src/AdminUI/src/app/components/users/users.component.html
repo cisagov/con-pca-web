@@ -42,9 +42,13 @@
       >User Status</mat-header-cell
     >
     <mat-cell *matCellDef="let row">
-      <div *ngIf="row.status == 'CONFIRMED'">{{ row.status }}</div>
+      <div *ngIf="row.status == 'CONFIRMED'">confirmed</div>
+      <div *ngIf="row.status == 'RESET_REQUIRED'">reset required</div>
+      <div *ngIf="row.status == 'FORCE_CHANGE_PASSWORD'">
+        change password required
+      </div>
       <button
-        *ngIf="row.status != 'CONFIRMED'"
+        *ngIf="row.status == 'UNCONFIRMED'"
         mat-raised-button
         color="accent"
         (click)="confirmUser(row.username)"
