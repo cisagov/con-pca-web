@@ -190,9 +190,15 @@
               </td>
             </tr>
             <tr>
-              <td>Simulation URL</td>
+              <td>Current Cycle Templates</td>
               <td class="text-right" style="color: grey; cursor: default">
-                <div>{{ subscription.landing_domain }}</div>
+                <div *ngFor="let i of currentTemplateSubjects">{{ i }}</div>
+              </td>
+            </tr>
+            <tr *ngIf="isContinuous()">
+              <td>Next Cycle Templates</td>
+              <td class="text-right" style="color: grey; cursor: default">
+                <div *ngFor="let i of nextTemplateSubjects">{{ i }}</div>
               </td>
             </tr>
           </table>

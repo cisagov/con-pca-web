@@ -56,6 +56,7 @@ export class SubscriptionModel {
   status: string;
   target_email_list: TargetModel[] = [];
   templates_selected: string[];
+  next_templates: string[];
   active: boolean;
   continuous_subscription: boolean;
   buffer_time_minutes: number;
