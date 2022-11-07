@@ -607,6 +607,11 @@
             All emails will be sent by {{ sendBy | date: "long" }} and the cycle
             will be completed on {{ endDate | date: "long" }}.
           </p>
+          <p>
+            If the subscription is chosen to be continuous, the buffer period
+            will end and a new cycle will start on
+            {{ nextCycleDate | date: "long" }}.
+          </p>
         </div>
       </div>
       <!-- Status Report Frequency -->
@@ -651,6 +656,17 @@
           >Continuous Subscription Cycles</mat-checkbox
         >
       </div>
+
+      <div *ngIf="isContinuous()">
+        <mat-label class="h6" style="margin-top: 2rem"
+          >Next Cycle Date</mat-label
+        >
+        <p>
+          For your information, the next cycle is scheduled to automatically
+          start on {{ nextCycleDate | date: "long" }}
+        </p>
+      </div>
+
       <div class="d-flex flex-row-reverse justify-content-between">
         <div class="d-flex flex-row">
           <!-- DROP DOWN MENU BUTTON -->
