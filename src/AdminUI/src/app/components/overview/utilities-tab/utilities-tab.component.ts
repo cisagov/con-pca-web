@@ -25,39 +25,39 @@ export class UtilitiesTab implements OnInit {
     URL.revokeObjectURL(objectUrl);
   }
 
-  csvToBlob(csv) {
-    var contentType = 'text/csv';
-    var csvFile = new Blob([csv], { type: contentType });
-    return csvFile;
+  dsvToBlob(tsv) {
+    var contentType = 'text/tsv';
+    var tsvFile = new Blob([tsv], { type: contentType });
+    return tsvFile;
   }
 
-  jsonToCSV(json) {
+  jsonToDSV(json) {
     console.log(json);
     const replacer = (key, value) => (value === null ? 'null' : value);
     console.log(replacer);
     const header = Object.keys(json[0]);
     console.log(header);
     const csv = [
-      header.join(','),
+      header.join('|'),
       ...json.map((row) =>
         header
           .map((fieldName) =>
             JSON.stringify(row[fieldName], replacer).replace(/\"/g, '')
           )
-          .join(',')
+          .join('|')
       ),
     ].join('\r\n');
     console.log(csv);
     return csv;
   }
 
-  downloadContactsCSV() {
+  downloadContactsDSV() {
     if (confirm('Download contact data?')) {
       this.utilitiesSvc.getContacts().subscribe(
         (json) => {
           this.downloadObject(
-            `contact_data.csv`,
-            this.csvToBlob(this.jsonToCSV(json))
+            `contact_data.dsv`,
+            this.dsvToBlob(this.jsonToDSV(json))
           );
         },
         (error) => {
