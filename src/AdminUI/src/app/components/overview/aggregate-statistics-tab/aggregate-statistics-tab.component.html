@@ -55,6 +55,16 @@
             {{ detail?.all_customer_stats.all.clicked.count }}
           </td>
         </tr>
+        <tr>
+          <td>Average click rate across all customers</td>
+          <td class="text-right">
+            {{
+              detail?.all_customer_stats.all.clicked.ratio
+                | nullishCoalesce: 0
+                | percent: "1.0-2"
+            }}
+          </td>
+        </tr>
       </table>
 
       <h3>Recent Emailing Statistics</h3>
@@ -148,6 +158,91 @@
           <td>Total number of emails clicked in the last 30 days</td>
           <td class="text-right">
             {{ detail?.email_sending_stats.emails_clicked_30_days }}
+          </td>
+        </tr>
+      </table>
+
+      <h3>Recent Task Statistics</h3>
+
+      <table class="table">
+        <tr>
+          <td>
+            Total number of tasks scheduled to be executed in the last 24 hours
+          </td>
+          <td class="text-right">
+            {{ detail?.task_stats.tasks_scheduled_24_hours }}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Total number of tasks successfully executed in the last 24 hours
+          </td>
+          <td class="text-right">
+            {{ detail?.task_stats.tasks_succeeded_24_hours }}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Percentage of tasks successfully executed in the last 24 hours
+          </td>
+          <td class="text-right">
+            {{
+              detail?.task_stats.tasks_succeeded_24_hours_ratio
+                | nullishCoalesce: 0
+                | percent: "1.0-2"
+            }}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Total number of tasks scheduled to be executed in the last 7 days
+          </td>
+          <td class="text-right">
+            {{ detail?.task_stats.tasks_scheduled_7_days }}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Total number of tasks successfully executed in the last 7 days
+          </td>
+          <td class="text-right">
+            {{ detail?.task_stats.tasks_succeeded_7_days }}
+          </td>
+        </tr>
+        <tr>
+          <td>Percentage of tasks successfully executed in the last 7 days</td>
+          <td class="text-right">
+            {{
+              detail?.task_stats.tasks_succeeded_7_days_ratio
+                | nullishCoalesce: 0
+                | percent: "1.0-2"
+            }}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Total number of tasks scheduled to be executed in the last 30 days
+          </td>
+          <td class="text-right">
+            {{ detail?.task_stats.tasks_scheduled_30_days }}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Total number of tasks successfully executed in the last 30 days
+          </td>
+          <td class="text-right">
+            {{ detail?.task_stats.tasks_succeeded_30_days }}
+          </td>
+        </tr>
+        <tr>
+          <td>Percentage of tasks successfully executed in the last 30 days</td>
+          <td class="text-right">
+            {{
+              detail?.task_stats.tasks_succeeded_30_days_ratio
+                | nullishCoalesce: 0
+                | percent: "1.0-2"
+            }}
           </td>
         </tr>
       </table>
@@ -336,22 +431,6 @@
           </td>
         </tr>
       </table>
-
-      <h3>Responses</h3>
-
-      <table class="table">
-        <tr>
-          <td>Average click rate across all customers</td>
-          <td class="text-right">
-            {{
-              detail?.all_customer_stats.all.clicked.ratio
-                | nullishCoalesce: 0
-                | percent: "1.0-2"
-            }}
-          </td>
-        </tr>
-      </table>
-      <div></div>
     </div>
   </div>
 </div>
