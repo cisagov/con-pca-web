@@ -10,54 +10,6 @@
           accessible again soon!
         </p>
       </div>
-      <p>
-        <mat-form-field appearance="outline">
-          <input
-            type="text"
-            matInput
-            placeholder="Username (Developer)"
-            [formControl]="username"
-            autocomplete="off"
-            [errorStateMatcher]="matcherusername"
-          />
-          <mat-icon matPrefix style="margin-right: 10px">face</mat-icon>
-          <mat-error *ngIf="username.hasError('required')">
-            Username is <strong>required</strong>
-          </mat-error>
-        </mat-form-field>
-      </p>
-
-      <p>
-        <mat-form-field appearance="outline">
-          <input
-            type="password"
-            matInput
-            placeholder="Password (Developer)"
-            [formControl]="password"
-            autocomplete="off"
-            [errorStateMatcher]="matcherpassword"
-          />
-          <mat-icon matPrefix style="margin-right: 10px">lock</mat-icon>
-          <mat-error *ngIf="password.hasError('required')">
-            Password is <strong>required</strong>
-          </mat-error>
-        </mat-form-field>
-      </p>
-
-      <p *ngIf="error" class="error">
-        {{ error }}
-      </p>
-
-      <button
-        class="button-right"
-        type="submit"
-        [disabled]="password.hasError('required')"
-        mat-raised-button
-        color="accent"
-        (click)="submit()"
-      >
-        Login
-      </button>
       <!--
       <div style="width: 350px">
         <p>
