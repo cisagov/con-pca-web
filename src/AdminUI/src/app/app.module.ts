@@ -117,6 +117,8 @@ import { UtilitiesTab } from './components/overview/utilities-tab/utilities-tab.
 import { RestoreTemplatesDialogComponent } from './components/template-manager/restore-templates-dialog/restore-templates-dialog.component';
 import { ArchiveCustomersDialogComponent } from './components/customer/archive-customers-dialog/archive-customers-dialog.component';
 import { UnarchiveCustomersDialogComponent } from './components/customer/unarchive-customers-dialog/unarchive-customers-dialog.component';
+import { DBManagementService } from './services/db-management.service';
+import { DBManagementComponent } from './components/db-management/db-management.component';
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
   return () => settingsHttpService.initializeApp();
@@ -198,6 +200,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     LandingDomainsComponent,
     LandingDomainDetailComponent,
     NavigateAwayComponent,
+    DBManagementComponent,
     LoggingTab,
     FailedEmailsTab,
     UtilitiesTab,
@@ -234,6 +237,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     TemplatesDataService,
     ThemeService,
     UserAuthService,
+    DBManagementService,
     [DatePipe],
     { provide: MAT_DIALOG_DATA, useValue: [] },
     {
