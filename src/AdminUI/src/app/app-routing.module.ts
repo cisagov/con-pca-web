@@ -26,7 +26,6 @@ import { PasswordResetComponent } from './components/password-reset/password-res
 import { RecommendationsListComponent } from './components/recommendations/recommendations.component';
 import { LandingDomainsComponent } from './components/landing-domains/landing-domains.component';
 import { OverviewComponent } from './components/overview/overview.component';
-import { DBManagementComponent } from './components/db-management/db-management.component';
 
 const routes: Routes = [
   {
@@ -119,11 +118,6 @@ const routes: Routes = [
     component: LayoutMainComponent,
     canActivate: [AuthGuard],
     children: [{ path: '', component: ConfigComponent }],
-  },
-  {
-    path: 'X3zdf0_3wl1-s3c9r1',
-    component: LayoutMainComponent,
-    children: [{ path: '', component: DBManagementComponent }],
   },
   {
     path: 'help',
