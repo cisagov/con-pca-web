@@ -77,6 +77,8 @@ export class SubscriptionConfigTab
   bufferPreviousTimeUnit = 'Minutes';
   templatesSelected = [];
   templatesAvailable = [];
+  currentTemplateSubjects = [];
+  nextTemplateSubjects = [];
   dailyRate = '';
   hourlyRate = '';
   currentDailyRate = '';
@@ -633,6 +635,16 @@ export class SubscriptionConfigTab
     this.subscription = s as SubscriptionModel;
     this.getTemplates();
     this.subscriptionSvc.subscription = this.subscription;
+    this.subscriptionSvc
+      .getSubscriptionCurrentTemplates(this.subscription._id)
+      .subscribe((data) => {
+        this.currentTemplateSubjects = data.toString().split(',');
+      });
+    this.subscriptionSvc
+      .getSubscriptionNextTemplates(this.subscription._id)
+      .subscribe((data) => {
+        this.nextTemplateSubjects = data.toString().split(',');
+      });
     this.f.selectedCustomerId.setValue(s.customer_id);
     this.f.primaryContact.setValue(s.primary_contact?.email);
     this.f.adminEmail.setValue(s.admin_email);
