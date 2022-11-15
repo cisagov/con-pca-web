@@ -99,6 +99,7 @@ export class SubscriptionConfigTab
   startAt = new Date();
   sendBy = new Date();
   endDate = new Date();
+  nextCycleDate = new Date();
   appendixADate = new Date();
   startBeforeAppendixDate = false;
 
@@ -541,11 +542,19 @@ export class SubscriptionConfigTab
     }
     const cycleLength: number = +this.f.cycle_length_minutes.value;
     const cooldownLength: number = +this.f.cooldown_minutes.value;
+    const bufferLength: number = +this.f.bufferTime.value;
     this.sendBy = new Date(start);
     this.sendBy.setMinutes(this.sendBy.getMinutes() + cycleLength);
     this.endDate = new Date(start);
     this.endDate.setMinutes(
       this.endDate.getMinutes() + cycleLength + cooldownLength
+    );
+    this.nextCycleDate = new Date(start);
+    this.nextCycleDate.setMinutes(
+      this.nextCycleDate.getMinutes() +
+        cycleLength +
+        cooldownLength +
+        bufferLength
     );
   }
 

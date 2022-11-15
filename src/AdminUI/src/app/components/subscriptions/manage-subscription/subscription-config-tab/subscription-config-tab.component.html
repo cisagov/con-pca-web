@@ -482,14 +482,61 @@
       <div class="text-muted mb-3">
         <em>Target Count: {{ subscription.target_email_list.length }}</em>
       </div>
+      <div class="text-muted">
+        *Note while a subscription is actively running, changes to the email
+        list will not take effect until the next 90 day cycle.
+      </div>
+
+      <!-- Status Report Frequency -->
+      <mat-label class="h6" style="margin-top: 25px"
+        >Status Report Frequency</mat-label
+      >
+      <div class="mb-4">
+        <div class="text-muted">
+          The frequency at which the status report is sent out to the customer
+          and CISA contact for this subscription. (Must be between 15 minutes
+          and 360 days)
+        </div>
+        <mat-form-field appearance="outline">
+          <mat-label>Time</mat-label>
+          <input
+            matInput
+            formControlName="reportDisplayTime"
+            type="text"
+            trim="blur"
+          />
+          <mat-error
+            *ngIf="f.reportDisplayTime.errors?.outOfRange"
+            class="invalid-feedback"
+          >
+            Must be between 15 minutes and 360 days
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Time Units</mat-label>
+          <mat-select formControlName="reportTimeUnit">
+            <mat-option *ngFor="let time of timeRanges" [value]="time">
+              {{ time }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
       <mat-label class="h6">Sending Strategy</mat-label>
       <p>
         Please note, for continuous subscriptions that are currently in
         progress, any modifications to the Sending Strategy fields below will
         reflect on the next cycle.
       </p>
+
+      <div class="continuous-subscription-checkbox">
+        <mat-checkbox formControlName="continuousSubscription"
+          >Continuous Subscription Cycles</mat-checkbox
+        >
+      </div>
+
       <!-- Email Sent Time -->
-      <mat-label class="h7">Email Sent Time</mat-label>
+      <mat-label class="h7" style="margin-top: 10px">Email Sent Time</mat-label>
       <div class="mb-2">
         <div class="text-muted">
           The time that all emails will be sent within. (Must be between 15
@@ -578,14 +625,15 @@
           </mat-select>
         </mat-form-field>
       </div>
+
       <!-- Buffer Time -->
-      <mat-label class="h7">Buffer Time</mat-label>
+      <mat-label class="h7" *ngIf="isContinuous()">Buffer Time</mat-label>
       <div class="mb-2">
         <div class="text-muted">
           Time added to create a buffer at the end date of each cycle. (Must be
           between 15 minutes and 30 days)
         </div>
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" *ngIf="isContinuous()">
           <mat-label>Time</mat-label>
           <input
             matInput
@@ -600,7 +648,7 @@
             Must be between 15 minutes and 30 days
           </mat-error>
         </mat-form-field>
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" *ngIf="isContinuous()">
           <mat-label>Time Units</mat-label>
           <mat-select formControlName="bufferTimeUnit">
             <mat-option *ngFor="let time of timeRanges" [value]="time">
@@ -615,48 +663,17 @@
           </p>
         </div>
       </div>
-      <!-- Status Report Frequency -->
-      <mat-label class="h6">Status Report Frequency</mat-label>
-      <div class="mb-4">
-        <div class="text-muted">
-          The frequency at which the status report is sent out to the customer
-          and CISA contact for this subscription. (Must be between 15 minutes
-          and 360 days)
-        </div>
-        <mat-form-field appearance="outline">
-          <mat-label>Time</mat-label>
-          <input
-            matInput
-            formControlName="reportDisplayTime"
-            type="text"
-            trim="blur"
-          />
-          <mat-error
-            *ngIf="f.reportDisplayTime.errors?.outOfRange"
-            class="invalid-feedback"
-          >
-            Must be between 15 minutes and 360 days
-          </mat-error>
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Time Units</mat-label>
-          <mat-select formControlName="reportTimeUnit">
-            <mat-option *ngFor="let time of timeRanges" [value]="time">
-              {{ time }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div class="text-muted">
-        *Note while a subscription is actively running, changes to the email
-        list will not take effect until the next 90 day cycle.
+
+      <div *ngIf="isContinuous()">
+        <mat-label class="h6" style="margin-top: 2rem"
+          >Next Cycle Date</mat-label
+        >
+        <p>
+          For your information, the next cycle is scheduled to automatically
+          start on {{ nextCycleDate | date: "long" }}
+        </p>
       </div>
 
-      <div class="continuous-subscription-checkbox">
-        <mat-checkbox formControlName="continuousSubscription"
-          >Continuous Subscription Cycles</mat-checkbox
-        >
-      </div>
       <div class="d-flex flex-row-reverse justify-content-between">
         <div class="d-flex flex-row">
           <!-- DROP DOWN MENU BUTTON -->
