@@ -15,7 +15,14 @@ import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
 })
 export class UsersComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
-  displayedColumns = ['username', 'email', 'status', 'created', 'delete'];
+  displayedColumns = [
+    'username',
+    'email',
+    'status',
+    'created',
+    'last_login',
+    'delete',
+  ];
   users = new MatTableDataSource<UserModel>();
   loading = true;
 
