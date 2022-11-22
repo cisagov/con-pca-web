@@ -5,4 +5,5 @@ export class UserModel {
   enabled: string;
   created: string;
   modified: string;
+  last_login: Date;
 }
