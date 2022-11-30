@@ -74,16 +74,6 @@
       <mat-cell *matCellDef="let row">{{ row.customer.name }}</mat-cell>
     </ng-container>
 
-    <!-- START DATE -->
-    <ng-container matColumnDef="startDate">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Start Date</mat-header-cell
-      >
-      <mat-cell *matCellDef="let row">
-        {{ row.subscription.start_date | date: dateFormat }}
-      </mat-cell>
-    </ng-container>
-
     <!-- APPENDIX A DATE -->
     <ng-container matColumnDef="appendixADate">
       <mat-header-cell *matHeaderCellDef mat-sort-header
@@ -94,6 +84,16 @@
       </mat-cell>
     </ng-container>
 
+    <!-- LATEST CYCLE START DATE -->
+    <ng-container matColumnDef="startDate">
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >Latest Cycle Start</mat-header-cell
+      >
+      <mat-cell *matCellDef="let row">
+        {{ row.subscription.cycle_start_date | date: dateFormat }}
+      </mat-cell>
+    </ng-container>
+
     <!-- NUMBER OF TARGETS -->
     <ng-container matColumnDef="numberOfTargets">
       <mat-header-cell *matHeaderCellDef mat-sort-header
@@ -101,6 +101,16 @@
       >
       <mat-cell *matCellDef="let row">
         {{ getNumberOfTargets(row.subscription.target_email_list) }}
+      </mat-cell>
+    </ng-container>
+
+    <!-- TARGET DOMAIN -->
+    <ng-container matColumnDef="targetDomain">
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >Target Domain</mat-header-cell
+      >
+      <mat-cell *matCellDef="let row">
+        {{ row.subscription.target_domain }}
       </mat-cell>
     </ng-container>
 
