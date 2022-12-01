@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { SubscriptionModel } from 'src/app/models/subscription.model';
@@ -11,9 +11,12 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
 import { MatSort } from '@angular/material/sort';
 
+
 interface ICustomerSubscription {
   customer: CustomerModel;
   subscription: SubscriptionModel;
+
+
 
   // top-level primitives for column sortings
   name: string;
@@ -45,6 +48,14 @@ export class SubscriptionsComponent implements OnInit {
     'lastUpdated',
   ];
 
+  // pagination variables
+  subscriptionCount: number = 99
+  page: any = 0;
+  subsPerPage: any = 10;
+  sortOrder = "asc"
+  sortBy= "name"
+  // sortBy: "name"
+
   dialogRefConfirm: MatDialogRef<ConfirmComponent>;
   showArchived = false;
 
@@ -65,14 +76,63 @@ export class SubscriptionsComponent implements OnInit {
   ngOnInit(): void {
     this.layoutSvc.setTitle('Subscriptions');
     this.dataSource = new MatTableDataSource();
+    this.getPageSize();
     this.refresh();
     this.setFilterPredicate();
+  }
+
+  changeSort(sortEvent){
+    console.log(sortEvent)
+    this.sortOrder = sortEvent.direction
+    if(sortEvent.direction == ""){
+      this.sortOrder = "asc"
+      this.sortBy = "name"
+    } else {
+      switch(sortEvent.active) {
+        case "name": 
+          this.sortBy = "name"
+          break;
+        case "status": 
+          this.sortBy = "status"
+          break;
+        case "primaryContact": 
+          this.sortBy = "primary_contact.first_name"
+          break;
+        case "customerName": 
+          this.sortBy = "primary_contact.first_name"
+          break;
+        case "startDate": 
+          this.sortBy = "start_date"      
+          break;
+        case "appendixADate": 
+          this.sortBy = "start_date"      
+          break;
+        case "lastUpdated": 
+          this.sortBy = "updated"    
+          break;      
+      }
+    }
+    this.refresh();
+
+    
+    // this.name
+  }
+
+  getPageSize(){
+    this.subscriptionSvc.getSubscriptionCount().subscribe(
+      (success) => {
+        this.subscriptionCount = parseInt(success as any);
+      },
+      (failure) => {
+        console.log("Failed ot get subscription count")
+      }
+    )
   }
 
   refresh() {
     this.loading = true;
     this.subscriptionSvc
-      .getSubscriptions(this.showArchived)
+      .getSubscriptions(this.page,this.subsPerPage,this.sortBy,this.sortOrder,this.showArchived)
       .subscribe((subscriptions: SubscriptionModel[]) => {
         this.customerSvc
           .getCustomers()
@@ -97,11 +157,23 @@ export class SubscriptionsComponent implements OnInit {
               };
               customerSubscriptions.push(customerSubscription);
             });
+            if(this.sortOrder == "desc"){
+              var orderedData =  customerSubscriptions.reverse();
+            }else {
+              var orderedData =  customerSubscriptions;
+            }
             this.dataSource.data =
-              customerSubscriptions as ICustomerSubscription[];
+              orderedData as ICustomerSubscription[];
             this.dataSource.sort = this.sort;
           });
       });
+  }
+
+  paginationChange(event){
+    this.page = event.pageIndex;
+    this.subsPerPage = event.pageSize;
+    this.refresh();
+    console.log(event)
   }
 
   private setFilterPredicate() {

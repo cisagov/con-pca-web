@@ -56,11 +56,24 @@ export class SubscriptionService {
     );
   }
 
-  public getSubscriptions(archived = false) {
-    let url = `${this.settingsService.settings.apiUrl}/api/subscriptions/`;
+  public getSubscriptionCount(archived = false){
+    let url = `${this.settingsService.settings.apiUrl}/api/subscriptions/count/`;
 
     if (archived) {
       url = `${url}?archived=true`;
+    }
+    return this.http.get(url);
+  }
+
+  public getSubscriptions(page,pageSize,sortBy,sortOrder = "asc",archived = false) {
+    console.log(sortBy)
+    let url = `${this.settingsService.settings.apiUrl}/api/subscriptionspaged/${page}/${pageSize}/${sortBy}/`;
+
+    if (archived) {
+      url = `${url}?archived=true`;
+    }
+    if (sortOrder == "desc") {
+      url = `${url}?sortOder=desc`;
     }
     return this.http.get(url);
   }
