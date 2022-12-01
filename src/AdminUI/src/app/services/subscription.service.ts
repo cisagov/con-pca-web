@@ -150,6 +150,18 @@ export class SubscriptionService {
     );
   }
 
+  public getSubscriptionCurrentTemplates(subscriptionId: string) {
+    return this.http.get(
+      `${this.settingsService.settings.apiUrl}/api/subscription/${subscriptionId}/templates/current/`
+    );
+  }
+
+  public getSubscriptionNextTemplates(subscriptionId: string) {
+    return this.http.get(
+      `${this.settingsService.settings.apiUrl}/api/subscription/${subscriptionId}/templates/next/`
+    );
+  }
+
   public getSubscriptionsWithEndDate() {
     return this.http.get(
       `${this.settingsService.settings.apiUrl}/api/subscriptions/?overview=true`

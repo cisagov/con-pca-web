@@ -42,9 +42,13 @@
       >User Status</mat-header-cell
     >
     <mat-cell *matCellDef="let row">
-      <div *ngIf="row.status == 'CONFIRMED'">{{ row.status }}</div>
+      <div *ngIf="row.status == 'CONFIRMED'">confirmed</div>
+      <div *ngIf="row.status == 'RESET_REQUIRED'">reset required</div>
+      <div *ngIf="row.status == 'FORCE_CHANGE_PASSWORD'">
+        change password required
+      </div>
       <button
-        *ngIf="row.status != 'CONFIRMED'"
+        *ngIf="row.status == 'UNCONFIRMED'"
         mat-raised-button
         color="accent"
         (click)="confirmUser(row.username)"
@@ -61,6 +65,16 @@
     >
     <mat-cell *matCellDef="let row">{{
       row.created | date: "MM/dd/yy"
+    }}</mat-cell>
+  </ng-container>
+
+  <!-- User Last Login Time -->
+  <ng-container matColumnDef="last_login">
+    <mat-header-cell *matHeaderCellDef mat-sort-header
+      >Last Login</mat-header-cell
+    >
+    <mat-cell *matCellDef="let row">{{
+      row.last_login | date: "medium"
     }}</mat-cell>
   </ng-container>
 

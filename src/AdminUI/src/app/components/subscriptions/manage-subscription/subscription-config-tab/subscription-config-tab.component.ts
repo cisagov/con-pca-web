@@ -77,6 +77,8 @@ export class SubscriptionConfigTab
   bufferPreviousTimeUnit = 'Minutes';
   templatesSelected = [];
   templatesAvailable = [];
+  currentTemplateSubjects = [];
+  nextTemplateSubjects = [];
   dailyRate = '';
   hourlyRate = '';
   currentDailyRate = '';
@@ -97,6 +99,7 @@ export class SubscriptionConfigTab
   startAt = new Date();
   sendBy = new Date();
   endDate = new Date();
+  nextCycleDate = new Date();
   appendixADate = new Date();
   startBeforeAppendixDate = false;
 
@@ -539,11 +542,19 @@ export class SubscriptionConfigTab
     }
     const cycleLength: number = +this.f.cycle_length_minutes.value;
     const cooldownLength: number = +this.f.cooldown_minutes.value;
+    const bufferLength: number = +this.f.bufferTime.value;
     this.sendBy = new Date(start);
     this.sendBy.setMinutes(this.sendBy.getMinutes() + cycleLength);
     this.endDate = new Date(start);
     this.endDate.setMinutes(
       this.endDate.getMinutes() + cycleLength + cooldownLength
+    );
+    this.nextCycleDate = new Date(start);
+    this.nextCycleDate.setMinutes(
+      this.nextCycleDate.getMinutes() +
+        cycleLength +
+        cooldownLength +
+        bufferLength
     );
   }
 
@@ -624,6 +635,16 @@ export class SubscriptionConfigTab
     this.subscription = s as SubscriptionModel;
     this.getTemplates();
     this.subscriptionSvc.subscription = this.subscription;
+    this.subscriptionSvc
+      .getSubscriptionCurrentTemplates(this.subscription._id)
+      .subscribe((data) => {
+        this.currentTemplateSubjects = data.toString().split(',');
+      });
+    this.subscriptionSvc
+      .getSubscriptionNextTemplates(this.subscription._id)
+      .subscribe((data) => {
+        this.nextTemplateSubjects = data.toString().split(',');
+      });
     this.f.selectedCustomerId.setValue(s.customer_id);
     this.f.primaryContact.setValue(s.primary_contact?.email);
     this.f.adminEmail.setValue(s.admin_email);
@@ -833,6 +854,15 @@ export class SubscriptionConfigTab
   targetsChanged(e: any) {
     this.csvText = e.target.value;
     this.f.csvText.setValue(e.target.value);
+  }
+
+  isContinuous(): boolean {
+    if (this.subscription.continuous_subscription) {
+      console.log(this.subscription.continuous_subscription);
+      return true;
+    }
+    console.log(this.subscription.continuous_subscription);
+    return false;
   }
 
   /**

@@ -42,9 +42,10 @@ export class SubscriptionsComponent implements OnInit {
     'status',
     'primaryContact',
     'customerName',
-    'startDate',
     'appendixADate',
+    'startDate',
     'numberOfTargets',
+    'targetDomain',
     'lastUpdated',
   ];
 
