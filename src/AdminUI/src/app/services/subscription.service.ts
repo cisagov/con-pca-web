@@ -56,24 +56,39 @@ export class SubscriptionService {
     );
   }
 
-  public getSubscriptionCount(archived = false){
+  public getSubscriptionCount(searchFilter = "", archived = false){
     let url = `${this.settingsService.settings.apiUrl}/api/subscriptions/count/`;
-
+    
+    let multiple = false;
     if (archived) {
       url = `${url}?archived=true`;
+      multiple = true;
+    }
+    if (searchFilter != '') {
+      if(multiple){
+        url += "&"
+      }
+      multiple = true;
+      url = `${url}?searchFilter=${searchFilter}`;
     }
     return this.http.get(url);
   }
 
-  public getSubscriptions(page,pageSize,sortBy,sortOrder = "asc",archived = false) {
-    console.log(sortBy)
-    let url = `${this.settingsService.settings.apiUrl}/api/subscriptionspaged/${page}/${pageSize}/${sortBy}/`;
+  public getSubscriptions(page,pageSize,sortBy,sortOrder = "asc",searchFilter = '', archived = false) {
+  console.log(sortBy)
+    let url = `${this.settingsService.settings.apiUrl}/api/subscriptionspaged/${page}/${pageSize}/${sortBy}/${sortOrder}/`;
 
+    let multiple = false;
     if (archived) {
       url = `${url}?archived=true`;
+      multiple = true;
     }
-    if (sortOrder == "desc") {
-      url = `${url}?sortOder=desc`;
+    if (searchFilter != '') {
+      if(multiple){
+        url += "&"
+      }
+      multiple = true;
+      url = `${url}?searchFilter=${searchFilter}`;
     }
     return this.http.get(url);
   }

@@ -54,7 +54,8 @@ export class SubscriptionsComponent implements OnInit {
   page: any = 0;
   subsPerPage: any = 10;
   sortOrder = "asc"
-  sortBy= "name"
+  sortBy = "name"
+  searchFilterStr = ''
   // sortBy: "name"
 
   dialogRefConfirm: MatDialogRef<ConfirmComponent>;
@@ -97,13 +98,19 @@ export class SubscriptionsComponent implements OnInit {
           this.sortBy = "status"
           break;
         case "primaryContact": 
-          this.sortBy = "primary_contact.first_name"
+          this.sortBy = "contact_full_name"
           break;
         case "customerName": 
-          this.sortBy = "primary_contact.first_name"
+          this.sortBy = "customer"
           break;
         case "startDate": 
           this.sortBy = "start_date"      
+          break;
+        case "numberOfTargets": 
+          this.sortBy = "target_count"      
+          break;
+        case "targetDomain": 
+          this.sortBy = "target_domain"      
           break;
         case "appendixADate": 
           this.sortBy = "start_date"      
@@ -120,7 +127,7 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   getPageSize(){
-    this.subscriptionSvc.getSubscriptionCount().subscribe(
+    this.subscriptionSvc.getSubscriptionCount(this.searchFilterStr,this.showArchived).subscribe(
       (success) => {
         this.subscriptionCount = parseInt(success as any);
       },
@@ -133,7 +140,7 @@ export class SubscriptionsComponent implements OnInit {
   refresh() {
     this.loading = true;
     this.subscriptionSvc
-      .getSubscriptions(this.page,this.subsPerPage,this.sortBy,this.sortOrder,this.showArchived)
+      .getSubscriptions(this.page,this.subsPerPage,this.sortBy,this.sortOrder,this.searchFilterStr,this.showArchived)
       .subscribe((subscriptions: SubscriptionModel[]) => {
         this.customerSvc
           .getCustomers()
@@ -206,10 +213,15 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   public searchFilter(searchValue: string): void {
-    this.dataSource.filter = searchValue.trim().toLowerCase();
+    this.searchFilterStr = searchValue;
+    this.page = 0;
+    this.refresh();
+    this.getPageSize();
+    // this.dataSource.filter = searchValue.trim().toLowerCase();
   }
 
   public onArchiveToggle(): void {
+    this.getPageSize();
     this.refresh();
   }
 
