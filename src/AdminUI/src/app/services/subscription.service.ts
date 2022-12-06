@@ -67,9 +67,11 @@ export class SubscriptionService {
     if (searchFilter != '') {
       if(multiple){
         url += "&"
+      } else {
+        url += "?"
       }
       multiple = true;
-      url = `${url}?searchFilter=${searchFilter}`;
+      url = `${url}searchFilter=${searchFilter}`;
     }
     return this.http.get(url);
   }
@@ -86,9 +88,11 @@ export class SubscriptionService {
     if (searchFilter != '') {
       if(multiple){
         url += "&"
+      } else {
+        url += "?"
       }
       multiple = true;
-      url = `${url}?searchFilter=${searchFilter}`;
+      url = `${url}searchFilter=${searchFilter}`;
     }
     return this.http.get(url);
   }
