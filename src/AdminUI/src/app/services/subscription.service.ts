@@ -183,7 +183,7 @@ export class SubscriptionService {
 
   public getSubscriptionsWithEndDate() {
     return this.http.get(
-      `${this.settingsService.settings.apiUrl}/api/subscriptions/?overview=true`
+      `${this.settingsService.settings.apiUrl}/api/subscriptions/status/`
     );
   }
 
