@@ -137,7 +137,7 @@ export class TemplateManagerComponent
     private settingsService: SettingsService,
     public dialog: MatDialog,
     private domSanitizer: DomSanitizer,
-    public alertsService: AlertsService
+    public alertsService: AlertsService,
   ) {
     this.setTemplateForm(new TemplateModel());
     // Here updating title on creation.
@@ -150,8 +150,8 @@ export class TemplateManagerComponent
         // Prev and next templates
         this.subscriptions.push(
           this.templatesSortedData.currentData.subscribe(
-            (templates) => (this.templatesList = templates)
-          )
+            (templates) => (this.templatesList = templates),
+          ),
         );
         this.templateIndex = this.templatesList.indexOf(this.templateId);
 
@@ -178,7 +178,7 @@ export class TemplateManagerComponent
         if (this.titleElement != undefined) {
           this.setEditorHeight();
         }
-      })
+      }),
     );
     //get subscription to check for the sidenav element being set in layout, and close by default
     this.subscriptions.push(
@@ -186,7 +186,7 @@ export class TemplateManagerComponent
         this.layoutSvc.closeSideNav().then(() => {
           this.setEditorHeight();
         });
-      })
+      }),
     );
     //Check if template ID was included in the route, open template identified if so
     this.subscriptions.push(
@@ -197,7 +197,7 @@ export class TemplateManagerComponent
         } else {
           //Use preset empty form
         }
-      })
+      }),
     );
 
     this.landingPageSvc.getAlllandingpages(true).subscribe((data: any) => {
@@ -282,7 +282,7 @@ export class TemplateManagerComponent
             val.organization +
             val.external,
         },
-        { emitEvent: false }
+        { emitEvent: false },
       );
 
       this.fromSender =
@@ -349,29 +349,29 @@ export class TemplateManagerComponent
       landingPage: new FormControl(template.landing_page_id),
       templateSendingProfile: new FormControl(template.sending_profile_id),
       authoritative: new FormControl(
-        template.indicators.sender?.authoritative ?? 0
+        template.indicators.sender?.authoritative ?? 0,
       ),
       external: new FormControl(template.indicators.sender?.external ?? 0),
       internal: new FormControl(template.indicators.sender?.internal ?? 0),
       grammar: new FormControl(template.indicators.appearance?.grammar ?? 0),
       link_domain: new FormControl(
-        template.indicators.appearance?.link_domain ?? 0
+        template.indicators.appearance?.link_domain ?? 0,
       ),
       logo_graphics: new FormControl(
-        template.indicators.appearance?.logo_graphics ?? 0
+        template.indicators.appearance?.logo_graphics ?? 0,
       ),
       organization: new FormControl(
-        template.indicators.relevancy.organization ?? 0
+        template.indicators.relevancy.organization ?? 0,
       ),
       public_news: new FormControl(
-        template.indicators.relevancy.public_news ?? 0
+        template.indicators.relevancy.public_news ?? 0,
       ),
       fear: new FormControl(template.indicators.behavior?.fear ?? false),
       duty_obligation: new FormControl(
-        template.indicators.behavior?.duty_obligation ?? false
+        template.indicators.behavior?.duty_obligation ?? false,
       ),
       curiosity: new FormControl(
-        template.indicators.behavior?.curiosity ?? false
+        template.indicators.behavior?.curiosity ?? false,
       ),
       greed: new FormControl(template.indicators.behavior?.greed ?? false),
       final_deception_score: new FormControl({
@@ -406,15 +406,15 @@ export class TemplateManagerComponent
   getTemplateFromForm(form: FormGroup) {
     // form fields might not have the up-to-date content that the angular-editor has
     form.controls['templateHTML'].setValue(
-      this.angularEditorEle.textArea.nativeElement.innerHTML
+      this.angularEditorEle.textArea.nativeElement.innerHTML,
     );
     form.controls['templateText'].setValue(
-      this.angularEditorEle.textArea.nativeElement.innerText
+      this.angularEditorEle.textArea.nativeElement.innerText,
     );
 
     let formTemplate = form.value;
     let htmlValue = this.replaceEscapeSequence(
-      form.controls['templateHTML'].value
+      form.controls['templateHTML'].value,
     );
     return new TemplateModel({
       _id: this.templateId,
@@ -467,12 +467,12 @@ export class TemplateManagerComponent
         this.angular_editor_mode = 'WYSIWYG';
       }
       let templateToSave = this.getTemplateFromForm(
-        this.currentTemplateFormGroup
+        this.currentTemplateFormGroup,
       );
       // PATCH - existing template update
       if (this.currentTemplateFormGroup.controls['templateId'].value) {
         const running = this.pcaSubscriptions.data.filter(
-          (sub) => sub.status === 'running'
+          (sub) => sub.status === 'running',
         );
 
         if (running.length > 0) {
@@ -513,7 +513,7 @@ export class TemplateManagerComponent
                 messageText: JSON.stringify(error.error),
               },
             });
-          }
+          },
         );
       }
     } else {
@@ -554,13 +554,13 @@ export class TemplateManagerComponent
             messageText: JSON.stringify(error.error),
           },
         });
-      }
+      },
     );
   }
 
   deleteTemplate() {
     let template_to_delete = this.getTemplateFromForm(
-      this.currentTemplateFormGroup
+      this.currentTemplateFormGroup,
     );
 
     this.dialogRefConfirm = this.dialog.open(ConfirmComponent, {
@@ -581,7 +581,7 @@ export class TemplateManagerComponent
             });
             this.router.navigate(['/templates']);
           },
-          (error) => {}
+          (error) => {},
         );
       }
       this.dialogRefConfirm = null;
@@ -590,7 +590,7 @@ export class TemplateManagerComponent
 
   openRetireTemplateDialog() {
     const templateToRetire = this.getTemplateFromForm(
-      this.currentTemplateFormGroup
+      this.currentTemplateFormGroup,
     );
     this.dialogRefRetire = this.dialog.open(RetireTemplateDialogComponent, {
       disableClose: false,
@@ -603,7 +603,7 @@ export class TemplateManagerComponent
         this.setCanDelete();
       } else if (result.error) {
         this.alertsService.alert(
-          `Error retiring template. ${result.error.error}`
+          `Error retiring template. ${result.error.error}`,
         );
       }
     });
@@ -611,7 +611,7 @@ export class TemplateManagerComponent
 
   openRestoreTemplateDialog() {
     const templateToRestore = this.getTemplateFromForm(
-      this.currentTemplateFormGroup
+      this.currentTemplateFormGroup,
     );
     this.dialogRefConfirm = this.dialog.open(ConfirmComponent, {
       disableClose: false,
@@ -634,7 +634,7 @@ export class TemplateManagerComponent
     //Required because the angular-editor library can not bind to [value].
     //Set the formGroups template text value to itself to force an update on tab switch
     this.currentTemplateFormGroup.controls['templateHTML'].setValue(
-      this.currentTemplateFormGroup.controls['templateHTML'].value
+      this.currentTemplateFormGroup.controls['templateHTML'].value,
     );
   }
 
@@ -738,7 +738,7 @@ export class TemplateManagerComponent
    */
   addInsertTagButtonIntoEditor() {
     let btnClearFormatting = $(this.angularEditorEle.doc).find(
-      "[title='Horizontal Line']"
+      "[title='Horizontal Line']",
     )[0];
     let attribs = btnClearFormatting.attributes;
     // this assumes that the _ngcontent attribute occurs first
@@ -802,11 +802,11 @@ export class TemplateManagerComponent
         const iframesource = email_for_test.email.split('@');
         if (iframesource.length > 1) {
           this.mailtester_iframe_url = this.cleanURL(
-            'https://www.mail-tester.com/' + iframesource[0]
+            'https://www.mail-tester.com/' + iframesource[0],
           );
         } else {
           this.mailtester_iframe_url = this.cleanURL(
-            'https://www.mail-tester.com/barryhansen-' + this.getCleanJobName()
+            'https://www.mail-tester.com/barryhansen-' + this.getCleanJobName(),
           );
         }
       },
@@ -814,9 +814,9 @@ export class TemplateManagerComponent
         console.log(
           'Error sending test email: ' +
             (<Error>error).name +
-            (<Error>error).message
+            (<Error>error).message,
         );
-      }
+      },
     );
   }
   cleanURL(oldURL) {
@@ -888,15 +888,15 @@ export class TemplateManagerComponent
           this.angular_editor_mode = 'WYSIWYG';
         }
         this.currentTemplateFormGroup.controls.templateSubject.setValue(
-          result.subject
+          result.subject,
         );
         if (result.html) {
           this.currentTemplateFormGroup.controls.templateHTML.setValue(
-            result.html
+            result.html,
           );
         } else {
           this.currentTemplateFormGroup.controls.templateText.setValue(
-            result.text
+            result.text,
           );
         }
       }
@@ -955,7 +955,7 @@ export class TemplateManagerComponent
       };
       const dialogRef = this.dialog.open(
         RecommendationDetailComponent,
-        dialogConfig
+        dialogConfig,
       );
 
       dialogRef.afterClosed().subscribe((success) => {

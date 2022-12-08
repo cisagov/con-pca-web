@@ -58,7 +58,7 @@ export class SubscriptionsComponent implements OnInit {
     private customerSvc: CustomerService,
     private layoutSvc: LayoutMainService,
     public dialog: MatDialog,
-    private router: Router
+    private router: Router,
   ) {
     layoutSvc.setTitle('Subscriptions');
   }
@@ -108,7 +108,7 @@ export class SubscriptionsComponent implements OnInit {
   private setFilterPredicate() {
     this.dataSource.filterPredicate = (
       data: ICustomerSubscription,
-      filter: string
+      filter: string,
     ) => {
       const words = filter.split(' ');
       const searchData = `${data.subscription.name.toLowerCase()} ${data.subscription.status.toLowerCase()} ${data.customer.name.toLowerCase()} ${data.subscription.primary_contact.first_name.toLowerCase()} ${data.subscription.primary_contact.last_name.toLowerCase()}`;

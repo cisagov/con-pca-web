@@ -29,7 +29,7 @@ export class UsersComponent implements OnInit {
   constructor(
     private userService: UserService,
     public dialog: MatDialog,
-    private layoutSvc: LayoutMainService
+    private layoutSvc: LayoutMainService,
   ) {
     layoutSvc.setTitle('Users');
   }
@@ -48,7 +48,7 @@ export class UsersComponent implements OnInit {
       (failure) => {
         console.log(failure);
         this.loading = false;
-      }
+      },
     );
   }
 
@@ -88,7 +88,7 @@ export class UsersComponent implements OnInit {
                 messageText: error.error.error,
               },
             });
-          }
+          },
         );
       }
     });

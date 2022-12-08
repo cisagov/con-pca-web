@@ -25,7 +25,7 @@ export class LoginService {
     private http: HttpClient,
     private router: Router,
     private settingsService: SettingsService,
-    private cookieSvc: CookieService
+    private cookieSvc: CookieService,
   ) {
     this.apiUrl = this.settingsService.settings.apiUrl;
   }
@@ -50,7 +50,7 @@ export class LoginService {
 
   public resetPassword(
     username: string,
-    resetPassword: ResetPassword
+    resetPassword: ResetPassword,
   ): Observable<any> {
     const url = `${this.settingsService.settings.apiUrl}/api/auth/resetpassword/${username}/`;
     return this.http.post(url, resetPassword);
@@ -154,9 +154,9 @@ export class LoginService {
           (failure) => {
             console.log('Failed to refresh authorization using refresh token');
             console.log(failure);
-          }
+          },
         ),
-      timeout
+      timeout,
     );
   }
 

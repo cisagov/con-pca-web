@@ -11,8 +11,8 @@ export class ListFilterPipe implements PipeTransform {
         .split(',')
         .some(
           (key) =>
-            item.hasOwnProperty(key) && new RegExp(term, 'gi').test(item[key])
-        )
+            item.hasOwnProperty(key) && new RegExp(term, 'gi').test(item[key]),
+        ),
     );
   }
 }

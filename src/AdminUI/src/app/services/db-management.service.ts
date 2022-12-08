@@ -7,7 +7,7 @@ import { SettingsService } from 'src/app/services/settings.service';
 export class DBManagementService {
   constructor(
     private http: HttpClient,
-    private settingsService: SettingsService
+    private settingsService: SettingsService,
   ) {}
 
   dumpDatabaseData() {

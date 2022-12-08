@@ -12,7 +12,7 @@
         <ng-container matColumnDef="scheduled_date">
           <mat-header-cell *matHeaderCellDef>Scheduled Time</mat-header-cell>
           <mat-cell *matCellDef="let row">
-            {{ row.scheduled_date | date: "long" }}
+            {{ row.scheduled_date | date : "long" }}
           </mat-cell>
         </ng-container>
 
@@ -26,7 +26,7 @@
         <ng-container matColumnDef="executed_date">
           <mat-header-cell *matHeaderCellDef>Executed Time</mat-header-cell>
           <mat-cell *matCellDef="let row">
-            {{ row.executed_date | date: "long" }}
+            {{ row.executed_date | date : "long" }}
           </mat-cell>
         </ng-container>
 

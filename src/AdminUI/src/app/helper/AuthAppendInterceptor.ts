@@ -13,7 +13,7 @@ export class AuthAppendInterceptor implements HttpInterceptor {
   constructor(private loginSvc: LoginService) {}
   intercept(
     httpRequest: HttpRequest<any>,
-    next: HttpHandler
+    next: HttpHandler,
   ): Observable<HttpEvent<any>> {
     this.loginSvc.checkTimer();
     const idToken = this.getUserToken();

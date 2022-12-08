@@ -22,7 +22,7 @@ export class LandingDomainsComponent implements OnInit {
   constructor(
     public landingDomainSvc: LandingDomainService,
     public dialog: MatDialog,
-    public layoutSvc: LayoutMainService
+    public layoutSvc: LayoutMainService,
   ) {
     layoutSvc.setTitle('Simulated Phishing URLs');
   }
@@ -41,7 +41,7 @@ export class LandingDomainsComponent implements OnInit {
       (error) => {
         console.log(error);
         this.loading = false;
-      }
+      },
     );
   }
 
@@ -76,7 +76,7 @@ export class LandingDomainsComponent implements OnInit {
             listTitle: 'Subscriptions',
           },
         });
-      }
+      },
     );
   }
 
@@ -88,7 +88,7 @@ export class LandingDomainsComponent implements OnInit {
     };
     const dialogRef = this.dialog.open(
       LandingDomainDetailComponent,
-      dialogConfig
+      dialogConfig,
     );
 
     dialogRef.afterClosed().subscribe(() => {

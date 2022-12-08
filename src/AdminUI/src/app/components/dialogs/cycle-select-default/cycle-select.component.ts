@@ -16,7 +16,7 @@ export class CycleSelect implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<CycleSelect>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
     if (data) {
       console.log(data);
@@ -34,7 +34,9 @@ export class CycleSelect implements OnInit {
 
   selectCycles() {
     this.dialogRef.close(
-      this.cycleSelectionList.selectedOptions.selected.map((item) => item.value)
+      this.cycleSelectionList.selectedOptions.selected.map(
+        (item) => item.value,
+      ),
     );
   }
 

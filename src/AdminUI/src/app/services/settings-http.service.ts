@@ -9,7 +9,7 @@ import { SettingsModel } from '../models/settings';
 export class SettingsHttpService {
   constructor(
     private http: HttpClient,
-    private settingsService: SettingsService
+    private settingsService: SettingsService,
   ) {}
 
   initializeApp(): Promise<void> {

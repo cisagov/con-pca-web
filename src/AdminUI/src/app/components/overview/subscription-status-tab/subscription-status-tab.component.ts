@@ -66,7 +66,7 @@ export class SubscriptionStatusTab implements OnInit {
 
   constructor(
     private router: Router,
-    private subscriptionSvc: SubscriptionService
+    private subscriptionSvc: SubscriptionService,
   ) {}
 
   ngOnInit(): void {
@@ -88,20 +88,20 @@ export class SubscriptionStatusTab implements OnInit {
             moment().isAfter(
               moment(obj.cycle_start_date, 'YYYY-MM-DD').add(
                 obj.cycle_length_minutes - 28800,
-                'minutes'
+                'minutes',
               ),
-              'day'
-            )
+              'day',
+            ),
         ) as SubscriptionWithEndDate[];
         this.endingSoonDataSource.sort = this.sortEndingSoon;
         this.sortingDataAccessor(this.endingSoonDataSource);
         this.inProgressDataSource.data = subscriptions.filter(
-          (obj) => obj.status === 'running'
+          (obj) => obj.status === 'running',
         ) as SubscriptionWithEndDate[];
         this.inProgressDataSource.sort = this.sortInProgress;
         this.sortingDataAccessor(this.inProgressDataSource);
         this.stoppedDataSource.data = subscriptions.filter(
-          (obj) => obj.status === 'stopped'
+          (obj) => obj.status === 'stopped',
         ) as SubscriptionModel[];
         this.stoppedDataSource.sort = this.sortStopped;
         this.sortingDataAccessor(this.stoppedDataSource);

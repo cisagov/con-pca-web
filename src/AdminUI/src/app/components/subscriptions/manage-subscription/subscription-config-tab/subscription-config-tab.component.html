@@ -100,7 +100,7 @@
       </div>
 
       <mat-label class="h6">Start Date</mat-label>
-      <p>Appendix A Date: {{ customer.appendix_a_date | date: "MM/dd/yy" }}</p>
+      <p>Appendix A Date: {{ customer.appendix_a_date | date : "MM/dd/yy" }}</p>
       <div class="text-muted mb-2">
         Based on your local timezone. Use 12h or 24h time format.
       </div>
@@ -658,8 +658,8 @@
         </mat-form-field>
         <div class="text-muted">
           <p>
-            All emails will be sent by {{ sendBy | date: "long" }} and the cycle
-            will be completed on {{ endDate | date: "long" }}.
+            All emails will be sent by {{ sendBy | date : "long" }} and the
+            cycle will be completed on {{ endDate | date : "long" }}.
           </p>
         </div>
       </div>
@@ -670,7 +670,7 @@
         >
         <p>
           For your information, the next cycle is scheduled to automatically
-          start on {{ nextCycleDate | date: "long" }}
+          start on {{ nextCycleDate | date : "long" }}
         </p>
       </div>
 

@@ -41,7 +41,7 @@ export class ChartStatsByLevelComponent implements OnInit, OnChanges {
   ngOnChanges() {
     if (!!this.subscription) {
       this.chart.chartResults = this.chartsSvc.formatReportStatsForChart(
-        this.subscription
+        this.subscription,
       );
     }
   }

@@ -17,7 +17,7 @@ export class TemplateDataDialogComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: GenericDialogSettings,
-    private router: Router
+    private router: Router,
   ) {}
 
   ngOnInit(): void {

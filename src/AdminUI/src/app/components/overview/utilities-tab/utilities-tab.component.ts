@@ -11,7 +11,7 @@ import { AlertComponent } from 'src/app/components/dialogs/alert/alert.component
 export class UtilitiesTab implements OnInit {
   constructor(
     private utilitiesSvc: UtilitiesService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {}
@@ -42,9 +42,9 @@ export class UtilitiesTab implements OnInit {
       ...json.map((row) =>
         header
           .map((fieldName) =>
-            JSON.stringify(row[fieldName], replacer).replace(/\"/g, '')
+            JSON.stringify(row[fieldName], replacer).replace(/\"/g, ''),
           )
-          .join('|')
+          .join('|'),
       ),
     ].join('\r\n');
     console.log(csv);
@@ -57,7 +57,7 @@ export class UtilitiesTab implements OnInit {
         (json) => {
           this.downloadObject(
             `contact_data.dsv`,
-            this.dsvToBlob(this.jsonToDSV(json))
+            this.dsvToBlob(this.jsonToDSV(json)),
           );
         },
         (error) => {
@@ -67,7 +67,7 @@ export class UtilitiesTab implements OnInit {
               messageText: `An error occured downloading the template data. Check logs for more detail.`,
             },
           });
-        }
+        },
       );
     }
   }

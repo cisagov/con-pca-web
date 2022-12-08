@@ -29,7 +29,7 @@ export class LayoutMainComponent implements OnInit {
     private userAuthSvc: UserAuthService,
     private loginSvc: LoginService,
     public overlayContainer: OverlayContainer,
-    public location: Location
+    public location: Location,
   ) {
     this.isDark = themeSvc.getStoredTheme();
     if (this.isDark) {
@@ -91,7 +91,7 @@ export class LayoutMainComponent implements OnInit {
       this.layoutSvc.setContentHeight(
         this.mainContent.elementRef.nativeElement.offsetHeight -
           default_card_margin * 2 -
-          default_card_padding * 2
+          default_card_padding * 2,
       );
     }
   }

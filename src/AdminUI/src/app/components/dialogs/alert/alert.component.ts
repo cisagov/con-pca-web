@@ -39,7 +39,7 @@ export class AlertComponent {
    */
   constructor(
     public dialogRef: MatDialogRef<AlertComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
     this.iconClass = 'cset-icons-exclamation-triangle';
 

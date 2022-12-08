@@ -10,7 +10,7 @@ import { DBManagementService } from 'src/app/services/db-management.service';
 export class DBManagementComponent {
   constructor(
     public dbManagementSvc: DBManagementService,
-    public alertsSvc: AlertsService
+    public alertsSvc: AlertsService,
   ) {}
 
   downloading = false;
@@ -48,7 +48,7 @@ export class DBManagementComponent {
   openFileBrowser(event: any) {
     event.preventDefault();
     const element: HTMLElement = document.getElementById(
-      'fileUpload'
+      'fileUpload',
     ) as HTMLElement;
     element.click();
   }

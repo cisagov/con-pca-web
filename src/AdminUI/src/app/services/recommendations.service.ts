@@ -13,41 +13,41 @@ const headers = {
 export class RecommendationsService {
   constructor(
     private http: HttpClient,
-    private settingsService: SettingsService
+    private settingsService: SettingsService,
   ) {}
 
   getRecommendations(): Observable<RecommendationModel[]> {
     return this.http.get<RecommendationModel[]>(
-      `${this.settingsService.settings.apiUrl}/api/recommendations/`
+      `${this.settingsService.settings.apiUrl}/api/recommendations/`,
     );
   }
 
   saveRecommendation(recommendation: RecommendationModel) {
     return this.http.post(
       `${this.settingsService.settings.apiUrl}/api/recommendations/`,
-      recommendation
+      recommendation,
     );
   }
 
   getRecommendation(id: string): Observable<RecommendationModel> {
     return this.http.get<RecommendationModel>(
-      `${this.settingsService.settings.apiUrl}/api/recommendation/${id}/`
+      `${this.settingsService.settings.apiUrl}/api/recommendation/${id}/`,
     );
   }
 
   updateRecommendation(
     id: string,
-    recommendations: RecommendationModel
+    recommendations: RecommendationModel,
   ): Observable<RecommendationModel> {
     return this.http.put<RecommendationModel>(
       `${this.settingsService.settings.apiUrl}/api/recommendation/${id}/`,
-      recommendations
+      recommendations,
     );
   }
 
   deleteRecommendation(id: string) {
     return this.http.delete(
-      `${this.settingsService.settings.apiUrl}/api/recommendation/${id}/`
+      `${this.settingsService.settings.apiUrl}/api/recommendation/${id}/`,
     );
   }
 }

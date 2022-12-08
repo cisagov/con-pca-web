@@ -21,7 +21,7 @@
         >Start Date</mat-header-cell
       >
       <mat-cell *matCellDef="let row">{{
-        row.start_date | date: dateFormat
+        row.start_date | date : dateFormat
       }}</mat-cell>
     </ng-container>
     <ng-container matColumnDef="lub_timestamp">
@@ -29,7 +29,7 @@
         >Last Updated</mat-header-cell
       >
       <mat-cell *matCellDef="let row">{{
-        row.lub_timestamp | date: dateFormat
+        row.lub_timestamp | date : dateFormat
       }}</mat-cell>
     </ng-container>
     <ng-container matColumnDef="inspect">

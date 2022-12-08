@@ -67,7 +67,7 @@ export class SubscriptionStatsTab implements OnInit {
     public datePipe: DatePipe,
     private router: Router,
     public dialog: MatDialog,
-    public cycleSvc: CycleService
+    public cycleSvc: CycleService,
   ) {
     this.subscription = new SubscriptionModel();
   }
@@ -102,7 +102,7 @@ export class SubscriptionStatsTab implements OnInit {
         this.subscriptionSvc
           .checkValid(
             this.subscription.cycle_length_minutes,
-            this.subscription.target_email_list.length
+            this.subscription.target_email_list.length,
           )
           .subscribe((resp: any) => {
             this.hourlyRate = resp.hourly_rate;
@@ -163,16 +163,16 @@ export class SubscriptionStatsTab implements OnInit {
         (blob) => {
           this.downloadObject(
             `CISA_PCA_${reportType.toLocaleUpperCase()}_report_${moment().format(
-              'MMDDYYYY'
+              'MMDDYYYY',
             )}_${this.selectedCycle._id}.pdf`,
-            blob
+            blob,
           );
           this.generating = false;
         },
         (error) => {
           this.popupReportError(error, 'downloading', `${reportType} report`);
           this.generating = false;
-        }
+        },
       );
   }
 
@@ -188,7 +188,7 @@ export class SubscriptionStatsTab implements OnInit {
         (error) => {
           this.popupReportError(error, 'sending', `${reportType} report`);
           this.generating = false;
-        }
+        },
       );
   }
 
@@ -230,13 +230,13 @@ export class SubscriptionStatsTab implements OnInit {
       const targetCount: number = this.subscription.target_email_list.length;
       statusReportDays = `${new Date(
         this.subscription.tasks.find(
-          (t) => t.task_type === 'status_report'
-        ).scheduled_date
+          (t) => t.task_type === 'status_report',
+        ).scheduled_date,
       ).toDateString()}`;
       cycleReportDay = `${new Date(
         this.subscription.tasks.find(
-          (t) => t.task_type === 'cycle_report'
-        ).scheduled_date
+          (t) => t.task_type === 'cycle_report',
+        ).scheduled_date,
       ).toDateString()}`;
     }
 
@@ -248,10 +248,10 @@ export class SubscriptionStatsTab implements OnInit {
       'Status report delivery days': statusReportDays,
       'Cycle report delivery day': cycleReportDay,
       'Emails sent by': new Date(
-        this.selectedCycle.send_by_date
+        this.selectedCycle.send_by_date,
       ).toDateString(),
       'Cycle completed by': new Date(
-        this.selectedCycle.end_date
+        this.selectedCycle.end_date,
       ).toDateString(),
       'Hourly email sending rate': this.hourlyRate,
       'Daily email sending rate': this.dailyRate,
@@ -280,7 +280,7 @@ export class SubscriptionStatsTab implements OnInit {
         (error) => {
           this.popupReportError(error, 'downloading', 'cycle report');
           this.downloadingCycle = false;
-        }
+        },
       );
     });
   }
@@ -293,7 +293,7 @@ export class SubscriptionStatsTab implements OnInit {
         if (element.report_date) {
           newDate = this.datePipe.transform(
             new Date(element.report_date),
-            'M/d/yy h:mm a'
+            'M/d/yy h:mm a',
           );
         }
         displayString += `${element.email},${newDate}\n`;
@@ -349,7 +349,7 @@ export class SubscriptionStatsTab implements OnInit {
                     messageText: error.error,
                   },
                 });
-              }
+              },
             );
         }
       });

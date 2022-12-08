@@ -12,7 +12,7 @@ export class InvalidEmailDialogComponent {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: Object,
-    public dialog: MatDialog
+    public dialog: MatDialog,
   ) {
     let dataAsArray = [];
     if (Array.isArray(data)) {

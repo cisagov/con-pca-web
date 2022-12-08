@@ -23,7 +23,7 @@ export class LandingPagesComponent implements OnInit, AfterViewInit {
   constructor(
     private templateSvc: LandingPageManagerService,
     private router: Router,
-    private layoutSvc: LayoutMainService
+    private layoutSvc: LayoutMainService,
   ) {
     layoutSvc.setTitle('Landing Pages');
   }

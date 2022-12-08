@@ -25,7 +25,7 @@ export class TagsPageComponent implements OnInit, AfterViewInit {
   constructor(
     private tagsSvc: TagService,
     public dialog: MatDialog,
-    private layoutSvc: LayoutMainService
+    private layoutSvc: LayoutMainService,
   ) {
     this.layoutSvc.setTitle('Tags');
   }

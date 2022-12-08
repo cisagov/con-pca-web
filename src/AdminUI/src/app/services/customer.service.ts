@@ -18,7 +18,7 @@ const headers = {
 export class CustomerService {
   constructor(
     private http: HttpClient,
-    private settingsService: SettingsService
+    private settingsService: SettingsService,
   ) {}
 
   showCustomerInfo = false;
@@ -111,14 +111,14 @@ export class CustomerService {
 
     return this.http.put(
       `${this.settingsService.settings.apiUrl}/api/customer/${id}/`,
-      data
+      data,
     );
   }
 
   public patchCustomer(data: CustomerModel) {
     return this.http.put(
       `${this.settingsService.settings.apiUrl}/api/customer/${data._id}/`,
-      data
+      data,
     );
   }
 
@@ -127,7 +127,7 @@ export class CustomerService {
       this.http
         .put(
           `${this.settingsService.settings.apiUrl}/api/customer/${data._id}/`,
-          data
+          data,
         )
         .subscribe(
           (success) => {
@@ -136,7 +136,7 @@ export class CustomerService {
           (error) => {
             reject(error);
           },
-          () => {}
+          () => {},
         );
     });
   }
@@ -146,7 +146,7 @@ export class CustomerService {
       this.http
         .put(
           `${this.settingsService.settings.apiUrl}/api/archivecustomer/${data._id}/`,
-          data
+          data,
         )
         .subscribe(
           (success) => {
@@ -155,7 +155,7 @@ export class CustomerService {
           (error) => {
             reject(error);
           },
-          () => {}
+          () => {},
         );
     });
   }
@@ -163,7 +163,7 @@ export class CustomerService {
   public addCustomer(customer: NewCustomerModel) {
     return this.http.post(
       `${this.settingsService.settings.apiUrl}/api/customers/`,
-      customer
+      customer,
     );
   }
 
@@ -174,7 +174,7 @@ export class CustomerService {
 
   public deleteCustomer(data: CustomerModel) {
     return this.http.delete(
-      `${this.settingsService.settings.apiUrl}/api/customer/${data._id}/`
+      `${this.settingsService.settings.apiUrl}/api/customer/${data._id}/`,
     );
   }
 }

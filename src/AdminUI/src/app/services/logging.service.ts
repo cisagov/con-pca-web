@@ -8,7 +8,7 @@ import { SettingsService } from './settings.service';
 export class LoggingService {
   constructor(
     private http: HttpClient,
-    private SettingsService: SettingsService
+    private SettingsService: SettingsService,
   ) {}
 
   public getLogging() {

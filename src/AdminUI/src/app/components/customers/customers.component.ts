@@ -53,7 +53,7 @@ export class CustomersComponent implements OnInit {
     public customerSvc: CustomerService,
     public alertsService: AlertsService,
     public dialog: MatDialog,
-    private router: Router
+    private router: Router,
   ) {
     this.customerSvc.setCustomerInfo(false);
   }
@@ -155,14 +155,14 @@ export class CustomersComponent implements OnInit {
       {
         disableClose: false,
         data: customersToUnarchive,
-      }
+      },
     );
     this.dialogRefUnarchive.afterClosed().subscribe((result) => {
       if (!result.archived) {
         this.refresh();
       } else if (result.error) {
         this.alertsService.alert(
-          `Error unarchiving customer. ${result.error.error}`
+          `Error unarchiving customer. ${result.error.error}`,
         );
       }
     });

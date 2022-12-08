@@ -8,7 +8,7 @@ import { SettingsService } from './settings.service';
 export class UtilitiesService {
   constructor(
     private http: HttpClient,
-    private SettingsService: SettingsService
+    private SettingsService: SettingsService,
   ) {}
 
   public getContacts() {

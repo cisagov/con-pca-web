@@ -10,7 +10,7 @@ export class NonhumanService {
 
   constructor(
     private http: HttpClient,
-    private settingsService: SettingsService
+    private settingsService: SettingsService,
   ) {
     this.url = `${this.settingsService.settings.apiUrl}/api/nonhumans/`;
   }

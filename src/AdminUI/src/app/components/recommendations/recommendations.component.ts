@@ -27,7 +27,7 @@ export class RecommendationsListComponent implements OnInit, AfterViewInit {
     private recommendationSvc: RecommendationsService,
     public layoutSvc: LayoutMainService,
     public dialog: MatDialog,
-    public alertSvc: AlertsService
+    public alertSvc: AlertsService,
   ) {
     layoutSvc.setTitle('Recommendations');
   }
@@ -64,7 +64,7 @@ export class RecommendationsListComponent implements OnInit, AfterViewInit {
       };
       const dialogRef = this.dialog.open(
         RecommendationDetailComponent,
-        dialogConfig
+        dialogConfig,
       );
 
       dialogRef.afterClosed().subscribe((value) => {
@@ -95,7 +95,7 @@ export class RecommendationsListComponent implements OnInit, AfterViewInit {
                 list: failure.error.templates,
               },
             });
-          }
+          },
         );
       }
     });

@@ -23,7 +23,7 @@ export class LandingDomainDetailComponent implements OnInit {
     public dialogRef: MatDialogRef<LandingDomainDetailComponent>,
     public landingDomainSvc: LandingDomainService,
     public dialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
     if (data.landingDomain) {
       this.landingDomain = data.landingDomain;
@@ -61,7 +61,7 @@ export class LandingDomainDetailComponent implements OnInit {
               messageText: `Error: ${JSON.stringify(error.error)}`,
             },
           });
-        }
+        },
       );
     }
   }

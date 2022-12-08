@@ -27,7 +27,7 @@ export class DeleteSubscription {
     public dialog: MatDialog,
     private _snackBar: MatSnackBar,
     public subscriptionsrv: SubscriptionService,
-    private router: Router
+    private router: Router,
   ) {}
 
   openDialog(): void {
@@ -46,9 +46,9 @@ export class DeleteSubscription {
             let snackBarRef = this._snackBar.open(
               'Subscription Deletion Failed',
               'Dismiss',
-              { duration: 5000 }
+              { duration: 5000 },
             );
-          }
+          },
         );
       }
     });
@@ -65,7 +65,7 @@ export class DeleteSubscriptionDialog {
 
   constructor(
     public dialogRef: MatDialogRef<DeleteSubscriptionDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
   ) {
     this.canDelete = false;
     this.subscription = data.subscription;

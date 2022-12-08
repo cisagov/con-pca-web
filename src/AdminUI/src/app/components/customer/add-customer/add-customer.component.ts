@@ -175,7 +175,7 @@ export class AddCustomerComponent
     private route: ActivatedRoute,
     public router: Router,
     public layoutSvc: LayoutMainService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
   ) {
     this.layoutSvc.setTitle('New Customer');
   }
@@ -191,7 +191,7 @@ export class AddCustomerComponent
       .valueChanges.subscribe((value) => {
         if (value === 'Private') {
           this.customerFormGroup.controls['sector'].setValidators(
-            Validators.required
+            Validators.required,
           );
         } else {
           this.customerFormGroup.controls['sector'].clearValidators();
@@ -212,7 +212,7 @@ export class AddCustomerComponent
           // Use preset empty form
           // this.hasSubs = true;
         }
-      })
+      }),
     );
     this.changeDetectorRef.detectChanges();
   }
@@ -250,7 +250,7 @@ export class AddCustomerComponent
       },
       (error) => {
         this.orgError = 'Failed To load customer';
-      }
+      },
     );
   }
 
@@ -273,7 +273,7 @@ export class AddCustomerComponent
       },
       (error) => {
         this.orgError = 'Error retrieving sector/industry list';
-      }
+      },
     );
   }
 
@@ -393,8 +393,8 @@ export class AddCustomerComponent
                   messageText: `Error: ${error.error.error}`,
                 },
               });
-            }
-          )
+            },
+          ),
         );
       } else {
         // else creating a new customer
@@ -419,7 +419,7 @@ export class AddCustomerComponent
                 messageText: `Error: ${error.error.error}`,
               },
             });
-          }
+          },
         );
       }
     } else if (!this.customerFormGroup.valid) {
@@ -438,7 +438,7 @@ export class AddCustomerComponent
         if (
           element.email.toLocaleLowerCase() ==
           String(
-            this.contactFormGroup.controls['email'].value
+            this.contactFormGroup.controls['email'].value,
           ).toLocaleLowerCase()
         ) {
           isNotDuplicateEmail = false;
@@ -480,10 +480,10 @@ export class AddCustomerComponent
     this.isEdit = true;
     this.tempEditContact = contact;
     this.contactFormGroup.controls['office_phone'].setValue(
-      contact.office_phone
+      contact.office_phone,
     );
     this.contactFormGroup.controls['mobile_phone'].setValue(
-      contact.mobile_phone
+      contact.mobile_phone,
     );
     this.contactFormGroup.controls['email'].setValue(contact.email);
     this.contactFormGroup.controls['firstName'].setValue(contact.first_name);
@@ -551,7 +551,7 @@ export class AddCustomerComponent
   setIndustryList() {
     if (this.sectorSelected()) {
       const sector = this.sectorList.filter(
-        (x) => x.name === this.customerFormGroup.controls['sector'].value
+        (x) => x.name === this.customerFormGroup.controls['sector'].value,
       );
       this.industryList = sector[0]?.industries;
     }
@@ -599,7 +599,7 @@ export class AddCustomerComponent
         this.router.navigate(['/customers']);
       } else if (result.error) {
         this.alertsService.alert(
-          `Error archiving customer. ${result.error.error}`
+          `Error archiving customer. ${result.error.error}`,
         );
       }
     });
@@ -626,7 +626,7 @@ export class AddCustomerComponent
           },
           (error) => {
             console.log(error);
-          }
+          },
         );
       }
     });
