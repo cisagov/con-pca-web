@@ -11,12 +11,9 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
 import { MatSort } from '@angular/material/sort';
 
-
 interface ICustomerSubscription {
   customer: CustomerModel;
   subscription: SubscriptionModel;
-
-
 
   // top-level primitives for column sortings
   name: string;
@@ -50,12 +47,12 @@ export class SubscriptionsComponent implements OnInit {
   ];
 
   // pagination variables
-  subscriptionCount: number = 99
+  subscriptionCount: number = 99;
   page: any = 0;
   subsPerPage: any = 10;
-  sortOrder = "asc"
-  sortBy = "name"
-  searchFilterStr = ''
+  sortOrder = 'asc';
+  sortBy = 'name';
+  searchFilterStr = '';
   // sortBy: "name"
 
   dialogRefConfirm: MatDialogRef<ConfirmComponent>;
@@ -83,64 +80,72 @@ export class SubscriptionsComponent implements OnInit {
     this.setFilterPredicate();
   }
 
-  changeSort(sortEvent){
-    console.log(sortEvent)
-    this.sortOrder = sortEvent.direction
-    if(sortEvent.direction == ""){
-      this.sortOrder = "asc"
-      this.sortBy = "name"
+  changeSort(sortEvent) {
+    console.log(sortEvent);
+    this.sortOrder = sortEvent.direction;
+    if (sortEvent.direction == '') {
+      this.sortOrder = 'asc';
+      this.sortBy = 'name';
     } else {
-      switch(sortEvent.active) {
-        case "name": 
-          this.sortBy = "name"
+      switch (sortEvent.active) {
+        case 'name':
+          this.sortBy = 'name';
           break;
-        case "status": 
-          this.sortBy = "status"
+        case 'status':
+          this.sortBy = 'status';
           break;
-        case "primaryContact": 
-          this.sortBy = "contact_full_name"
+        case 'primaryContact':
+          this.sortBy = 'contact_full_name';
           break;
-        case "customerName": 
-          this.sortBy = "customer"
+        case 'customerName':
+          this.sortBy = 'customer';
           break;
-        case "startDate": 
-          this.sortBy = "start_date"      
+        case 'startDate':
+          this.sortBy = 'start_date';
           break;
-        case "numberOfTargets": 
-          this.sortBy = "target_count"      
+        case 'numberOfTargets':
+          this.sortBy = 'target_count';
           break;
-        case "targetDomain": 
-          this.sortBy = "target_domain"      
+        case 'targetDomain':
+          this.sortBy = 'target_domain';
           break;
-        case "appendixADate": 
-          this.sortBy = "start_date"      
+        case 'appendixADate':
+          this.sortBy = 'start_date';
           break;
-        case "lastUpdated": 
-          this.sortBy = "updated"    
-          break;      
+        case 'lastUpdated':
+          this.sortBy = 'updated';
+          break;
       }
     }
     this.refresh();
 
-    
     // this.name
   }
 
-  getPageSize(){
-    this.subscriptionSvc.getSubscriptionCount(this.searchFilterStr,this.showArchived).subscribe(
-      (success) => {
-        this.subscriptionCount = parseInt(success as any);
-      },
-      (failure) => {
-        console.log("Failed ot get subscription count")
-      }
-    )
+  getPageSize() {
+    this.subscriptionSvc
+      .getSubscriptionCount(this.searchFilterStr, this.showArchived)
+      .subscribe(
+        (success) => {
+          this.subscriptionCount = parseInt(success as any);
+        },
+        (failure) => {
+          console.log('Failed ot get subscription count');
+        }
+      );
   }
 
   refresh() {
     this.loading = true;
     this.subscriptionSvc
-      .getSubscriptions(this.page,this.subsPerPage,this.sortBy,this.sortOrder,this.searchFilterStr,this.showArchived)
+      .getSubscriptions(
+        this.page,
+        this.subsPerPage,
+        this.sortBy,
+        this.sortOrder,
+        this.searchFilterStr,
+        this.showArchived
+      )
       .subscribe((subscriptions: SubscriptionModel[]) => {
         this.customerSvc
           .getCustomers()
@@ -165,23 +170,22 @@ export class SubscriptionsComponent implements OnInit {
               };
               customerSubscriptions.push(customerSubscription);
             });
-            if(this.sortOrder == "desc"){
-              var orderedData =  customerSubscriptions.reverse();
-            }else {
-              var orderedData =  customerSubscriptions;
+            if (this.sortOrder == 'desc') {
+              var orderedData = customerSubscriptions.reverse();
+            } else {
+              var orderedData = customerSubscriptions;
             }
-            this.dataSource.data =
-              orderedData as ICustomerSubscription[];
+            this.dataSource.data = orderedData as ICustomerSubscription[];
             this.dataSource.sort = this.sort;
           });
       });
   }
 
-  paginationChange(event){
+  paginationChange(event) {
     this.page = event.pageIndex;
     this.subsPerPage = event.pageSize;
     this.refresh();
-    console.log(event)
+    console.log(event);
   }
 
   private setFilterPredicate() {

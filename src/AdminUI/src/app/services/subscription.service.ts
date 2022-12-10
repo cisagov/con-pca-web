@@ -56,19 +56,19 @@ export class SubscriptionService {
     );
   }
 
-  public getSubscriptionCount(searchFilter = "", archived = false){
+  public getSubscriptionCount(searchFilter = '', archived = false) {
     let url = `${this.settingsService.settings.apiUrl}/api/subscriptions/count/`;
-    
+
     let multiple = false;
     if (archived) {
       url = `${url}?archived=true`;
       multiple = true;
     }
     if (searchFilter != '') {
-      if(multiple){
-        url += "&"
+      if (multiple) {
+        url += '&';
       } else {
-        url += "?"
+        url += '?';
       }
       multiple = true;
       url = `${url}searchFilter=${searchFilter}`;
@@ -76,8 +76,15 @@ export class SubscriptionService {
     return this.http.get(url);
   }
 
-  public getSubscriptions(page,pageSize,sortBy,sortOrder = "asc",searchFilter = '', archived = false) {
-  console.log(sortBy)
+  public getSubscriptions(
+    page,
+    pageSize,
+    sortBy,
+    sortOrder = 'asc',
+    searchFilter = '',
+    archived = false
+  ) {
+    console.log(sortBy);
     let url = `${this.settingsService.settings.apiUrl}/api/subscriptionspaged/${page}/${pageSize}/${sortBy}/${sortOrder}/`;
 
     let multiple = false;
@@ -86,10 +93,10 @@ export class SubscriptionService {
       multiple = true;
     }
     if (searchFilter != '') {
-      if(multiple){
-        url += "&"
+      if (multiple) {
+        url += '&';
       } else {
-        url += "?"
+        url += '?';
       }
       multiple = true;
       url = `${url}searchFilter=${searchFilter}`;
