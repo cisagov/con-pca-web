@@ -85,7 +85,7 @@
         >Appendix A Date</mat-header-cell
       >
       <mat-cell *matCellDef="let row">
-        {{ row.customer.appendix_a_date | date: dateFormat }}
+        {{ row.customer.appendix_a_date | date : dateFormat }}
       </mat-cell>
     </ng-container>
 
@@ -95,7 +95,7 @@
         >Latest Cycle Start</mat-header-cell
       >
       <mat-cell *matCellDef="let row">
-        {{ row.subscription.cycle_start_date | date: dateFormat }}
+        {{ row.subscription.cycle_start_date | date : dateFormat }}
       </mat-cell>
     </ng-container>
 
@@ -125,7 +125,7 @@
         >Last Updated</mat-header-cell
       >
       <mat-cell *matCellDef="let row">
-        {{ row.subscription.updated | date: dateFormat }}
+        {{ row.subscription.updated | date : dateFormat }}
       </mat-cell>
     </ng-container>
 

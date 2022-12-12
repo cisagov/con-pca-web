@@ -15,7 +15,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private layoutSvc: LayoutMainService
+    private layoutSvc: LayoutMainService,
   ) {}
 
   ngOnInit(): void {

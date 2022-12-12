@@ -50,7 +50,7 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
   constructor(
     public cycleSvc: CycleService,
     public chartsSvc: ChartsService,
-    private subscriptionSvc: SubscriptionService
+    private subscriptionSvc: SubscriptionService,
   ) {}
 
   /**
@@ -65,7 +65,7 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
           this.subscriptionId = data._id;
           this.dataAvailable = true;
         }
-      })
+      }),
     );
     this.temp_angular_subs.push(
       this.subscriptionSvc
@@ -76,7 +76,7 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
             this.cycle_selected = true;
           }
           this.drawGraphs();
-        })
+        }),
     );
   }
   ngOnDestroy(): void {
@@ -131,7 +131,7 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
           this.cycleStats = stats;
           this.chartSent.chartResults = this.chartsSvc.getSentEmailNumbers(
             this.selected_cycle,
-            stats
+            stats,
           );
 
           this.chart.chartResults = this.chartsSvc.formatStatistics(stats);
@@ -150,7 +150,8 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
 
   sortTemplateStats() {
     this.cycleStats.template_stats = this.cycleStats.template_stats.sort(
-      (first, second) => 0 - (first.clicked.rank > second.clicked.rank ? -1 : 1)
+      (first, second) =>
+        0 - (first.clicked.rank > second.clicked.rank ? -1 : 1),
     );
   }
 

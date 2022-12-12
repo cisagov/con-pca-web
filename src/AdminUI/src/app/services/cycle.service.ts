@@ -10,7 +10,7 @@ import { SettingsService } from './settings.service';
 export class CycleService {
   constructor(
     private http: HttpClient,
-    private SettingsService: SettingsService
+    private SettingsService: SettingsService,
   ) {}
 
   public getSubscriptionCycles(subscriptionId: string) {
@@ -38,7 +38,7 @@ export class CycleService {
 
   public saveManualReports(
     cycleId: string,
-    manualReports: CycleManualReportsModel[]
+    manualReports: CycleManualReportsModel[],
   ) {
     const url = `${this.SettingsService.settings.apiUrl}/api/cycle/${cycleId}/manual_reports/`;
     return this.http.post(url, { manual_reports: manualReports });

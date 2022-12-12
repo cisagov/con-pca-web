@@ -9,7 +9,7 @@ export class ConfigService {
 
   constructor(
     private http: HttpClient,
-    private settingsService: SettingsService
+    private settingsService: SettingsService,
   ) {
     this.configUrl = `${this.settingsService.settings.apiUrl}/api/config/`;
   }

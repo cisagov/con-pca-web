@@ -43,7 +43,7 @@ export class SendingProfileDetailComponent implements OnInit {
     private sendingProfileSvc: SendingProfileService,
     public dialogRef: MatDialogRef<SendingProfileDetailComponent>,
     public dialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
     this.id = data.sending_profile_id;
   }
@@ -93,7 +93,7 @@ export class SendingProfileDetailComponent implements OnInit {
         (err) => {
           console.log('send profile error:');
           console.log(err);
-        }
+        },
       );
     }
   }
@@ -120,7 +120,7 @@ export class SendingProfileDetailComponent implements OnInit {
               messageText: `Error: ${error.error.error}`,
             },
           });
-        }
+        },
       );
     } else {
       //non valid form, collect nonvalid fields and display to user
@@ -200,7 +200,7 @@ export class SendingProfileDetailComponent implements OnInit {
       (error) => {
         console.log(error);
         Swal.fire(error);
-      }
+      },
     );
   }
 }

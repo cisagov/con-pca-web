@@ -156,7 +156,7 @@ export class SubscriptionConfigTab
     public settingsService: SettingsService,
     private route: ActivatedRoute,
     public templateSvc: TemplateManagerService,
-    private userSvc: UserService
+    private userSvc: UserService,
   ) {
     this.loadAdminEmails();
     this.loadSendingProfiles();
@@ -230,7 +230,7 @@ export class SubscriptionConfigTab
         landingPageURL: new FormControl(''),
         landingPageDomain: new FormControl(''),
       },
-      { updateOn: 'blur' }
+      { updateOn: 'blur' },
     );
 
     this.landingPageSvc.getAlllandingpages(true).subscribe((data: any) => {
@@ -308,7 +308,7 @@ export class SubscriptionConfigTab
 
         // // Check if Start Date is before Appendix A Date
         this.isStartDateBeforeAADate();
-      })
+      }),
     );
 
     // On changes to start time
@@ -327,14 +327,14 @@ export class SubscriptionConfigTab
         }
 
         this.f.startDate.setValue(localStartDate);
-      })
+      }),
     );
 
     // On changes to sending profile
     this.angular_subs.push(
       this.f.sendingProfile.valueChanges.subscribe((val) => {
         this.subscription.sending_profile_id = val;
-      })
+      }),
     );
 
     // On changes to targets
@@ -343,7 +343,7 @@ export class SubscriptionConfigTab
         this.evaluateTargetList(false);
         this.getValidationMessage();
         this.checkValid();
-      })
+      }),
     );
 
     // On changes to target domain field
@@ -352,42 +352,42 @@ export class SubscriptionConfigTab
         this.subscription.target_domain = val;
         this.target_email_domain.next(val);
         this.f.csvText.updateValueAndValidity({ emitEvent: false });
-      })
+      }),
     );
 
     // On changes to continuous subscription checkbox
     this.angular_subs.push(
       this.f.continuousSubscription.valueChanges.subscribe((val) => {
         this.subscription.continuous_subscription = val;
-      })
+      }),
     );
 
     // On changes to reporting password
     this.angular_subs.push(
       this.f.reportingPassword.valueChanges.subscribe((val) => {
         this.subscription.reporting_password = val;
-      })
+      }),
     );
 
     // On changes to landing page
     this.angular_subs.push(
       this.f.landingPage.valueChanges.subscribe((val) => {
         this.subscription.landing_page_id = val;
-      })
+      }),
     );
 
     // On changes to landing page url
     this.angular_subs.push(
       this.f.landingPageURL.valueChanges.subscribe((val) => {
         this.subscription.landing_page_url = val;
-      })
+      }),
     );
 
     // On changes to landing page domain
     this.angular_subs.push(
       this.f.landingPageDomain.valueChanges.subscribe((val) => {
         this.subscription.landing_domain = val;
-      })
+      }),
     );
 
     // On changes to cycle length time unit
@@ -396,9 +396,9 @@ export class SubscriptionConfigTab
         this.subscriptionPreviousTimeUnit = this.onTimeUnitChanges(
           this.f.subDisplayTime,
           this.subscriptionPreviousTimeUnit,
-          val
+          val,
         );
-      })
+      }),
     );
 
     // On changes to cycle length time
@@ -407,10 +407,10 @@ export class SubscriptionConfigTab
         this.subscription.cycle_length_minutes = this.onDisplayTimeChanges(
           this.f.cycle_length_minutes,
           this.f.subDisplayTime,
-          this.subscriptionPreviousTimeUnit
+          this.subscriptionPreviousTimeUnit,
         );
         this.checkValid();
-      })
+      }),
     );
 
     // On changes to buffer time
@@ -419,9 +419,9 @@ export class SubscriptionConfigTab
         this.subscription.buffer_time_minutes = this.onDisplayTimeChanges(
           this.f.bufferTime,
           this.f.bufferDisplayTime,
-          this.bufferPreviousTimeUnit
+          this.bufferPreviousTimeUnit,
         );
-      })
+      }),
     );
 
     // On changes to buffer time unit
@@ -430,9 +430,9 @@ export class SubscriptionConfigTab
         this.bufferPreviousTimeUnit = this.onTimeUnitChanges(
           this.f.bufferDisplayTime,
           this.bufferPreviousTimeUnit,
-          val
+          val,
         );
-      })
+      }),
     );
 
     // On changes to cooldown time unit
@@ -441,9 +441,9 @@ export class SubscriptionConfigTab
         this.cooldownPreviousTimeUnit = this.onTimeUnitChanges(
           this.f.cooldownDisplayTime,
           this.cooldownPreviousTimeUnit,
-          val
+          val,
         );
-      })
+      }),
     );
 
     // On changes to cooldown time
@@ -452,10 +452,10 @@ export class SubscriptionConfigTab
         this.subscription.cooldown_minutes = this.onDisplayTimeChanges(
           this.f.cooldown_minutes,
           this.f.cooldownDisplayTime,
-          this.cooldownPreviousTimeUnit
+          this.cooldownPreviousTimeUnit,
         );
         this.checkValid();
-      })
+      }),
     );
 
     // On changes to reporting time unit
@@ -464,9 +464,9 @@ export class SubscriptionConfigTab
         this.reportPeriodPreviousTimeUnit = this.onTimeUnitChanges(
           this.f.reportDisplayTime,
           this.reportPeriodPreviousTimeUnit,
-          val
+          val,
         );
-      })
+      }),
     );
 
     // On changes to reporting frequency time
@@ -475,10 +475,10 @@ export class SubscriptionConfigTab
         this.subscription.report_frequency_minutes = this.onDisplayTimeChanges(
           this.f.report_frequency_minutes,
           this.f.reportDisplayTime,
-          this.reportPeriodPreviousTimeUnit
+          this.reportPeriodPreviousTimeUnit,
         );
         this.checkValid();
-      })
+      }),
     );
   }
 
@@ -500,11 +500,11 @@ export class SubscriptionConfigTab
   onTimeUnitChanges(
     displayFormControl: AbstractControl,
     previousTimeUnit: string,
-    timeUnit: string
+    timeUnit: string,
   ) {
     displayFormControl.setValue(
       this.convertTime(previousTimeUnit, timeUnit, displayFormControl.value),
-      { emitEvent: false }
+      { emitEvent: false },
     );
     return timeUnit;
   }
@@ -512,12 +512,12 @@ export class SubscriptionConfigTab
   onDisplayTimeChanges(
     valueFormControl: AbstractControl,
     displayFormControl: AbstractControl,
-    previousTimeUnit: string
+    previousTimeUnit: string,
   ) {
     let convertedVal = this.convertTime(
       previousTimeUnit,
       'Minutes',
-      displayFormControl.value
+      displayFormControl.value,
     );
     if (convertedVal < 15) {
       convertedVal = 15;
@@ -526,7 +526,7 @@ export class SubscriptionConfigTab
     }
     displayFormControl.setValue(
       this.convertTime('Minutes', previousTimeUnit, convertedVal),
-      { emitEvent: false }
+      { emitEvent: false },
     );
     valueFormControl.setValue(convertedVal);
     this.setEndTimes();
@@ -547,14 +547,14 @@ export class SubscriptionConfigTab
     this.sendBy.setMinutes(this.sendBy.getMinutes() + cycleLength);
     this.endDate = new Date(start);
     this.endDate.setMinutes(
-      this.endDate.getMinutes() + cycleLength + cooldownLength
+      this.endDate.getMinutes() + cycleLength + cooldownLength,
     );
     this.nextCycleDate = new Date(start);
     this.nextCycleDate.setMinutes(
       this.nextCycleDate.getMinutes() +
         cycleLength +
         cooldownLength +
-        bufferLength
+        bufferLength,
     );
   }
 
@@ -623,7 +623,7 @@ export class SubscriptionConfigTab
       await this.subscriptionSvc.getTemplatesSelected(this.subscription._id);
     this.templatesSelected = await this.templateSvc.getAllTemplates(
       false,
-      this.subscription.templates_selected
+      this.subscription.templates_selected,
     );
     this.getTemplates();
   }
@@ -700,10 +700,10 @@ export class SubscriptionConfigTab
 
     this.templatesSelected = await this.templateSvc.getAllTemplates(
       false,
-      s.templates_selected
+      s.templates_selected,
     );
     this.templatesSelected = this.templatesSelected.concat(
-      await this.templateSvc.getAllTemplates(true, s.templates_selected)
+      await this.templateSvc.getAllTemplates(true, s.templates_selected),
     );
     this.setDefaultTimeUnit();
     this.setEndTimes();
@@ -723,7 +723,7 @@ export class SubscriptionConfigTab
         .subscribe((data: CustomerModel) => {
           this.customer = data;
           this.customer.contact_list = this.customer.contact_list.filter(
-            (contact) => contact.active === true
+            (contact) => contact.active === true,
           );
           this.f.selectedCustomerId.setValue(this.customer._id);
           this.appendixADate = new Date(data.appendix_a_date);
@@ -820,7 +820,7 @@ export class SubscriptionConfigTab
       return;
     }
     this.primaryContact = this.customer.contact_list.find(
-      (x) => x.email === e.value
+      (x) => x.email === e.value,
     );
     this.subscription.primary_contact = this.primaryContact;
     this.subscriptionSvc.subscription.primary_contact = this.primaryContact;
@@ -832,7 +832,7 @@ export class SubscriptionConfigTab
   openFileBrowser(event: any) {
     event.preventDefault();
     const element: HTMLElement = document.getElementById(
-      'csvUpload'
+      'csvUpload',
     ) as HTMLElement;
     element.click();
   }
@@ -936,7 +936,7 @@ export class SubscriptionConfigTab
                         JSON.stringify(error.error),
                     },
                   });
-                }
+                },
               );
           });
       }
@@ -986,7 +986,7 @@ export class SubscriptionConfigTab
                   JSON.stringify(error.error),
               },
             });
-          }
+          },
         );
       }
     });
@@ -1080,7 +1080,7 @@ export class SubscriptionConfigTab
               JSON.stringify(error.error),
           },
         });
-      }
+      },
     );
   }
 
@@ -1108,7 +1108,7 @@ export class SubscriptionConfigTab
               JSON.stringify(error.error),
           },
         });
-      }
+      },
     );
   }
 
@@ -1148,7 +1148,7 @@ export class SubscriptionConfigTab
    */
   evaluateTargetList(removeDupes: boolean) {
     this.subscription.target_email_list = this.buildTargetsFromCSV(
-      this.f.csvText.value
+      this.f.csvText.value,
     );
 
     if (removeDupes) {
@@ -1166,7 +1166,7 @@ export class SubscriptionConfigTab
 
     this.f.csvText.setValue(
       this.formatTargetsToCSV(this.subscription.target_email_list),
-      { emitEvent: false }
+      { emitEvent: false },
     );
   }
 
@@ -1433,7 +1433,7 @@ export class SubscriptionConfigTab
     // Loop through keys in templatesSelected
     this.templatesSelected.forEach(() => {
       this.subscription.templates_selected = this.templatesSelected.map(
-        (item: any) => item._id
+        (item: any) => item._id,
       );
     });
   }
@@ -1478,23 +1478,23 @@ export class SubscriptionConfigTab
 
   getSendingProfileDomains() {
     const sendingProfileIds = this.templatesSelected.map(
-      (t) => t.sending_profile_id
+      (t) => t.sending_profile_id,
     );
     sendingProfileIds.push(this.f.sendingProfile.value);
     const profiles = this.sendingProfiles;
     this.sendingProfileDomains = new Set(
-      profiles.map((p) => p.from_address.split('@')[1])
+      profiles.map((p) => p.from_address.split('@')[1]),
     );
     return this.sendingProfileDomains;
   }
 
   getSendingProfileIps() {
     const sendingProfileIds = this.templatesSelected.map(
-      (t) => t.sending_profile_id
+      (t) => t.sending_profile_id,
     );
     sendingProfileIds.push(this.f.sendingProfile.value);
     const profiles = this.sendingProfiles.filter((s) =>
-      sendingProfileIds.includes(s._id)
+      sendingProfileIds.includes(s._id),
     );
     const ips = new Set();
     profiles.forEach((p) => {
@@ -1531,14 +1531,14 @@ export class SubscriptionConfigTab
     let sendingProfile = null;
     if (template.sending_profile_id) {
       const profiles = this.sendingProfiles.filter(
-        (s: SendingProfileModel) => s._id == template.sending_profile_id
+        (s: SendingProfileModel) => s._id == template.sending_profile_id,
       );
       if (profiles.length > 0) {
         sendingProfile = profiles[0];
       }
     } else {
       const profiles = this.sendingProfiles.filter(
-        (s: SendingProfileModel) => s._id == this.f.sendingProfile.value
+        (s: SendingProfileModel) => s._id == this.f.sendingProfile.value,
       );
       if (profiles.length > 0) {
         sendingProfile = profiles[0];
@@ -1572,18 +1572,18 @@ export class SubscriptionConfigTab
         Array.from(this.sendingProfileIps),
         this.subscription.landing_domain,
         this.templatesSelected,
-        this.subscription.reporting_password
+        this.subscription.reporting_password,
       )
       .subscribe(
         (blob) => {
           this.downloadObject(
             `${this.subscription.name}_safelist_export.xlsx`,
-            blob
+            blob,
           );
         },
         (error) => {
           console.log(error);
-        }
+        },
       );
   }
 
@@ -1596,7 +1596,7 @@ export class SubscriptionConfigTab
         Array.from(this.sendingProfileIps),
         this.subscription.landing_domain,
         this.templatesSelected,
-        this.subscription.reporting_password
+        this.subscription.reporting_password,
       )
       .subscribe(
         () => {
@@ -1610,7 +1610,7 @@ export class SubscriptionConfigTab
         (error) => {
           console.log(error);
           this.alertsService.alert('Error: Email failed to send.');
-        }
+        },
       );
   }
 

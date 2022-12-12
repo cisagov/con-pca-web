@@ -19,7 +19,7 @@ export class TagSelectionComponent implements OnInit, AfterViewInit {
 
   constructor(
     public dialogRef: MatDialogRef<TagSelectionComponent>,
-    public tagService: TagService
+    public tagService: TagService,
   ) {}
 
   ngOnInit(): void {

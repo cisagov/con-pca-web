@@ -21,7 +21,7 @@ export class AggregateStatisticsTab implements OnInit {
       (error) => {
         console.log(error);
         this.loading = false;
-      }
+      },
     );
   }
 }

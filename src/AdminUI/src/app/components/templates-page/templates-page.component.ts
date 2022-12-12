@@ -59,7 +59,7 @@ export class TemplatesPageComponent
     private layoutSvc: LayoutMainService,
     private templatesSortedData: TemplatesDataService,
     public dialog: MatDialog,
-    public alertsService: AlertsService
+    public alertsService: AlertsService,
   ) {
     layoutSvc.setTitle('Templates');
   }
@@ -71,7 +71,7 @@ export class TemplatesPageComponent
   async refresh() {
     this.loading = true;
     this.templatesData.data = await this.templateSvc.getAllTemplates(
-      this.showRetired
+      this.showRetired,
     );
     this.templatesData.sort = this.sort;
     const sortState: Sort = { active: 'deception_score', direction: 'asc' };
@@ -80,7 +80,7 @@ export class TemplatesPageComponent
     this.sort.sortChange.emit(sortState);
     this.loading = false;
     this.templatesSubscription = this.templatesSortedData.currentData.subscribe(
-      (templates) => (this.templatesList = templates)
+      (templates) => (this.templatesList = templates),
     );
     this.selection = new SelectionModel<TemplateModel>(true, []);
   }
@@ -105,7 +105,7 @@ export class TemplatesPageComponent
     this.templatesSortedData.changeData(
       this.templatesData
         .sortData(this.templatesData.filteredData, this.templatesData.sort)
-        .map((obj) => obj._id)
+        .map((obj) => obj._id),
     );
   }
 
@@ -128,7 +128,7 @@ export class TemplatesPageComponent
         this.refresh();
       } else if (result.error) {
         this.alertsService.alert(
-          `Error retiring template. ${result.error.error}`
+          `Error retiring template. ${result.error.error}`,
         );
       }
     });
@@ -146,7 +146,7 @@ export class TemplatesPageComponent
         this.refresh();
       } else if (result.error) {
         this.alertsService.alert(
-          `Error restoring template. ${result.error.error}`
+          `Error restoring template. ${result.error.error}`,
         );
       }
     });
@@ -225,7 +225,7 @@ export class TemplatesPageComponent
               messageText: `An error occured downloading the template data. Check logs for more detail.`,
             },
           });
-        }
+        },
       );
     }
   }

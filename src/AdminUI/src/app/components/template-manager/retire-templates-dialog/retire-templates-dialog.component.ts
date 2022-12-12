@@ -19,7 +19,7 @@ export class RetireTemplatesDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<RetireTemplatesDialogComponent>,
     public templateSvc: TemplateManagerService,
     public landingSvc: LandingPageManagerService,
-    @Inject(MAT_DIALOG_DATA) data: TemplateModel[]
+    @Inject(MAT_DIALOG_DATA) data: TemplateModel[],
   ) {
     this.templates = data;
   }
@@ -47,7 +47,7 @@ export class RetireTemplatesDialogComponent implements OnInit {
         },
         (error) => {
           this.dialogRef.close({ error: error.error });
-        }
+        },
       );
     }
   }

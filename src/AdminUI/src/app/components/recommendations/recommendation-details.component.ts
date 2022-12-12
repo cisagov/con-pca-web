@@ -54,7 +54,7 @@ export class RecommendationDetailComponent implements OnInit {
     private changeDetector: ChangeDetectorRef,
     public dialogRef: MatDialogRef<RecommendationDetailComponent>,
     public dialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
     this.id = data.recommendation_id;
   }
@@ -88,7 +88,7 @@ export class RecommendationDetailComponent implements OnInit {
         (err) => {
           console.log('recommendation error:');
           console.log(err);
-        }
+        },
       );
     }
   }
@@ -116,7 +116,7 @@ export class RecommendationDetailComponent implements OnInit {
           },
           (error) => {
             this.alertSvc.alert(`An error occurred: ${error.error.error}`);
-          }
+          },
         );
       }
     } else {

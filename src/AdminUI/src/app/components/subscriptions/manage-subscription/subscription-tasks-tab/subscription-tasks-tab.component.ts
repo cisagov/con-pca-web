@@ -31,7 +31,7 @@ export class SubscriptionTasksTabComponent implements OnInit {
   constructor(
     private subscriptionSvc: SubscriptionService,
     public dialog: MatDialog,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
   ) {}
 
   ngOnInit() {

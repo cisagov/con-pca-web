@@ -9,7 +9,7 @@ import { SettingsService } from './settings.service';
 export class FailedEmailsService {
   constructor(
     private http: HttpClient,
-    private SettingsService: SettingsService
+    private SettingsService: SettingsService,
   ) {}
 
   public getFailedEmails() {
@@ -21,7 +21,7 @@ export class FailedEmailsService {
     return new Promise((resolve, reject) => {
       this.http
         .delete(
-          `${this.SettingsService.settings.apiUrl}/api/failedemail/${failedemail._id}/`
+          `${this.SettingsService.settings.apiUrl}/api/failedemail/${failedemail._id}/`,
         )
         .subscribe(
           (success) => {
@@ -29,7 +29,7 @@ export class FailedEmailsService {
           },
           (error) => {
             reject(error);
-          }
+          },
         );
     });
   }

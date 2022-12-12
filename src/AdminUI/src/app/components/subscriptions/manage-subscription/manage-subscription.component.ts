@@ -32,7 +32,7 @@ export class ManageSubscriptionComponent
     private cycleSvc: CycleService,
     private route: ActivatedRoute,
     private router: Router,
-    public dialog: MatDialog
+    public dialog: MatDialog,
   ) {}
 
   ngOnInit() {
@@ -95,7 +95,7 @@ export class ManageSubscriptionComponent
               messageText: 'Subscription Not Found.',
             },
           });
-        }
+        },
       );
   }
 

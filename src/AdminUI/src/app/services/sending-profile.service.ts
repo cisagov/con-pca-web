@@ -10,7 +10,7 @@ import { TestEmailModel } from '../models/test-email.model';
 export class SendingProfileService {
   constructor(
     private http: HttpClient,
-    private settingsService: SettingsService
+    private settingsService: SettingsService,
   ) {}
 
   public getAllProfiles() {

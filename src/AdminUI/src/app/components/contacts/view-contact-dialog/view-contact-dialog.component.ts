@@ -44,7 +44,7 @@ export class ViewContactDialogComponent implements OnInit {
     public customer_service: CustomerService,
     private subscription_service: SubscriptionService,
     public dialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) data
+    @Inject(MAT_DIALOG_DATA) data,
   ) {
     this.data = data;
     this.initial = Object.assign({}, data);
@@ -86,7 +86,7 @@ export class ViewContactDialogComponent implements OnInit {
     this.subscription_service
       .getPrimaryContactSubscriptions(
         this.customer._id,
-        this.customer.contact_list[index]
+        this.customer.contact_list[index],
       )
       .subscribe((subscriptions: any[]) => {
         this.contactSubs = subscriptions as SubscriptionModel[];
@@ -123,7 +123,7 @@ export class ViewContactDialogComponent implements OnInit {
 
   updateSubsContact(
     old_contact: ContactModel,
-    updated_contact: ContactModel
+    updated_contact: ContactModel,
   ): void {
     // Get all subs of the contact then update
     this.subscription_service

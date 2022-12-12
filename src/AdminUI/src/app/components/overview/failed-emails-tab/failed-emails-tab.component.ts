@@ -42,7 +42,7 @@ export class FailedEmailsTab implements OnInit {
     private failedSvc: FailedEmailsService,
     private settingsService: SettingsService,
     private http: HttpClient,
-    public dialog: MatDialog
+    public dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
@@ -110,7 +110,7 @@ export class FailedEmailsTab implements OnInit {
               messageText: `An error occured downloading the failed emails data. Check logs for more detail.`,
             },
           });
-        }
+        },
       );
     }
   }

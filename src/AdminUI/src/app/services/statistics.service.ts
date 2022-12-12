@@ -8,7 +8,7 @@ import { SettingsService } from './settings.service';
 export class StatisticsService {
   constructor(
     private http: HttpClient,
-    private settingsService: SettingsService
+    private settingsService: SettingsService,
   ) {}
 
   public getAggregateStats() {

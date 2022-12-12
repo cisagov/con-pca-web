@@ -34,7 +34,7 @@ export class TestTemplatesDialogComponent implements OnInit {
     public sendingProfileSvc: SendingProfileService,
     public customerSvc: CustomerService,
     public alertsSvc: AlertsService,
-    @Inject(MAT_DIALOG_DATA) data: TemplateModel[]
+    @Inject(MAT_DIALOG_DATA) data: TemplateModel[],
   ) {
     this.templates = data;
   }
@@ -66,7 +66,7 @@ export class TestTemplatesDialogComponent implements OnInit {
         (error) => {
           this.alertsSvc.alert(error);
           console.log(error);
-        }
+        },
       );
     }
     this.alertsSvc.alert('Emails sent for testing.');

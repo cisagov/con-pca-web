@@ -48,8 +48,7 @@ docker run cisagov/con-pca-web:0.0.1
 This container also supports passing sensitive values via [Docker
 secrets](https://docs.docker.com/engine/swarm/secrets/).  Passing sensitive
 values like your credentials can be more secure using secrets than using
-environment variables.  See the
-[secrets](#secrets) section below for a table of all supported secret files.
+environment variables.
 
 1. To use secrets, create a `quote.txt` file containing the values you want set:
 

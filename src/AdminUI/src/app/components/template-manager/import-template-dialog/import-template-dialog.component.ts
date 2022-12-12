@@ -13,7 +13,7 @@ export class ImportTemplateDialogComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<ImportTemplateDialogComponent>,
-    public templateSvc: TemplateManagerService
+    public templateSvc: TemplateManagerService,
   ) {}
 
   ngOnInit(): void {}
@@ -33,7 +33,7 @@ export class ImportTemplateDialogComponent implements OnInit {
       },
       (error: any) => {
         console.log(error);
-      }
+      },
     );
   }
 

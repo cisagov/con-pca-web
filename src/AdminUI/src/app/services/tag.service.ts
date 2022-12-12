@@ -13,7 +13,7 @@ const headers = {
 export class TagService {
   constructor(
     private http: HttpClient,
-    private settingsService: SettingsService
+    private settingsService: SettingsService,
   ) {}
 
   getAllTags() {

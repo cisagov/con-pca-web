@@ -43,7 +43,7 @@ export class LoadingOverlayComponent implements OnInit {
       if (this.overlayContainer) {
         this.overlayContainer.nativeElement.setAttribute(
           'style',
-          'display:block'
+          'display:block',
         );
       }
     }
@@ -54,14 +54,14 @@ export class LoadingOverlayComponent implements OnInit {
     var width = this.overlayContainer.nativeElement.offsetWidth;
     this.loadingText.nativeElement.setAttribute(
       'style',
-      'width:' + width + 'px;'
+      'width:' + width + 'px;',
     );
   }
   ngAfterViewChecked() {
     var width = this.overlayContainer.nativeElement.offsetWidth;
     this.loadingText.nativeElement.setAttribute(
       'style',
-      'width:' + width + 'px;'
+      'width:' + width + 'px;',
     );
     this.changeDisplay();
   }

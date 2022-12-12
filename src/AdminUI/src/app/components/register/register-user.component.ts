@@ -24,7 +24,7 @@ import { UserService } from 'src/app/services/user.service';
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(
     control: FormControl | null,
-    form: FormGroupDirective | NgForm | null
+    form: FormGroupDirective | NgForm | null,
   ): boolean {
     const isSubmitted = form && form.submitted;
     return !!(
@@ -70,7 +70,7 @@ export class RegisterUserComponent implements OnInit {
   constructor(
     private router: Router,
     private snackBar: MatSnackBar,
-    public userSvc: UserService
+    public userSvc: UserService,
   ) {}
 
   ngOnInit() {}
@@ -86,13 +86,13 @@ export class RegisterUserComponent implements OnInit {
             {
               duration: 0,
               verticalPosition: 'top',
-            }
+            },
           );
           this.router.navigateByUrl('/login');
         },
         (error: HttpErrorResponse) => {
           this.error = error.error;
-        }
+        },
       );
     }
   }
@@ -149,7 +149,7 @@ export class RegisterUserComponent implements OnInit {
   checkPasswordSpecialChar() {
     if (this.userFormGroup.controls.password.value) {
       return /[~`@!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/.test(
-        this.userFormGroup.controls.password.value
+        this.userFormGroup.controls.password.value,
       );
     }
     return false;

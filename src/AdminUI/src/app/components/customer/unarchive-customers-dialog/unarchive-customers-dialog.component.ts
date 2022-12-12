@@ -16,7 +16,7 @@ export class UnarchiveCustomersDialogComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<UnarchiveCustomersDialogComponent>,
     public customerSvc: CustomerService,
-    @Inject(MAT_DIALOG_DATA) data: CustomerModel[]
+    @Inject(MAT_DIALOG_DATA) data: CustomerModel[],
   ) {
     this.customers = data;
   }
@@ -34,7 +34,7 @@ export class UnarchiveCustomersDialogComponent implements OnInit {
         },
         (error) => {
           this.dialogRef.close({ error: error.error });
-        }
+        },
       );
     }
   }

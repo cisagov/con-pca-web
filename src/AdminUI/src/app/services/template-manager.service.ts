@@ -13,7 +13,7 @@ const headers = {
 export class TemplateManagerService {
   constructor(
     private http: HttpClient,
-    private settingsService: SettingsService
+    private settingsService: SettingsService,
   ) {}
 
   async getAllTemplates(retired: boolean = false, templateIds = []) {
@@ -45,7 +45,7 @@ export class TemplateManagerService {
           (error) => {
             reject(error);
           },
-          () => {}
+          () => {},
         );
     });
   }
@@ -53,7 +53,7 @@ export class TemplateManagerService {
   saveNewTemplate(template: TemplateModel) {
     return this.http.post(
       `${this.settingsService.settings.apiUrl}/api/templates/`,
-      template
+      template,
     );
   }
 
@@ -62,7 +62,7 @@ export class TemplateManagerService {
       this.http
         .put(
           `${this.settingsService.settings.apiUrl}/api/template/${template._id}/`,
-          template
+          template,
         )
         .subscribe(
           (success) => {
@@ -71,7 +71,7 @@ export class TemplateManagerService {
           (error) => {
             reject(error);
           },
-          () => {}
+          () => {},
         );
     });
   }
@@ -80,7 +80,7 @@ export class TemplateManagerService {
     return new Promise((resolve, reject) => {
       this.http
         .delete(
-          `${this.settingsService.settings.apiUrl}/api/template/${template._id}/`
+          `${this.settingsService.settings.apiUrl}/api/template/${template._id}/`,
         )
         .subscribe(
           (success) => {
@@ -88,14 +88,14 @@ export class TemplateManagerService {
           },
           (error) => {
             reject(error);
-          }
+          },
         );
     });
   }
 
   stopTemplate(template: TemplateModel) {
     return this.http.get(
-      `${this.settingsService.settings.apiUrl}/api/template/stop/${template._id}/`
+      `${this.settingsService.settings.apiUrl}/api/template/stop/${template._id}/`,
     );
   }
 
@@ -130,7 +130,7 @@ export class TemplateManagerService {
 
   duplicateTemplate(id: string) {
     return this.http.get(
-      `${this.settingsService.settings.apiUrl}/api/template/${id}/duplicate/`
+      `${this.settingsService.settings.apiUrl}/api/template/${id}/duplicate/`,
     );
   }
 }

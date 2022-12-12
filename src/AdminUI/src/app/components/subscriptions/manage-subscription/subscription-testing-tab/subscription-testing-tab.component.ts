@@ -45,7 +45,7 @@ export class SubscriptionTestingTabComponent implements OnInit {
     public customerSvc: CustomerService,
     public subscriptionSvc: SubscriptionService,
     public dialog: MatDialog,
-    private router: Router
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -115,7 +115,7 @@ export class SubscriptionTestingTabComponent implements OnInit {
               console.log(error);
               this.alertsService.alert(error.error);
               this.launching = false;
-            }
+            },
           );
       }
     });

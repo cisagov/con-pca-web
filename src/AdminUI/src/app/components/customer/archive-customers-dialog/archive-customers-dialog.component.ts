@@ -24,7 +24,7 @@ export class ArchiveCustomersDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<ArchiveCustomersDialogComponent>,
     public customerSvc: CustomerService,
     public subscriptionSvc: SubscriptionService,
-    @Inject(MAT_DIALOG_DATA) data: CustomerModel[]
+    @Inject(MAT_DIALOG_DATA) data: CustomerModel[],
   ) {
     this.customers = data;
   }
@@ -52,7 +52,7 @@ export class ArchiveCustomersDialogComponent implements OnInit {
         },
         (error) => {
           this.dialogRef.close({ error: error.error });
-        }
+        },
       );
     }
   }

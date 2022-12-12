@@ -36,7 +36,7 @@ export class SendingProfilesComponent implements OnInit {
   constructor(
     private sendingProfileSvc: SendingProfileService,
     public dialog: MatDialog,
-    public layoutSvc: LayoutMainService
+    public layoutSvc: LayoutMainService,
   ) {
     layoutSvc.setTitle('Sending Profiles');
   }
@@ -100,7 +100,7 @@ export class SendingProfilesComponent implements OnInit {
             listTitle: t,
           },
         });
-      }
+      },
     );
   }
 
@@ -116,7 +116,7 @@ export class SendingProfilesComponent implements OnInit {
       };
       const dialogRef = this.dialog.open(
         SendingProfileDetailComponent,
-        dialogConfig
+        dialogConfig,
       );
 
       dialogRef.afterClosed().subscribe((value) => {

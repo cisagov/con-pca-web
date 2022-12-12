@@ -9,7 +9,7 @@ import { CustomerService } from 'src/app/services/customer.service';
 export class CustomerDialogComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<CustomerDialogComponent>,
-    public customerSvc: CustomerService
+    public customerSvc: CustomerService,
   ) {}
 
   ngOnInit(): void {}

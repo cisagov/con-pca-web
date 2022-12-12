@@ -27,7 +27,7 @@ export class DeleteCycle {
     public dialog: MatDialog,
     private _snackBar: MatSnackBar,
     public cycleSvc: CycleService,
-    private router: Router
+    private router: Router,
   ) {}
 
   openDialog(): void {
@@ -52,9 +52,9 @@ export class DeleteCycle {
             let snackBarRef = this._snackBar.open(
               'Cycle Deletion Failed',
               'Dismiss',
-              { duration: 5000 }
+              { duration: 5000 },
             );
-          }
+          },
         );
       }
     });
@@ -71,7 +71,7 @@ export class DeleteCycleDialog {
 
   constructor(
     public dialogRef: MatDialogRef<DeleteCycleDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
   ) {
     this.canDelete = false;
     this.cycle = data.cycle;

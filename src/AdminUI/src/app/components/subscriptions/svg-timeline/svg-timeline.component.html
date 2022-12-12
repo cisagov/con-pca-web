@@ -39,7 +39,7 @@
       <g class="transform" [attr.transform]="'translate(' + t.x + ' 50)'">
         <text x="0" y="0" text-anchor="middle" class="timeline-text">
           <tspan class="" x="0" dy="0">{{ t.title }}</tspan>
-          <tspan x="0" dy="1.2em">{{ t.date | date: dateFormat }}</tspan>
+          <tspan x="0" dy="1.2em">{{ t.date | date : dateFormat }}</tspan>
         </text>
       </g>
       <text

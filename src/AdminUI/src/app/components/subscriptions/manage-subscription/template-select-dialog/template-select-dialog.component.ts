@@ -27,7 +27,7 @@ export class TemplateSelectDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public router: Router,
     public dialog: MatDialog,
-    public templateSvc: TemplateManagerService
+    public templateSvc: TemplateManagerService,
   ) {
     this.selectedArray = data.selected;
     this.availableArray = data.available;
@@ -56,7 +56,7 @@ export class TemplateSelectDialogComponent {
       });
     });
     this.selectedList = new MatTableDataSource<TemplateModel>(
-      this.selectedArray as TemplateModel[]
+      this.selectedArray as TemplateModel[],
     );
     this.toggleLevel();
   }
@@ -115,7 +115,7 @@ export class TemplateSelectDialogComponent {
       this.availableList.data = this.availableArray.filter(
         (t) =>
           this.templateSvc.getDeceptionLevel(t.deception_score) ===
-          this.selectedToggleLevel
+          this.selectedToggleLevel,
       );
     }
   }

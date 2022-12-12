@@ -67,7 +67,7 @@ export class InputTrimDirective implements ControlValueAccessor {
   constructor(
     @Inject(Renderer2) renderer: Renderer2,
     @Inject(ElementRef) elementRef: ElementRef,
-    @Optional() @Inject(COMPOSITION_BUFFER_MODE) compositionMode: boolean
+    @Optional() @Inject(COMPOSITION_BUFFER_MODE) compositionMode: boolean,
   ) {
     this._sourceRenderer = renderer;
     this._sourceElementRef = elementRef;
@@ -100,7 +100,7 @@ export class InputTrimDirective implements ControlValueAccessor {
     this._sourceRenderer.setProperty(
       this._sourceElementRef.nativeElement,
       'value',
-      this._value
+      this._value,
     );
 
     // a dirty trick (or magic) goes here:
@@ -112,7 +112,7 @@ export class InputTrimDirective implements ControlValueAccessor {
       this._sourceRenderer.setAttribute(
         this._sourceElementRef.nativeElement,
         'value',
-        this._value
+        this._value,
       );
     }
   }
@@ -121,7 +121,7 @@ export class InputTrimDirective implements ControlValueAccessor {
     this._sourceRenderer.setProperty(
       this._sourceElementRef.nativeElement,
       'disabled',
-      isDisabled
+      isDisabled,
     );
   }
 
@@ -143,7 +143,7 @@ export class InputTrimDirective implements ControlValueAccessor {
       // But it should be a better way to validate that type change
       this._sourceElementRef.nativeElement.setSelectionRange(
         cursorPosition,
-        cursorPosition
+        cursorPosition,
       );
     }
   }

@@ -13,7 +13,7 @@ export class ConfirmComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<ConfirmComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Object
+    @Inject(MAT_DIALOG_DATA) public data: Object,
   ) {
     if (data) {
       this.title = data['title'];

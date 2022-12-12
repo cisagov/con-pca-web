@@ -30,7 +30,7 @@ export class AddContactDialogComponent implements OnInit {
 
   constructor(
     public dialog_ref: MatDialogRef<AddContactDialogComponent>,
-    public customer_service: CustomerService
+    public customer_service: CustomerService,
   ) {}
 
   ngOnInit(): void {

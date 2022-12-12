@@ -22,7 +22,7 @@ export class ConfigComponent implements OnInit {
     public settingsSvc: SettingsService,
     public nonhumanSvc: NonhumanService,
     public configSvc: ConfigService,
-    public alertSvc: AlertsService
+    public alertSvc: AlertsService,
   ) {
     layoutSvc.setTitle('Configuration');
   }
@@ -53,7 +53,7 @@ export class ConfigComponent implements OnInit {
       (error) => {
         console.log(error.error);
         this.alertsService.alert(error.error);
-      }
+      },
     );
   }
 

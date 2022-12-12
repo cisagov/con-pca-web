@@ -64,7 +64,7 @@
       >Created Date</mat-header-cell
     >
     <mat-cell *matCellDef="let row">{{
-      row.created | date: "MM/dd/yy"
+      row.created | date : "MM/dd/yy"
     }}</mat-cell>
   </ng-container>
 
@@ -74,7 +74,7 @@
       >Last Login</mat-header-cell
     >
     <mat-cell *matCellDef="let row">{{
-      row.last_login | date: "medium"
+      row.last_login | date : "medium"
     }}</mat-cell>
   </ng-container>
 

@@ -80,7 +80,7 @@ export class LandingPagesManagerComponent implements OnInit {
     private router: Router,
     private settingsService: SettingsService,
     public dialog: MatDialog,
-    private http: HttpClient
+    private http: HttpClient,
   ) {
     // Set title of page
     route.params.subscribe((params) => {
@@ -103,7 +103,7 @@ export class LandingPagesManagerComponent implements OnInit {
         if (this.titleElement != undefined) {
           this.setEditorHeight();
         }
-      })
+      }),
     );
     //get subscription to check for the sidenav element being set in layout, and close by default
     this.subscriptions.push(
@@ -111,7 +111,7 @@ export class LandingPagesManagerComponent implements OnInit {
         this.layoutSvc.closeSideNav().then(() => {
           this.setEditorHeight();
         });
-      })
+      }),
     );
     //Check if template ID was included in the route, open template identified if so
     this.subscriptions.push(
@@ -122,7 +122,7 @@ export class LandingPagesManagerComponent implements OnInit {
         } else {
           //Use preset empty form
         }
-      })
+      }),
     );
   }
 
@@ -152,7 +152,7 @@ export class LandingPagesManagerComponent implements OnInit {
 
         this.setCanDelete();
       },
-      (error) => {}
+      (error) => {},
     );
   }
 
@@ -167,7 +167,7 @@ export class LandingPagesManagerComponent implements OnInit {
           value: template.is_default_template,
           disabled: template.is_default_template,
         },
-        [Validators.nullValidator]
+        [Validators.nullValidator],
       ),
     });
   }
@@ -176,10 +176,10 @@ export class LandingPagesManagerComponent implements OnInit {
   getTemplateFromForm(form: FormGroup) {
     // form fields might not have the up-to-date content that the angular-editor has
     form.controls['templateHTML'].setValue(
-      this.angularEditorEle.textArea.nativeElement.innerHTML
+      this.angularEditorEle.textArea.nativeElement.innerHTML,
     );
     let htmlValue = this.replaceEscapeSequence(
-      form.controls['templateHTML'].value
+      form.controls['templateHTML'].value,
     );
 
     let saveTemplate = new LandingPageModel({
@@ -230,7 +230,7 @@ export class LandingPagesManagerComponent implements OnInit {
         this.angular_editor_mode = 'WYSIWYG';
       }
       let templateToSave = this.getTemplateFromForm(
-        this.currentTemplateFormGroup
+        this.currentTemplateFormGroup,
       );
       //PATCH - existing template update
       if (this.currentTemplateFormGroup.controls['landingPageId'].value) {
@@ -249,7 +249,7 @@ export class LandingPagesManagerComponent implements OnInit {
                 messageText: `Error: ${error.error.error}`,
               },
             });
-          }
+          },
         );
         //POST - new template creation
       } else {
@@ -273,7 +273,7 @@ export class LandingPagesManagerComponent implements OnInit {
                 messageText: `Error: ${error.error.error}`,
               },
             });
-          }
+          },
         );
       }
     } else {
@@ -302,7 +302,7 @@ export class LandingPagesManagerComponent implements OnInit {
 
   deletePage() {
     let template_to_delete = this.getTemplateFromForm(
-      this.currentTemplateFormGroup
+      this.currentTemplateFormGroup,
     );
 
     this.dialogRefConfirm = this.dialog.open(ConfirmComponent, {
@@ -317,7 +317,7 @@ export class LandingPagesManagerComponent implements OnInit {
           (success) => {
             this.router.navigate(['/landing-pages']);
           },
-          (error) => {}
+          (error) => {},
         );
       }
       this.dialogRefConfirm = null;
@@ -340,7 +340,7 @@ export class LandingPagesManagerComponent implements OnInit {
     //Required because the angular-editor library can not bind to [value].
     //Set the formGroups template text value to itself to force an update on tab switch
     this.currentTemplateFormGroup.controls['templateHTML'].setValue(
-      this.currentTemplateFormGroup.controls['templateHTML'].value
+      this.currentTemplateFormGroup.controls['templateHTML'].value,
     );
   }
 
@@ -437,7 +437,7 @@ export class LandingPagesManagerComponent implements OnInit {
    */
   addInsertTagButtonIntoEditor() {
     let btnClearFormatting = $(this.angularEditorEle.doc).find(
-      "[title='Horizontal Line']"
+      "[title='Horizontal Line']",
     )[0];
     let attribs = btnClearFormatting.attributes;
     // this assumes that the _ngcontent attribute occurs first
