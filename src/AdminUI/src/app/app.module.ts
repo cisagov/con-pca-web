@@ -28,7 +28,7 @@ import { TemplateManagerService } from './services/template-manager.service';
 import { ListFilterPipe } from './pipes/list-filter.pipe';
 import { NullishCoalescePipe } from './pipes/nullish-coalesce.pipe';
 import { AutosizeModule } from 'node_modules/ngx-autosize';
-
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { AddCustomerComponent } from './components/customer/add-customer/add-customer.component';
 import { SubscriptionService } from './services/subscription.service';
 import { ThemeService } from './services/theme.service';
@@ -212,6 +212,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,
+    MatPaginatorModule,
     MatExpansionModule,
     MatSortModule,
     FormsModule,
