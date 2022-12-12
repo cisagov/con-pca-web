@@ -131,7 +131,7 @@ export class SubscriptionsComponent implements OnInit {
         },
         (failure) => {
           console.log('Failed ot get subscription count');
-        }
+        },
       );
   }
 
@@ -144,7 +144,7 @@ export class SubscriptionsComponent implements OnInit {
         this.sortBy,
         this.sortOrder,
         this.searchFilterStr,
-        this.showArchived
+        this.showArchived,
       )
       .subscribe((subscriptions: SubscriptionModel[]) => {
         this.customerSvc

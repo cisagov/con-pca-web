@@ -82,7 +82,7 @@ export class SubscriptionService {
     sortBy,
     sortOrder = 'asc',
     searchFilter = '',
-    archived = false
+    archived = false,
   ) {
     console.log(sortBy);
     let url = `${this.settingsService.settings.apiUrl}/api/subscriptionspaged/${page}/${pageSize}/${sortBy}/${sortOrder}/`;
