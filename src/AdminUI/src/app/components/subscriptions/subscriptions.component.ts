@@ -73,7 +73,7 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.layoutSvc.setTitle('Subscriptions');
+    this.layoutSvc.setTitle('Test Subscriptions');
     this.dataSource = new MatTableDataSource();
     this.getPageSize();
     this.refresh();
