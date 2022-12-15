@@ -12,47 +12,27 @@
       <button mat-raised-button color="primary" (click)="createSubscription()">
         New Subscription
       </button>
-      <mat-slide-toggle
-        class="mt-3 ml-3 mb-2"
-        [(ngModel)]="showArchived"
-        (change)="onArchiveToggle()"
-      >
+      <mat-slide-toggle class="mt-3 ml-3 mb-2" [(ngModel)]="showArchived" (change)="onArchiveToggle()">
         Show Archived
       </mat-slide-toggle>
     </div>
   </div>
 
-  <div
-    *ngIf="loading"
-    style="text-align: center; padding-top: 2rem; padding-bottom: 2rem"
-  >
-    <mat-spinner
-      class="spinner"
-      style="margin-left: auto; margin-right: auto"
-      diameter="50"
-    ></mat-spinner>
+  <div *ngIf="loading" style="text-align: center; padding-top: 2rem; padding-bottom: 2rem">
+    <mat-spinner class="spinner" style="margin-left: auto; margin-right: auto" diameter="50"></mat-spinner>
   </div>
 
   <!-- TABLE -->
-  <mat-table
-    [dataSource]="dataSource"
-    [hidden]="loading"
-    matSort
-    (matSortChange)="changeSort($event)"
-  >
+  <mat-table [dataSource]="dataSource" [hidden]="loading" matSort>
     <!-- SUBSCRIPTION NAME -->
     <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Subscription Name</mat-header-cell
-      >
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Subscription Name</mat-header-cell>
       <mat-cell *matCellDef="let row"> {{ row.subscription.name }}</mat-cell>
     </ng-container>
 
     <!-- STATUS -->
     <ng-container matColumnDef="status">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Status</mat-header-cell
-      >
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
       <mat-cell *matCellDef="let row">
         {{ row.subscription.status | titlecase }}
       </mat-cell>
@@ -60,12 +40,10 @@
 
     <!-- PRIMARY CONTACT -->
     <ng-container matColumnDef="primaryContact">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Primary Contact</mat-header-cell
-      >
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Primary Contact</mat-header-cell>
       <mat-cell *matCellDef="let row">
         {{
-          row.subscription.primary_contact?.first_name || "No Primary Contact"
+        row.subscription.primary_contact?.first_name || "No Primary Contact"
         }}
         {{ row.subscription.primary_contact?.last_name || "" }}
       </mat-cell>
@@ -73,37 +51,29 @@
 
     <!-- CUSTOMER -->
     <ng-container matColumnDef="customerName">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Customer</mat-header-cell
-      >
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Customer</mat-header-cell>
       <mat-cell *matCellDef="let row">{{ row.customer.name }}</mat-cell>
     </ng-container>
 
     <!-- APPENDIX A DATE -->
     <ng-container matColumnDef="appendixADate">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Appendix A Date</mat-header-cell
-      >
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Appendix A Date</mat-header-cell>
       <mat-cell *matCellDef="let row">
-        {{ row.customer.appendix_a_date | date : dateFormat }}
+        {{ row.customer.appendix_a_date | date: dateFormat }}
       </mat-cell>
     </ng-container>
 
     <!-- LATEST CYCLE START DATE -->
     <ng-container matColumnDef="startDate">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Latest Cycle Start</mat-header-cell
-      >
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Latest Cycle Start</mat-header-cell>
       <mat-cell *matCellDef="let row">
-        {{ row.subscription.cycle_start_date | date : dateFormat }}
+        {{ row.subscription.cycle_start_date | date: dateFormat }}
       </mat-cell>
     </ng-container>
 
     <!-- NUMBER OF TARGETS -->
     <ng-container matColumnDef="numberOfTargets">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Number of Targets</mat-header-cell
-      >
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Number of Targets</mat-header-cell>
       <mat-cell *matCellDef="let row">
         {{ getNumberOfTargets(row.subscription.target_email_list) }}
       </mat-cell>
@@ -111,9 +81,7 @@
 
     <!-- TARGET DOMAIN -->
     <ng-container matColumnDef="targetDomain">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Target Domain</mat-header-cell
-      >
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Target Domain</mat-header-cell>
       <mat-cell *matCellDef="let row">
         {{ row.subscription.target_domain }}
       </mat-cell>
@@ -121,11 +89,9 @@
 
     <!-- LAST UPDATED DATE -->
     <ng-container matColumnDef="lastUpdated">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Last Updated</mat-header-cell
-      >
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Last Updated</mat-header-cell>
       <mat-cell *matCellDef="let row">
-        {{ row.subscription.updated | date : dateFormat }}
+        {{ row.subscription.updated | date: dateFormat }}
       </mat-cell>
     </ng-container>
 
@@ -139,19 +105,8 @@
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
 
     <!-- ROW DEFINITION -->
-    <mat-row
-      *matRowDef="let row; columns: displayedColumns"
-      class="table-row cursor-pointer"
-      (click)="editSubscription(row)"
-    >
+    <mat-row *matRowDef="let row; columns: displayedColumns" class="table-row cursor-pointer"
+      (click)="editSubscription(row)">
     </mat-row>
   </mat-table>
-  <mat-paginator
-    [length]="subscriptionCount"
-    [pageSize]="subsPerPage"
-    (page)="paginationChange($event)"
-    [pageSizeOptions]="[5, 10, 25, 100]"
-    aria-label="Select page"
-  >
-  </mat-paginator>
 </div>
