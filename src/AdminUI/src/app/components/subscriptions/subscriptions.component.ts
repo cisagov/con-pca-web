@@ -44,6 +44,7 @@ export class SubscriptionsComponent implements OnInit {
     'numberOfTargets',
     'targetDomain',
     'lastUpdated',
+    'isContinuous',
   ];
 
   // pagination variables
