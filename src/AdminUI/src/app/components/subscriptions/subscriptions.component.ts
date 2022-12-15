@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { SubscriptionModel } from 'src/app/models/subscription.model';
@@ -46,15 +46,6 @@ export class SubscriptionsComponent implements OnInit {
     'lastUpdated',
   ];
 
-  // pagination variables
-  subscriptionCount: number = 99;
-  page: any = 0;
-  subsPerPage: any = 10;
-  sortOrder = 'asc';
-  sortBy = 'name';
-  searchFilterStr = '';
-  // sortBy: "name"
-
   dialogRefConfirm: MatDialogRef<ConfirmComponent>;
   showArchived = false;
 
@@ -75,77 +66,14 @@ export class SubscriptionsComponent implements OnInit {
   ngOnInit(): void {
     this.layoutSvc.setTitle('Subscriptions');
     this.dataSource = new MatTableDataSource();
-    this.getPageSize();
     this.refresh();
     this.setFilterPredicate();
-  }
-
-  changeSort(sortEvent) {
-    console.log(sortEvent);
-    this.sortOrder = sortEvent.direction;
-    if (sortEvent.direction == '') {
-      this.sortOrder = 'asc';
-      this.sortBy = 'name';
-    } else {
-      switch (sortEvent.active) {
-        case 'name':
-          this.sortBy = 'name';
-          break;
-        case 'status':
-          this.sortBy = 'status';
-          break;
-        case 'primaryContact':
-          this.sortBy = 'contact_full_name';
-          break;
-        case 'customerName':
-          this.sortBy = 'customer';
-          break;
-        case 'startDate':
-          this.sortBy = 'start_date';
-          break;
-        case 'numberOfTargets':
-          this.sortBy = 'target_count';
-          break;
-        case 'targetDomain':
-          this.sortBy = 'target_domain';
-          break;
-        case 'appendixADate':
-          this.sortBy = 'start_date';
-          break;
-        case 'lastUpdated':
-          this.sortBy = 'updated';
-          break;
-      }
-    }
-    this.refresh();
-
-    // this.name
-  }
-
-  getPageSize() {
-    this.subscriptionSvc
-      .getSubscriptionCount(this.searchFilterStr, this.showArchived)
-      .subscribe(
-        (success) => {
-          this.subscriptionCount = parseInt(success as any);
-        },
-        (failure) => {
-          console.log('Failed ot get subscription count');
-        },
-      );
   }
 
   refresh() {
     this.loading = true;
     this.subscriptionSvc
-      .getSubscriptions(
-        this.page,
-        this.subsPerPage,
-        this.sortBy,
-        this.sortOrder,
-        this.searchFilterStr,
-        this.showArchived,
-      )
+      .getSubscriptions(this.showArchived)
       .subscribe((subscriptions: SubscriptionModel[]) => {
         this.customerSvc
           .getCustomers()
@@ -170,22 +98,11 @@ export class SubscriptionsComponent implements OnInit {
               };
               customerSubscriptions.push(customerSubscription);
             });
-            if (this.sortOrder == 'desc') {
-              var orderedData = customerSubscriptions.reverse();
-            } else {
-              var orderedData = customerSubscriptions;
-            }
-            this.dataSource.data = orderedData as ICustomerSubscription[];
+            this.dataSource.data =
+              customerSubscriptions as ICustomerSubscription[];
             this.dataSource.sort = this.sort;
           });
       });
-  }
-
-  paginationChange(event) {
-    this.page = event.pageIndex;
-    this.subsPerPage = event.pageSize;
-    this.refresh();
-    console.log(event);
   }
 
   private setFilterPredicate() {
@@ -217,15 +134,10 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   public searchFilter(searchValue: string): void {
-    this.searchFilterStr = searchValue;
-    this.page = 0;
-    this.refresh();
-    this.getPageSize();
-    // this.dataSource.filter = searchValue.trim().toLowerCase();
+    this.dataSource.filter = searchValue.trim().toLowerCase();
   }
 
   public onArchiveToggle(): void {
-    this.getPageSize();
     this.refresh();
   }
 

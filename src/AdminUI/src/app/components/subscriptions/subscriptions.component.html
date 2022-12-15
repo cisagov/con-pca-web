@@ -34,12 +34,7 @@
   </div>
 
   <!-- TABLE -->
-  <mat-table
-    [dataSource]="dataSource"
-    [hidden]="loading"
-    matSort
-    (matSortChange)="changeSort($event)"
-  >
+  <mat-table [dataSource]="dataSource" [hidden]="loading" matSort>
     <!-- SUBSCRIPTION NAME -->
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef mat-sort-header
@@ -146,12 +141,4 @@
     >
     </mat-row>
   </mat-table>
-  <mat-paginator
-    [length]="subscriptionCount"
-    [pageSize]="subsPerPage"
-    (page)="paginationChange($event)"
-    [pageSizeOptions]="[5, 10, 25, 100]"
-    aria-label="Select page"
-  >
-  </mat-paginator>
 </div>
