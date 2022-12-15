@@ -16,7 +16,7 @@ import { CycleModel } from '../models/cycle.model';
 export class SubscriptionService {
   subscription: SubscriptionModel;
   subBehaviorSubject = new BehaviorSubject<SubscriptionModel>(
-    new SubscriptionModel()
+    new SubscriptionModel(),
   );
   cycleBehaviorSubject = new BehaviorSubject<CycleModel>(new CycleModel());
   customer: CustomerModel;
@@ -29,8 +29,8 @@ export class SubscriptionService {
    */
   constructor(
     private http: HttpClient,
-    private settingsService: SettingsService
-  ) { }
+    private settingsService: SettingsService,
+  ) {}
 
   public getSubBehaviorSubject() {
     return this.subBehaviorSubject;
@@ -40,7 +40,7 @@ export class SubscriptionService {
   }
   public clearSubBehaviorSubject() {
     this.subBehaviorSubject = new BehaviorSubject<SubscriptionModel>(
-      new SubscriptionModel()
+      new SubscriptionModel(),
     );
   }
 
@@ -52,7 +52,7 @@ export class SubscriptionService {
   }
   public clearCycleBehaviorSubject() {
     this.cycleBehaviorSubject = new BehaviorSubject<CycleModel>(
-      new CycleModel()
+      new CycleModel(),
     );
   }
 
@@ -67,7 +67,7 @@ export class SubscriptionService {
 
   public getPrimaryContactSubscriptions(
     customerId: string,
-    contact: ContactModel
+    contact: ContactModel,
   ) {
     const c = { primary_contact: contact };
     const url = `${this.settingsService.settings.apiUrl}/api/subscription/customer/${customerId}/`;
@@ -119,7 +119,7 @@ export class SubscriptionService {
 
     return this.http.put(
       `${this.settingsService.settings.apiUrl}/api/subscription/${subscription._id}/`,
-      data
+      data,
     );
   }
 
@@ -127,50 +127,50 @@ export class SubscriptionService {
     const c = { primary_contact: contact };
     return this.http.put(
       `${this.settingsService.settings.apiUrl}/api/subscription/${subscriptionId}/`,
-      c
+      c,
     );
   }
 
   public getSubscriptionsByTemplate(template: TemplateModel) {
     return this.http.get(
-      `${this.settingsService.settings.apiUrl}/api/subscriptions/?template=${template._id}`
+      `${this.settingsService.settings.apiUrl}/api/subscriptions/?template=${template._id}`,
     );
   }
 
   public getSubscriptionCurrentTemplates(subscriptionId: string) {
     return this.http.get(
-      `${this.settingsService.settings.apiUrl}/api/subscription/${subscriptionId}/templates/current/`
+      `${this.settingsService.settings.apiUrl}/api/subscription/${subscriptionId}/templates/current/`,
     );
   }
 
   public getSubscriptionNextTemplates(subscriptionId: string) {
     return this.http.get(
-      `${this.settingsService.settings.apiUrl}/api/subscription/${subscriptionId}/templates/next/`
+      `${this.settingsService.settings.apiUrl}/api/subscription/${subscriptionId}/templates/next/`,
     );
   }
 
   public getSubscriptionsWithEndDate() {
     return this.http.get(
-      `${this.settingsService.settings.apiUrl}/api/subscriptions/status/`
+      `${this.settingsService.settings.apiUrl}/api/subscriptions/status/`,
     );
   }
 
   public getSubscriptionsByCustomer(customer: CustomerModel) {
     return this.http.get(
-      `${this.settingsService.settings.apiUrl}/api/subscriptions/?customer_id=${customer._id}`
+      `${this.settingsService.settings.apiUrl}/api/subscriptions/?customer_id=${customer._id}`,
     );
   }
 
   public stopSubscription(subscriptionId: string) {
     return this.http.delete(
-      `${this.settingsService.settings.apiUrl}/api/subscription/${subscriptionId}/launch/`
+      `${this.settingsService.settings.apiUrl}/api/subscription/${subscriptionId}/launch/`,
     );
   }
 
   public downloadReport(
     cycleId: string,
     reportType: string,
-    nonhuman = false
+    nonhuman = false,
   ): Observable<Blob> {
     const headers = new HttpHeaders().set('Accept', 'application/pdf');
     let url = `${this.settingsService.settings.apiUrl}/api/cycle/${cycleId}/reports/${reportType}/pdf/`;
@@ -223,11 +223,11 @@ export class SubscriptionService {
     ips: any[],
     simulationURL: string,
     templates: TemplateModel[],
-    password: string
+    password: string,
   ): Observable<Blob> {
     const headers = new HttpHeaders().set(
       'Accept',
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     );
     const url = `${this.settingsService.settings.apiUrl}/api/subscription/${subscriptionId}/safelist/export/`;
     return this.http.post(
@@ -240,7 +240,7 @@ export class SubscriptionService {
         templates: templates,
         password: password,
       },
-      { headers, responseType: 'blob' }
+      { headers, responseType: 'blob' },
     );
   }
 
@@ -251,11 +251,11 @@ export class SubscriptionService {
     ips: any[],
     simulationURL: string,
     templates: TemplateModel[],
-    password: string
+    password: string,
   ): Observable<Blob> {
     const headers = new HttpHeaders().set(
       'Accept',
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     );
     const url = `${this.settingsService.settings.apiUrl}/api/subscription/${subscriptionId}/safelist/send/`;
     return this.http.post(
@@ -268,7 +268,7 @@ export class SubscriptionService {
         templates: templates,
         password: password,
       },
-      { headers, responseType: 'blob' }
+      { headers, responseType: 'blob' },
     );
   }
 
