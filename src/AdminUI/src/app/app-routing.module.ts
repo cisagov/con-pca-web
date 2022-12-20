@@ -24,7 +24,6 @@ import { UnsavedChangesGuard } from './guards/unsaved-changes.guard';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { PasswordResetComponent } from './components/password-reset/password-reset.component';
 import { RecommendationsListComponent } from './components/recommendations/recommendations.component';
-import { LandingDomainsComponent } from './components/landing-domains/landing-domains.component';
 import { OverviewComponent } from './components/overview/overview.component';
 
 const routes: Routes = [
@@ -132,12 +131,6 @@ const routes: Routes = [
     children: [{ path: '', component: SendingProfilesComponent }],
   },
   {
-    path: 'landing-domains',
-    component: LayoutMainComponent,
-    canActivate: [AuthGuard],
-    children: [{ path: '', component: LandingDomainsComponent }],
-  },
-  {
     path: 'landing-pages',
     component: LayoutMainComponent,
     canActivate: [AuthGuard],
@@ -191,4 +184,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
