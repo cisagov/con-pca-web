@@ -124,6 +124,21 @@
       </mat-cell>
     </ng-container>
 
+    <!-- IS CONTINUOUS SUBSCRIPTION -->
+    <ng-container matColumnDef="isContinuous">
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >Continuous</mat-header-cell
+      >
+      <mat-cell *matCellDef="let row">
+        <mat-icon
+          *ngIf="row.subscription.continuous_subscription"
+          aria-hidden="false"
+          aria-label="check_circle icon"
+          >check_circle
+        </mat-icon>
+      </mat-cell>
+    </ng-container>
+
     <!-- ARCHIVED -->
     <ng-container matColumnDef="archived">
       <mat-header-cell *matHeaderCellDef>Archived</mat-header-cell>

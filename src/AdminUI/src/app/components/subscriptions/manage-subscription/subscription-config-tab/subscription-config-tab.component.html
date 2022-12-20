@@ -629,7 +629,7 @@
       <!-- Buffer Time -->
       <mat-label class="h7" *ngIf="isContinuous()">Buffer Time</mat-label>
       <div class="mb-2">
-        <div class="text-muted">
+        <div class="text-muted" *ngIf="isContinuous()">
           Time added to create a buffer at the end date of each cycle. (Must be
           between 15 minutes and 30 days)
         </div>
