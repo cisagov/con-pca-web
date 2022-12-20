@@ -64,7 +64,49 @@ export class UtilitiesTab implements OnInit {
           this.dialog.open(AlertComponent, {
             data: {
               title: 'Error',
-              messageText: `An error occured downloading the template data. Check logs for more detail.`,
+              messageText: `An error occured downloading the contact data. Check logs for more detail.`,
+            },
+          });
+        },
+      );
+    }
+  }
+
+  downloadOverdueTasksDSV() {
+    if (confirm('Download overdue tasks data?')) {
+      this.utilitiesSvc.getOverdueTasks().subscribe(
+        (json) => {
+          this.downloadObject(
+            `overdue_tasks.dsv`,
+            this.dsvToBlob(this.jsonToDSV(json)),
+          );
+        },
+        (error) => {
+          this.dialog.open(AlertComponent, {
+            data: {
+              title: 'Error',
+              messageText: `An error occured downloading the task data. Check logs for more detail.`,
+            },
+          });
+        },
+      );
+    }
+  }
+
+  downloadOverdueSubscriptionsDSV() {
+    if (confirm('Download overdue subscriptions data?')) {
+      this.utilitiesSvc.getOverdueSubs().subscribe(
+        (json) => {
+          this.downloadObject(
+            `overdue_subscriptions.dsv`,
+            this.dsvToBlob(this.jsonToDSV(json)),
+          );
+        },
+        (error) => {
+          this.dialog.open(AlertComponent, {
+            data: {
+              title: 'Error',
+              messageText: `An error occured downloading the subscription data. Check logs for more detail.`,
             },
           });
         },
