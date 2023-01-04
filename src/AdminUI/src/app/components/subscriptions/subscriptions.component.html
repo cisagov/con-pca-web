@@ -1,10 +1,22 @@
 <div class="container-fluid">
-  <!-- Search Bar -->
+  
   <div class="d-flex flex-row flex-grow-1">
     <div class="d-flex flex-column w-100">
-      <mat-form-field class="search-bar" appearance="outline">
+      <!-- Search Bar (PAGINATION) -->
+      <!-- <mat-form-field class="search-bar" appearance="outline">
         <mat-label>Search</mat-label>
         <input matInput (keyup)="searchFilter($event.target.value)" />
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field> -->
+      <!-- SEARCH BAR (FULL PAGE)-->
+      <mat-form-field class="search-bar" appearance="outline">
+        <mat-label>Search</mat-label>
+        <input
+          [(ngModel)]="search_input"
+          (keyup)="filterSubscriptions($event.target.value)"
+          matInput
+          placeholder="Search"
+        />
         <mat-icon matSuffix>search</mat-icon>
       </mat-form-field>
     </div>
@@ -161,12 +173,12 @@
     >
     </mat-row>
   </mat-table>
-  <mat-paginator
+  <!-- <mat-paginator
     [length]="subscriptionCount"
     [pageSize]="subsPerPage"
     (page)="paginationChange($event)"
     [pageSizeOptions]="[5, 10, 25, 100]"
     aria-label="Select page"
   >
-  </mat-paginator>
+  </mat-paginator> -->
 </div>
