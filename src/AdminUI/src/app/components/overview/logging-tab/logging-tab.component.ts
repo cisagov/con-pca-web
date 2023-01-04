@@ -4,6 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { LoggingModel } from 'src/app/models/logging.model';
 import { LoggingService } from 'src/app/services/logging.service';
 import { Router } from '@angular/router';
+import { OverviewTabService } from 'src/app/services/overview-tab.service';
 
 @Component({
   selector: 'app-logging-tab',
@@ -14,17 +15,27 @@ export class LoggingTab implements OnInit {
   @ViewChild('loggingTable', { read: MatSort, static: true })
   sortLogging: MatSort;
   loading = false;
+  dataLoaded = false;
 
   // Logging Messages Table
   public loggingSource: MatTableDataSource<LoggingModel>;
   loggingDisplayedColumns = ['timestamp', 'file', 'message'];
 
-  constructor(private router: Router, private loggingSvc: LoggingService) {
+  constructor(
+    private router: Router, 
+    private loggingSvc: LoggingService,
+    private tabSvc: OverviewTabService,
+    ) {
     this.loggingSource = new MatTableDataSource();
   }
 
   ngOnInit(): void {
-    this.refresh();
+    this.tabSvc.loggingErrorsClicked.subscribe(val => {
+      if(val && !this.dataLoaded){
+        this.refresh();
+        this.dataLoaded = true;
+      }
+    })
   }
 
   async refresh() {
