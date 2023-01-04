@@ -73,6 +73,7 @@ export class SubscriptionModel {
   landing_page_url: string;
   landing_domain: string;
   updated: Date;
+  processing: boolean;
 
   // Helper attributes
   cycles: CycleModel[];
