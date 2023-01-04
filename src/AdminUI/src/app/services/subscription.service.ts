@@ -76,9 +76,8 @@ export class SubscriptionService {
     return this.http.get(url);
   }
 
-  public getAllSubscriptions(archived = false){    
+  public getAllSubscriptions(archived = false) {
     let url = `${this.settingsService.settings.apiUrl}/api/subscriptions/`;
-
 
     if (archived) {
       url = `${url}?archived=true`;

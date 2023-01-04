@@ -149,7 +149,7 @@ export class SubscriptionsComponent implements OnInit {
     this.loading = true;
     this.subscriptionSvc.getAllSubscriptions(this.showArchived).subscribe(
       (subscriptions: SubscriptionModel[]) => {
-        console.log(subscriptions)
+        console.log(subscriptions);
         this.customerSvc
           .getCustomers()
           .subscribe((customers: CustomerModel[]) => {
@@ -172,17 +172,17 @@ export class SubscriptionsComponent implements OnInit {
                 lastUpdated: s.updated,
                 targetDomain: s.target_domain,
                 isContinuous: s.continuous_subscription,
-                appendixADate: cc.appendix_a_date
+                appendixADate: cc.appendix_a_date,
               };
               customerSubscriptions.push(customerSubscription);
             });
-            this.dataSource.data = customerSubscriptions as ICustomerSubscription[];
+            this.dataSource.data =
+              customerSubscriptions as ICustomerSubscription[];
             this.dataSource.sort = this.sort;
           });
       },
-      (failure) => {
-
-    })
+      (failure) => {},
+    );
 
     //PAGINATION VERSION
     // this.loading = true;
