@@ -50,12 +50,12 @@ export class FailedEmailsTab implements OnInit {
 
   ngOnInit(): void {
     this.failedSource = new MatTableDataSource();
-    this.tabSvc.failedEmailsClicked.subscribe(val => {
-      if(val && !this.dataLoaded){
+    this.tabSvc.failedEmailsClicked.subscribe((val) => {
+      if (val && !this.dataLoaded) {
         this.refresh();
         this.dataLoaded = true;
       }
-    })
+    });
   }
 
   public filterEmails = (value: string) => {

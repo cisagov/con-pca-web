@@ -22,20 +22,20 @@ export class LoggingTab implements OnInit {
   loggingDisplayedColumns = ['timestamp', 'file', 'message'];
 
   constructor(
-    private router: Router, 
+    private router: Router,
     private loggingSvc: LoggingService,
     private tabSvc: OverviewTabService,
-    ) {
+  ) {
     this.loggingSource = new MatTableDataSource();
   }
 
   ngOnInit(): void {
-    this.tabSvc.loggingErrorsClicked.subscribe(val => {
-      if(val && !this.dataLoaded){
+    this.tabSvc.loggingErrorsClicked.subscribe((val) => {
+      if (val && !this.dataLoaded) {
         this.refresh();
         this.dataLoaded = true;
       }
-    })
+    });
   }
 
   async refresh() {

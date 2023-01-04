@@ -19,9 +19,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private layoutSvc: LayoutMainService,
     private tabSvc: OverviewTabService,
-  ) {
-
-  }
+  ) {}
 
   ngOnInit(): void {
     this.layoutSvc.setTitle('Overview');
@@ -40,14 +38,14 @@ export class OverviewComponent implements OnInit, OnDestroy {
   onTabChanged(event) {
     window.dispatchEvent(new Event('resize'));
     this.selectedTabIndex = event.index;
-    console.log(this.selectedTabIndex)
-    if(this.selectedTabIndex == 1){ 
+    console.log(this.selectedTabIndex);
+    if (this.selectedTabIndex == 1) {
       this.tabSvc.subscriptionStatsClicked.next(true);
     }
-    if(this.selectedTabIndex == 2){ 
+    if (this.selectedTabIndex == 2) {
       this.tabSvc.loggingErrorsClicked.next(true);
     }
-    if(this.selectedTabIndex == 3){ 
+    if (this.selectedTabIndex == 3) {
       this.tabSvc.failedEmailsClicked.next(true);
     }
   }

@@ -24,9 +24,8 @@ interface SubscriptionWithEndDate {
   templateUrl: './subscription-status-tab.component.html',
 })
 export class SubscriptionStatusTab implements OnInit {
-
-  @Input() tabClicked : BehaviorSubject<boolean> 
-  clickStatus: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false)
+  @Input() tabClicked: BehaviorSubject<boolean>;
+  clickStatus: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   @ViewChild('endingSoonTable', { read: MatSort, static: true })
   sortEndingSoon: MatSort;
   @ViewChild('inProgressTable', { read: MatSort, static: true })
@@ -82,12 +81,12 @@ export class SubscriptionStatusTab implements OnInit {
     this.endingSoonDataSource = new MatTableDataSource();
     this.inProgressDataSource = new MatTableDataSource();
     this.stoppedDataSource = new MatTableDataSource();
-    this.tabSvc.subscriptionStatsClicked.subscribe(val => {
-      if(val && !this.dataLoaded){
+    this.tabSvc.subscriptionStatsClicked.subscribe((val) => {
+      if (val && !this.dataLoaded) {
         this.refresh();
         this.dataLoaded = true;
       }
-    })
+    });
   }
 
   async refresh() {
