@@ -5,7 +5,7 @@
         {{ templateTestData.name }}
       </h2>
     </thead>
-    <tbody>
+    <tbody cdk-focus-start>
       <tr>
         <th>Email</th>
         <td>{{ templateTestData.email }}</td>
@@ -65,7 +65,6 @@
   <button
     mat-raised-button
     color="primary"
-    [mat-dialog-close]="true"
     (click)="toTemplateDetails(templateTestData.template._id)"
   >
     Template Details
