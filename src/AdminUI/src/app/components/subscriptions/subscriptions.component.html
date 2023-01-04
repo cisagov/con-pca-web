@@ -1,21 +1,10 @@
 <div class="container-fluid">
+  <!-- Search Bar -->
   <div class="d-flex flex-row flex-grow-1">
     <div class="d-flex flex-column w-100">
-      <!-- Search Bar (PAGINATION) -->
-      <!-- <mat-form-field class="search-bar" appearance="outline">
-        <mat-label>Search</mat-label>
-        <input matInput (keyup)="searchFilter($event.target.value)" />
-        <mat-icon matSuffix>search</mat-icon>
-      </mat-form-field> -->
-      <!-- SEARCH BAR (FULL PAGE)-->
       <mat-form-field class="search-bar" appearance="outline">
         <mat-label>Search</mat-label>
-        <input
-          [(ngModel)]="search_input"
-          (keyup)="filterSubscriptions($event.target.value)"
-          matInput
-          placeholder="Search"
-        />
+        <input matInput (keyup)="searchFilter($event.target.value)" />
         <mat-icon matSuffix>search</mat-icon>
       </mat-form-field>
     </div>
@@ -45,12 +34,7 @@
   </div>
 
   <!-- TABLE -->
-  <mat-table
-    [dataSource]="dataSource"
-    [hidden]="loading"
-    matSort
-    (matSortChange)="changeSort($event)"
-  >
+  <mat-table [dataSource]="dataSource" [hidden]="loading" matSort>
     <!-- SUBSCRIPTION NAME -->
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef mat-sort-header
@@ -140,21 +124,6 @@
       </mat-cell>
     </ng-container>
 
-    <!-- IS CONTINUOUS SUBSCRIPTION -->
-    <ng-container matColumnDef="isContinuous">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Continuous</mat-header-cell
-      >
-      <mat-cell *matCellDef="let row">
-        <mat-icon
-          *ngIf="row.subscription.continuous_subscription"
-          aria-hidden="false"
-          aria-label="check_circle icon"
-          >check_circle
-        </mat-icon>
-      </mat-cell>
-    </ng-container>
-
     <!-- ARCHIVED -->
     <ng-container matColumnDef="archived">
       <mat-header-cell *matHeaderCellDef>Archived</mat-header-cell>
@@ -172,12 +141,4 @@
     >
     </mat-row>
   </mat-table>
-  <!-- <mat-paginator
-    [length]="subscriptionCount"
-    [pageSize]="subsPerPage"
-    (page)="paginationChange($event)"
-    [pageSizeOptions]="[5, 10, 25, 100]"
-    aria-label="Select page"
-  >
-  </mat-paginator> -->
 </div>
