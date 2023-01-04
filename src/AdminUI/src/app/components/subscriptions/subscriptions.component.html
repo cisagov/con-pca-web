@@ -34,12 +34,7 @@
   </div>
 
   <!-- TABLE -->
-  <mat-table
-    [dataSource]="dataSource"
-    [hidden]="loading"
-    matSort
-    (matSortChange)="changeSort($event)"
-  >
+  <mat-table [dataSource]="dataSource" [hidden]="loading" matSort>
     <!-- SUBSCRIPTION NAME -->
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef mat-sort-header
@@ -129,21 +124,6 @@
       </mat-cell>
     </ng-container>
 
-    <!-- IS CONTINUOUS SUBSCRIPTION -->
-    <ng-container matColumnDef="isContinuous">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Continuous</mat-header-cell
-      >
-      <mat-cell *matCellDef="let row">
-        <mat-icon
-          *ngIf="row.subscription.continuous_subscription"
-          aria-hidden="false"
-          aria-label="check_circle icon"
-          >check_circle
-        </mat-icon>
-      </mat-cell>
-    </ng-container>
-
     <!-- ARCHIVED -->
     <ng-container matColumnDef="archived">
       <mat-header-cell *matHeaderCellDef>Archived</mat-header-cell>
@@ -161,12 +141,4 @@
     >
     </mat-row>
   </mat-table>
-  <mat-paginator
-    [length]="subscriptionCount"
-    [pageSize]="subsPerPage"
-    (page)="paginationChange($event)"
-    [pageSizeOptions]="[5, 10, 25, 100]"
-    aria-label="Select page"
-  >
-  </mat-paginator>
 </div>
