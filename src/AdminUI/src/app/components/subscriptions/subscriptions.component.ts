@@ -23,6 +23,9 @@ interface ICustomerSubscription {
   startDate: Date;
   numberOfTargets: number;
   lastUpdated: Date;
+  appendixADate: Date;
+  targetDomain: string;
+  isContinuous: boolean;
 }
 
 @Component({
@@ -55,6 +58,8 @@ export class SubscriptionsComponent implements OnInit {
   sortBy = 'name';
   searchFilterStr = '';
   // sortBy: "name"
+
+  search_input = '';
 
   dialogRefConfirm: MatDialogRef<ConfirmComponent>;
   showArchived = false;
@@ -123,6 +128,10 @@ export class SubscriptionsComponent implements OnInit {
     // this.name
   }
 
+  public filterSubscriptions = (value: string) => {
+    this.dataSource.filter = value.trim().toLocaleLowerCase();
+  };
+
   getPageSize() {
     this.subscriptionSvc
       .getSubscriptionCount(this.searchFilterStr, this.showArchived)
@@ -138,16 +147,9 @@ export class SubscriptionsComponent implements OnInit {
 
   refresh() {
     this.loading = true;
-    this.subscriptionSvc
-      .getSubscriptions(
-        this.page,
-        this.subsPerPage,
-        this.sortBy,
-        this.sortOrder,
-        this.searchFilterStr,
-        this.showArchived,
-      )
-      .subscribe((subscriptions: SubscriptionModel[]) => {
+    this.subscriptionSvc.getAllSubscriptions(this.showArchived).subscribe(
+      (subscriptions: SubscriptionModel[]) => {
+        console.log(subscriptions);
         this.customerSvc
           .getCustomers()
           .subscribe((customers: CustomerModel[]) => {
@@ -168,18 +170,64 @@ export class SubscriptionsComponent implements OnInit {
                 startDate: s.start_date,
                 numberOfTargets: s.target_email_list.length,
                 lastUpdated: s.updated,
+                targetDomain: s.target_domain,
+                isContinuous: s.continuous_subscription,
+                appendixADate: cc.appendix_a_date,
               };
               customerSubscriptions.push(customerSubscription);
             });
-            if (this.sortOrder == 'desc') {
-              var orderedData = customerSubscriptions.reverse();
-            } else {
-              var orderedData = customerSubscriptions;
-            }
-            this.dataSource.data = orderedData as ICustomerSubscription[];
+            this.dataSource.data =
+              customerSubscriptions as ICustomerSubscription[];
             this.dataSource.sort = this.sort;
           });
-      });
+      },
+      (failure) => {},
+    );
+
+    //PAGINATION VERSION
+    // this.loading = true;
+    // this.subscriptionSvc
+    //   .getSubscriptions(
+    //     this.page,
+    //     this.subsPerPage,
+    //     this.sortBy,
+    //     this.sortOrder,
+    //     this.searchFilterStr,
+    //     this.showArchived,
+    //   )
+    //   .subscribe((subscriptions: SubscriptionModel[]) => {
+    //     this.customerSvc
+    //       .getCustomers()
+    //       .subscribe((customers: CustomerModel[]) => {
+    //         this.loading = false;
+    //         const customerSubscriptions: ICustomerSubscription[] = [];
+    //         subscriptions.map((s: SubscriptionModel) => {
+    //           const cc = customers.find((o) => o._id === s.customer_id);
+    //           const customerSubscription: ICustomerSubscription = {
+    //             customer: cc,
+    //             subscription: s,
+    //             name: s.name,
+    //             status: s.status,
+    //             primaryContact:
+    //               s.primary_contact.first_name +
+    //               ' ' +
+    //               s.primary_contact.last_name,
+    //             customerName: cc.name,
+    //             startDate: s.start_date,
+    //             numberOfTargets: s.target_email_list.length,
+    //             lastUpdated: s.updated,
+    //           };
+    //           customerSubscriptions.push(customerSubscription);
+    //         });
+    //         if (this.sortOrder == 'desc') {
+    //           var orderedData = customerSubscriptions.reverse();
+    //         } else {
+    //           var orderedData = customerSubscriptions;
+    //         }
+    //         this.dataSource.data = orderedData as ICustomerSubscription[];
+    //         this.dataSource.sort = this.sort;
+    //       });
+    //   });
   }
 
   paginationChange(event) {
