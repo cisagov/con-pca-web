@@ -9,6 +9,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { SelectionModel } from '@angular/cdk/collections';
 import { SettingsService } from 'src/app/services/settings.service';
+import { OverviewTabService } from 'src/app/services/overview-tab.service';
 
 @Component({
   selector: 'app-failed-emails-tab',
@@ -19,6 +20,7 @@ export class FailedEmailsTab implements OnInit {
   @ViewChild('failedTable', { read: MatSort, static: true })
   sortFailed: MatSort;
   loading = false;
+  dataLoaded = false;
   success = false;
 
   search_input = '';
@@ -43,11 +45,17 @@ export class FailedEmailsTab implements OnInit {
     private settingsService: SettingsService,
     private http: HttpClient,
     public dialog: MatDialog,
+    private tabSvc: OverviewTabService,
   ) {}
 
   ngOnInit(): void {
     this.failedSource = new MatTableDataSource();
-    this.refresh();
+    this.tabSvc.failedEmailsClicked.subscribe((val) => {
+      if (val && !this.dataLoaded) {
+        this.refresh();
+        this.dataLoaded = true;
+      }
+    });
   }
 
   public filterEmails = (value: string) => {

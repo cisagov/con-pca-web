@@ -117,6 +117,7 @@ import { ArchiveCustomersDialogComponent } from './components/customer/archive-c
 import { UnarchiveCustomersDialogComponent } from './components/customer/unarchive-customers-dialog/unarchive-customers-dialog.component';
 import { DBManagementService } from './services/db-management.service';
 import { DBManagementComponent } from './components/db-management/db-management.component';
+import { OverviewTabService } from './services/overview-tab.service';
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
   return () => settingsHttpService.initializeApp();
@@ -227,6 +228,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     LandingPageManagerService,
     LayoutMainService,
     LoginService,
+    OverviewTabService,
     RecommendationsService,
     SubscriptionService,
     TagService,
