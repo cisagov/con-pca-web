@@ -94,6 +94,11 @@ export class SubscriptionService {
     return this.http.get(url);
   }
 
+  public resetSubscriptionProcessing(subscription: SubscriptionModel) {
+    const url = `${this.settingsService.settings.apiUrl}/api/subscription/${subscription._id}/resetprocessing/`;
+    return this.http.delete(url);
+  }
+
   patchSubscription(subscription: SubscriptionModel) {
     // This should be the only data that needs patched
     const data = {
