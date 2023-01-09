@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { SubscriptionService } from 'src/app/services/subscription.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import {
   SubscriptionModel,
   TaskModel,
 } from 'src/app/models/subscription.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialogRef, MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { ConfirmComponent } from 'src/app/components/dialogs/confirm/confirm.component';
 import { DatePipe } from '@angular/common';
 
@@ -32,6 +34,8 @@ export class SubscriptionTasksTabComponent implements OnInit {
     private subscriptionSvc: SubscriptionService,
     public dialog: MatDialog,
     private datePipe: DatePipe,
+    private _snackBar: MatSnackBar,
+    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -41,5 +45,22 @@ export class SubscriptionTasksTabComponent implements OnInit {
         this.tasks.data = data.tasks;
       }
     });
+  }
+
+  resetSubscriptionProcessing() {
+    this.subscriptionSvc
+      .resetSubscriptionProcessing(this.subscription)
+      .subscribe(
+        (success) => {
+          this.router.navigate(['/subscriptions']);
+        },
+        (error) => {
+          let snackBarRef = this._snackBar.open(
+            'Failed to reset subscription state',
+            'Dismiss',
+            { duration: 5000 },
+          );
+        },
+      );
   }
 }
