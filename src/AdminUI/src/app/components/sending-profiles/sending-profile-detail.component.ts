@@ -199,7 +199,7 @@ export class SendingProfileDetailComponent implements OnInit {
       },
       (error) => {
         console.log(error);
-        Swal.fire(error);
+        Swal.fire("Error: Couldn't send email. Please check logs.");
       },
     );
   }
