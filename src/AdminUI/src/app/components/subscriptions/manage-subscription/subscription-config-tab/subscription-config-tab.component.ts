@@ -857,12 +857,7 @@ export class SubscriptionConfigTab
   }
 
   isContinuous(): boolean {
-    if (this.subscription.continuous_subscription) {
-      console.log(this.subscription.continuous_subscription);
-      return true;
-    }
-    console.log(this.subscription.continuous_subscription);
-    return false;
+    return this.subscription.continuous_subscription;
   }
 
   /**
