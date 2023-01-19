@@ -656,22 +656,42 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <div class="text-muted">
+        <div>
+          <mat-label class="h6" style="margin-top: 2rem"
+            >Most Recent Cycle Information:</mat-label
+          >
+        </div>
+        <div *ngIf="subscription.cycle_start_date" style="margin-top: 20px">
           <p>
-            All emails will be sent by {{ sendBy | date : "long" }} and the
-            cycle will be completed on {{ endDate | date : "long" }}.
+            Cycle Start Date:
+            {{ subscription.cycle_start_date | date : "long" }}
           </p>
         </div>
-      </div>
+        <div *ngIf="subscription.cycle_send_by_date">
+          <p>
+            Email Send By Date:
+            {{ subscription.cycle_send_by_date | date : "long" }}
+          </p>
+        </div>
+        <div *ngIf="subscription.cycle_end_date">
+          <p>
+            Cycle End Date (end of the cooldown period):
+            {{ subscription.cycle_end_date | date : "long" }}
+          </p>
+        </div>
+        <div *ngIf="subscription.next_cycle_start_date && isContinuous()">
+          <p>
+            Next Cycle Start Date (end of the buffer period):
+            {{ subscription.next_cycle_start_date | date : "long" }}
+          </p>
+        </div>
 
-      <div *ngIf="isContinuous()">
-        <mat-label class="h6" style="margin-top: 2rem"
-          >Next Cycle Date</mat-label
-        >
-        <p>
-          For your information, the next cycle is scheduled to automatically
-          start on {{ nextCycleDate | date : "long" }}
-        </p>
+        <div *ngIf="subscription.next_cycle_start_date && !isContinuous()">
+          <p>
+            If changed to a continuous subscription, the next cycle would start:
+            {{ subscription.next_cycle_start_date | date : "long" }}
+          </p>
+        </div>
       </div>
 
       <div class="d-flex flex-row-reverse justify-content-between">
