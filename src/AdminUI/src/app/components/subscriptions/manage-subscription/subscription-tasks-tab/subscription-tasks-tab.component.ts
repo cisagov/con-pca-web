@@ -19,6 +19,7 @@ import { DatePipe } from '@angular/common';
 export class SubscriptionTasksTabComponent implements OnInit {
   subscription: SubscriptionModel;
   tasks = new MatTableDataSource<TaskModel>();
+  processing = false;
 
   displayedColumns = [
     'message_type',
@@ -43,6 +44,7 @@ export class SubscriptionTasksTabComponent implements OnInit {
       if ('_id' in data) {
         this.subscription = data;
         this.tasks.data = data.tasks;
+        this.processing = this.subscription.processing;
       }
     });
   }
