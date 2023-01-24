@@ -266,8 +266,8 @@ export class SubscriptionStatsTab implements OnInit {
     const blob: Blob = new Blob([this.convertToCSV(data)], {
       type: 'text/csv;charset=utf-8',
     });
-    const url = window.URL.createObjectURL(blob);
-    window.open(url);
+    const filename = `${this.subscription.name}_overview_data`;
+    this.downloadObject(filename, blob);
     this.downloadingSubscription = false;
   }
 
