@@ -96,13 +96,12 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let t of ['status', 'cycle', 'yearly']">
+        <tr *ngFor="let t of ['status', 'cycle']">
           <th>{{ t | titlecase }}</th>
           <td>
             <button
               mat-raised-button
               color="primary"
-              [disabled]="t === 'yearly'"
               (click)="downloadReport(t); $event.preventDefault()"
             >
               <mat-icon>cloud_download</mat-icon>
@@ -112,7 +111,6 @@
             <button
               mat-raised-button
               color="accent"
-              [disabled]="t === 'yearly'"
               (click)="sendReport(t); $event.preventDefault()"
             >
               <mat-icon>email</mat-icon>

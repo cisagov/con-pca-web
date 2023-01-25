@@ -228,11 +228,16 @@ export class SubscriptionStatsTab implements OnInit {
     if (this.subscription.status === 'running') {
       const cycleLength: number = this.subscription.cycle_length_minutes;
       const targetCount: number = this.subscription.target_email_list.length;
-      statusReportDays = `${new Date(
-        this.subscription.tasks.find(
-          (t) => t.task_type === 'status_report',
-        ).scheduled_date,
-      ).toDateString()}`;
+      const statusReportTask = this.subscription.tasks.find(
+        (t) => t.task_type === 'status_report',
+      );
+      if (statusReportTask) {
+        statusReportDays = `${new Date(
+          statusReportTask.scheduled_date,
+        ).toDateString()}`;
+      } else {
+        statusReportDays = 'None';
+      }
       cycleReportDay = `${new Date(
         this.subscription.tasks.find(
           (t) => t.task_type === 'cycle_report',
@@ -261,8 +266,8 @@ export class SubscriptionStatsTab implements OnInit {
     const blob: Blob = new Blob([this.convertToCSV(data)], {
       type: 'text/csv;charset=utf-8',
     });
-    const url = window.URL.createObjectURL(blob);
-    window.open(url);
+    const filename = `${this.subscription.name}_overview_data`;
+    this.downloadObject(filename, blob);
     this.downloadingSubscription = false;
   }
 
