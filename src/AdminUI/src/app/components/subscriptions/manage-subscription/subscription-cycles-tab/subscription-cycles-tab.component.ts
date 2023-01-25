@@ -23,6 +23,7 @@ import {
   ValidatorFn,
 } from '@angular/forms';
 import { ConfirmComponent } from 'src/app/components/dialogs/confirm/confirm.component';
+import { NONE_TYPE } from '@angular/compiler';
 
 @Component({
   selector: 'app-subscription-cycles-tab',
@@ -238,11 +239,40 @@ export class SubscriptionStatsTab implements OnInit {
       } else {
         statusReportDays = 'None';
       }
-      cycleReportDay = `${new Date(
-        this.subscription.tasks.find(
-          (t) => t.task_type === 'cycle_report',
-        ).scheduled_date,
-      ).toDateString()}`;
+      const cycleReportTask = this.subscription.tasks.find(
+        (t) => t.task_type === 'cycle_report',
+      );
+      if (cycleReportTask) {
+        cycleReportDay = `${new Date(
+          cycleReportTask.scheduled_date,
+        ).toDateString()}`;
+      } else {
+        cycleReportDay = 'None';
+      }
+    }
+    if (!this.subscription.start_date) {
+      this.subscription.start_date = null;
+    }
+    if (!this.subscription.primary_contact.email) {
+      this.subscription.primary_contact.email = 'None';
+    }
+    if (!this.subscription.target_email_list) {
+      this.subscription.target_email_list = [];
+    }
+    if (!this.selectedCycle.send_by_date) {
+      this.selectedCycle.send_by_date = null;
+    }
+    if (!this.selectedCycle.end_date) {
+      this.selectedCycle.end_date = null;
+    }
+    if (!this.hourlyRate) {
+      this.hourlyRate = 0;
+    }
+    if (!this.dailyRate) {
+      this.dailyRate = 0;
+    }
+    if (!nextCyclesLaunchDay) {
+      nextCyclesLaunchDay = null;
     }
 
     const data = {
