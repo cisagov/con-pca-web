@@ -1,4 +1,4 @@
-<div class="container-fluid" >
+<div class="container-fluid">
   <div
     *ngIf="this.templatesList.length !== 0"
     class="d-flex justify-content-between mb-2"
@@ -558,7 +558,11 @@
       </div>
     </div>
 
-    <div class="col-4 border-left" [formGroup]="currentTemplateFormGroup" [style.height.px]="body_content_height">
+    <div
+      class="col-4 border-left"
+      [formGroup]="currentTemplateFormGroup"
+      [style.height.px]="body_content_height"
+    >
       <h2>
         <a target="_blank" href="/assets/htmlhelp/deception_calculator.htm"
           >Deception Calculator</a

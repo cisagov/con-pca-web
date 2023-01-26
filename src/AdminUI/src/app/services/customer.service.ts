@@ -32,7 +32,7 @@ export class CustomerService {
     this.showCustomerInfoStatus.next(show);
   }
 
-  setIsSubPage(input: boolean){
+  setIsSubPage(input: boolean) {
     this.setTitle = input;
   }
 

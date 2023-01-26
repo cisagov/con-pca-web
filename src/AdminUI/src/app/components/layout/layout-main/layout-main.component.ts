@@ -23,9 +23,9 @@ import { LoginService } from 'src/app/services/login.service';
 export class LayoutMainComponent implements OnInit {
   isDark: boolean = false;
   currentUserName: string = '';
-  environment: string = "test"
-  footerColor: string = "primary"
-  footerText: string = ""
+  environment: string = 'test';
+  footerColor: string = 'primary';
+  footerText: string = '';
 
   constructor(
     private themeSvc: ThemeService,
@@ -42,9 +42,9 @@ export class LayoutMainComponent implements OnInit {
     }
     this.currentUserName = this.userAuthSvc.currentAuthUser;
     this.environment = this.settingsSvc.settings.environment;
-    this.setFooterColorAndText()
-    console.log(this.settingsSvc.settings)
-    console.log(this.footerText)
+    this.setFooterColorAndText();
+    console.log(this.settingsSvc.settings);
+    console.log(this.footerText);
   }
 
   @ViewChild('drawer', { static: false })
@@ -52,26 +52,26 @@ export class LayoutMainComponent implements OnInit {
   @ViewChild('mainContent', { static: false })
   mainContent;
 
-  setFooterColorAndText(){
-    switch(this.settingsSvc.settings.environment){
-      case  "dev": {
-        this.footerColor = '#F26419'
-        this.footerText = "Dev Environemnt"
-        console.log("DEV")
+  setFooterColorAndText() {
+    switch (this.settingsSvc.settings.environment) {
+      case 'dev': {
+        this.footerColor = '#F26419';
+        this.footerText = 'Dev Environemnt';
+        console.log('DEV');
         break;
       }
-      case  "test": {
-        this.footerColor = '#F6AE2D'
-        this.footerText = "Test Environemnt"
+      case 'test': {
+        this.footerColor = '#F6AE2D';
+        this.footerText = 'Test Environemnt';
         break;
       }
-      case  "staging": {
-        this.footerColor = '#2F4858'
-        this.footerText = "Staging Environemnt"
+      case 'staging': {
+        this.footerColor = '#2F4858';
+        this.footerText = 'Staging Environemnt';
         break;
       }
       default: {
-        this.footerColor = '#3c6f8e'
+        this.footerColor = '#3c6f8e';
         break;
       }
     }

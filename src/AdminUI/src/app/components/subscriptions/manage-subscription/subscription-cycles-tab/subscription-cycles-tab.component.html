@@ -101,7 +101,7 @@
           <th>{{ t | titlecase }}</th>
           <td>
             <button
-            [disabled]="selectedCycle.active && t == 'cycle' ? true : null"
+              [disabled]="selectedCycle.active && t == 'cycle' ? true : null"
               mat-raised-button
               color="primary"
               (click)="downloadReport(t); $event.preventDefault()"

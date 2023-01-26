@@ -177,7 +177,7 @@ export class AddCustomerComponent
     public layoutSvc: LayoutMainService,
     private changeDetectorRef: ChangeDetectorRef,
   ) {
-    if(!this.customerSvc.setTitle){
+    if (!this.customerSvc.setTitle) {
       this.layoutSvc.setTitle('New Customer');
     }
   }
