@@ -56,18 +56,17 @@ export class LayoutMainComponent implements OnInit {
     switch (this.settingsSvc.settings.environment) {
       case 'dev': {
         this.footerColor = '#F26419';
-        this.footerText = 'Dev Environemnt';
-        console.log('DEV');
+        this.footerText = 'Sandbox';
         break;
       }
       case 'test': {
         this.footerColor = '#F6AE2D';
-        this.footerText = 'Test Environemnt';
+        this.footerText = 'Test';
         break;
       }
       case 'staging': {
-        this.footerColor = '#2F4858';
-        this.footerText = 'Staging Environemnt';
+        this.footerColor = '#e3021c';
+        this.footerText = 'Staging';
         break;
       }
       default: {
