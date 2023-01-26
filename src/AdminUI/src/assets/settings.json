@@ -1,5 +1,6 @@
 {
   "apiUrl": "http://localhost:5000",
   "apiUrlHeadless": "http://pca-api:5000",
-  "domainManagementURL": "http://localhost:4201"
+  "domainManagementURL": "http://localhost:4201",
+  "environment": "dev"
 }

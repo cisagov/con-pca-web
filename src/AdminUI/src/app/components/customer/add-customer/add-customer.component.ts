@@ -177,7 +177,9 @@ export class AddCustomerComponent
     public layoutSvc: LayoutMainService,
     private changeDetectorRef: ChangeDetectorRef,
   ) {
-    this.layoutSvc.setTitle('New Customer');
+    if (!this.customerSvc.setTitle) {
+      this.layoutSvc.setTitle('New Customer');
+    }
   }
 
   ngOnInit(): void {

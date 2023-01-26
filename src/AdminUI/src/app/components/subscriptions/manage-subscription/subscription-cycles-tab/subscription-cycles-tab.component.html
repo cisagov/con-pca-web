@@ -75,6 +75,7 @@
       mat-raised-button
       color="primary"
       class="mb-3"
+      style="margin-top: 10px"
       (click)="downloadCycleData(); $event.preventDefault()"
     >
       Download Cycle Data
@@ -100,6 +101,7 @@
           <th>{{ t | titlecase }}</th>
           <td>
             <button
+              [disabled]="selectedCycle.active && t == 'cycle' ? true : null"
               mat-raised-button
               color="primary"
               (click)="downloadReport(t); $event.preventDefault()"
@@ -109,6 +111,7 @@
           </td>
           <td>
             <button
+              [disabled]="selectedCycle.active && t == 'cycle' ? true : null"
               mat-raised-button
               color="accent"
               (click)="sendReport(t); $event.preventDefault()"
