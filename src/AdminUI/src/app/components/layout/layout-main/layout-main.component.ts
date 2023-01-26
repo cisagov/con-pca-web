@@ -11,6 +11,7 @@ import { ThemeService } from '../../../services/theme.service';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { UserAuthService } from '../../../services/user-auth.service';
 import { Location } from '@angular/common';
+import { SettingsService } from 'src/app/services/settings.service';
 import { LoginService } from 'src/app/services/login.service';
 
 @Component({
@@ -22,11 +23,15 @@ import { LoginService } from 'src/app/services/login.service';
 export class LayoutMainComponent implements OnInit {
   isDark: boolean = false;
   currentUserName: string = '';
+  environment: string = "test"
+  footerColor: string = "primary"
+  footerText: string = ""
 
   constructor(
     private themeSvc: ThemeService,
     public layoutSvc: LayoutMainService,
     private userAuthSvc: UserAuthService,
+    public settingsSvc: SettingsService,
     private loginSvc: LoginService,
     public overlayContainer: OverlayContainer,
     public location: Location,
@@ -36,12 +41,41 @@ export class LayoutMainComponent implements OnInit {
       overlayContainer.getContainerElement().classList.add('theme-alternate');
     }
     this.currentUserName = this.userAuthSvc.currentAuthUser;
+    this.environment = this.settingsSvc.settings.environment;
+    this.setFooterColorAndText()
+    console.log(this.settingsSvc.settings)
+    console.log(this.footerText)
   }
 
   @ViewChild('drawer', { static: false })
   drawer: MatSidenav;
   @ViewChild('mainContent', { static: false })
   mainContent;
+
+  setFooterColorAndText(){
+    switch(this.settingsSvc.settings.environment){
+      case  "dev": {
+        this.footerColor = '#F26419'
+        this.footerText = "Dev Environemnt"
+        console.log("DEV")
+        break;
+      }
+      case  "test": {
+        this.footerColor = '#F6AE2D'
+        this.footerText = "Test Environemnt"
+        break;
+      }
+      case  "staging": {
+        this.footerColor = '#2F4858'
+        this.footerText = "Staging Environemnt"
+        break;
+      }
+      default: {
+        this.footerColor = '#3c6f8e'
+        break;
+      }
+    }
+  }
 
   setTheme(event) {
     this.themeSvc.storeTheme(event.checked);

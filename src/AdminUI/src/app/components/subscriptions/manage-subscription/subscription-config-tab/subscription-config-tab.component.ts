@@ -767,11 +767,12 @@ export class SubscriptionConfigTab
     const dialogConfig = new MatDialogConfig();
     dialogConfig.maxHeight = '80vh';
     dialogConfig.width = '80vw';
-    dialogConfig.data = {};
+    dialogConfig.data = {onSub: 'true'};
     const dialogRef = this.dialog.open(CustomerDialogComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe((value) => {
       this.setCustomer();
+      this.layoutSvc.setTitle("New Subscription")
     });
   }
 

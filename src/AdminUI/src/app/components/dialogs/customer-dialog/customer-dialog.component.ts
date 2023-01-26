@@ -12,12 +12,18 @@ export class CustomerDialogComponent implements OnInit {
     public customerSvc: CustomerService,
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.customerSvc.setIsSubPage(true)
+  }
 
   /**
    *
    */
   onCancelClick() {
+    this.customerSvc.setIsSubPage(false)
     this.dialogRef.close();
+  }
+
+  onClose() {
   }
 }
