@@ -25,8 +25,8 @@ export class UtilitiesTab implements OnInit {
     URL.revokeObjectURL(objectUrl);
   }
 
-  dsvToBlob(tsv) {
-    var contentType = 'text/tsv';
+  csvToBlob(tsv) {
+    var contentType = 'text/csv';
     var tsvFile = new Blob([tsv], { type: contentType });
     return tsvFile;
   }
@@ -51,13 +51,13 @@ export class UtilitiesTab implements OnInit {
     return csv;
   }
 
-  downloadContactsDSV() {
+  downloadContactsCSV() {
     if (confirm('Download contact data?')) {
       this.utilitiesSvc.getContacts().subscribe(
         (json) => {
           this.downloadObject(
-            `contact_data.dsv`,
-            this.dsvToBlob(this.jsonToCSV(json)),
+            `contact_data.csv`,
+            this.csvToBlob(this.jsonToCSV(json)),
           );
         },
         (error) => {
@@ -72,13 +72,13 @@ export class UtilitiesTab implements OnInit {
     }
   }
 
-  downloadOverdueTasksDSV() {
+  downloadOverdueTasksCSV() {
     if (confirm('Download overdue tasks data?')) {
       this.utilitiesSvc.getOverdueTasks().subscribe(
         (json) => {
           this.downloadObject(
-            `overdue_tasks.dsv`,
-            this.dsvToBlob(this.jsonToCSV(json)),
+            `overdue_tasks.csv`,
+            this.csvToBlob(this.jsonToCSV(json)),
           );
         },
         (error) => {
@@ -93,13 +93,13 @@ export class UtilitiesTab implements OnInit {
     }
   }
 
-  downloadOverdueSubscriptionsDSV() {
+  downloadOverdueSubscriptionsCSV() {
     if (confirm('Download overdue subscriptions data?')) {
       this.utilitiesSvc.getOverdueSubs().subscribe(
         (json) => {
           this.downloadObject(
-            `overdue_subscriptions.dsv`,
-            this.dsvToBlob(this.jsonToCSV(json)),
+            `overdue_subscriptions.csv`,
+            this.csvToBlob(this.jsonToCSV(json)),
           );
         },
         (error) => {
