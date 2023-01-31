@@ -31,20 +31,20 @@ export class UtilitiesTab implements OnInit {
     return tsvFile;
   }
 
-  jsonToDSV(json) {
+  jsonToCSV(json) {
     console.log(json);
     const replacer = (key, value) => (value === null ? 'null' : value);
     console.log(replacer);
     const header = Object.keys(json[0]);
     console.log(header);
     const csv = [
-      header.join('|'),
+      header.join(','),
       ...json.map((row) =>
         header
           .map((fieldName) =>
             JSON.stringify(row[fieldName], replacer).replace(/\"/g, ''),
           )
-          .join('|'),
+          .join(','),
       ),
     ].join('\r\n');
     console.log(csv);
@@ -57,7 +57,7 @@ export class UtilitiesTab implements OnInit {
         (json) => {
           this.downloadObject(
             `contact_data.dsv`,
-            this.dsvToBlob(this.jsonToDSV(json)),
+            this.dsvToBlob(this.jsonToCSV(json)),
           );
         },
         (error) => {
@@ -78,7 +78,7 @@ export class UtilitiesTab implements OnInit {
         (json) => {
           this.downloadObject(
             `overdue_tasks.dsv`,
-            this.dsvToBlob(this.jsonToDSV(json)),
+            this.dsvToBlob(this.jsonToCSV(json)),
           );
         },
         (error) => {
@@ -99,7 +99,7 @@ export class UtilitiesTab implements OnInit {
         (json) => {
           this.downloadObject(
             `overdue_subscriptions.dsv`,
-            this.dsvToBlob(this.jsonToDSV(json)),
+            this.dsvToBlob(this.jsonToCSV(json)),
           );
         },
         (error) => {
