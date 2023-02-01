@@ -482,13 +482,13 @@
       <div class="text-muted">
         <em>Target Count: {{ subscription.target_email_list.length }}</em>
       </div>
-      <div class="text-muted mb-3">
-        Targets list last updated by:
+      <div *ngIf="targetUpdatedUsernameExists()" class="text-muted mb-3">
+        Target list last updated by:
         {{ subscription.targets_updated_username }}
       </div>
       <div class="text-muted">
         *Note while a subscription is actively running, changes to the email
-        list will not take effect until the next 90 day cycle.
+        list will not take effect until the next cycle.
       </div>
 
       <!-- Status Report Frequency -->

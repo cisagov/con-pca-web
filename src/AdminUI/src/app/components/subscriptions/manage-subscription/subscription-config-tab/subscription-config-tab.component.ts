@@ -859,6 +859,17 @@ export class SubscriptionConfigTab
     this.f.csvText.setValue(e.target.value);
   }
 
+  targetUpdatedUsernameExists(): boolean {
+    if (
+      typeof this.subscription.targets_updated_username !== 'undefined' &&
+      this.subscription.targets_updated_username !== null
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   isContinuous(): boolean {
     return this.subscription.continuous_subscription;
   }
