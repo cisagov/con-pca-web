@@ -120,6 +120,7 @@ export class SubscriptionService {
       landing_page_id: subscription.landing_page_id,
       landing_page_url: subscription.landing_page_url,
       landing_domain: subscription.landing_domain,
+      targets_updated_username: subscription.targets_updated_username,
     };
 
     return this.http.put(

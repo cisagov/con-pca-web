@@ -479,8 +479,12 @@
           A Target Email Domain must be specified
         </mat-error>
       </mat-form-field>
-      <div class="text-muted mb-3">
+      <div class="text-muted">
         <em>Target Count: {{ subscription.target_email_list.length }}</em>
+      </div>
+      <div class="text-muted mb-3">
+        Targets list last updated by:
+        {{ subscription.targets_updated_username }}
       </div>
       <div class="text-muted">
         *Note while a subscription is actively running, changes to the email

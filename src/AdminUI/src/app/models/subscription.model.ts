@@ -76,6 +76,7 @@ export class SubscriptionModel {
   landing_domain: string;
   updated: Date;
   processing: boolean;
+  targets_updated_username: string;
 
   // Helper attributes
   cycles: CycleModel[];

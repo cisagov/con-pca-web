@@ -66,6 +66,7 @@ export class SubscriptionConfigTab
 
   processing = false;
   saving = false;
+  targets_changed = false;
 
   actionEDIT = 'edit';
   actionCREATE = 'create';
@@ -340,6 +341,7 @@ export class SubscriptionConfigTab
     // On changes to targets
     this.angular_subs.push(
       this.f.csvText.valueChanges.subscribe((val) => {
+        this.targets_changed = true;
         this.evaluateTargetList(false);
         this.getValidationMessage();
         this.checkValid();
@@ -1020,9 +1022,13 @@ export class SubscriptionConfigTab
     // set the target list
     const csv = this.f.csvText.value;
     sub.target_email_list = this.buildTargetsFromCSV(csv);
+    if (this.targets_changed) {
+      sub.targets_updated_username = localStorage.getItem('username');
+    }
 
     if (this.pageMode === 'CREATE') {
       sub.target_email_list = sub.target_email_list;
+      sub.targets_updated_username = localStorage.getItem('username');
     }
     sub.target_domain = this.target_email_domain.value;
     sub.sending_profile_id = this.f.sendingProfile.value;
