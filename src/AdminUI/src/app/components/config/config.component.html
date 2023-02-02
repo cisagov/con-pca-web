@@ -1,4 +1,24 @@
 <mat-card>
+  <h2>Version Details</h2>
+  <mat-card-content>
+    <h5>Current UI version</h5>
+    <div class="text-muted desc-field">
+      {{ aboutData.ui_commit_id }}
+    </div>
+
+    <h5>Current API version</h5>
+    <div class="text-muted desc-field">
+      {{ aboutData.api_commit_id }}
+    </div>
+
+    <h5>Date Last Deployed</h5>
+    <div class="text-muted desc-field">
+      {{ aboutData.deployed_date }}
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<mat-card>
   <h2>Reporting Emails</h2>
   <!-- From Address -->
   <mat-form-field appearance="outline" class="w-100">
