@@ -482,9 +482,10 @@
       <div class="text-muted">
         <em>Target Count: {{ subscription.target_email_list.length }}</em>
       </div>
-      <div *ngIf="targetUpdatedUsernameExists()" class="text-muted mb-3">
+      <div *ngIf="targetUpdatedInfoExists()" class="text-muted mb-3">
         Target list last updated by:
-        {{ subscription.targets_updated_username }}
+        {{ subscription.targets_updated_username }} at
+        {{ subscription.targets_updated_time | date : "long" }}
       </div>
       <div class="text-muted">
         *Note while a subscription is actively running, changes to the email

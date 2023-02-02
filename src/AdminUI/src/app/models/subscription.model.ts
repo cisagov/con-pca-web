@@ -77,6 +77,7 @@ export class SubscriptionModel {
   updated: Date;
   processing: boolean;
   targets_updated_username: string;
+  targets_updated_time: Date;
 
   // Helper attributes
   cycles: CycleModel[];
