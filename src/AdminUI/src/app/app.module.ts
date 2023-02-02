@@ -97,6 +97,7 @@ import { PasswordResetComponent } from './components/password-reset/password-res
 import { RecommendationsListComponent } from './components/recommendations/recommendations.component';
 import { RecommendationDetailComponent } from './components/recommendations/recommendation-details.component';
 import { RecommendationsService } from './services/recommendations.service';
+import { AboutService } from './services/about.service';
 import { AlertsService } from './services/alerts.service';
 import { ConfigService } from './services/config.service';
 import { SubscriptionTestingTabComponent } from './components/subscriptions/manage-subscription/subscription-testing-tab/subscription-testing-tab.component';
@@ -221,6 +222,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     NgxMatTimepickerModule,
   ],
   providers: [
+    AboutService,
     AlertsService,
     ConfigService,
     CustomerService,
