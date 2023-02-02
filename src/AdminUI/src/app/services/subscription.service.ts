@@ -56,11 +56,50 @@ export class SubscriptionService {
     );
   }
 
-  public getSubscriptions(archived = false) {
-    let url = `${this.settingsService.settings.apiUrl}/api/subscriptions/`;
+  public getSubscriptions(
+    page,
+    pageSize,
+    sortBy,
+    sortOrder = 'asc',
+    searchFilter = '',
+    archived = false,
+  ) {
+    console.log(sortBy);
+    let url = `${this.settingsService.settings.apiUrl}/api/subscriptionspaged/${page}/${pageSize}/${sortBy}/${sortOrder}/`;
 
+    let multiple = false;
     if (archived) {
       url = `${url}?archived=true`;
+      multiple = true;
+    }
+    if (searchFilter != '') {
+      if (multiple) {
+        url += '&';
+      } else {
+        url += '?';
+      }
+      multiple = true;
+      url = `${url}searchFilter=${searchFilter}`;
+    }
+    return this.http.get(url);
+  }
+
+  public getSubscriptionCount(searchFilter = '', archived = false) {
+    let url = `${this.settingsService.settings.apiUrl}/api/subscriptions/count/`;
+
+    let multiple = false;
+    if (archived) {
+      url = `${url}?archived=true`;
+      multiple = true;
+    }
+    if (searchFilter != '') {
+      if (multiple) {
+        url += '&';
+      } else {
+        url += '?';
+      }
+      multiple = true;
+      url = `${url}searchFilter=${searchFilter}`;
     }
     return this.http.get(url);
   }
@@ -120,6 +159,8 @@ export class SubscriptionService {
       landing_page_id: subscription.landing_page_id,
       landing_page_url: subscription.landing_page_url,
       landing_domain: subscription.landing_domain,
+      targets_updated_username: subscription.targets_updated_username,
+      targets_updated_time: subscription.targets_updated_time,
     };
 
     return this.http.put(
