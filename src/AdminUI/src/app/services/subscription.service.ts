@@ -64,7 +64,6 @@ export class SubscriptionService {
     searchFilter = '',
     archived = false,
   ) {
-    console.log(sortBy);
     let url = `${this.settingsService.settings.apiUrl}/api/subscriptionspaged/${page}/${pageSize}/${sortBy}/${sortOrder}/`;
 
     let multiple = false;

@@ -1114,7 +1114,6 @@ export class SubscriptionConfigTab
         this.processing = false;
       },
       (error) => {
-        console.log(sub._id);
         this.processing = false;
         this.loading = false;
         this.dialog.open(AlertComponent, {
@@ -1397,7 +1396,6 @@ export class SubscriptionConfigTab
           if (resp.success) {
             this.isValidConfig = true;
           } else {
-            console.log(resp.message);
             if (status !== 'running') {
               this.isValidConfig = false;
               this.validConfigMessage = resp.message;

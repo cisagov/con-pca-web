@@ -80,7 +80,7 @@ export class SubscriptionModel {
   targets_updated_time: Date;
 
   // Helper attributes
-  cycles: CycleModel[];
+  cycles?: CycleModel[];
 
   public constructor(init?: Partial<SubscriptionModel>) {
     Object.assign(this, init);

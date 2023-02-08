@@ -1,4 +1,4 @@
-<div *ngIf="subscription['cycles']" class="w-100">
+<div *ngIf="selectedCycle; else no_cycles" class="w-100">
   <mat-card>
     <mat-card-title>Cycles</mat-card-title>
     <div class="cycle-select-wrapper" *ngIf="subscription">
@@ -196,9 +196,12 @@
     </div>
   </mat-card>
 </div>
-<div *ngIf="!subscription['cycles']" class="w-100">
+<ng-template #no_cycles>
   <mat-card>
-    <mat-card-title> Statistics </mat-card-title>
-    Statistics will be shown once a campaign has begun
+    <mat-card-title>Cycles</mat-card-title>
+    <div class="flex flex-row">
+      <strong>No Cycles found.</strong> Statistics will be shown here once a
+      cycle has started.
+    </div>
   </mat-card>
-</div>
+</ng-template>

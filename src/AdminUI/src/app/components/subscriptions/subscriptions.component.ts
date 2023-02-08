@@ -81,7 +81,6 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   changeSort(sortEvent) {
-    console.log(sortEvent);
     this.sortOrder = sortEvent.direction;
     if (sortEvent.direction == '') {
       this.sortOrder = 'asc';
@@ -185,7 +184,6 @@ export class SubscriptionsComponent implements OnInit {
     this.page = event.pageIndex;
     this.subsPerPage = event.pageSize;
     this.refresh();
-    console.log(event);
   }
 
   private setFilterPredicate() {

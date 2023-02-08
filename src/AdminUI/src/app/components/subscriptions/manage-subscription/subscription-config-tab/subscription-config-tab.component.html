@@ -661,41 +661,44 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <div>
-          <mat-label class="h6" style="margin-top: 2rem"
-            >Most Recent Cycle Information:</mat-label
-          >
-        </div>
-        <div *ngIf="subscription.cycle_start_date" style="margin-top: 20px">
-          <p>
-            Cycle Start Date:
-            {{ subscription.cycle_start_date | date : "long" }}
-          </p>
-        </div>
-        <div *ngIf="subscription.cycle_send_by_date">
-          <p>
-            Email Send By Date:
-            {{ subscription.cycle_send_by_date | date : "long" }}
-          </p>
-        </div>
-        <div *ngIf="subscription.cycle_end_date">
-          <p>
-            Cycle End Date (end of the cooldown period):
-            {{ subscription.cycle_end_date | date : "long" }}
-          </p>
-        </div>
-        <div *ngIf="subscription.next_cycle_start_date && isContinuous()">
-          <p>
-            Next Cycle Start Date (end of the buffer period):
-            {{ subscription.next_cycle_start_date | date : "long" }}
-          </p>
-        </div>
+        <div *ngIf="subscription.cycle_start_date">
+          <div>
+            <mat-label class="h6" style="margin-top: 2rem"
+              >Most Recent Cycle Information:</mat-label
+            >
+          </div>
+          <div *ngIf="subscription.cycle_start_date" style="margin-top: 20px">
+            <p>
+              Cycle Start Date:
+              {{ subscription.cycle_start_date | date : "long" }}
+            </p>
+          </div>
+          <div *ngIf="subscription.cycle_send_by_date">
+            <p>
+              Email Send By Date:
+              {{ subscription.cycle_send_by_date | date : "long" }}
+            </p>
+          </div>
+          <div *ngIf="subscription.cycle_end_date">
+            <p>
+              Cycle End Date (end of the cooldown period):
+              {{ subscription.cycle_end_date | date : "long" }}
+            </p>
+          </div>
+          <div *ngIf="subscription.next_cycle_start_date && isContinuous()">
+            <p>
+              Next Cycle Start Date (end of the buffer period):
+              {{ subscription.next_cycle_start_date | date : "long" }}
+            </p>
+          </div>
 
-        <div *ngIf="subscription.next_cycle_start_date && !isContinuous()">
-          <p>
-            If changed to a continuous subscription, the next cycle would start:
-            {{ subscription.next_cycle_start_date | date : "long" }}
-          </p>
+          <div *ngIf="subscription.next_cycle_start_date && !isContinuous()">
+            <p>
+              If changed to a continuous subscription, the next cycle would
+              start:
+              {{ subscription.next_cycle_start_date | date : "long" }}
+            </p>
+          </div>
         </div>
       </div>
 
