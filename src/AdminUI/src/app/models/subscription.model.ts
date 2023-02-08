@@ -49,6 +49,8 @@ export class SubscriptionModel {
   start_date: Date;
   cycle_start_date?: Date;
   cycle_end_date?: Date;
+  cycle_send_by_date?: Date;
+  next_cycle_start_date?: Date;
   appendix_a_date?: Date;
   primary_contact: ContactModel;
   admin_email: string;
@@ -73,9 +75,12 @@ export class SubscriptionModel {
   landing_page_url: string;
   landing_domain: string;
   updated: Date;
+  processing: boolean;
+  targets_updated_username: string;
+  targets_updated_time: Date;
 
   // Helper attributes
-  cycles: CycleModel[];
+  cycles?: CycleModel[];
 
   public constructor(init?: Partial<SubscriptionModel>) {
     Object.assign(this, init);

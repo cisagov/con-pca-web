@@ -479,12 +479,17 @@
           A Target Email Domain must be specified
         </mat-error>
       </mat-form-field>
-      <div class="text-muted mb-3">
+      <div class="text-muted">
         <em>Target Count: {{ subscription.target_email_list.length }}</em>
+      </div>
+      <div *ngIf="targetUpdatedInfoExists()" class="text-muted mb-3">
+        Target list last updated by:
+        {{ subscription.targets_updated_username }} at
+        {{ subscription.targets_updated_time | date : "long" }}
       </div>
       <div class="text-muted">
         *Note while a subscription is actively running, changes to the email
-        list will not take effect until the next 90 day cycle.
+        list will not take effect until the next cycle.
       </div>
 
       <!-- Status Report Frequency -->
@@ -629,7 +634,7 @@
       <!-- Buffer Time -->
       <mat-label class="h7" *ngIf="isContinuous()">Buffer Time</mat-label>
       <div class="mb-2">
-        <div class="text-muted">
+        <div class="text-muted" *ngIf="isContinuous()">
           Time added to create a buffer at the end date of each cycle. (Must be
           between 15 minutes and 30 days)
         </div>
@@ -656,22 +661,45 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <div class="text-muted">
-          <p>
-            All emails will be sent by {{ sendBy | date : "long" }} and the
-            cycle will be completed on {{ endDate | date : "long" }}.
-          </p>
-        </div>
-      </div>
+        <div *ngIf="subscription.cycle_start_date">
+          <div>
+            <mat-label class="h6" style="margin-top: 2rem"
+              >Most Recent Cycle Information:</mat-label
+            >
+          </div>
+          <div *ngIf="subscription.cycle_start_date" style="margin-top: 20px">
+            <p>
+              Cycle Start Date:
+              {{ subscription.cycle_start_date | date : "long" }}
+            </p>
+          </div>
+          <div *ngIf="subscription.cycle_send_by_date">
+            <p>
+              Email Send By Date:
+              {{ subscription.cycle_send_by_date | date : "long" }}
+            </p>
+          </div>
+          <div *ngIf="subscription.cycle_end_date">
+            <p>
+              Cycle End Date (end of the cooldown period):
+              {{ subscription.cycle_end_date | date : "long" }}
+            </p>
+          </div>
+          <div *ngIf="subscription.next_cycle_start_date && isContinuous()">
+            <p>
+              Next Cycle Start Date (end of the buffer period):
+              {{ subscription.next_cycle_start_date | date : "long" }}
+            </p>
+          </div>
 
-      <div *ngIf="isContinuous()">
-        <mat-label class="h6" style="margin-top: 2rem"
-          >Next Cycle Date</mat-label
-        >
-        <p>
-          For your information, the next cycle is scheduled to automatically
-          start on {{ nextCycleDate | date : "long" }}
-        </p>
+          <div *ngIf="subscription.next_cycle_start_date && !isContinuous()">
+            <p>
+              If changed to a continuous subscription, the next cycle would
+              start:
+              {{ subscription.next_cycle_start_date | date : "long" }}
+            </p>
+          </div>
+        </div>
       </div>
 
       <div class="d-flex flex-row-reverse justify-content-between">

@@ -97,6 +97,7 @@ import { PasswordResetComponent } from './components/password-reset/password-res
 import { RecommendationsListComponent } from './components/recommendations/recommendations.component';
 import { RecommendationDetailComponent } from './components/recommendations/recommendation-details.component';
 import { RecommendationsService } from './services/recommendations.service';
+import { AboutService } from './services/about.service';
 import { AlertsService } from './services/alerts.service';
 import { ConfigService } from './services/config.service';
 import { SubscriptionTestingTabComponent } from './components/subscriptions/manage-subscription/subscription-testing-tab/subscription-testing-tab.component';
@@ -104,8 +105,6 @@ import { GenericViewComponent } from './components/dialogs/generic-view/generic-
 import { RetireTemplatesDialogComponent } from './components/template-manager/retire-templates-dialog/retire-templates-dialog.component';
 import { TemplatesDataService } from './services/templates-data.service';
 import { TestTemplatesDialogComponent } from './components/template-manager/test-templates-dialog/test-templates-dialog.component';
-import { LandingDomainsComponent } from './components/landing-domains/landing-domains.component';
-import { LandingDomainDetailComponent } from './components/landing-domains/landing-domain-detail/landing-domain-detail.component';
 import { NavigateAwayComponent } from './components/dialogs/navigate-away/navigate-away.component';
 import { OverviewComponent } from './components/overview/overview.component';
 import { AggregateStatisticsTab } from './components/overview/aggregate-statistics-tab/aggregate-statistics-tab.component';
@@ -119,6 +118,7 @@ import { ArchiveCustomersDialogComponent } from './components/customer/archive-c
 import { UnarchiveCustomersDialogComponent } from './components/customer/unarchive-customers-dialog/unarchive-customers-dialog.component';
 import { DBManagementService } from './services/db-management.service';
 import { DBManagementComponent } from './components/db-management/db-management.component';
+import { OverviewTabService } from './services/overview-tab.service';
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
   return () => settingsHttpService.initializeApp();
@@ -197,8 +197,6 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     GenericViewComponent,
     TemplateDataDialogComponent,
     TestTemplatesDialogComponent,
-    LandingDomainsComponent,
-    LandingDomainDetailComponent,
     NavigateAwayComponent,
     DBManagementComponent,
     LoggingTab,
@@ -224,6 +222,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     NgxMatTimepickerModule,
   ],
   providers: [
+    AboutService,
     AlertsService,
     ConfigService,
     CustomerService,
@@ -231,6 +230,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     LandingPageManagerService,
     LayoutMainService,
     LoginService,
+    OverviewTabService,
     RecommendationsService,
     SubscriptionService,
     TagService,

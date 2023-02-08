@@ -66,6 +66,7 @@ export class SubscriptionConfigTab
 
   processing = false;
   saving = false;
+  targets_changed = false;
 
   actionEDIT = 'edit';
   actionCREATE = 'create';
@@ -340,6 +341,7 @@ export class SubscriptionConfigTab
     // On changes to targets
     this.angular_subs.push(
       this.f.csvText.valueChanges.subscribe((val) => {
+        this.targets_changed = true;
         this.evaluateTargetList(false);
         this.getValidationMessage();
         this.checkValid();
@@ -767,11 +769,12 @@ export class SubscriptionConfigTab
     const dialogConfig = new MatDialogConfig();
     dialogConfig.maxHeight = '80vh';
     dialogConfig.width = '80vw';
-    dialogConfig.data = {};
+    dialogConfig.data = { onSub: 'true' };
     const dialogRef = this.dialog.open(CustomerDialogComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe((value) => {
       this.setCustomer();
+      this.layoutSvc.setTitle('New Subscription');
     });
   }
 
@@ -856,13 +859,21 @@ export class SubscriptionConfigTab
     this.f.csvText.setValue(e.target.value);
   }
 
-  isContinuous(): boolean {
-    if (this.subscription.continuous_subscription) {
-      console.log(this.subscription.continuous_subscription);
+  targetUpdatedInfoExists(): boolean {
+    if (
+      typeof this.subscription.targets_updated_username !== 'undefined' &&
+      this.subscription.targets_updated_username !== null &&
+      typeof this.subscription.targets_updated_time !== 'undefined' &&
+      this.subscription.targets_updated_time !== null
+    ) {
       return true;
+    } else {
+      return false;
     }
-    console.log(this.subscription.continuous_subscription);
-    return false;
+  }
+
+  isContinuous(): boolean {
+    return this.subscription.continuous_subscription;
   }
 
   /**
@@ -1024,9 +1035,15 @@ export class SubscriptionConfigTab
     // set the target list
     const csv = this.f.csvText.value;
     sub.target_email_list = this.buildTargetsFromCSV(csv);
+    if (this.targets_changed) {
+      sub.targets_updated_username = localStorage.getItem('username');
+      sub.targets_updated_time = new Date();
+    }
 
     if (this.pageMode === 'CREATE') {
       sub.target_email_list = sub.target_email_list;
+      sub.targets_updated_username = localStorage.getItem('username');
+      sub.targets_updated_time = new Date();
     }
     sub.target_domain = this.target_email_domain.value;
     sub.sending_profile_id = this.f.sendingProfile.value;
@@ -1097,7 +1114,6 @@ export class SubscriptionConfigTab
         this.processing = false;
       },
       (error) => {
-        console.log(sub._id);
         this.processing = false;
         this.loading = false;
         this.dialog.open(AlertComponent, {
@@ -1380,7 +1396,6 @@ export class SubscriptionConfigTab
           if (resp.success) {
             this.isValidConfig = true;
           } else {
-            console.log(resp.message);
             if (status !== 'running') {
               this.isValidConfig = false;
               this.validConfigMessage = resp.message;

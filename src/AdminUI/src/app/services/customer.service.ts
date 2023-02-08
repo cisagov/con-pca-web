@@ -23,6 +23,7 @@ export class CustomerService {
 
   showCustomerInfo = false;
   selectedCustomer = '';
+  setTitle = false;
   showCustomerInfoStatus: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(this.showCustomerInfo);
 
@@ -30,6 +31,11 @@ export class CustomerService {
     this.showCustomerInfo = show;
     this.showCustomerInfoStatus.next(show);
   }
+
+  setIsSubPage(input: boolean) {
+    this.setTitle = input;
+  }
+
   getCustomerInfoStatus() {
     return this.showCustomerInfoStatus;
   }

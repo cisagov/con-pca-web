@@ -56,6 +56,7 @@ export class CustomersComponent implements OnInit {
     private router: Router,
   ) {
     this.customerSvc.setCustomerInfo(false);
+    this.customerSvc.setIsSubPage(false);
   }
 
   ngOnInit(): void {
@@ -80,6 +81,7 @@ export class CustomersComponent implements OnInit {
 
   private refresh(): void {
     if (!this.insideDialog) {
+      // if(this.customerSvc.setTitle){
       this.layout_service.setTitle('Customers');
     }
     this.loading = true;

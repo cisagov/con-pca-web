@@ -85,6 +85,7 @@
       class="add-button"
       color="primary"
       (click)="onSendTestClick()"
+      [disabled]="!testEmail"
     >
       Send Test Email
     </button>

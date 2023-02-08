@@ -56,8 +56,15 @@ export class SubscriptionService {
     );
   }
 
-  public getSubscriptionCount(searchFilter = '', archived = false) {
-    let url = `${this.settingsService.settings.apiUrl}/api/subscriptions/count/`;
+  public getSubscriptions(
+    page,
+    pageSize,
+    sortBy,
+    sortOrder = 'asc',
+    searchFilter = '',
+    archived = false,
+  ) {
+    let url = `${this.settingsService.settings.apiUrl}/api/subscriptionspaged/${page}/${pageSize}/${sortBy}/${sortOrder}/`;
 
     let multiple = false;
     if (archived) {
@@ -76,16 +83,8 @@ export class SubscriptionService {
     return this.http.get(url);
   }
 
-  public getSubscriptions(
-    page,
-    pageSize,
-    sortBy,
-    sortOrder = 'asc',
-    searchFilter = '',
-    archived = false,
-  ) {
-    console.log(sortBy);
-    let url = `${this.settingsService.settings.apiUrl}/api/subscriptionspaged/${page}/${pageSize}/${sortBy}/${sortOrder}/`;
+  public getSubscriptionCount(searchFilter = '', archived = false) {
+    let url = `${this.settingsService.settings.apiUrl}/api/subscriptions/count/`;
 
     let multiple = false;
     if (archived) {
@@ -133,6 +132,11 @@ export class SubscriptionService {
     return this.http.get(url);
   }
 
+  public resetSubscriptionProcessing(subscription: SubscriptionModel) {
+    const url = `${this.settingsService.settings.apiUrl}/api/subscription/${subscription._id}/resetprocessing/`;
+    return this.http.delete(url);
+  }
+
   patchSubscription(subscription: SubscriptionModel) {
     // This should be the only data that needs patched
     const data = {
@@ -154,6 +158,8 @@ export class SubscriptionService {
       landing_page_id: subscription.landing_page_id,
       landing_page_url: subscription.landing_page_url,
       landing_domain: subscription.landing_domain,
+      targets_updated_username: subscription.targets_updated_username,
+      targets_updated_time: subscription.targets_updated_time,
     };
 
     return this.http.put(

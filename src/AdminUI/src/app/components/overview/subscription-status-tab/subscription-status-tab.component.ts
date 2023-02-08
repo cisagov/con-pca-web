@@ -1,10 +1,12 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
+import { BehaviorSubject } from 'rxjs';
 import { AppSettings } from 'src/app/AppSettings';
 import { SubscriptionModel } from 'src/app/models/subscription.model';
+import { OverviewTabService } from 'src/app/services/overview-tab.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 
 interface SubscriptionWithEndDate {
@@ -22,6 +24,8 @@ interface SubscriptionWithEndDate {
   templateUrl: './subscription-status-tab.component.html',
 })
 export class SubscriptionStatusTab implements OnInit {
+  @Input() tabClicked: BehaviorSubject<boolean>;
+  clickStatus: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   @ViewChild('endingSoonTable', { read: MatSort, static: true })
   sortEndingSoon: MatSort;
   @ViewChild('inProgressTable', { read: MatSort, static: true })
@@ -29,6 +33,7 @@ export class SubscriptionStatusTab implements OnInit {
   @ViewChild('stoppedTable', { read: MatSort, static: true })
   sortStopped: MatSort;
   loading: boolean = false;
+  dataLoaded: boolean = false;
 
   dateFormat = AppSettings.DATE_FORMAT;
 
@@ -67,13 +72,21 @@ export class SubscriptionStatusTab implements OnInit {
   constructor(
     private router: Router,
     private subscriptionSvc: SubscriptionService,
-  ) {}
+    private tabSvc: OverviewTabService,
+  ) {
+    this.clickStatus = this.tabClicked;
+  }
 
   ngOnInit(): void {
     this.endingSoonDataSource = new MatTableDataSource();
     this.inProgressDataSource = new MatTableDataSource();
     this.stoppedDataSource = new MatTableDataSource();
-    this.refresh();
+    this.tabSvc.subscriptionStatsClicked.subscribe((val) => {
+      if (val && !this.dataLoaded) {
+        this.refresh();
+        this.dataLoaded = true;
+      }
+    });
   }
 
   async refresh() {

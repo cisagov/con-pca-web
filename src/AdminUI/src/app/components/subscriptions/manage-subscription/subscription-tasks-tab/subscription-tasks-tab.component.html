@@ -45,4 +45,25 @@
       </mat-table>
     </div>
   </mat-card>
+  <mat-card>
+    <mat-label class="h6" style="margin-top: 100px">Troubleshooting</mat-label>
+    <table class="table" style="max-width: 33rem; margin-top: 25px">
+      <tr>
+        <td>Processing</td>
+        <td>{{ processing }}</td>
+      </tr>
+    </table>
+    <div class="text-muted">
+      If processing is set to true for longer than 30 minutes and tasks are
+      overdue, try resetting processing for this subscription
+    </div>
+    <button
+      mat-raised-button
+      color="primary"
+      class="mb-3"
+      (click)="resetSubscriptionProcessing()"
+    >
+      Reset Processing
+    </button>
+  </mat-card>
 </div>

@@ -23,6 +23,7 @@ import {
   ValidatorFn,
 } from '@angular/forms';
 import { ConfirmComponent } from 'src/app/components/dialogs/confirm/confirm.component';
+import { NONE_TYPE } from '@angular/compiler';
 
 @Component({
   selector: 'app-subscription-cycles-tab',
@@ -228,16 +229,50 @@ export class SubscriptionStatsTab implements OnInit {
     if (this.subscription.status === 'running') {
       const cycleLength: number = this.subscription.cycle_length_minutes;
       const targetCount: number = this.subscription.target_email_list.length;
-      statusReportDays = `${new Date(
-        this.subscription.tasks.find(
-          (t) => t.task_type === 'status_report',
-        ).scheduled_date,
-      ).toDateString()}`;
-      cycleReportDay = `${new Date(
-        this.subscription.tasks.find(
-          (t) => t.task_type === 'cycle_report',
-        ).scheduled_date,
-      ).toDateString()}`;
+      const statusReportTask = this.subscription.tasks.find(
+        (t) => t.task_type === 'status_report',
+      );
+      if (statusReportTask) {
+        statusReportDays = `${new Date(
+          statusReportTask.scheduled_date,
+        ).toDateString()}`;
+      } else {
+        statusReportDays = 'None';
+      }
+      const cycleReportTask = this.subscription.tasks.find(
+        (t) => t.task_type === 'cycle_report',
+      );
+      if (cycleReportTask) {
+        cycleReportDay = `${new Date(
+          cycleReportTask.scheduled_date,
+        ).toDateString()}`;
+      } else {
+        cycleReportDay = 'None';
+      }
+    }
+    if (!this.subscription.start_date) {
+      this.subscription.start_date = null;
+    }
+    if (!this.subscription.primary_contact.email) {
+      this.subscription.primary_contact.email = 'None';
+    }
+    if (!this.subscription.target_email_list) {
+      this.subscription.target_email_list = [];
+    }
+    if (!this.selectedCycle.send_by_date) {
+      this.selectedCycle.send_by_date = null;
+    }
+    if (!this.selectedCycle.end_date) {
+      this.selectedCycle.end_date = null;
+    }
+    if (!this.hourlyRate) {
+      this.hourlyRate = 0;
+    }
+    if (!this.dailyRate) {
+      this.dailyRate = 0;
+    }
+    if (!nextCyclesLaunchDay) {
+      nextCyclesLaunchDay = null;
     }
 
     const data = {
@@ -261,8 +296,8 @@ export class SubscriptionStatsTab implements OnInit {
     const blob: Blob = new Blob([this.convertToCSV(data)], {
       type: 'text/csv;charset=utf-8',
     });
-    const url = window.URL.createObjectURL(blob);
-    window.open(url);
+    const filename = `${this.subscription.name}_overview_data`;
+    this.downloadObject(filename, blob);
     this.downloadingSubscription = false;
   }
 

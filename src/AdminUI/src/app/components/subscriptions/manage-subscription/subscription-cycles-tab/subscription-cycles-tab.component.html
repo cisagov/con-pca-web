@@ -1,4 +1,4 @@
-<div *ngIf="subscription['cycles']" class="w-100">
+<div *ngIf="selectedCycle; else no_cycles" class="w-100">
   <mat-card>
     <mat-card-title>Cycles</mat-card-title>
     <div class="cycle-select-wrapper" *ngIf="subscription">
@@ -75,6 +75,7 @@
       mat-raised-button
       color="primary"
       class="mb-3"
+      style="margin-top: 10px"
       (click)="downloadCycleData(); $event.preventDefault()"
     >
       Download Cycle Data
@@ -96,13 +97,18 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let t of ['status', 'cycle', 'yearly']">
+        <tr *ngFor="let t of ['status', 'cycle']">
           <th>{{ t | titlecase }}</th>
           <td>
             <button
+              [disabled]="
+                subscription.status == 'created' ||
+                (selectedCycle.active && t == 'cycle')
+                  ? true
+                  : null
+              "
               mat-raised-button
               color="primary"
-              [disabled]="t === 'yearly'"
               (click)="downloadReport(t); $event.preventDefault()"
             >
               <mat-icon>cloud_download</mat-icon>
@@ -110,9 +116,14 @@
           </td>
           <td>
             <button
+              [disabled]="
+                subscription.status == 'created' ||
+                (selectedCycle.active && t == 'cycle')
+                  ? true
+                  : null
+              "
               mat-raised-button
               color="accent"
-              [disabled]="t === 'yearly'"
               (click)="sendReport(t); $event.preventDefault()"
             >
               <mat-icon>email</mat-icon>
@@ -185,9 +196,12 @@
     </div>
   </mat-card>
 </div>
-<div *ngIf="!subscription['cycles']" class="w-100">
+<ng-template #no_cycles>
   <mat-card>
-    <mat-card-title> Statistics </mat-card-title>
-    Statistics will be shown once a campaign has begun
+    <mat-card-title>Cycles</mat-card-title>
+    <div class="flex flex-row">
+      <strong>No Cycles found.</strong> Statistics will be shown here once a
+      cycle has started.
+    </div>
   </mat-card>
-</div>
+</ng-template>
