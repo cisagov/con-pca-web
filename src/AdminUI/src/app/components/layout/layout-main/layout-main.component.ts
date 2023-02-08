@@ -43,8 +43,6 @@ export class LayoutMainComponent implements OnInit {
     this.currentUserName = this.userAuthSvc.currentAuthUser;
     this.environment = this.settingsSvc.settings.environment;
     this.setFooterColorAndText();
-    console.log(this.settingsSvc.settings);
-    console.log(this.footerText);
   }
 
   @ViewChild('drawer', { static: false })
