@@ -25,7 +25,7 @@ export class UtilitiesService {
 
   public getOverdueSubs() {
     const headers = new HttpHeaders().set('content-type', 'application/json');
-    const url = `${this.SettingsService.settings.apiUrl}/api/reports/overduetasks/?overdue_subscriptions=true/`;
+    const url = `${this.SettingsService.settings.apiUrl}/api/reports/overduetasks/?overdue_subscriptions=true`;
     return this.http.get(url, { headers, responseType: 'json' });
   }
 }
