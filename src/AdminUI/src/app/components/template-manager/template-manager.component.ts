@@ -616,7 +616,7 @@ export class TemplateManagerComponent
     this.dialogRefConfirm = this.dialog.open(ConfirmComponent, {
       disableClose: false,
     });
-    this.dialogRefConfirm.componentInstance.confirmMessage = `Are you sure you want to restore ${templateToRestore.name}? Initial Reason for Retiring - ${templateToRestore.retired_description}`;
+    this.dialogRefConfirm.componentInstance.confirmMessage = `Are you sure you want to restore ${templateToRestore.name}? Initial Reason for Retiring - ${templateToRestore.retired_description}.`;
     this.dialogRefConfirm.componentInstance.title = 'Confirm Restore';
 
     this.dialogRefConfirm.afterClosed().subscribe((result) => {

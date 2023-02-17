@@ -982,7 +982,7 @@ export class SubscriptionConfigTab
             this.dialog.open(AlertComponent, {
               data: {
                 title: '',
-                messageText: `Subscription ${this.subscription.name} was stopped`,
+                messageText: `Subscription ${this.subscription.name} was stopped.`,
               },
             });
           },
@@ -1080,7 +1080,7 @@ export class SubscriptionConfigTab
         this.dialog.open(AlertComponent, {
           data: {
             title: '',
-            messageText: 'Your subscription was created as ' + resp.name,
+            messageText: 'Your subscription was created as ' + resp.name + '.',
           },
         });
         this.processing = false;
@@ -1108,7 +1108,7 @@ export class SubscriptionConfigTab
         this.dialog.open(AlertComponent, {
           data: {
             title: '',
-            messageText: 'Your subscription has been saved',
+            messageText: 'Your subscription has been saved.',
           },
         });
         this.processing = false;
