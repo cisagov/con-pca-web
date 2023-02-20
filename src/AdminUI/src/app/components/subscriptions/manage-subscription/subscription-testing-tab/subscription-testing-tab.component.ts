@@ -91,7 +91,7 @@ export class SubscriptionTestingTabComponent implements OnInit {
       this.dialog.open(AlertComponent, {
         data: {
           title: 'Select Contacts',
-          messageText: 'At least a single contact needs to be selected',
+          messageText: 'At least a single contact needs to be selected.',
         },
       });
       return;
