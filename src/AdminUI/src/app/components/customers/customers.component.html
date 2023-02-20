@@ -5,8 +5,7 @@
       <mat-form-field class="d-flex flex-column w-100" appearance="outline">
         <mat-label>Search</mat-label>
         <input
-          [(ngModel)]="search_input"
-          (keyup)="filterCustomers($event.target.value)"
+          (keyup)="searchFilter($event.target.value)"
           matInput
           placeholder="Search"
         />
@@ -72,7 +71,11 @@
       ></mat-spinner>
     </div>
 
-    <mat-table [dataSource]="customersData" [hidden]="loading" matSort>
+    <mat-table 
+      [dataSource]="customersData" 
+      [hidden]="loading" 
+      (matSortChange)="changeSort($event)"
+      matSort>
       <ng-container matColumnDef="select">
         <mat-header-cell *matHeaderCellDef>
           <mat-checkbox
@@ -174,6 +177,14 @@
         (click)="editCustomer(row._id)"
       ></mat-row>
     </mat-table>
+    <mat-paginator
+      [length]="customerCount"
+      [pageSize]="customersPerPage"
+      (page)="paginationChange($event)"
+      [pageSizeOptions]="[5, 10, 25, 100]"
+      aria-label="Select page"
+    >
+    </mat-paginator>
   </div>
   <div class="container-fluid" *ngIf="customerSvc.showCustomerInfo">
     <app-add-customer [inDialog]="'true'"></app-add-customer>
