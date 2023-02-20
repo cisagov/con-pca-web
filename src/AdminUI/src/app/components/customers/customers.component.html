@@ -71,11 +71,12 @@
       ></mat-spinner>
     </div>
 
-    <mat-table 
-      [dataSource]="customersData" 
-      [hidden]="loading" 
+    <mat-table
+      [dataSource]="customersData"
+      [hidden]="loading"
       (matSortChange)="changeSort($event)"
-      matSort>
+      matSort
+    >
       <ng-container matColumnDef="select">
         <mat-header-cell *matHeaderCellDef>
           <mat-checkbox
