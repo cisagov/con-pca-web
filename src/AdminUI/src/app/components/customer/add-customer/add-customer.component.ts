@@ -627,7 +627,7 @@ export class AddCustomerComponent
             this.dialog.open(AlertComponent, {
               data: {
                 title: 'Customer Deleted',
-                messageText: 'Your Customer Was Deleted',
+                messageText: 'Your Customer Was Deleted.',
               },
             });
             this.router.navigate(['/customers']);
