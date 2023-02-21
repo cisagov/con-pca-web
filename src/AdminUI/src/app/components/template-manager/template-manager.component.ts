@@ -576,7 +576,7 @@ export class TemplateManagerComponent
             this.dialog.open(AlertComponent, {
               data: {
                 title: 'Template Deleted',
-                messageText: 'Your Template Was Deleted',
+                messageText: 'Your Template Was Deleted.',
               },
             });
             this.router.navigate(['/templates']);
