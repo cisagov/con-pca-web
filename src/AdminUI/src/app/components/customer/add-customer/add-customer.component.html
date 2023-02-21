@@ -293,6 +293,7 @@
             type="text"
             trim="blur"
             matInput
+            pattern="(^\d{5}$)|(^\d{9}$)|(^\d{5}-\d{4}$)"
             placeholder="Zip"
             formControlName="zip"
             [errorStateMatcher]="matchZip"
@@ -301,6 +302,13 @@
             *ngIf="customerFormGroup.controls.zip.hasError('required')"
           >
             Zip is <strong>required</strong>
+          </mat-error>
+          <mat-error
+            style="display: flex"
+            *ngIf="customerFormGroup.controls.zip.hasError('invalidZip')"
+            class="invalid-feedback"
+          >
+            Invalid Zip Format
           </mat-error>
           <mat-error
             *ngIf="

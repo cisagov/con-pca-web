@@ -6,7 +6,13 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
 } from '@angular/core';
-import { FormControl, Validators, FormGroup } from '@angular/forms';
+import {
+  FormControl,
+  Validators,
+  FormGroup,
+  ValidatorFn,
+  AbstractControl,
+} from '@angular/forms';
 import { MyErrorStateMatcher } from '../../../helper/ErrorStateMatcher';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { ContactModel, CustomerModel } from 'src/app/models/customer.model';
@@ -76,7 +82,7 @@ export class AddCustomerComponent
     address2: new FormControl(''),
     city: new FormControl('', [Validators.required]),
     state: new FormControl('', [Validators.required]),
-    zip: new FormControl('', [Validators.required]),
+    zip: new FormControl('', [Validators.required, this.validZip()]),
     sector: new FormControl(null),
     industry: new FormControl(null),
     customerType: new FormControl('', [Validators.required]),
@@ -656,5 +662,19 @@ export class AddCustomerComponent
         resolve(true);
       }
     });
+  }
+
+  validZip(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: boolean } | null => {
+      let val = control.value;
+      let regex = new RegExp('^[0-9]{5}([- /]?[0-9]{4})?$');
+      let isValid = regex.test(val);
+
+      if (!isValid) {
+        return { invalidZip: true };
+      }
+
+      return null;
+    };
   }
 }

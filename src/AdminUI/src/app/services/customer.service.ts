@@ -77,6 +77,52 @@ export class CustomerService {
     return customerContacts;
   }
 
+  public getCustomerCount(searchFilter = '', archived = false) {
+    let url = `${this.settingsService.settings.apiUrl}/api/customer/count/`;
+
+    let multiple = false;
+    if (archived) {
+      url = `${url}?archived=true`;
+      multiple = true;
+    }
+    if (searchFilter != '') {
+      if (multiple) {
+        url += '&';
+      } else {
+        url += '?';
+      }
+      multiple = true;
+      url = `${url}searchFilter=${searchFilter}`;
+    }
+    return this.http.get(url);
+  }
+  public getCustomersPaged(
+    page,
+    pageSize,
+    sortBy,
+    sortOrder = 'asc',
+    searchFilter = '',
+    archived = false,
+  ) {
+    let url = `${this.settingsService.settings.apiUrl}/api/customerPaged/${page}/${pageSize}/${sortBy}/${sortOrder}/`;
+
+    let multiple = false;
+    if (archived) {
+      url = `${url}?archived=true`;
+      multiple = true;
+    }
+    if (searchFilter != '') {
+      if (multiple) {
+        url += '&';
+      } else {
+        url += '?';
+      }
+      multiple = true;
+      url = `${url}searchFilter=${searchFilter}`;
+    }
+    return this.http.get(url);
+  }
+
   public getCustomer(id: string) {
     const url = `${this.settingsService.settings.apiUrl}/api/customer/${id}/`;
     return this.http.get<CustomerModel>(url);
