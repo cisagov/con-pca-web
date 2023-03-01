@@ -77,7 +77,7 @@ export class TemplateSelectDialogComponent {
       this.dialog.open(AlertComponent, {
         data: {
           title: '',
-          messageText: 'Can not remove all templates',
+          messageText: 'Cannot remove all templates.',
         },
       });
     }

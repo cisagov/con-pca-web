@@ -38,6 +38,14 @@ export class CustomersComponent implements OnInit {
     'zip_code',
     'edit',
   ];
+  // pagination variables
+  customerCount: number = 99;
+  customersPerPage: any = 10;
+  page: any = 0;
+  sortOrder = 'asc';
+  sortBy = 'name';
+  searchFilterStr = '';
+
   customersData = new MatTableDataSource<CustomerModel>();
   subscriptions = new MatTableDataSource<SubscriptionModel>();
   search_input = '';
@@ -59,6 +67,71 @@ export class CustomersComponent implements OnInit {
     this.customerSvc.setIsSubPage(false);
   }
 
+  getPageSize() {
+    this.customerSvc
+      .getCustomerCount(this.searchFilterStr, this.showArchived)
+      .subscribe(
+        (success) => {
+          this.customerCount = parseInt(success as any);
+          console.log(this.customerCount);
+        },
+        (failure) => {
+          console.log('Failed ot get subscription count');
+        },
+      );
+  }
+
+  paginationChange(event) {
+    this.page = event.pageIndex;
+    this.customersPerPage = event.pageSize;
+    this.refresh();
+  }
+  public searchFilter(searchValue: string): void {
+    console.log(searchValue);
+    this.searchFilterStr = searchValue;
+    this.page = 0;
+    this.refresh();
+    this.getPageSize();
+    // this.dataSource.filter = searchValue.trim().toLowerCase();
+  }
+  changeSort(sortEvent) {
+    this.sortOrder = sortEvent.direction;
+    if (sortEvent.direction == '') {
+      this.sortOrder = 'asc';
+      this.sortBy = 'name';
+    } else {
+      switch (sortEvent.active) {
+        case 'name':
+          this.sortBy = 'name_lower';
+          break;
+        case 'identifier':
+          this.sortBy = 'identifier_lower';
+          break;
+        case 'stakeholder_shortname':
+          this.sortBy = 'stakeholder_shortname_lower';
+          break;
+        case 'address_1':
+          this.sortBy = 'address_1_lower';
+          break;
+        case 'address_2':
+          this.sortBy = 'address_2_lower';
+          break;
+        case 'city':
+          this.sortBy = 'city_lower';
+          break;
+        case 'state':
+          this.sortBy = 'state';
+          break;
+        case 'zip_code':
+          this.sortBy = 'zip_code';
+          break;
+      }
+    }
+    this.refresh();
+
+    // this.name
+  }
+
   ngOnInit(): void {
     if (!this.insideDialog) {
       this.layout_service.setTitle('Customers');
@@ -66,6 +139,8 @@ export class CustomersComponent implements OnInit {
       this.displayed_columns.splice(8, 1);
       this.displayed_columns.splice(0, 1);
     }
+
+    this.getPageSize();
 
     this.customersData = new MatTableDataSource();
     this.customerSvc.getCustomerInfoStatus().subscribe((status) => {
@@ -87,12 +162,23 @@ export class CustomersComponent implements OnInit {
     this.loading = true;
     this.selection = new SelectionModel<CustomerModel>(true, []);
     this.customerSvc
-      .getCustomers(this.showArchived.toString())
-      .subscribe((data: any) => {
-        this.customersData.data = data as CustomerModel[];
-        this.customersData.sort = this.sort;
-        this.loading = false;
-      });
+      .getCustomersPaged(
+        this.page,
+        this.customersPerPage,
+        this.sortBy,
+        this.sortOrder,
+        this.searchFilterStr,
+        this.showArchived,
+      )
+      .subscribe(
+        (success) => {
+          this.customersData.data = success as CustomerModel[];
+          this.loading = false;
+        },
+        (failure) => {
+          console.log(failure);
+        },
+      );
   }
 
   public canDeactivate(): Promise<boolean> {
