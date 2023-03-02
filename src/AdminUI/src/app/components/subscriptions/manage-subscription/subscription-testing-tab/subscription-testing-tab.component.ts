@@ -131,6 +131,14 @@ export class SubscriptionTestingTabComponent implements OnInit {
       });
   }
 
+  nextTemplatesExist() {
+    if (this.subscription.hasOwnProperty('next_templates')) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   launchNextTest() {
     if (this.selection.selected.length < 1) {
       this.dialog.open(AlertComponent, {
