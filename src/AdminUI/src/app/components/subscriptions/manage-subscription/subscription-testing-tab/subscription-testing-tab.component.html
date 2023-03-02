@@ -75,7 +75,12 @@
     </button>
 
     <!-- Launch Next Templates Test -->
-    <button mat-raised-button color="primary" (click)="launchNextTest()">
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="launchNextTest()"
+      *ngIf="nextTemplatesExist()"
+    >
       Launch Next Templates Test
     </button>
   </div>
