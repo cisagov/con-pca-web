@@ -195,7 +195,7 @@
                 <div *ngFor="let i of currentTemplateSubjects">{{ i }}</div>
               </td>
             </tr>
-            <tr *ngIf="isContinuous()">
+            <tr *ngIf="nextTemplatesExist()">
               <td>Next Cycle Templates</td>
               <td class="text-right" style="color: grey; cursor: default">
                 <div *ngFor="let i of nextTemplateSubjects">{{ i }}</div>
