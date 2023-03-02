@@ -79,6 +79,7 @@ export class SubscriptionTestingTabComponent implements OnInit {
           this.isStartDateBeforeAADate();
         });
         this.getResults();
+        this.getNextResults();
       }
     });
   }
@@ -167,7 +168,7 @@ export class SubscriptionTestingTabComponent implements OnInit {
 
   getNextResults() {
     this.subscriptionSvc
-      .getTestResults(this.subscription._id)
+      .getNextTestResults(this.subscription._id)
       .subscribe((data) => {
         this.nextTestResults = data;
       });
