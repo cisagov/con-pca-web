@@ -1637,7 +1637,10 @@ export class SubscriptionConfigTab
   }
 
   nextTemplatesExist() {
-    if (this.subscription.hasOwnProperty('next_templates')) {
+    if (
+      this.subscription.hasOwnProperty('next_templates') &&
+      this.subscription.next_templates.length > 0
+    ) {
       return true;
     } else {
       return false;
