@@ -1635,4 +1635,15 @@ export class SubscriptionConfigTab
       this.hideReportingPassword = false;
     });
   }
+
+  nextTemplatesExist() {
+    if (
+      this.subscription.hasOwnProperty('next_templates') &&
+      this.subscription.next_templates.length > 0
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
