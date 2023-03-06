@@ -115,7 +115,9 @@ export class SubscriptionTestingTabComponent implements OnInit {
             },
             (error) => {
               console.log(error);
-              this.alertsService.alert(error.error);
+              this.alertsService.alert(
+                'An error occurred sending one or more templates. Check logs and template configuration.',
+              );
               this.launching = false;
             },
           );
@@ -166,7 +168,9 @@ export class SubscriptionTestingTabComponent implements OnInit {
             },
             (error) => {
               console.log(error);
-              this.alertsService.alert(error.error);
+              this.alertsService.alert(
+                'An error occurred sending one or more templates. Check logs and template configuration.',
+              );
               this.launching = false;
             },
           );
