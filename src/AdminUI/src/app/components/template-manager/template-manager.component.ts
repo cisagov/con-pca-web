@@ -336,8 +336,12 @@ export class TemplateManagerComponent
       templateId: new FormControl(template._id),
       templateName: new FormControl(template.name, [Validators.required]),
       templateDeceptionScore: new FormControl(template.deception_score),
-      templateFromDisplayName: new FormControl(this.fromDisplayName),
-      templateFromSender: new FormControl(this.fromSender),
+      templateFromDisplayName: new FormControl(this.fromDisplayName, [
+        Validators.required,
+      ]),
+      templateFromSender: new FormControl(this.fromSender, [
+        Validators.required,
+      ]),
       sophisticatedRecs: new FormControl(template.sophisticated),
       redFlagRecs: new FormControl(template.red_flag),
       templateFromAddress: new FormControl(template.from_address),
