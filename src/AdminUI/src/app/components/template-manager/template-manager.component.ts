@@ -593,24 +593,44 @@ export class TemplateManagerComponent
   }
 
   openRetireTemplateDialog() {
-    const templateToRetire = this.getTemplateFromForm(
-      this.currentTemplateFormGroup,
-    );
-    this.dialogRefRetire = this.dialog.open(RetireTemplateDialogComponent, {
-      disableClose: false,
-      data: templateToRetire,
-    });
-    this.dialogRefRetire.afterClosed().subscribe((result) => {
-      if (result.retired) {
-        this.retired = result.retired;
-        this.retiredReason = result.description;
-        this.setCanDelete();
-      } else if (result.error) {
-        this.alertsService.alert(
-          `Error retiring template. ${result.error.error}`,
-        );
+    this.currentTemplateFormGroup.markAllAsTouched();
+    if (this.currentTemplateFormGroup.valid) {
+      const templateToRetire = this.getTemplateFromForm(
+        this.currentTemplateFormGroup,
+      );
+      this.dialogRefRetire = this.dialog.open(RetireTemplateDialogComponent, {
+        disableClose: false,
+        data: templateToRetire,
+      });
+      this.dialogRefRetire.afterClosed().subscribe((result) => {
+        if (result.retired) {
+          this.retired = result.retired;
+          this.retiredReason = result.description;
+          this.setCanDelete();
+        } else if (result.error) {
+          this.alertsService.alert(
+            `Error retiring template. ${result.error.error}`,
+          );
+        }
+      });
+    } else {
+      //non valid form, collect nonvalid fields and display to user
+      const invalid = [];
+      const controls = this.currentTemplateFormGroup.controls;
+      for (const name in controls) {
+        if (controls[name].invalid) {
+          let nameIng = 'Template ' + name.replace(/template/g, '');
+          invalid.push(nameIng);
+        }
       }
-    });
+      this.dialog.open(AlertComponent, {
+        data: {
+          title: 'Missing Required Information',
+          messageText: '',
+          invalidData: invalid,
+        },
+      });
+    }
   }
 
   openRestoreTemplateDialog() {
@@ -908,36 +928,56 @@ export class TemplateManagerComponent
   }
 
   async duplicateTemplate() {
-    const dialogRef = this.dialog.open(ConfirmComponent, {
-      disableClose: false,
-    });
-    dialogRef.componentInstance.confirmMessage = `Are you sure you want to create a duplicate template?`;
-    dialogRef.componentInstance.title = 'Confirm';
+    this.currentTemplateFormGroup.markAllAsTouched();
+    if (this.currentTemplateFormGroup.valid) {
+      const dialogRef = this.dialog.open(ConfirmComponent, {
+        disableClose: false,
+      });
+      dialogRef.componentInstance.confirmMessage = `Are you sure you want to create a duplicate template?`;
+      dialogRef.componentInstance.title = 'Confirm';
 
-    const dialogResp = await dialogRef.afterClosed().toPromise();
-    if (dialogResp) {
-      try {
-        await this.templateManagerSvc
-          .duplicateTemplate(this.templateId)
-          .toPromise();
-        this.dialog.open(AlertComponent, {
-          data: {
-            title: '',
-            messageText: `'${this.templateName} COPY' template has been duplicated.`,
-          },
-        });
+      const dialogResp = await dialogRef.afterClosed().toPromise();
+      if (dialogResp) {
+        try {
+          await this.templateManagerSvc
+            .duplicateTemplate(this.templateId)
+            .toPromise();
+          this.dialog.open(AlertComponent, {
+            data: {
+              title: '',
+              messageText: `'${this.templateName} COPY' template has been duplicated.`,
+            },
+          });
 
-        this.router.navigate(['/templates']);
-      } catch (error) {
-        console.log(error);
-        this.dialog.open(AlertComponent, {
-          // Parse error here
-          data: {
-            title: `Duplicate Template Error - ${error.statusText}`,
-            messageText: JSON.stringify(error.error),
-          },
-        });
+          this.router.navigate(['/templates']);
+        } catch (error) {
+          console.log(error);
+          this.dialog.open(AlertComponent, {
+            // Parse error here
+            data: {
+              title: `Duplicate Template Error - ${error.statusText}`,
+              messageText: JSON.stringify(error.error),
+            },
+          });
+        }
       }
+    } else {
+      //non valid form, collect nonvalid fields and display to user
+      const invalid = [];
+      const controls = this.currentTemplateFormGroup.controls;
+      for (const name in controls) {
+        if (controls[name].invalid) {
+          let nameIng = 'Template ' + name.replace(/template/g, '');
+          invalid.push(nameIng);
+        }
+      }
+      this.dialog.open(AlertComponent, {
+        data: {
+          title: 'Missing Required Information',
+          messageText: '',
+          invalidData: invalid,
+        },
+      });
     }
   }
 
