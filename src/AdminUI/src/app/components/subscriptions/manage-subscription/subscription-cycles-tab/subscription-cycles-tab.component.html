@@ -101,12 +101,6 @@
           <th>{{ t | titlecase }}</th>
           <td>
             <button
-              [disabled]="
-                subscription.status == 'created' ||
-                (selectedCycle.active && t == 'cycle')
-                  ? true
-                  : null
-              "
               mat-raised-button
               color="primary"
               (click)="downloadReport(t); $event.preventDefault()"
@@ -116,12 +110,6 @@
           </td>
           <td>
             <button
-              [disabled]="
-                subscription.status == 'created' ||
-                (selectedCycle.active && t == 'cycle')
-                  ? true
-                  : null
-              "
               mat-raised-button
               color="accent"
               (click)="sendReport(t); $event.preventDefault()"
