@@ -83,6 +83,34 @@ export class SubscriptionService {
     return this.http.get(url);
   }
 
+  public getSubStatusEndingSoon(
+    page,
+    pageSize,
+    sortBy,
+    sortOrder = 'asc')
+    {
+    let url = `${this.settingsService.settings.apiUrl}/api/subscriptions/status/ending_soon/${page}/${pageSize}/${sortBy}/${sortOrder}/`;
+    return this.http.get(url);
+  }
+  public getSubStatusInProgress(
+    page,
+    pageSize,
+    sortBy,
+    sortOrder = 'asc')
+    {
+    let url = `${this.settingsService.settings.apiUrl}/api/subscriptions/status/in_progress/${page}/${pageSize}/${sortBy}/${sortOrder}/`;
+    return this.http.get(url);
+  }
+  public getSubStatusStopped(
+    page,
+    pageSize,
+    sortBy,
+    sortOrder = 'asc')
+    {
+    let url = `${this.settingsService.settings.apiUrl}/api/subscriptions/status/stopped/${page}/${pageSize}/${sortBy}/${sortOrder}/`;
+    return this.http.get(url);
+  }
+
   public getSubscriptionCount(searchFilter = '', archived = false) {
     let url = `${this.settingsService.settings.apiUrl}/api/subscriptions/count/`;
 

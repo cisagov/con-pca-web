@@ -69,9 +69,11 @@ export class SubscriptionStatusTab implements OnInit {
     'lastUpdated',
   ];
 
+  endingSoonMethod = this.subscriptionSvc.getSubStatusEndingSoon
+
   constructor(
     private router: Router,
-    private subscriptionSvc: SubscriptionService,
+    public subscriptionSvc: SubscriptionService,
     private tabSvc: OverviewTabService,
   ) {
     this.clickStatus = this.tabClicked;

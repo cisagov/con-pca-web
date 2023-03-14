@@ -119,6 +119,7 @@ import { UnarchiveCustomersDialogComponent } from './components/customer/unarchi
 import { DBManagementService } from './services/db-management.service';
 import { DBManagementComponent } from './components/db-management/db-management.component';
 import { OverviewTabService } from './services/overview-tab.service';
+import { StatusTableComponent } from './components/overview/subscription-status-tab/status-table/status-table.component';
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
   return () => settingsHttpService.initializeApp();
@@ -202,6 +203,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     LoggingTab,
     FailedEmailsTab,
     UtilitiesTab,
+    StatusTableComponent,
   ],
   imports: [
     BrowserModule,
