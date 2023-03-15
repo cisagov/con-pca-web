@@ -46,7 +46,7 @@ export class SubscriptionStatsTab implements OnInit {
   downloadingCycle = false;
   downloadingSubscription = false;
   downloadingText = 'Downloading Cycle Data';
-  
+
   allowCycleDownload = false;
 
   generating = false;
@@ -128,13 +128,13 @@ export class SubscriptionStatsTab implements OnInit {
     this.subscriptionSvc.setCycleBehaviorSubject(this.selectedCycle);
   }
 
-  setDisplayReportStatus(){
-    let now = new Date()
-    let endDate = new Date(this.selectedCycle.end_date)
-    if(now.getTime() > endDate.getTime()){
+  setDisplayReportStatus() {
+    let now = new Date();
+    let endDate = new Date(this.selectedCycle.end_date);
+    if (now.getTime() > endDate.getTime()) {
       this.allowCycleDownload = true;
     } else {
-      this.allowCycleDownload = false
+      this.allowCycleDownload = false;
     }
   }
 
