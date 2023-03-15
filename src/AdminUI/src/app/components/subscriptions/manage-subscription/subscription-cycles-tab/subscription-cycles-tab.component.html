@@ -99,8 +99,12 @@
       <tbody>
         <tr *ngFor="let t of ['status', 'cycle']">
           <th>{{ t | titlecase }}</th>
-          <td>
+          <td
+            matTooltip="Must wait for the cycle to be complete"
+            [matTooltipDisabled]="allowCycleDownload || t != 'cycle'"
+          >
             <button
+              [disabled]="!allowCycleDownload && t == 'cycle'"
               mat-raised-button
               color="primary"
               (click)="downloadReport(t); $event.preventDefault()"
@@ -108,8 +112,12 @@
               <mat-icon>cloud_download</mat-icon>
             </button>
           </td>
-          <td>
+          <td
+            matTooltip="Must wait for the cycle to be complete"
+            [matTooltipDisabled]="allowCycleDownload || t != 'cycle'"
+          >
             <button
+              [disabled]="!allowCycleDownload && t == 'cycle'"
               mat-raised-button
               color="accent"
               (click)="sendReport(t); $event.preventDefault()"
