@@ -129,20 +129,13 @@ export class SubscriptionStatsTab implements OnInit {
   }
 
   setDisplayReportStatus(){
-    console.log("TEST")
-    console.log(this.selectedCycle)
-    console.log(this.subscription)
     let now = new Date()
     let endDate = new Date(this.selectedCycle.end_date)
     if(now.getTime() > endDate.getTime()){
       this.allowCycleDownload = true;
-      console.log(this.allowCycleDownload)
     } else {
       this.allowCycleDownload = false
-      console.log(now)
-      console.log(endDate)
     }
-    console.log(this.allowCycleDownload)
   }
 
   buildSubscriptionTimeline(s: SubscriptionModel) {
