@@ -24,6 +24,7 @@ import {
 } from '@angular/forms';
 import { ConfirmComponent } from 'src/app/components/dialogs/confirm/confirm.component';
 import { NONE_TYPE } from '@angular/compiler';
+import { now } from 'moment';
 
 @Component({
   selector: 'app-subscription-cycles-tab',
@@ -45,6 +46,8 @@ export class SubscriptionStatsTab implements OnInit {
   downloadingCycle = false;
   downloadingSubscription = false;
   downloadingText = 'Downloading Cycle Data';
+  
+  allowCycleDownload = false;
 
   generating = false;
   generatingText = '';
@@ -94,6 +97,7 @@ export class SubscriptionStatsTab implements OnInit {
         let selectedCycleIndex = 0;
         this.selectedCycle = this.subscription.cycles[selectedCycleIndex];
         this.subscriptionSvc.setCycleBehaviorSubject(this.selectedCycle);
+        this.setDisplayReportStatus();
         this.reportedStatsForm.controls.reportedItems.setValidators([
           this.reportListValidator(),
         ]);
@@ -116,11 +120,29 @@ export class SubscriptionStatsTab implements OnInit {
   cycleChange(event) {
     this.subscriptionSvc.setCycleBehaviorSubject(event.value);
     this.convertReportsToCSV();
+    this.setDisplayReportStatus();
   }
 
   showNonHuman(event: MatSlideToggleChange) {
     this.selectedCycle.nonhuman = event.checked;
     this.subscriptionSvc.setCycleBehaviorSubject(this.selectedCycle);
+  }
+
+  setDisplayReportStatus(){
+    console.log("TEST")
+    console.log(this.selectedCycle)
+    console.log(this.subscription)
+    let now = new Date()
+    let endDate = new Date(this.selectedCycle.end_date)
+    if(now.getTime() > endDate.getTime()){
+      this.allowCycleDownload = true;
+      console.log(this.allowCycleDownload)
+    } else {
+      this.allowCycleDownload = false
+      console.log(now)
+      console.log(endDate)
+    }
+    console.log(this.allowCycleDownload)
   }
 
   buildSubscriptionTimeline(s: SubscriptionModel) {
