@@ -99,7 +99,7 @@
       <tbody>
         <tr *ngFor="let t of ['status', 'cycle']">
           <th>{{ t | titlecase }}</th>
-          <td matTooltip="Must wait for the cycle to be comlpete" [matTooltipDisabled]="allowCycleDownload || t != 'cycle'">
+          <td matTooltip="Must wait for the cycle to be complete" [matTooltipDisabled]="allowCycleDownload || t != 'cycle'">
             <button
               [disabled]="!allowCycleDownload && t == 'cycle'"
               mat-raised-button
@@ -109,7 +109,7 @@
               <mat-icon>cloud_download</mat-icon>
             </button>
           </td>
-          <td matTooltip="Must wait for the cycle to be comlpete" [matTooltipDisabled]="allowCycleDownload || t != 'cycle'">
+          <td matTooltip="Must wait for the cycle to be complete" [matTooltipDisabled]="allowCycleDownload || t != 'cycle'">
             <button
               [disabled]="!allowCycleDownload && t == 'cycle'"
               mat-raised-button
