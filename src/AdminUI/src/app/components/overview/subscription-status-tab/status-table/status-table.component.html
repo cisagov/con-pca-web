@@ -1,0 +1,90 @@
+<mat-table
+      #endingSoonTable
+      [dataSource]="tableDataSource"
+      (matSortChange)="changeSort($event)"
+      matSort
+    >
+      <!-- SUBSCRIPTION NAME -->
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Subscription Name</mat-header-cell
+        >
+        <mat-cell *matCellDef="let row"> {{ row.name }}</mat-cell>
+      </ng-container>
+
+      <!-- START DATE -->
+      <ng-container matColumnDef="startDate">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Start Date</mat-header-cell
+        >
+        <mat-cell *matCellDef="let row">
+          {{ row.startDate | date : dateFormat }}
+        </mat-cell>
+      </ng-container>
+
+      <!-- END DATE -->
+      <ng-container matColumnDef="endDate">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >End Date</mat-header-cell
+        >
+        <mat-cell *matCellDef="let row">
+          {{ row.endDate | date : dateFormat }}
+        </mat-cell>
+      </ng-container>
+
+      <!-- APPENDIX A DATE -->
+      <ng-container matColumnDef="appendixDate">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Appendix A Date</mat-header-cell
+        >
+        <mat-cell *matCellDef="let row">
+          {{ row.appendixDate | date : dateFormat }}
+        </mat-cell>
+      </ng-container>
+
+      <!-- IS CONTINUOUS SUBSCRIPTION -->
+      <ng-container matColumnDef="isContinuous">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Continuous</mat-header-cell
+        >
+        <mat-cell *matCellDef="let row">
+          <mat-icon
+            *ngIf="row.isContinuous"
+            aria-hidden="false"
+            aria-label="check_circle icon"
+            >check_circle
+          </mat-icon>
+        </mat-cell>
+      </ng-container>
+
+      <!-- LAST UPDATED DATE -->
+      <ng-container matColumnDef="lastUpdated">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Last Updated</mat-header-cell
+        >
+        <mat-cell *matCellDef="let row">
+          {{ row.lastUpdated | date : dateFormat }}
+        </mat-cell>
+      </ng-container>
+
+      <!-- HEADER ROW -->
+      <mat-header-row
+        *matHeaderRowDef="displayColumns"
+      ></mat-header-row>
+
+      <!-- ROW DEFINITION -->
+      <mat-row
+        *matRowDef="let row; columns: displayColumns"
+        class="table-row cursor-pointer"
+        (click)="editSubscription(row)"
+      >
+      </mat-row>
+    </mat-table>
+    <mat-paginator
+      [length]="itemCount"
+      [pageSize]="pageSize"
+      (page)="paginationChange($event)"
+      [pageSizeOptions]="[5, 10, 25, 100]"
+      aria-label="Select page"
+    >
+    </mat-paginator>
