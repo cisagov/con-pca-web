@@ -32,15 +32,30 @@ export class TaskStatsModel {
   tasks_succeeded_30_days_ratio: number;
 }
 
-export class AggregateReportModel {
-  customers_enrolled: number;
+export class AllCustomerStatsReportModel {
   customers_active: number;
+  customers_archived: number;
+  customers_archived_active: number;
+  customers_archived_never_active: number;
+  customers_enrolled: number;
+  customers_inactive: number;
+  customers_total: number;
+}
+
+export class AllSubscriptionStatsReportModel {
+  subscriptions_archived: number;
+  subscriptions_new: number;
+  subscriptions_ongoing: number;
+  subscriptions_stopped: number;
+  subscriptions_total: number;
+}
+
+export class AggregateReportModel {
+  customer_stats: AllCustomerStatsReportModel;
+  subscription_stats: AllSubscriptionStatsReportModel;
   status_reports_sent: number;
   cycle_reports_sent: number;
   yearly_reports_sent: number;
-  new_subscriptions: number;
-  ongoing_subscriptions: number;
-  stopped_subscriptions: number;
   email_sending_stats: EmailSendingStatsModel;
   task_stats: TaskStatsModel;
   federal_stats: SectorIndustryReportModel;

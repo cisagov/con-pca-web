@@ -6,7 +6,13 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
 } from '@angular/core';
-import { FormControl, Validators, FormGroup, ValidatorFn, AbstractControl } from '@angular/forms';
+import {
+  FormControl,
+  Validators,
+  FormGroup,
+  ValidatorFn,
+  AbstractControl,
+} from '@angular/forms';
 import { MyErrorStateMatcher } from '../../../helper/ErrorStateMatcher';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { ContactModel, CustomerModel } from 'src/app/models/customer.model';
@@ -621,7 +627,7 @@ export class AddCustomerComponent
             this.dialog.open(AlertComponent, {
               data: {
                 title: 'Customer Deleted',
-                messageText: 'Your Customer Was Deleted',
+                messageText: 'Your Customer Was Deleted.',
               },
             });
             this.router.navigate(['/customers']);
@@ -661,11 +667,11 @@ export class AddCustomerComponent
   validZip(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: boolean } | null => {
       let val = control.value;
-      let regex = new RegExp('^[0-9]{5}([- /]?[0-9]{4})?$')
+      let regex = new RegExp('^[0-9]{5}([- /]?[0-9]{4})?$');
       let isValid = regex.test(val);
 
-      if(!isValid){
-        return { invalidZip: true}
+      if (!isValid) {
+        return { invalidZip: true };
       }
 
       return null;

@@ -73,6 +73,16 @@
     <button mat-raised-button color="primary" (click)="launchTest()">
       Launch Test
     </button>
+
+    <!-- Launch Next Templates Test -->
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="launchNextTest()"
+      *ngIf="nextTemplatesExist()"
+    >
+      Launch Next Templates Test
+    </button>
   </div>
 </mat-card>
 <ng-template #disallow_testing>
@@ -91,7 +101,7 @@
 
 <mat-card *ngIf="testResults && testResults.length > 0">
   <mat-card-title
-    >Results<button
+    >Current Templates Results<button
       mat-raised-button
       color="primary"
       (click)="getResults()"
@@ -105,6 +115,67 @@
     templates). Each row can be clicked for additional details.
   </p>
   <mat-table [dataSource]="testResults">
+    <!-- Template -->
+    <ng-container matColumnDef="template">
+      <mat-header-cell *matHeaderCellDef>Template</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        {{ row.template.name }}
+      </mat-cell>
+    </ng-container>
+
+    <!-- Email -->
+    <ng-container matColumnDef="email">
+      <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        {{ row.email }}
+      </mat-cell>
+    </ng-container>
+
+    <!-- Sent -->
+    <ng-container matColumnDef="sent">
+      <mat-header-cell *matHeaderCellDef>Sent</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <mat-icon *ngIf="row.sent" color="primary">check_circle</mat-icon>
+        <mat-icon *ngIf="!row.sent" color="warn">cancel</mat-icon>
+      </mat-cell>
+    </ng-container>
+
+    <!-- Clicked -->
+    <ng-container matColumnDef="clicked">
+      <mat-header-cell *matHeaderCellDef>Clicked</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <mat-icon *ngIf="row.clicked" color="primary">check_circle</mat-icon>
+        <mat-icon *ngIf="!row.clicked" color="warn">cancel</mat-icon>
+      </mat-cell>
+    </ng-container>
+
+    <!-- Definitions -->
+    <mat-header-row *matHeaderRowDef="resultColumns"></mat-header-row>
+    <mat-row
+      *matRowDef="let row; columns: resultColumns"
+      class="table-row cursor-pointer"
+      (click)="detailResults(row)"
+    >
+    </mat-row>
+  </mat-table>
+</mat-card>
+
+<mat-card *ngIf="nextTestResults && nextTestResults.length > 0">
+  <mat-card-title
+    >Next Templates Results<button
+      mat-raised-button
+      color="primary"
+      (click)="getNextResults()"
+      class="refresh-test-results-btn"
+    >
+      <mat-icon>refresh</mat-icon>
+    </button></mat-card-title
+  >
+  <p>
+    The following shows the results of the test (who has clicked on which
+    templates). Each row can be clicked for additional details.
+  </p>
+  <mat-table [dataSource]="nextTestResults">
     <!-- Template -->
     <ng-container matColumnDef="template">
       <mat-header-cell *matHeaderCellDef>Template</mat-header-cell>

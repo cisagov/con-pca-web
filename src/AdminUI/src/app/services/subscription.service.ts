@@ -289,6 +289,19 @@ export class SubscriptionService {
     return this.http.get<SubscriptionTestResultsModel[]>(url);
   }
 
+  public testNextSubscription(
+    subscriptionId: string,
+    contacts: ContactModel[],
+  ) {
+    const url = `${this.settingsService.settings.apiUrl}/api/subscription/${subscriptionId}/test/?next=true`;
+    return this.http.post<SubscriptionTestResultsModel[]>(url, { contacts });
+  }
+
+  public getNextTestResults(subscriptionId: string) {
+    const url = `${this.settingsService.settings.apiUrl}/api/subscription/${subscriptionId}/test/?next=true`;
+    return this.http.get<SubscriptionTestResultsModel[]>(url);
+  }
+
   public exportSafelist(
     subscriptionId: string,
     phishHeader: string,

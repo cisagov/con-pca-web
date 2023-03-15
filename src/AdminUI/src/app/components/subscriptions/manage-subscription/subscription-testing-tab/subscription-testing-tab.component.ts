@@ -24,6 +24,7 @@ export class SubscriptionTestingTabComponent implements OnInit {
   contacts: ContactModel[];
   customer: CustomerModel;
   testResults: SubscriptionTestResultsModel[];
+  nextTestResults: SubscriptionTestResultsModel[];
   launching = false;
   launchingText = 'Test Launch in Progress';
 
@@ -78,6 +79,7 @@ export class SubscriptionTestingTabComponent implements OnInit {
           this.isStartDateBeforeAADate();
         });
         this.getResults();
+        this.getNextResults();
       }
     });
   }
@@ -91,7 +93,7 @@ export class SubscriptionTestingTabComponent implements OnInit {
       this.dialog.open(AlertComponent, {
         data: {
           title: 'Select Contacts',
-          messageText: 'At least a single contact needs to be selected',
+          messageText: 'At least a single contact needs to be selected.',
         },
       });
       return;
@@ -113,7 +115,9 @@ export class SubscriptionTestingTabComponent implements OnInit {
             },
             (error) => {
               console.log(error);
-              this.alertsService.alert(error.error);
+              this.alertsService.alert(
+                'An error occurred sending one or more templates. Check logs and template configuration.',
+              );
               this.launching = false;
             },
           );
@@ -126,6 +130,59 @@ export class SubscriptionTestingTabComponent implements OnInit {
       .getTestResults(this.subscription._id)
       .subscribe((data) => {
         this.testResults = data;
+      });
+  }
+
+  nextTemplatesExist() {
+    if (this.subscription.hasOwnProperty('next_templates')) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  launchNextTest() {
+    if (this.selection.selected.length < 1) {
+      this.dialog.open(AlertComponent, {
+        data: {
+          title: 'Select Contacts',
+          messageText: 'At least a single contact needs to be selected.',
+        },
+      });
+      return;
+    }
+    const dialogRef = this.dialog.open(ConfirmComponent, {
+      disableClose: false,
+    });
+    dialogRef.componentInstance.confirmMessage = `Are you sure you want to launch a test for ${this.subscription.name}?`;
+    dialogRef.componentInstance.title = 'Confirm Launch Test';
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.launching = true;
+        this.subscriptionSvc
+          .testNextSubscription(this.subscription._id, this.selection.selected)
+          .subscribe(
+            (data) => {
+              this.nextTestResults = data;
+              this.launching = false;
+            },
+            (error) => {
+              console.log(error);
+              this.alertsService.alert(
+                'An error occurred sending one or more templates. Check logs and template configuration.',
+              );
+              this.launching = false;
+            },
+          );
+      }
+    });
+  }
+
+  getNextResults() {
+    this.subscriptionSvc
+      .getNextTestResults(this.subscription._id)
+      .subscribe((data) => {
+        this.nextTestResults = data;
       });
   }
 

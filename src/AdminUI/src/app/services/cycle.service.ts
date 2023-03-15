@@ -29,7 +29,7 @@ export class CycleService {
   }
 
   public getCycleStats(cycleId: string, nonhuman = false) {
-    let url = `${this.SettingsService.settings.apiUrl}/api/cycle/${cycleId}/mongostats/`;
+    let url = `${this.SettingsService.settings.apiUrl}/api/cycle/${cycleId}/stats/`;
     if (nonhuman) {
       url += `?nonhuman=${nonhuman}`;
     }

@@ -73,21 +73,21 @@ export class CustomersComponent implements OnInit {
       .subscribe(
         (success) => {
           this.customerCount = parseInt(success as any);
-          console.log(this.customerCount)
+          console.log(this.customerCount);
         },
         (failure) => {
           console.log('Failed ot get subscription count');
         },
       );
   }
-  
+
   paginationChange(event) {
     this.page = event.pageIndex;
     this.customersPerPage = event.pageSize;
     this.refresh();
   }
   public searchFilter(searchValue: string): void {
-    console.log(searchValue)
+    console.log(searchValue);
     this.searchFilterStr = searchValue;
     this.page = 0;
     this.refresh();
@@ -161,22 +161,24 @@ export class CustomersComponent implements OnInit {
     }
     this.loading = true;
     this.selection = new SelectionModel<CustomerModel>(true, []);
-    this.customerSvc.getCustomersPaged(
-      this.page,
-      this.customersPerPage,
-      this.sortBy,
-      this.sortOrder,
-      this.searchFilterStr,
-      this.showArchived,
-    ).subscribe(
-      (success) => {
-        this.customersData.data = success as CustomerModel[];
-        this.loading = false;
-      },
-      (failure) => {
-        console.log(failure)
-      },
-    )
+    this.customerSvc
+      .getCustomersPaged(
+        this.page,
+        this.customersPerPage,
+        this.sortBy,
+        this.sortOrder,
+        this.searchFilterStr,
+        this.showArchived,
+      )
+      .subscribe(
+        (success) => {
+          this.customersData.data = success as CustomerModel[];
+          this.loading = false;
+        },
+        (failure) => {
+          console.log(failure);
+        },
+      );
   }
 
   public canDeactivate(): Promise<boolean> {
